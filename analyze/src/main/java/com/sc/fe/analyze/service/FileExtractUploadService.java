@@ -70,9 +70,7 @@ public class FileExtractUploadService {
 		});
 		
 		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
-		System.out.println(util.getFileStorageProperties().getBucket());
-		System.out.println(util.getFileStorageProperties().getSecretKey());
-		System.out.println(util.getFileStorageProperties().getAccessKey());
+		System.out.println("****** Done generating report *******");
 		
 		return report;
 	}
