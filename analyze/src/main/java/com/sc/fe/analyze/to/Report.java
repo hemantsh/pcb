@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
 public class Report implements Serializable {
 	
 	/**
@@ -14,11 +19,14 @@ public class Report implements Serializable {
 	
 	private CustomerInputs customerInputs;
 	
+	public Report() {
+		super();
+	}
 	private String summary;
 	private String validationStatus;
 	private List<String> errors;
 	private List<String> additionalNotes;
-	private List<String> fileNameList;
+	private List<String> exctractedFileNames;
 	
 	private Map<String, Set<String> > filePurposeToNameMapping;
 	
@@ -96,16 +104,17 @@ public class Report implements Serializable {
 		this.filePurposeToNameMapping = filePurposeToNameMapping;
 	}
 	/**
-	 * @return the fileNameList
+	 * @return the exctractedFileNames
 	 */
-	public List<String> getFileNameList() {
-		return fileNameList;
+	public List<String> getExctractedFileNames() {
+		return exctractedFileNames;
 	}
 	/**
-	 * @param fileNameList the fileNameList to set
+	 * @param exctractedFileNames the exctractedFileNames to set
 	 */
-	public void setFileNameList(List<String> fileNameList) {
-		this.fileNameList = fileNameList;
+	public void setExctractedFileNames(List<String> exctractedFileNames) {
+		this.exctractedFileNames = exctractedFileNames;
 	}
+	
 	
 }

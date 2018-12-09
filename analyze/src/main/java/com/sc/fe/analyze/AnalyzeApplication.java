@@ -5,9 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({
+
+@EnableConfigurationProperties ({
     FileStorageProperties.class
 })
+
 public class AnalyzeApplication {
 
 	public static void main(String[] args) {
