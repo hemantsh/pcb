@@ -1,6 +1,7 @@
 package util;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,7 +60,7 @@ public class FileStoreUtil {
 	 */
 	public void extractFiles(String projectId, String fileName) {
 		
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() +"/" + projectId + "/").toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
         
 		try {
 			
@@ -80,7 +81,7 @@ public class FileStoreUtil {
 	 */
 	public List<String> listFiles(String projectId) {
 		
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() +"/" + projectId + "/").toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
         
 		List<String> extractedFiles = new ArrayList<String>();
 		

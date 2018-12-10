@@ -33,7 +33,7 @@ public class FileUtil {
 	public static String saveUploadedZipFile(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
 		
 		//New folder for each project
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() + "/" + projectId ).toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId ).toAbsolutePath().normalize();
 		//If folder does not exist, create it
         if( ! Files.exists(folder)) {
         	try {
@@ -45,7 +45,7 @@ public class FileUtil {
     	    }
         }
 		//Copy file as same name in the folder
-		Path tempFile = Paths.get(folder + "/" + file.getOriginalFilename()).toAbsolutePath().normalize();
+		Path tempFile = Paths.get(folder + File.separator + file.getOriginalFilename()).toAbsolutePath().normalize();
 		Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);	
 	
 		return StringUtils.cleanPath(file.getOriginalFilename());
@@ -59,7 +59,7 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	public static void saveAndExtractZip(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() +"/" + projectId + "/").toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
 		//If folder does not exist, create it
         if( ! Files.exists(folder)) {
         	try {
@@ -71,7 +71,7 @@ public class FileUtil {
     	    }
         }
 		//Copy file as same name in the folder
-		Path tempFile = Paths.get(folder + "/" + file.getOriginalFilename()).toAbsolutePath().normalize();
+		Path tempFile = Paths.get(folder + File.separator + file.getOriginalFilename()).toAbsolutePath().normalize();
 		Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);	
 		
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());

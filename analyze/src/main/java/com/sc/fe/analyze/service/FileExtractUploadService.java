@@ -58,15 +58,17 @@ public class FileExtractUploadService {
 		
 		report.getExctractedFileNames().forEach( exfile -> {
 			String[] nameParts = exfile.split("\\.");
-        	if(extensionToTypeMapping.containsKey(nameParts[nameParts.length-1].toLowerCase()) ) {
+			String extn = nameParts[nameParts.length-1].toLowerCase();
+			
+        	if(extensionToTypeMapping.containsKey( extn ) ) {
         		
-        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToTypeMapping.get( nameParts[nameParts.length-1].toLowerCase() ) );
+        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToTypeMapping.get( extn ) );
         		
         		if( currentMapping == null) {
         			currentMapping = new HashSet<String>();
         		}
         		currentMapping.add(exfile);
-        		filePurposeToNameMapping.put(extensionToTypeMapping.get( nameParts[nameParts.length-1].toLowerCase() ), currentMapping);
+        		filePurposeToNameMapping.put(extensionToTypeMapping.get( extn ), currentMapping);
         	}
 		});
 		

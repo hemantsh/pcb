@@ -72,8 +72,8 @@ public class S3FileUtility {
 		//Save extract files locally first
 		FileUtil.saveAndExtractZip(projectId, file, fileStorageProperties);
 		
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() + "/" + projectId ).toAbsolutePath().normalize();
-		Path tempFile = Paths.get(folder + "/" + file.getOriginalFilename()).toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId ).toAbsolutePath().normalize();
+		Path tempFile = Paths.get(folder + File.separator + file.getOriginalFilename()).toAbsolutePath().normalize();
 		
 		//Save zip file on S3
 		saveFile(projectId, file, tempFile);
@@ -108,7 +108,7 @@ public class S3FileUtility {
 	private  void saveFile(String projectId, MultipartFile file, Path tempFile)  {
 		s3client.putObject(
 			fileStorageProperties.getBucket(), 
-			projectId +"/"+ file.getOriginalFilename(), 
+			projectId + File.separator + file.getOriginalFilename(), 
 			tempFile.toFile()
 		);
 		
@@ -123,11 +123,11 @@ public class S3FileUtility {
 	 */
 	private void saveFile(String projectId, File file) throws IOException {
 		
-		Path folder = Paths.get(fileStorageProperties.getUploadDir() +"/" + projectId ).toAbsolutePath().normalize();
+		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId ).toAbsolutePath().normalize();
 		
 		s3client.putObject(
 			fileStorageProperties.getBucket(), 
-			projectId + "/"+ file.toString().replace(folder.toString()+"/", ""), 
+			projectId + File.separator + file.toString().replace(folder.toString() + File.separator, ""), 
 			file
 		);
 	}
