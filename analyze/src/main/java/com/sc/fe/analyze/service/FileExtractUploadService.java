@@ -1,12 +1,13 @@
 package com.sc.fe.analyze.service;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,15 +23,15 @@ import util.S3FileUtility;
 @Service
 public class FileExtractUploadService {
 	
-
-	//private FileStoreUtil util;
+	private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
+	private FileStoreUtil util;
 	
-	private S3FileUtility util;
+	//private S3FileUtility util;
 	
 	@Autowired
 	public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
-    	//this.util = new FileStoreUtil(fileStorageProperties); //For local file
-		this.util = new S3FileUtility(fileStorageProperties); // For S3 storage
+    	this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
+		//this.util = S3FileUtility.getInstance(fileStorageProperties); //new S3FileUtility(fileStorageProperties); // For S3 storage
     }
 	
 
@@ -41,14 +42,14 @@ public class FileExtractUploadService {
 		report.setSummary("****** File upload and basic validation by extension. *******");
 
 // Local file based
-//		String fileName = util.storeFile(inputs.getProjectId(), file);		
-//		util.extractFiles(inputs.getProjectId(), fileName);   
-//		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
+		String fileName = util.storeFile(inputs.getProjectId(), file);		
+		util.extractFiles(inputs.getProjectId(), fileName);   
+		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
 // END local
 		
 //S3 Based
-		util.storeFile(inputs.getProjectId(), file);
-		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
+//		util.storeFile(inputs.getProjectId(), file);
+//		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
 // end S3
 		
 		Map<String, String> extensionToTypeMapping = RuleEngine.getFileTypeExtensionMapping();
@@ -71,10 +72,9 @@ public class FileExtractUploadService {
 		
 		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
 		System.out.println("****** Done generating report *******");
-		
+		logger.debug("****** Done generating report *******");
 		return report;
 	}
-	
 	
 	
 }

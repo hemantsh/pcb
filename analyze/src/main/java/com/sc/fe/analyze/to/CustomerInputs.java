@@ -8,16 +8,23 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_EMPTY)
 public class CustomerInputs implements Serializable {
 	
+	private static final long serialVersionUID = 1388568635843885556L;
+	
 	public CustomerInputs() {
 		super();
 	}
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1388568635843885556L;
 	
+	/**
+	 * The projectId
+	 */
 	private String projectId;
+	/**
+	 * Customer ID
+	 */
 	private String customerId;
+	/**
+	 * The service type user is requesting
+	 */
 	private String serviceType;
 	
 	public String getProjectId() {

@@ -5,8 +5,13 @@ import java.util.Map;
 
 public class RuleEngine {
 
+	/**
+	 * Get the mapping of file extensions to file types
+	 * @return
+	 */
 	public static Map<String, String> getFileTypeExtensionMapping() {
 
+		//This will go to DB and load from there
 		Map<String, String> extensionToTypeMapping = new HashMap <String, String>();
 		extensionToTypeMapping.put("gto", "Top Silkscreen");
 		extensionToTypeMapping.put("sst", "Top Silkscreen");

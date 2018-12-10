@@ -30,7 +30,7 @@ public class AnalyzePackageController {
 	@PostMapping(path="/uploadAndExtract")
 	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws IOException {
 		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);
-		logger.debug("Parameters : "+file.getName() );
+		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
 		
 		CustomerInputs custInputs = new CustomerInputs();
 		custInputs.setProjectId(projectId);

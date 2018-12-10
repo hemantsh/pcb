@@ -5,29 +5,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_EMPTY)
 public class Report implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -503593643675215988L;
-	
-	private CustomerInputs customerInputs;
 	
 	public Report() {
 		super();
 	}
+	
+	/**
+	 * Customer inputs
+	 */
+	private CustomerInputs customerInputs;
+	/**
+	 * Summary of the report
+	 */
 	private String summary;
+	/**
+	 * Validation status after running validations
+	 */
 	private String validationStatus;
+	/**
+	 * All errors we found in the files
+	 */
 	private List<String> errors;
+	/**
+	 * Any notes about package
+	 */
 	private List<String> additionalNotes;
+	/**
+	 * Files found in the zip file 
+	 */
 	private List<String> exctractedFileNames;
 	
+	/**
+	 * Mapping of file business purpose with the file name
+	 */
 	private Map<String, Set<String> > filePurposeToNameMapping;
 	
 	/**

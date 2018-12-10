@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
-	
+	//These are coming from application.properties
     private String uploadDir;
     private String bucket;
 	private String accessKey;
