@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class AnalyzePackageController {
 	@Autowired
     private FileExtractUploadService fileUploadService;
 	
-	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping(path="/uploadAndExtract")
 	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws IOException {
 		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);
