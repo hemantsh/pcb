@@ -13,12 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
-import com.sc.fe.analyze.rules.RuleEngine;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.Report;
 
 import util.FileStoreUtil;
-import util.S3FileUtility;
 
 @Service
 public class FileExtractUploadService {
@@ -29,9 +27,12 @@ public class FileExtractUploadService {
 	//private S3FileUtility util;
 	
 	@Autowired
+	BaseService baseService;
+	
+	@Autowired
 	public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
     	this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
-		//this.util = S3FileUtility.getInstance(fileStorageProperties); //new S3FileUtility(fileStorageProperties); // For S3 storage
+    	//this.util = S3FileUtility.getInstance(fileStorageProperties); 
     }
 	
 
@@ -52,7 +53,7 @@ public class FileExtractUploadService {
 //		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
 // end S3
 		
-		Map<String, String> extensionToTypeMapping = RuleEngine.getFileTypeExtensionMapping();
+		Map<String, String> extensionToTypeMapping = baseService.getExtensionToFileMapping();
 		Map<String, Set<String> > filePurposeToNameMapping = new HashMap<String, Set<String> >();
 		
 		
@@ -75,6 +76,7 @@ public class FileExtractUploadService {
 		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
+		
 		return report;
 	}
 	
