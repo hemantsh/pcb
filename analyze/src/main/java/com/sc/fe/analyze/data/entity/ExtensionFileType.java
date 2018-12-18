@@ -25,16 +25,25 @@ public class ExtensionFileType {
 	}
 	
 	public int getExtensionId() {
-		return key.getExtensionId();
+		return getKey().getExtensionId();
 	}
 	public void setExtensionId(int extensionId) {
-		this.key.setExtensionId(extensionId);
+		this.getKey().setExtensionId(extensionId);
 	}
 	public int getFiletypeId() {
-		return key.getExtensionId();
+		return getKey().getExtensionId();
 	}
 	public void setFiletypeId(int filetypeId) {
-		this.key.setExtensionId(filetypeId);
+		this.getKey().setExtensionId(filetypeId);
+	}
+	public ExtensionFilePK getKey() {
+		if(key == null) {
+			key = new ExtensionFilePK();
+		}
+		return key;
+	}
+	public void setKey(ExtensionFilePK key) {
+		this.key = key;
 	}
 	
 }

@@ -13,16 +13,16 @@ public class ServiceFiles {
  	private String file;
  	
 	public int getServiceId() {
-		return key.getServiceId();
+		return getKey().getServiceId();
 	}
 	public void setServiceId(int serviceId) {
-		this.key.setServiceId(serviceId);
+		this.getKey().setServiceId(serviceId);
 	}
 	public int getFiletypeId() {
-		return key.getFiletypeId();
+		return getKey().getFiletypeId();
 	}
 	public void setFiletypeId(int filetypeId) {
-		this.key.setFiletypeId(filetypeId);
+		this.getKey().setFiletypeId(filetypeId);
 	}
 	public String getService() {
 		return service;
@@ -37,6 +37,9 @@ public class ServiceFiles {
 		this.file = file;
 	}
 	public ServiceFilesPK getKey() {
+		if(key == null) {
+			key = new ServiceFilesPK();
+		}
 		return key;
 	}
 	public void setKey(ServiceFilesPK key) {

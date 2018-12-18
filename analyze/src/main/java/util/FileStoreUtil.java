@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -79,11 +79,11 @@ public class FileStoreUtil {
 	 * @param projectId
 	 * @return
 	 */
-	public List<String> listFiles(String projectId) {
+	public Set<String> listFiles(String projectId) {
 		
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
         
-		List<String> extractedFiles = new ArrayList<String>();
+		Set<String> extractedFiles = new HashSet<String>();
 		
 		try (Stream<Path> paths = Files.walk(Paths.get(folder.toString()))) {
     	    paths

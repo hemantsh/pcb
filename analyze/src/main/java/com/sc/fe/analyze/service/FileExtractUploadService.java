@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.Report;
 
 import util.FileStoreUtil;
+import util.ReportUtility;
 
 @Service
 public class FileExtractUploadService {
@@ -25,14 +27,17 @@ public class FileExtractUploadService {
 	private FileStoreUtil util;
 	
 	//private S3FileUtility util;
-	
 	@Autowired
 	BaseService baseService;
+	@Autowired
+	ReportRepo reportRepo;
 	
 	@Autowired
 	public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
     	this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
     	//this.util = S3FileUtility.getInstance(fileStorageProperties); 
+    	
+    	
     }
 	
 
@@ -42,6 +47,7 @@ public class FileExtractUploadService {
 		report.setCustomerInputs(inputs);
 		report.setSummary("****** File upload and basic validation by extension. *******");
 
+		inputs.setServiceType("Assembly");
 // Local file based
 		String fileName = util.storeFile(inputs.getProjectId(), file);		
 		util.extractFiles(inputs.getProjectId(), fileName);   
@@ -74,6 +80,10 @@ public class FileExtractUploadService {
 		});
 		
 		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
+		
+		reportRepo.insert(ReportUtility.convertToDBObject(report));
+		
+		
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
 		

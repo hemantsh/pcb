@@ -33,3 +33,17 @@
  );
  
  CREATE INDEX on extension_file (extension);
+ 
+ CREATE TABLE report (
+    project_id text,
+    version int,
+    service_id int,
+    customer_id text,
+    project_files set<text>,
+    summary text,
+    filetype_filename map<int, text>,
+    errors set<text>,
+    notes set<text>,
+    status text,
+    PRIMARY KEY ( project_id, version )
+ );
