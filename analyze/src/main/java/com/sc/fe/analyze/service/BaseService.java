@@ -29,10 +29,8 @@ public class BaseService {
 
 	@Autowired
 	private ServiceFilesRepo serviceFilesRepo;
-	
 	@Autowired
-	private ExtensionFileRepo extnFileRepo;
-	
+	private ExtensionFileRepo extnFileRepo;	
 	@Autowired
 	private ServicesRepo serviceRepo;
 	@Autowired

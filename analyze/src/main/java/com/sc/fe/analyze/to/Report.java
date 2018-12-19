@@ -1,6 +1,7 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -82,6 +83,14 @@ public class Report implements Serializable {
 	public void setErrors(Set<String> errors) {
 		this.errors = errors;
 	}
+	
+	public void addError(String error) {
+		if(errors == null) {
+			errors = new HashSet<String>();
+		}
+		errors.add(error);
+	}
+	
 	/**
 	 * @return the additionalNotes
 	 */
@@ -93,6 +102,13 @@ public class Report implements Serializable {
 	 */
 	public void setAdditionalNotes(Set<String> additionalNotes) {
 		this.additionalNotes = additionalNotes;
+	}
+	
+	public void addAdditionalNote(String note) {
+		if(additionalNotes == null) {
+			additionalNotes = new HashSet<String>();
+		}
+		additionalNotes.add(note);
 	}
 	
 	/**
