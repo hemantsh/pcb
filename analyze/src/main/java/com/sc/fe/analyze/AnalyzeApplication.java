@@ -14,6 +14,8 @@ public class AnalyzeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AnalyzeApplication.class, args);
+		GerberFileSpecificationUnit.processLine(line);
+                line = reader.readLine();
 	}
 	
 }
