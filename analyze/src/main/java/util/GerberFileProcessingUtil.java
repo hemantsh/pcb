@@ -26,8 +26,18 @@ public class GerberFileProcessingUtil {
 	}
 	
 	private static HashMap<String, String> processG04(String line) {
-		String[] splitedValue = line.split("|");
-		return null;
+		
+		HashMap<String, String> returnMap = new HashMap<String, String>();
+		String[] splitedValue = line.split("[|]");
+		for(int i=0; i< splitedValue.length; i++) {
+			String currentValue = splitedValue[i];
+			if(currentValue.contains(":") || currentValue.contains("*")) {
+				continue;
+			}
+			String[] temp = currentValue.split("=");
+			returnMap.put(temp[0], temp[1]);
+		}
+		return returnMap;
 	}
 	
 	private static HashMap<String, String> processMO() {
