@@ -90,11 +90,9 @@ public static HashMap<String, String> processLine(String line) {
     private static HashMap<String, String> processMO(String line) {
         HashMap<String, String> returnMap = new HashMap<>();
 
-        if (line.startsWith("%MOIN") == true) {
-            returnMap.put("MO", "IN");
-        } else {
-            returnMap.put("MO", "MM");
-        }
+        line=line.replace("%MO", "").replace("*%", "").trim();
+        returnMap.put("MO", line);
+		
         return returnMap;
     }
 
