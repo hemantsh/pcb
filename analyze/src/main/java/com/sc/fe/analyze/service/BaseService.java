@@ -22,7 +22,7 @@ import com.sc.fe.analyze.data.repo.FileTypesRepo;
 import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
 
-import util.MappingUtil;
+import com.sc.fe.analyze.util.MappingUtil;
 
 @Service
 public class BaseService {

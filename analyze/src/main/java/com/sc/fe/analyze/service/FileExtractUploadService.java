@@ -18,9 +18,9 @@ import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.Report;
 
-import util.FileStoreUtil;
-import util.MappingUtil;
-import util.ReportUtility;
+import com.sc.fe.analyze.util.FileStoreUtil;
+import com.sc.fe.analyze.util.MappingUtil;
+import com.sc.fe.analyze.util.ReportUtility;
 
 @Service
 public class FileExtractUploadService {
