@@ -1,68 +1,30 @@
 package com.sc.fe.analyze;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.apache.commons.io.IOUtils;
+import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		/**
-	     * save file to temp
-	     */
 		
-		String zipFilePath = "/Users/hemant/files/zip/test.zip";
+		Map<String, String> results = new HashMap<String, String>();
+		try (
+			Stream<String> stream = Files.lines(Paths.get("/Users/hemant/8000-4890CPWIZA.GBL"))) {
+	        stream.forEach( line -> {
+	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
+	        });
+		}
 		
-	    File zip = File.createTempFile(UUID.randomUUID().toString(), "temp");
-	    FileOutputStream o = new FileOutputStream(zip);
-	    
-	    IOUtils.copy(new FileInputStream(zipFilePath), o);
-	    o.close();
-
-	    /**
-	     * unizp file from temp by zip4j
-	     */
-	    String destination = "/Users/hemant/files/pcb";
-	    try {
-	    	//Extract files
-	         ZipFile zipFile = new ZipFile(zip);
-	         zipFile.extractAll(destination);
-	         
-	         //
-	         Map<String, String> extensionToTypeMapping = getFileTypeExtensionMapping();
-	         
-	         //List extracted files
-	         try (Stream<Path> paths = Files.walk(Paths.get(destination))) {
-	        	    paths
-	        	        .filter(Files::isRegularFile)
-	        	        .forEach( file -> {
-	        	        	String[] nameParts = file.getFileName().toString().split("\\.");
-	        	        	if(extensionToTypeMapping.containsKey(nameParts[nameParts.length-1].toLowerCase()) ) {
-	        	        		System.out.println("\n===== "+ extensionToTypeMapping.get( nameParts[nameParts.length-1].toLowerCase() ) + " - "+ file.getFileName() +"\n" );
-	        	        	}else {
-	        	        		System.out.println(file );
-	        	        	}
-	        	        	
-	        	        }); //System.out::println
-	         } 
-	         
-	    } catch (ZipException e) {
-	        e.printStackTrace();
-	    }
-	    
+		
+		results.entrySet().stream().forEach( e-> {
+			e.toString();
+		});
 	}
 	
 	public static Map<String, String> getFileTypeExtensionMapping() {

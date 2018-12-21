@@ -2,17 +2,24 @@ package com.sc.fe.analyze.controller;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sc.fe.analyze.data.entity.FileTypes;
 import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.Report;
@@ -37,5 +44,29 @@ public class AnalyzePackageController {
 		
 		return fileUploadService.uploadAndExtractFile(file, custInputs);
 		
+	}
+	
+	@PostMapping(path="/saveReport")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public String saveExternalReport(Report reqBody) {
+		
+		return "{\"success\":1}";
+	}
+	
+	@GetMapping(path="/allFileTypes")
+	@ResponseBody
+	public List<FileTypes> getAllFilesTypes() {
+		List<FileTypes> types = new ArrayList<FileTypes>();
+		
+		return types;
+	}
+	
+	@GetMapping(path="/getServiceFiles/{serviceId}")
+	@ResponseBody
+	public List<FileTypes> getServiceFiles() {
+		List<FileTypes> types = new ArrayList<FileTypes>();
+		
+		return types;
 	}
 }
