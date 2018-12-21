@@ -1,7 +1,7 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,15 +32,15 @@ public class Report implements Serializable {
 	/**
 	 * All errors we found in the files
 	 */
-	private List<String> errors;
+	private Set<String> errors;
 	/**
 	 * Any notes about package
 	 */
-	private List<String> additionalNotes;
+	private Set<String> additionalNotes;
 	/**
 	 * Files found in the zip file 
 	 */
-	private List<String> exctractedFileNames;
+	private Set<String> exctractedFileNames;
 	
 	/**
 	 * Mapping of file business purpose with the file name
@@ -74,26 +74,41 @@ public class Report implements Serializable {
 	/**
 	 * @return the errors
 	 */
-	public List<String> getErrors() {
+	public Set<String> getErrors() {
 		return errors;
 	}
 	/**
 	 * @param errors the errors to set
 	 */
-	public void setErrors(List<String> errors) {
+	public void setErrors(Set<String> errors) {
 		this.errors = errors;
 	}
+	
+	public void addError(String error) {
+		if(errors == null) {
+			errors = new HashSet<String>();
+		}
+		errors.add(error);
+	}
+	
 	/**
 	 * @return the additionalNotes
 	 */
-	public List<String> getAdditionalNotes() {
+	public Set<String> getAdditionalNotes() {
 		return additionalNotes;
 	}
 	/**
 	 * @param additionalNotes the additionalNotes to set
 	 */
-	public void setAdditionalNotes(List<String> additionalNotes) {
+	public void setAdditionalNotes(Set<String> additionalNotes) {
 		this.additionalNotes = additionalNotes;
+	}
+	
+	public void addAdditionalNote(String note) {
+		if(additionalNotes == null) {
+			additionalNotes = new HashSet<String>();
+		}
+		additionalNotes.add(note);
 	}
 	
 	/**
@@ -123,13 +138,13 @@ public class Report implements Serializable {
 	/**
 	 * @return the exctractedFileNames
 	 */
-	public List<String> getExctractedFileNames() {
+	public Set<String> getExctractedFileNames() {
 		return exctractedFileNames;
 	}
 	/**
 	 * @param exctractedFileNames the exctractedFileNames to set
 	 */
-	public void setExctractedFileNames(List<String> exctractedFileNames) {
+	public void setExctractedFileNames(Set<String> exctractedFileNames) {
 		this.exctractedFileNames = exctractedFileNames;
 	}
 	

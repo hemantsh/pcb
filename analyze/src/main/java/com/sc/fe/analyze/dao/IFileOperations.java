@@ -11,5 +11,6 @@ public interface IFileOperations {
 	public void extractZipFiles(String projectId, String fileName);
 	public List<String> listFiles(String projectId);
 	public void zipFiles(String projectId, String fileName);
+	public void deleteFiles(String projectId);
 	
 }

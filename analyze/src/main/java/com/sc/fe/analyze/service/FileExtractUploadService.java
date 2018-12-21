@@ -3,6 +3,7 @@ package com.sc.fe.analyze.service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,12 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
-import com.sc.fe.analyze.rules.RuleEngine;
+import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.Report;
 
-import util.FileStoreUtil;
-import util.S3FileUtility;
+import com.sc.fe.analyze.util.FileStoreUtil;
+import com.sc.fe.analyze.util.MappingUtil;
+import com.sc.fe.analyze.util.ReportUtility;
 
 @Service
 public class FileExtractUploadService {
@@ -27,24 +29,23 @@ public class FileExtractUploadService {
 	private FileStoreUtil util;
 	
 	//private S3FileUtility util;
+	@Autowired
+	BaseService baseService;
+	@Autowired
+	ReportRepo reportRepo;
 	
 	@Autowired
 	public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
     	this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
-		//this.util = S3FileUtility.getInstance(fileStorageProperties); //new S3FileUtility(fileStorageProperties); // For S3 storage
+    	//this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
 	
 
 	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws IOException {
 		
-		Report report = new Report();
-		report.setCustomerInputs(inputs);
-		report.setSummary("****** File upload and basic validation by extension. *******");
-
 // Local file based
 		String fileName = util.storeFile(inputs.getProjectId(), file);		
-		util.extractFiles(inputs.getProjectId(), fileName);   
-		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
+		util.extractFiles(inputs.getProjectId(), fileName);   	
 // END local
 		
 //S3 Based
@@ -52,30 +53,68 @@ public class FileExtractUploadService {
 //		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
 // end S3
 		
-		Map<String, String> extensionToTypeMapping = RuleEngine.getFileTypeExtensionMapping();
-		Map<String, Set<String> > filePurposeToNameMapping = new HashMap<String, Set<String> >();
+		Report report = new Report();
+		report.setCustomerInputs(inputs);
+		report.setSummary("****** File upload and basic validation by extension. *******");
+		inputs.setServiceType("Assembly");
+		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
 		
+		List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
+		Set<String> foundFiles = new HashSet<String>();
+		
+		Map<String, Set<String> > filePurposeToNameMapping = processFilesByExtension(report, 
+				baseService.getExtensionToFileMapping(), 
+				foundFiles);
+		
+		if(requiredFiles.size() != foundFiles.size()) {
+			report.setValidationStatus("Invalid design.");
+			report.addError("Some required files are missing for the selected service.");
+			requiredFiles.removeAll(foundFiles);
+			//report.addAdditionalNote( "Following are the missing files in the package." );
+			requiredFiles.stream().forEach( missedFile -> {
+				report.addAdditionalNote( missedFile + " file missing");
+			});
+		}else {
+			report.setValidationStatus("Good design with all required files.");
+		}
+		
+		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
+		
+		reportRepo.insert(ReportUtility.convertToDBObject(report));
+		
+		
+		System.out.println("****** Done generating report *******");
+		logger.debug("****** Done generating report *******");
+		
+		return report;
+	}
+
+
+	private Map<String, Set<String>> processFilesByExtension(Report report, 
+			Map<String, String> extensionToFileMapping,
+			Set<String> foundFiles) {
+		
+		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
 		
 		report.getExctractedFileNames().forEach( exfile -> {
+			
 			String[] nameParts = exfile.split("\\.");
 			String extn = nameParts[nameParts.length-1].toLowerCase();
 			
-        	if(extensionToTypeMapping.containsKey( extn ) ) {
+        	if(extensionToFileMapping.containsKey( extn ) ) {
         		
-        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToTypeMapping.get( extn ) );
+        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
         		
         		if( currentMapping == null) {
         			currentMapping = new HashSet<String>();
         		}
         		currentMapping.add(exfile);
-        		filePurposeToNameMapping.put(extensionToTypeMapping.get( extn ), currentMapping);
+        		String fileType = extensionToFileMapping.get( extn );
+        		filePurposeToNameMapping.put(fileType, currentMapping);
+        		foundFiles.add( fileType );
         	}
 		});
-		
-		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
-		System.out.println("****** Done generating report *******");
-		logger.debug("****** Done generating report *******");
-		return report;
+		return filePurposeToNameMapping;
 	}
 	
 	
