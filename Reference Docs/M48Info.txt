@@ -1,0 +1,36 @@
+Between M48 and % or M95 There are header information that we are interested in
+; - Line starting with ";" is a comment.
+We need to separate TYPE "plated" and "non-plated" info in group.
+We also need to know the format- which is the number format and the unit of measurement.
+
+Example of a Header
+Below is a sample of a header. The PURPOSE shown to the right of the COMMAND 
+is not part of the command, but is shown for your benefit to explain the command:
+
+COMMAND 		| PURPOSE 
+ M48 			| The beginning of a header 
+INCH,LZ 		| Use the inch measuring system with leading zeros 
+VER,1 			| Use Version 1 X and Y axis layout 
+FMAT,2 			| Use Format 2 commands 
+1/2/3 			| Link tools 1, 2, and 3 
+T1C.04F200S65 	| Set Tool 1 for 0.040" with infeed rate of 200 inch/min Speed of 65,000 RPM 
+DETECT,ON 		| Detect broken tools 
+M95 or % 		| End of the header 
+
+Example: 
+M48
+;Layer_Color=9474304
+;FILE_FORMAT=2:5
+INCH,LZ
+;TYPE=PLATED
+T1F00S00C0.01200
+T2F00S00C0.02362
+T3F00S00C0.02756
+T4F00S00C0.02953
+T5F00S00C0.03543
+T6F00S00C0.04000
+T8F00S00C0.04331
+;TYPE=NON_PLATED
+T9F00S00C0.04331
+T11F00S00C0.13780
+%
