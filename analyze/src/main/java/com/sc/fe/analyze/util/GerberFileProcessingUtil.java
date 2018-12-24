@@ -1,6 +1,7 @@
 package com.sc.fe.analyze.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class GerberFileProcessingUtil {
 
@@ -51,34 +52,36 @@ public class GerberFileProcessingUtil {
 
     //Below Code will process the line that has G04   
     private static HashMap<String, String> processG04(String line) {
-        HashMap<String, String> returnMap = new HashMap<>();
-        if (line.startsWith("G04 ") == true) {
-            /*This IF part will execute only if it has a G04 in the start 
-                    of the line otherwise else part will execute
-             */
-            if(line.contains("=")==true){
-                //This IF part will execute only if it contains ' = ' in the line
-            line = line.replace("G04", "").replace("*", "");
-            String[] splitValue = line.split("=");
-            returnMap.put(splitValue[0], splitValue[1]);
+        HashMap<String, String> returnMap = new HashMap<String, String>();
+        String keyQualifier = null;
+        String[] splitedValue = line.split("[|]");
+        for (String currentValue : splitedValue) {
+            if ( ! currentValue.contains("=") ) {
+                continue;
             }
-            else {
-                line=line.replace("G04", "").replace("*", "").trim();
-                returnMap.put(line,"");
-            }
+            String[] temp = currentValue.split("=");
             
-        } else {
-            /*This else part will only execute if line has G04: in the line and splits the line through pipe " | " 
-      and further splits the line through " = " and stores into an array and put into a hashmap.
-             */
-            String[] splitedValue = line.split("[|]");
-            for (String currentValue : splitedValue) {
-                if (currentValue.contains(":") || currentValue.contains("*")) {
-                    continue;
-                }
-                String[] temp = currentValue.split("=");
-                returnMap.put(temp[0], temp[1]);
+            if("dcode".equals(temp[0].toLowerCase()) ) {
+            	keyQualifier = "D"+temp[1]+".";
+            	continue;
             }
+            if(temp[0].startsWith("G04") ) {
+            	temp[0] = temp[0].replace("G04", "").trim();
+            }
+            if(temp[0].toLowerCase().contains("order")) {
+            	returnMap.put("Layer", temp[1].replace("*", ""));
+            }
+            returnMap.put(temp[0], temp[1].replace("*", ""));
+        }
+        
+        if( keyQualifier != null ) {
+        	HashMap<String, String> tempMap = (HashMap<String, String>)returnMap.clone();
+        	Iterator<String> keyItr = returnMap.keySet().iterator();
+        	while( keyItr.hasNext() ) {  
+        		String key = keyItr.next();
+        		tempMap.put(keyQualifier+key, tempMap.remove(key));
+        	}
+        	returnMap = tempMap;
         }
 
         return returnMap;
