@@ -1,7 +1,10 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,10 +24,36 @@ public class FileDetails implements Serializable {
 	private String customerSelectedPurposeType;
 	private String mimeType;
 	private boolean valid;
+	private Integer layer;
+	private Date modifiedDate;
+
+	private String polarity;
+	private BigDecimal copperWeight;
 	
 	private String ocrText;
 	
-	private List<String> attributes; //Attributes in key:value form
+	private Map<String, String> attributes; //Attributes in key:value form
+	
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public Map<String, String> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, String> attributes) {
+		this.attributes = attributes;
+	}
+
+	public void setLayer(Integer layer) {
+		this.layer = layer;
+	}
+
 	private String otherExtractedInfoRaw;
 	private List<String> otherExtractedInfoFormated; //Attributes in key:value form
 	
@@ -123,20 +152,6 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @return the attributes
-	 */
-	public List<String> getAttributes() {
-		return attributes;
-	}
-
-	/**
-	 * @param attributes the attributes to set
-	 */
-	public void setAttributes(List<String> attributes) {
-		this.attributes = attributes;
-	}
-
-	/**
 	 * @return the otherExtractedInfoRaw
 	 */
 	public String getOtherExtractedInfoRaw() {
@@ -232,5 +247,29 @@ public class FileDetails implements Serializable {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	
+	public int getLayer() {
+		return layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+
+	public String getPolarity() {
+		return polarity;
+	}
+
+	public void setPolarity(String polarity) {
+		this.polarity = polarity;
+	}
+
+	public BigDecimal getCopperWeight() {
+		return copperWeight;
+	}
+
+	public void setCopperWeight(BigDecimal copperWeight) {
+		this.copperWeight = copperWeight;
 	}
 }

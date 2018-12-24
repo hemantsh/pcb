@@ -91,6 +91,7 @@ public class FileStoreUtil {
     	        .forEach( file -> {
     	        	
     	        	extractedFiles.add( file.getFileName().toString());
+    	        	
     	        });
 		} catch (IOException e) {
 			logger.error("Error listing files in folder",e);

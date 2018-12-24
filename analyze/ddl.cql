@@ -1,4 +1,11 @@
-
+CREATE KEYSPACE fileexchange
+    WITH REPLICATION = {
+        'class': 'SimpleStrategy', 
+        'replication_factor': 1
+    };
+    
+ USE fileexchange;
+ 
  CREATE TABLE services (
     id int PRIMARY KEY,
  	name text 

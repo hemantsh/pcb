@@ -1,11 +1,14 @@
 package com.sc.fe.analyze.service;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.repo.ReportRepo;
+import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 
 import com.sc.fe.analyze.util.FileStoreUtil;
+import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ReportUtility;
 
@@ -82,9 +88,15 @@ public class FileExtractUploadService {
 		
 		reportRepo.insert(ReportUtility.convertToDBObject(report));
 		
-		
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
+		
+		//TODO: 
+		AdvancedReport advReport = new AdvancedReport();
+		createAdvancedReport(advReport,
+				baseService.getExtensionToFileMapping(),
+				util.listFiles(inputs.getProjectId()) 
+				);
 		
 		return report;
 	}
@@ -112,9 +124,53 @@ public class FileExtractUploadService {
         		String fileType = extensionToFileMapping.get( extn );
         		filePurposeToNameMapping.put(fileType, currentMapping);
         		foundFiles.add( fileType );
+        		
         	}
 		});
 		return filePurposeToNameMapping;
+	}
+	
+	private void createAdvancedReport(AdvancedReport report, 
+			Map<String, String> extensionToFileMapping,
+			Set<String> allFiles) {
+		
+		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+		
+		allFiles.forEach( exfile -> {
+			
+			String[] nameParts = exfile.split("\\.");
+			String extn = nameParts[nameParts.length-1].toLowerCase();
+			
+        	if(extensionToFileMapping.containsKey( extn ) ) {
+        		
+        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
+        		
+        		if( currentMapping == null) {
+        			currentMapping = new HashSet<String>();
+        		}
+        		currentMapping.add(exfile);
+        		String fileType = extensionToFileMapping.get( extn );
+        		filePurposeToNameMapping.put(fileType, currentMapping);
+        		
+        		//TODO: Now we have found the file that we are interested in, 
+        		//we will proecess it line by line to get attributes from our utility
+        		FileDetails fileDet = new FileDetails();
+        		fileDet.setName(exfile);
+        		
+        		Map<String, String> results = new HashMap<String, String>();
+        		try (
+        			Stream<String> stream = Files.lines(Paths.get(exfile))) { //You may need to correct path to the absolute path
+        	        stream.forEach( line -> {
+        	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
+        	        });
+        		} catch (IOException e) {
+					e.printStackTrace();
+				}
+        		fileDet.setAttributes(results);
+        		report.addFileDetail(fileDet);
+        	}
+		});
+		
 	}
 	
 	

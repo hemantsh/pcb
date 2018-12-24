@@ -1,6 +1,7 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,5 +37,11 @@ public class AdvancedReport implements Serializable {
 		this.fileDetails = fileDetails;
 	}
 
+	public void addFileDetail(FileDetails fileDetail) {
+		if(fileDetails == null) {
+			fileDetails = new ArrayList<FileDetails>();
+		}
+		fileDetails.add(fileDetail);
+	}
 	
 }
