@@ -2,13 +2,14 @@ package com.sc.fe.analyze.util;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class GerberFileProcessingUtil {
-
+    
 	public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
 
-        if(line.startsWith("G04")==true){
+	    if(line.startsWith("G04")==true){
             attributes.putAll(processG04(line));
         }
         else if(line.startsWith("%MO")==true){
@@ -23,7 +24,7 @@ public class GerberFileProcessingUtil {
         else if (line.startsWith("%TA")==true){
             attributes.putAll(processTA(line));
         }
-      else if (line.startsWith("%FSLA")==true){
+        else if (line.startsWith("%FSLA")==true){
             attributes.putAll(processFSLA(line));
         }
      /* else if (line.startsWith("%ADD")==true){
@@ -49,7 +50,7 @@ public class GerberFileProcessingUtil {
         });
         return attributes;
     }
-
+    
     //Below Code will process the line that has G04   
     private static HashMap<String, String> processG04(String line) {
         HashMap<String, String> returnMap = new HashMap<String, String>();
@@ -278,5 +279,47 @@ public class GerberFileProcessingUtil {
         line=line.replace("%LS", "").replace("*%", "").trim();
         returnMap.put("LS",line);
         return returnMap;
+    }
+    
+    public static String processM48(String line, Map<String,String> results, String currentKey) {
+    	
+    	HashMap<String,String> returnMap = new HashMap<String,String>();
+    	
+    	if(line.startsWith("%") || line.startsWith("M95") ) {
+    		return currentKey;
+    	}
+    	
+    	if(line.startsWith(";")) {     
+    		//End of old key and start of new attribute
+    		String key = "";
+    		String value = "";
+    		String[] splitValues = null;
+    		
+    		if(line.contains("=")) {
+    			splitValues = line.split("=");
+    		}
+    		
+    		if(line.startsWith(";TYPE") ) {
+    			
+    			key = splitValues[1];
+    			 
+    		}else {
+    			key = splitValues[0].replace(";", "");
+    			value = splitValues[1];
+    		}
+    		currentKey = key;
+    		returnMap.put(key, value);
+        }
+    	else {
+        	//Line is continuation of previous value so we append the value for current key
+    		String currVal = returnMap.get(currentKey);
+    		if( currVal == null || currVal.equals("")) {
+    			returnMap.put(currentKey,  line);
+    		}else {
+    			returnMap.put(currentKey, currVal + "," + line);
+    		}
+        }
+    	
+    	return currentKey;
     }
 }

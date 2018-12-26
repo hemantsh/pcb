@@ -23,7 +23,6 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
-
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
@@ -168,5 +167,61 @@ public class FileExtractUploadService {
 		
 	}
 	
+	//This is the method to process given file
+	// exFile must be the full qualified path of the file
+	private FileDetails processFile(String exfile) {
+		
+		String[] nameParts = exfile.split("\\.");
+		String extn = nameParts[nameParts.length-1].toLowerCase();
+		
+		Map<String, String> extensionToFileMapping = baseService.getExtensionToFileMapping();
+		
+		Map<String, String> flagMap = new HashMap<String, String>();
+		flagMap.put("isDrillFile", "N");
+		flagMap.put("currentKey", "");
+		
+		FileDetails fileDet = new FileDetails();
+		
+    	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
+				
+    		//TODO: Now we have found the file that we are interested in, 
+    		//we will proecess it line by line to get attributes from our utility
+    		
+    		fileDet.setName(exfile);
+    		
+    		//Results for the whole file
+    		Map<String, String> results = new HashMap<String, String>();
+    		
+    		try (
+    			Stream<String> stream = Files.lines(Paths.get(exfile))) { 
+    			
+    			stream.forEach( line -> {
+    				
+    				String currentKey = flagMap.get("currentKey");
+    				if( line.startsWith("M48") ) {
+    					flagMap.put("isDrillFile", "Y");
+    				}
+    				//Values for this line only
+    				Map<String, String> lineKeyVal = new HashMap<String, String>();
+    				
+    				if( "Y".equals(flagMap.get("isDrillFile")) ) {
+    					currentKey = GerberFileProcessingUtil.processM48(line, results, currentKey );
+    					flagMap.put("currentKey", currentKey);
+    					
+    				}else {
+    					lineKeyVal = GerberFileProcessingUtil.processLine(line);
+    					results.putAll( lineKeyVal );
+    				}
+    	        	
+    	        });
+    		} catch (IOException e) {
+				e.printStackTrace();
+			}
+    		fileDet.setAttributes(results);
+    		
+    	}
+    	
+    	return fileDet;
+	}
 	
 }
