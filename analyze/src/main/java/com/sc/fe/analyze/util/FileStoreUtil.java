@@ -35,7 +35,9 @@ public class FileStoreUtil {
 		}
 		return instance;
 	}
-	
+	public  String getUploadDir(){
+            return fileStorageProperties.getUploadDir();
+        }
 	@Autowired
 	private FileStoreUtil(FileStorageProperties fileStorageProperties) {
 		super();
@@ -99,10 +101,7 @@ public class FileStoreUtil {
 	    }
 		
 		return extractedFiles;
-	}
 	
-	public String getUploadDirectory() {
-		return fileStorageProperties.getUploadDir();
 	}
 
 	//Create folder in the root of upload dir (fileStorageProperties.uploadDir- S3 or file system)

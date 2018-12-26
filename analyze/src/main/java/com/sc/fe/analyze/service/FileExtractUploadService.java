@@ -135,6 +135,8 @@ public class FileExtractUploadService {
 			Map<String, String> extensionToFileMapping,
 			Set<String> allFiles) {
 		
+		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+		
 		allFiles.forEach( exfile -> {
 			
 			String[] nameParts = exfile.split("\\.");
@@ -147,12 +149,11 @@ public class FileExtractUploadService {
         		FileDetails fileDet = new FileDetails();
         		fileDet.setName(exfile);
         		
-        		String folder = util.getUploadDirectory() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
+        		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
         		
         		Map<String, String> results = new HashMap<String, String>();
         		try (
-        			Stream<String> stream = Files.lines(Paths.get(folder+exfile))) { //You may need to correct path to the absolute path
-        			System.out.println(exfile); 
+        			Stream<String> stream = Files.lines(Paths.get(folder+exfile))) { 
         			stream.forEach( line -> {
         	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
         	        });

@@ -9,40 +9,38 @@ public class GerberFileProcessingUtil {
 	public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
 
-	    if(line.startsWith("G04")==true){
+
+        if(line.startsWith("G04")){
             attributes.putAll(processG04(line));
         }
-        else if(line.startsWith("%MO")==true){
+        else if(line.startsWith("%MO")){
             attributes.putAll(processMO(line));
         }
-        else if(line.startsWith("%TO")==true){
+        else if(line.startsWith("%TO")){
               attributes.putAll(processTO(line));
         }
-        else if (line.startsWith("%TF") == true) {
+        else if (line.startsWith("%TF")) {
             attributes.putAll(processTF(line));
         }
-        else if (line.startsWith("%TA")==true){
+        else if (line.startsWith("%TA")){
             attributes.putAll(processTA(line));
         }
-        else if (line.startsWith("%FSLA")==true){
+		    else if (line.startsWith("%FSLA")){
             attributes.putAll(processFSLA(line));
         }
-     /* else if (line.startsWith("%ADD")==true){
-            attributes.putAll(processADD(line));
-        }*/
-        else  if(line.startsWith("%TD")==true){
+        else  if(line.startsWith("%TD")){
             attributes.putAll(processTD(line));
         }
-        else if(line.startsWith("%LP")==true){
+        else if(line.startsWith("%LP")){
             attributes.putAll(processLP(line));
         }
-        else if(line.startsWith("%LM")==true){
+        else if(line.startsWith("%LM")){
             attributes.putAll(processLM(line));
         }
-        else if(line.startsWith("%LR")==true){    
+        else if(line.startsWith("%LR")){    
             attributes.putAll(processLR(line));
         }
-        else if(line.startsWith("%LS")==true){
+        else if(line.startsWith("%LS")){
             attributes.putAll(processLS(line));
         }
         attributes.keySet().forEach((p) -> {
@@ -88,9 +86,7 @@ public class GerberFileProcessingUtil {
         return returnMap;
     }
 
-    /*Below method will be call if line starts with %MO with the possiblity of 
-        two values i.e IN or MM so we have hard coded it because of limited posiblities.
-     */
+    //Below method will be call if line starts with %MO  
     private static HashMap<String, String> processMO(String line) {
         HashMap<String, String> returnMap = new HashMap<>();
 
@@ -100,10 +96,7 @@ public class GerberFileProcessingUtil {
         return returnMap;
     }
 
-    /*Below method will be call if line starts with %TO 
-   so we will replaced the string with empty string that we don't want which makes the
-   splitting process more easier and then put the key value pair into hashmap.
-     */
+    //Below method will be call if line starts with %TO 
     private static HashMap<String, String> processTO(String line) {
         HashMap<String, String> returnMap = new HashMap<>();
         //If block will exetues if it is a reserved attribute name otherwise else block will execute
@@ -111,12 +104,10 @@ public class GerberFileProcessingUtil {
             if(line.contains(",")==true){
             line = line.replace("%TO.", "").replace("*%", "");
             String[] splitValue = line.split(",", 2);
-            //System.out.println(splitValue[0] + splitValue[1]);
             returnMap.put(splitValue[0], splitValue[1]);
             }
             else{
                 line=line.replace("%TO.", "").replace("*%", "");
-                //String[] splitValue=line.split(line);
                 returnMap.put(line, "");
             }
             
@@ -127,12 +118,10 @@ public class GerberFileProcessingUtil {
             if (line.contains(",") == true) {
                 line = line.replace("%TO", "").replace("*%", "");
                 String[] splitValue = line.split(",", 2);
-                //System.out.println(splitValue[0]+"");
                 returnMap.put(splitValue[0], splitValue[1]);
             }
             else{
                 line = line.replace("%TO", "").replace("*%", "");
-                //System.out.println(line+"");
                 returnMap.put(line, "");
             }
 
@@ -141,11 +130,8 @@ public class GerberFileProcessingUtil {
         return returnMap;
     }
 
-    /*
-   Below method will be call if line starts with %TF 
-   so we will replaced the string with empty string that we don't want which makes the
-   splitting process more easier and then put the key value pair into hashmap.
-     */
+    
+   //Below method will be call if line starts with %TF 
     private static HashMap<String, String> processTF(String line) {
         HashMap<String, String> returnMap = new HashMap<>();
 
@@ -154,12 +140,10 @@ public class GerberFileProcessingUtil {
             if(line.contains(",")==true){
             line = line.replace("%TF.", "").replace("*%", "");
             String[] splitValue = line.split(",", 2);
-            //System.out.println(splitValue[0] + splitValue[1]);
             returnMap.put(splitValue[0], splitValue[1]);
             }
             else{
                 line=line.replace("%TF.", "").replace("*%", "");
-                //String[] splitValue=line.split(line);
                 returnMap.put(line, "");
             }
             
@@ -170,12 +154,10 @@ public class GerberFileProcessingUtil {
             if (line.contains(",") == true) {
                 line = line.replace("%TF", "").replace("*%", "");
                 String[] splitValue = line.split(",", 2);
-                //System.out.println(splitValue[0]+"");
                 returnMap.put(splitValue[0], splitValue[1]);
             }
             else{
                 line = line.replace("%TF", "").replace("*%", "");
-                //System.out.println(line+"");
                 returnMap.put(line, "");
             }
 
@@ -183,11 +165,8 @@ public class GerberFileProcessingUtil {
 
         return returnMap;
     }
-    /*
-   Below method will be call if line starts with %TA 
-   so we will replaced the string with empty string that we don't want which makes the
-   splitting process more easier and then put the key value pair into hashmap.
-     */
+    //Below method will be call if line starts with %TA 
+   
     private static HashMap<String,String>processTA(String line){
         HashMap<String, String> returnMap = new HashMap<>();
         //If block will exetues if it is a reserved attribute name otherwise else block will execute
@@ -195,8 +174,6 @@ public class GerberFileProcessingUtil {
 
             line = line.replace("%TA.", "").replace("*%", "");
             String[] splitValue = line.split(",", 2);
-            //System.out.println(splitValue[0] +" = "+splitValue[1]);
-             // ERROR ERROR ERROR Here i am facing NullPointerException Error...... ERROR ERROR ERROR 
             returnMap.put(splitValue[0], splitValue[1]);
         } else {
             /*If the block contains " , " in the line then IF block will gets executed otherwise
@@ -205,13 +182,10 @@ public class GerberFileProcessingUtil {
             if (line.contains(",") == true) {
                 line = line.replace("%TA", "").replace("*%", "");
                 String[] splitValue = line.split(",", 2);
-                //System.out.println(splitValue[0]+"");
                 returnMap.put(splitValue[0], splitValue[1]);
             }
             else{
                 line = line.replace("%TA", "").replace("*%", "");
-                //String[] splitValue = line.split(",", 2);
-                //System.out.println(line+"");
                 returnMap.put(line, "");
             }
 
@@ -225,10 +199,9 @@ public class GerberFileProcessingUtil {
         HashMap<String, String> returnMap = new HashMap<>();
         int x,y,star;
         String Xvalue,Yvalue;
-        //System.out.println(line);
-        x=line.indexOf("X");//here we'll store the index of x
-        y=line.indexOf("Y");//here we'll store the index of y
-        star=line.indexOf("*");//here we'll store the index of *
+        x=line.indexOf("X");
+        y=line.indexOf("Y");
+        star=line.indexOf("*");
         /*In below code we'll store the substring into two different variables which needs to be put 
         into the hashmap with the help of x and y index that we have extracted above.*/
         Xvalue=line.substring(x+1,y);
@@ -239,21 +212,11 @@ public class GerberFileProcessingUtil {
         
         return returnMap;
     }
-    
-    /*private static HashMap<String,String>processADD(String line){
-        HashMap<String,String> returnMap=new HashMap<>();
-        line=line.replace("%AD", "").replace("*%", "").trim();
-        String[] splitValue=line.split(",",2);
-        //System.out.println(splitValue[0]+splitValue[1]);
-        returnMap.put(splitValue[0],splitValue[1]);
-        
-        return returnMap;
-    }*/
+
     private static HashMap<String,String>processTD(String line){
          HashMap<String,String> returnMap=new HashMap<>();
          line=line.replace("%TD.", "").replace("*%", "").trim();
          returnMap.put(line, "");
-        //System.out.println(line);
         return returnMap;
     }
     private static HashMap<String,String>processLP(String line){
