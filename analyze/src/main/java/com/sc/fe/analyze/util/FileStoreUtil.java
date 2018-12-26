@@ -100,6 +100,10 @@ public class FileStoreUtil {
 		
 		return extractedFiles;
 	}
+	
+	public String getUploadDirectory() {
+		return fileStorageProperties.getUploadDir();
+	}
 
 	//Create folder in the root of upload dir (fileStorageProperties.uploadDir- S3 or file system)
 //	public Path createFolder(String name) {

@@ -1,5 +1,6 @@
 package com.sc.fe.analyze.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -93,6 +94,7 @@ public class FileExtractUploadService {
 		
 		//TODO: 
 		AdvancedReport advReport = new AdvancedReport();
+		advReport.setCustomerInputs(inputs);
 		createAdvancedReport(advReport,
 				baseService.getExtensionToFileMapping(),
 				util.listFiles(inputs.getProjectId()) 
@@ -116,7 +118,7 @@ public class FileExtractUploadService {
         	if(extensionToFileMapping.containsKey( extn ) ) {
         		
         		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
-        		
+       		
         		if( currentMapping == null) {
         			currentMapping = new HashSet<String>();
         		}
@@ -134,33 +136,25 @@ public class FileExtractUploadService {
 			Map<String, String> extensionToFileMapping,
 			Set<String> allFiles) {
 		
-		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-		
 		allFiles.forEach( exfile -> {
 			
 			String[] nameParts = exfile.split("\\.");
 			String extn = nameParts[nameParts.length-1].toLowerCase();
 			
-        	if(extensionToFileMapping.containsKey( extn ) ) {
-        		
-        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
-        		
-        		if( currentMapping == null) {
-        			currentMapping = new HashSet<String>();
-        		}
-        		currentMapping.add(exfile);
-        		String fileType = extensionToFileMapping.get( extn );
-        		filePurposeToNameMapping.put(fileType, currentMapping);
-        		
+        	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
+    				
         		//TODO: Now we have found the file that we are interested in, 
         		//we will proecess it line by line to get attributes from our utility
         		FileDetails fileDet = new FileDetails();
         		fileDet.setName(exfile);
         		
+        		String folder = util.getUploadDirectory() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
+        		
         		Map<String, String> results = new HashMap<String, String>();
         		try (
-        			Stream<String> stream = Files.lines(Paths.get(exfile))) { //You may need to correct path to the absolute path
-        	        stream.forEach( line -> {
+        			Stream<String> stream = Files.lines(Paths.get(folder+exfile))) { //You may need to correct path to the absolute path
+        			System.out.println(exfile); 
+        			stream.forEach( line -> {
         	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
         	        });
         		} catch (IOException e) {
@@ -168,6 +162,7 @@ public class FileExtractUploadService {
 				}
         		fileDet.setAttributes(results);
         		report.addFileDetail(fileDet);
+        		
         	}
 		});
 		
