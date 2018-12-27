@@ -21,6 +21,8 @@ public class AdvancedReport implements Serializable {
 	 */
 	private List<FileDetails> fileDetails;
 	
+	private String odbMatrix;
+	
 	public CustomerInputs getCustomerInputs() {
 		return customerInputs;
 	}
@@ -42,6 +44,14 @@ public class AdvancedReport implements Serializable {
 			fileDetails = new ArrayList<FileDetails>();
 		}
 		fileDetails.add(fileDetail);
+	}
+
+	public String getOdbMatrix() {
+		return odbMatrix;
+	}
+
+	public void setOdbMatrix(String odbMatrix) {
+		this.odbMatrix = odbMatrix;
 	}
 	
 }

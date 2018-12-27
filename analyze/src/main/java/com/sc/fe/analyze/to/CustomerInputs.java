@@ -27,6 +27,8 @@ public class CustomerInputs implements Serializable {
 	 */
 	private String serviceType;
 	
+	private String emailAddress;
+	
 	public String getProjectId() {
 		return projectId;
 	}
@@ -44,6 +46,12 @@ public class CustomerInputs implements Serializable {
 	}
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
+	}
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 	
 }

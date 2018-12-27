@@ -3,7 +3,10 @@ package com.sc.fe.analyze.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.data.entity.FileTypes;
 import com.sc.fe.analyze.service.FileExtractUploadService;
+import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 
 @RestController
@@ -49,10 +54,36 @@ public class AnalyzePackageController {
 	@PostMapping(path="/saveReport")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public String saveExternalReport(Report reqBody) {
+	public String saveExternalReport(AdvancedReport reqBody) {
 		
 		return "{\"success\":1}";
 	}
+	
+	@GetMapping(path="/report/{id}")
+	@ResponseBody
+	public AdvancedReport getReport(@PathParam("id") String id ) {
+		AdvancedReport report = new AdvancedReport();
+		
+		CustomerInputs custInputs = new CustomerInputs();
+		custInputs.setProjectId("1234");
+		custInputs.setServiceType("Assembly");
+		custInputs.setCustomerId("CustId");
+		custInputs.setEmailAddress("abc@xyz.com");
+		
+		report.setCustomerInputs(custInputs);
+		
+		FileDetails fd = new FileDetails();
+		fd.setFileFormat("Gerber");
+		fd.setFileSize("125 MB");
+		fd.setModifiedDate(new Date());
+		fd.setName("xyz/abc/123.gbr");
+		fd.setLayer(1);
+		
+		report.addFileDetail(fd);
+		
+		return report;
+	}
+	
 	
 	@GetMapping(path="/allFileTypes")
 	@ResponseBody

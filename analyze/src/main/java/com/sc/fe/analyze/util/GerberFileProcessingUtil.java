@@ -1,11 +1,109 @@
 package com.sc.fe.analyze.util;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import com.amazonaws.services.rekognition.AmazonRekognition;
+import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
+import com.amazonaws.services.rekognition.model.AmazonRekognitionException;
+import com.amazonaws.services.rekognition.model.DetectTextRequest;
+import com.amazonaws.services.rekognition.model.DetectTextResult;
+import com.amazonaws.services.rekognition.model.Image;
+import com.amazonaws.services.rekognition.model.S3Object;
+import com.amazonaws.services.rekognition.model.TextDetection;
+import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.Report;
 
 public class GerberFileProcessingUtil {
     
+	public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping) {
+		
+		String[] nameParts = exfile.split("\\.");
+		String extn = nameParts[nameParts.length-1].toLowerCase();
+		
+		Map<String, String> flagMap = new HashMap<String, String>();
+		flagMap.put("isDrillFile", "N");
+		flagMap.put("currentKey", "");
+		flagMap.put("drillFileEnd", "N");
+		
+		FileDetails fileDet = new FileDetails();
+		
+    	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
+				
+    		//TODO: Now we have found the file that we are interested in, 
+    		//we will proecess it line by line to get attributes from our utility   		
+    		fileDet.setName(exfile);
+    		
+    		//Results for the whole file
+    		Map<String, String> results = new HashMap<String, String>();
+    		
+    		try (
+    			Stream<String> stream = Files.lines(Paths.get(exfile))) { 
+    			
+	    			stream.forEach( line -> {
+	    				
+	    				String currentKey = flagMap.get("currentKey");
+	    				if( line.startsWith("M48") ) {
+	    					flagMap.put("isDrillFile", "Y");
+	    				}
+	    				if( line.startsWith("%") || line.startsWith("M95") ) {
+	    					flagMap.put("drillFileEnd", "Y");
+	    				}
+	    				
+	    				if( "Y".equals(flagMap.get("isDrillFile")) && "N".equals(flagMap.get("drillFileEnd")) ) {
+	    					currentKey = processM48(line, results, currentKey );
+	    					flagMap.put("currentKey", currentKey);
+	    					
+	    				}else {
+	    					results.putAll( processLine(line) );
+	    				}
+	    	        	
+	    	        });
+    		} catch (IOException e) {
+				e.printStackTrace();
+			}
+    		fileDet.setAttributes(results);
+    	}
+    	
+    	return fileDet;
+	}
+
+	public static Map<String, Set<String>> processFilesByExtension(Report report, 
+			Map<String, String> extensionToFileMapping,
+			Set<String> foundFiles) {
+		
+		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+		
+		report.getExctractedFileNames().forEach( exfile -> {
+			
+			String[] nameParts = exfile.split("\\.");
+			String extn = nameParts[nameParts.length-1].toLowerCase();
+			
+        	if(extensionToFileMapping.containsKey( extn ) ) {
+        		
+        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
+       		
+        		if( currentMapping == null) {
+        			currentMapping = new HashSet<String>();
+        		}
+        		currentMapping.add(exfile);
+        		String fileType = extensionToFileMapping.get( extn );
+        		filePurposeToNameMapping.put(fileType, currentMapping);
+        		foundFiles.add( fileType );
+        		
+        	}
+		});
+		return filePurposeToNameMapping;
+	}
+	
 	public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
 
@@ -25,7 +123,7 @@ public class GerberFileProcessingUtil {
         else if (line.startsWith("%TA")){
             attributes.putAll(processTA(line));
         }
-		    else if (line.startsWith("%FSLA")){
+		else if (line.startsWith("%FSLA")){
             attributes.putAll(processFSLA(line));
         }
         else  if(line.startsWith("%TD")){
@@ -246,8 +344,6 @@ public class GerberFileProcessingUtil {
     
     public static String processM48(String line, Map<String,String> results, String currentKey) {
     	
-    	HashMap<String,String> returnMap = new HashMap<String,String>();
-    	
     	if(line.startsWith("%") || line.startsWith("M95") ) {
     		return currentKey;
     	}
@@ -262,27 +358,98 @@ public class GerberFileProcessingUtil {
     			splitValues = line.split("=");
     		}
     		
-    		if(line.startsWith(";TYPE") ) {
-    			
-    			key = splitValues[1];
-    			 
+    		if(line.startsWith(";TYPE") ) {			
+    			key = splitValues[1];		 
     		}else {
     			key = splitValues[0].replace(";", "");
     			value = splitValues[1];
     		}
     		currentKey = key;
-    		returnMap.put(key, value);
+    		results.put(key, value);
         }
-    	else {
+    	else if(currentKey.length() > 0) {
         	//Line is continuation of previous value so we append the value for current key
-    		String currVal = returnMap.get(currentKey);
-    		if( currVal == null || currVal.equals("")) {
-    			returnMap.put(currentKey,  line);
+    		String currVal = results.get(currentKey);
+    		if(  currVal == null || currVal.equals("") ) {
+    			results.put(currentKey,  line);
     		}else {
-    			returnMap.put(currentKey, currVal + "," + line);
+    			results.put(currentKey, currVal + "," + line);
     		}
         }
     	
     	return currentKey;
     }
+    
+    public void ocrImage() throws Exception {
+
+		String photo="test.jpg";
+		String bucket = "fe.hemant";
+
+        AmazonRekognition rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+
+        DetectTextRequest request = new DetectTextRequest()
+                .withImage(new Image()
+                .withS3Object(new S3Object()
+                .withName(photo)
+                .withBucket(bucket)));
+               
+
+        try {
+
+        	DetectTextResult result = rekognitionClient.detectText(request);
+            List<TextDetection> textDetections = result.getTextDetections();
+
+            System.out.println("Detected lines and words for " + photo);
+            for (TextDetection text: textDetections) {
+         
+                    System.out.println("Detected: " + text.getDetectedText());
+                    System.out.println("Confidence: " + text.getConfidence().toString());
+                    System.out.println("Id : " + text.getId());
+                    System.out.println("Parent Id: " + text.getParentId());
+                    System.out.println("Type: " + text.getType());
+                    System.out.println();
+            }
+
+        } catch (AmazonRekognitionException e) {
+            e.printStackTrace();
+        }
+
+	}
+    
+//	private void createAdvancedReport(AdvancedReport report, 
+//	Map<String, String> extensionToFileMapping,
+//	Set<String> allFiles) {
+//
+////Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+//
+//allFiles.forEach( exfile -> {
+//	
+//	String[] nameParts = exfile.split("\\.");
+//	String extn = nameParts[nameParts.length-1].toLowerCase();
+//	
+//	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
+//			
+//		//TODO: Now we have found the file that we are interested in, 
+//		//we will proecess it line by line to get attributes from our utility
+//		FileDetails fileDet = new FileDetails();
+//		fileDet.setName(exfile);
+//		
+//		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
+//		
+//		Map<String, String> results = new HashMap<String, String>();
+//		try (
+//			Stream<String> stream = Files.lines(Paths.get(folder+exfile))) { 
+//			stream.forEach( line -> {
+//	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
+//	        });
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		fileDet.setAttributes(results);
+//		report.addFileDetail(fileDet);
+//		
+//	}
+//});
+//
+//}
 }

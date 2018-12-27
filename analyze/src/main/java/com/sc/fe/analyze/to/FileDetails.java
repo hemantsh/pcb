@@ -24,12 +24,14 @@ public class FileDetails implements Serializable {
 	private String customerSelectedPurposeType;
 	private String mimeType;
 	private boolean valid;
-	private Integer layer;
-	private Date modifiedDate;
-
-	private String polarity;
-	private BigDecimal copperWeight;
 	
+	private Date modifiedDate;
+	private String fileSize;
+	private String fileFormat; //Gerber, odb, drill
+
+	private Integer layer;
+	private String polarity;
+	private BigDecimal copperWeight;	
 	private String ocrText;
 	
 	private Map<String, String> attributes; //Attributes in key:value form
@@ -271,5 +273,21 @@ public class FileDetails implements Serializable {
 
 	public void setCopperWeight(BigDecimal copperWeight) {
 		this.copperWeight = copperWeight;
+	}
+
+	public String getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public String getFileFormat() {
+		return fileFormat;
+	}
+
+	public void setFileFormat(String fileFormat) {
+		this.fileFormat = fileFormat;
 	}
 }

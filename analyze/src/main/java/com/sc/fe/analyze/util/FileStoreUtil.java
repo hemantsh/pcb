@@ -35,9 +35,11 @@ public class FileStoreUtil {
 		}
 		return instance;
 	}
+	
 	public  String getUploadDir(){
-            return fileStorageProperties.getUploadDir();
-        }
+        return fileStorageProperties.getUploadDir();
+    }
+	
 	@Autowired
 	private FileStoreUtil(FileStorageProperties fileStorageProperties) {
 		super();
