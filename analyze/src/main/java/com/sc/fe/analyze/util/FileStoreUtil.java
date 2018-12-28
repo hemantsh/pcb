@@ -106,6 +106,14 @@ public class FileStoreUtil {
 	
 	}
 
+	public FileStorageProperties getFileStorageProperties() {
+		return fileStorageProperties;
+	}
+
+	public void setFileStorageProperties(FileStorageProperties fileStorageProperties) {
+		this.fileStorageProperties = fileStorageProperties;
+	}
+
 	//Create folder in the root of upload dir (fileStorageProperties.uploadDir- S3 or file system)
 //	public Path createFolder(String name) {
 //		Path folder = Paths.get(fileStorageProperties.getUploadDir() + "/" + name)

@@ -11,6 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.AmazonRekognitionException;
@@ -19,6 +23,7 @@ import com.amazonaws.services.rekognition.model.DetectTextResult;
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
+import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 
@@ -380,18 +385,26 @@ public class GerberFileProcessingUtil {
     	return currentKey;
     }
     
-    public void ocrImage() throws Exception {
+    public static void ocrImage( FileStorageProperties fileStorageProperties) throws Exception {
 
-		String photo="test.jpg";
-		String bucket = "fe.hemant";
+		String photo="bus.png";
+		String bucket = "test.hemant";
 
-        AmazonRekognition rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+		AWSCredentials credentials = new BasicAWSCredentials(
+				fileStorageProperties.getAccessKey(), //Key is defined in ENV variable
+				fileStorageProperties.getSecretKey()  //Key is defined in ENV variable
+		);
+		
+        AmazonRekognition rekognitionClient = AmazonRekognitionClientBuilder.standard()
+        		.withCredentials( new AWSStaticCredentialsProvider(credentials))
+        		.withRegion(Regions.US_WEST_2)
+        		.build();
 
         DetectTextRequest request = new DetectTextRequest()
                 .withImage(new Image()
                 .withS3Object(new S3Object()
                 .withName(photo)
-                .withBucket(bucket)));
+                .withBucket(bucket))) ;
                
 
         try {
@@ -401,13 +414,14 @@ public class GerberFileProcessingUtil {
 
             System.out.println("Detected lines and words for " + photo);
             for (TextDetection text: textDetections) {
-         
+            	if("LINE".equals(text.getType()) ) {
                     System.out.println("Detected: " + text.getDetectedText());
                     System.out.println("Confidence: " + text.getConfidence().toString());
                     System.out.println("Id : " + text.getId());
                     System.out.println("Parent Id: " + text.getParentId());
                     System.out.println("Type: " + text.getType());
                     System.out.println();
+            	}
             }
 
         } catch (AmazonRekognitionException e) {

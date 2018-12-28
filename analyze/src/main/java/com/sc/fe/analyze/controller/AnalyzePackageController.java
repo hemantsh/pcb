@@ -2,6 +2,7 @@ package com.sc.fe.analyze.controller;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public class AnalyzePackageController {
     private FileExtractUploadService fileUploadService;
 	
 	@PostMapping(path="/uploadAndExtract")
-	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws IOException {
+	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
 		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);
 		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
 		
@@ -66,6 +67,8 @@ public class AnalyzePackageController {
 		
 		CustomerInputs custInputs = new CustomerInputs();
 		custInputs.setProjectId("1234");
+		custInputs.setZipFileName("8000-4890.zip");
+		custInputs.setZipFileSize("4.6 MB");
 		custInputs.setServiceType("Assembly");
 		custInputs.setCustomerId("CustId");
 		custInputs.setEmailAddress("abc@xyz.com");
@@ -78,6 +81,8 @@ public class AnalyzePackageController {
 		fd.setModifiedDate(new Date());
 		fd.setName("xyz/abc/123.gbr");
 		fd.setLayer(1);
+		fd.setPolarity("Positive");
+		fd.setCopperWeight(new BigDecimal(.9));
 		
 		report.addFileDetail(fd);
 		
