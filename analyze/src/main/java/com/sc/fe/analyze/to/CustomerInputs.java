@@ -29,6 +29,9 @@ public class CustomerInputs implements Serializable {
 	
 	private String emailAddress;
 	
+	private String zipFileName;
+	private String zipFileSize;
+	
 	public String getProjectId() {
 		return projectId;
 	}
@@ -52,6 +55,18 @@ public class CustomerInputs implements Serializable {
 	}
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+	public String getZipFileName() {
+		return zipFileName;
+	}
+	public void setZipFileName(String zipFileName) {
+		this.zipFileName = zipFileName;
+	}
+	public String getZipFileSize() {
+		return zipFileSize;
+	}
+	public void setZipFileSize(String zipFileSize) {
+		this.zipFileSize = zipFileSize;
 	}
 	
 }

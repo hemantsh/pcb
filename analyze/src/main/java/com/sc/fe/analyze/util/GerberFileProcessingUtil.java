@@ -35,19 +35,16 @@ public class GerberFileProcessingUtil {
 		flagMap.put("drillFileEnd", "N");
 		
 		FileDetails fileDet = new FileDetails();
+		fileDet.setName(exfile);
 		
     	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
-				
-    		//TODO: Now we have found the file that we are interested in, 
-    		//we will proecess it line by line to get attributes from our utility   		
-    		fileDet.setName(exfile);
-    		
+    		//we will process it line by line to get attributes   		 		
     		//Results for the whole file
     		Map<String, String> results = new HashMap<String, String>();
     		
     		try (
     			Stream<String> stream = Files.lines(Paths.get(exfile))) { 
-    			
+    			//For each line in file
 	    			stream.forEach( line -> {
 	    				
 	    				String currentKey = flagMap.get("currentKey");
@@ -59,10 +56,12 @@ public class GerberFileProcessingUtil {
 	    				}
 	    				
 	    				if( "Y".equals(flagMap.get("isDrillFile")) && "N".equals(flagMap.get("drillFileEnd")) ) {
+	    					//Drill file line attributes
 	    					currentKey = processM48(line, results, currentKey );
 	    					flagMap.put("currentKey", currentKey);
 	    					
 	    				}else {
+	    					//Regular attribute line
 	    					results.putAll( processLine(line) );
 	    				}
 	    	        	
@@ -70,9 +69,10 @@ public class GerberFileProcessingUtil {
     		} catch (IOException e) {
 				e.printStackTrace();
 			}
+    		//All file attributes
     		fileDet.setAttributes(results);
     	}
-    	
+    	//Return fileDetail with processed attributes set
     	return fileDet;
 	}
 
@@ -197,7 +197,7 @@ public class GerberFileProcessingUtil {
     //Below method will be call if line starts with %TO 
     private static HashMap<String, String> processTO(String line) {
         HashMap<String, String> returnMap = new HashMap<>();
-        //If block will exetues if it is a reserved attribute name otherwise else block will execute
+        //If block will execute if it is a reserved attribute name otherwise else block will execute
         if (line.startsWith("%TO.") == true) {
             if(line.contains(",")==true){
             line = line.replace("%TO.", "").replace("*%", "");

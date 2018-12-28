@@ -31,6 +31,7 @@ import com.sc.fe.analyze.to.Report;
 
 @RestController
 @RequestMapping(path="/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AnalyzePackageController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnalyzePackageController.class);
@@ -38,7 +39,6 @@ public class AnalyzePackageController {
 	@Autowired
     private FileExtractUploadService fileUploadService;
 	
-	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping(path="/uploadAndExtract")
 	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws IOException {
 		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);
