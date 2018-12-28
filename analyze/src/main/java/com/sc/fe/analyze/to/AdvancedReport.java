@@ -3,6 +3,9 @@ package com.sc.fe.analyze.to;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * @author hemant
@@ -54,4 +57,25 @@ public class AdvancedReport implements Serializable {
 		this.odbMatrix = odbMatrix;
 	}
 	
+	public FileDetails getFileDetails(String fileName) {
+		FileDetails retVal = null;
+		
+		List<FileDetails> shortList = fileDetails.stream()
+				.filter(  fd -> fileName.equalsIgnoreCase(fd.getName()) )
+				.collect(Collectors.toList());
+		
+		if(shortList != null && shortList.size() > 0) {
+			retVal = shortList.get(0);
+		}
+		return retVal;
+	}
+	
+	public Set<String> getAllFileNames() {
+		if(fileDetails == null) {
+			return null;
+		}
+		return fileDetails.stream()
+				.map(FileDetails::getName)
+				.collect(Collectors.toCollection(TreeSet::new));
+	}
 }

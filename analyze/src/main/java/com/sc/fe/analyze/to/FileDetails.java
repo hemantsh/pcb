@@ -290,4 +290,6 @@ public class FileDetails implements Serializable {
 	public void setFileFormat(String fileFormat) {
 		this.fileFormat = fileFormat;
 	}
+	
+	
 }

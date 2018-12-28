@@ -42,7 +42,7 @@ public class FileExtractUploadService {
     }
 	
 
-	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws IOException {
+	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
 		
 // Local file based
 		String fileName = util.storeFile(inputs.getProjectId(), file);		
@@ -93,6 +93,8 @@ public class FileExtractUploadService {
 		
 		System.out.println("Drill file properties: "+ fd.getAttributes());
 
+		GerberFileProcessingUtil.ocrImage( util.getFileStorageProperties() );
+		
 		return report;
 	}
 	
