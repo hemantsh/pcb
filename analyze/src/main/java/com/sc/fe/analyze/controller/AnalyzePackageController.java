@@ -1,8 +1,6 @@
 package com.sc.fe.analyze.controller;
 
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,7 +54,7 @@ public class AnalyzePackageController {
 	@PostMapping(path="/saveReport")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public String saveExternalReport(AdvancedReport reqBody) {
+	public String saveExternalReport(@RequestBody AdvancedReport reqBody) {
 		
 		return "{\"success\":1}";
 	}
@@ -77,12 +76,10 @@ public class AnalyzePackageController {
 		
 		FileDetails fd = new FileDetails();
 		fd.setFileFormat("Gerber");
+		fd.setName("xyz/abc/123.gbr");
+		
 		fd.setFileSize("125 MB");
 		fd.setModifiedDate(new Date());
-		fd.setName("xyz/abc/123.gbr");
-		fd.setLayer(1);
-		fd.setPolarity("Positive");
-		fd.setCopperWeight(new BigDecimal(.9));
 		
 		report.addFileDetail(fd);
 		

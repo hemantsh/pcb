@@ -86,14 +86,14 @@ public class FileExtractUploadService {
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
 		
-		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
-		
-		FileDetails fd = GerberFileProcessingUtil.processFile(folder+"8000-4890CPWIZA-SquareHoles.TXT", 
-				baseService.getExtensionToFileMapping());
-		
-		System.out.println("Drill file properties: "+ fd.getAttributes());
-
-		GerberFileProcessingUtil.ocrImage( util.getFileStorageProperties() );
+//		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
+//		
+//		FileDetails fd = GerberFileProcessingUtil.processFile(folder+"8000-4890CPWIZA-SquareHoles.TXT", 
+//				baseService.getExtensionToFileMapping());
+//		
+//		System.out.println("Drill file properties: "+ fd.getAttributes());
+//
+//		GerberFileProcessingUtil.ocrImage( util.getFileStorageProperties() );
 		
 		return report;
 	}

@@ -52,12 +52,12 @@ public class FileDetailCompareUtility {
 		if( newFD.getModifiedDate().compareTo( newFD.getModifiedDate()) != 0 ) {
 			differences.put("Timestamp", newFD.getModifiedDate() + DELIMITER + oldFD.getModifiedDate());
 		}
-		if( newFD.getCopperWeight().compareTo(newFD.getCopperWeight()) != 0 ) {
-			differences.put("Copper Weight", newFD.getCopperWeight() + DELIMITER + oldFD.getCopperWeight());
-		}
-		if( newFD.getPolarity().equals( newFD.getPolarity()) ) {
-			differences.put("Polarity", newFD.getPolarity() + DELIMITER + oldFD.getPolarity());
-		}
+//		if( newFD.getCopperWeight().compareTo(newFD.getCopperWeight()) != 0 ) {
+//			differences.put("Copper Weight", newFD.getCopperWeight() + DELIMITER + oldFD.getCopperWeight());
+//		}
+//		if( newFD.getPolarity().equals( newFD.getPolarity()) ) {
+//			differences.put("Polarity", newFD.getPolarity() + DELIMITER + oldFD.getPolarity());
+//		}
 		
 		Set<String> combinedKeys = new HashSet<String>();
 		combinedKeys.addAll(newFD.getAttributes().keySet());

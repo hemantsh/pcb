@@ -24,6 +24,8 @@ public class AdvancedReport implements Serializable {
 	 */
 	private List<FileDetails> fileDetails;
 	
+	private Set<String> errors;
+	
 	private String odbMatrix;
 	
 	public CustomerInputs getCustomerInputs() {
@@ -77,5 +79,13 @@ public class AdvancedReport implements Serializable {
 		return fileDetails.stream()
 				.map(FileDetails::getName)
 				.collect(Collectors.toCollection(TreeSet::new));
+	}
+
+	public Set<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(Set<String> errors) {
+		this.errors = errors;
 	}
 }
