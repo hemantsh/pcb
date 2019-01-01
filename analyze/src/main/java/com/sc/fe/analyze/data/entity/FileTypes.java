@@ -1,13 +1,12 @@
 package com.sc.fe.analyze.data.entity;
 
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 @Table(value="file_types")
 public class FileTypes {
 	
-	@PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
+	@PrimaryKey
 	private int id;
 	private String type;
 	
