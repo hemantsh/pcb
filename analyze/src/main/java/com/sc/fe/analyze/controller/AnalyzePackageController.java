@@ -28,6 +28,7 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
+import com.sc.fe.analyze.service.*;
 
 @RestController
 @RequestMapping(path="/api")
@@ -37,8 +38,8 @@ public class AnalyzePackageController {
 	private static final Logger logger = LoggerFactory.getLogger(AnalyzePackageController.class);
 	
 	@Autowired
-    private FileExtractUploadService fileUploadService;
-	
+        private FileExtractUploadService fileUploadService;
+        	
 	@PostMapping(path="/uploadAndExtract")
 	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
 		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);

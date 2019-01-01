@@ -128,7 +128,7 @@ public class GerberFileProcessingUtil {
         else if (line.startsWith("%TA")){
             attributes.putAll(processTA(line));
         }
-		else if (line.startsWith("%FSLA")){
+	else if (line.startsWith("%FSLA")){
             attributes.putAll(processFSLA(line));
         }
         else  if(line.startsWith("%TD")){
