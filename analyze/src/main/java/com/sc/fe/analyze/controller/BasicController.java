@@ -2,15 +2,13 @@ package com.sc.fe.analyze.controller;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.BaseService;
@@ -32,14 +30,14 @@ public class BasicController {
 	}
 	
 	@GetMapping(path="/services/{id}")
-	public Services getServices(@PathParam("id") int id) {
+	public Services getServices(@PathVariable("id") int id) {
 		//service for given ID
-		return null;
+		return baseService.getServiceRepo().findById(id).get();
 	}
 	
 	
 	@PostMapping(path="/services/{id}/{name}")
-	public void getServices(@PathParam("id") int id, @PathParam("name") String name) {
+	public void getServices(@PathVariable("id") int id, @PathVariable("name") String name) {
 		//Update service name in DB for give id
 		
 	}
