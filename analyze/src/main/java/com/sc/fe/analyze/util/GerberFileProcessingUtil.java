@@ -23,9 +23,14 @@ import com.amazonaws.services.rekognition.model.DetectTextResult;
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
+import static com.amazonaws.waiters.AcceptorPathMatcher.path;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 
 public class GerberFileProcessingUtil {
     
@@ -68,6 +73,7 @@ public class GerberFileProcessingUtil {
 	    				}else {
 	    					//Regular attribute line
 	    					results.putAll( processLine(line) );
+                                               
 	    				}
 	    	        	
 	    	        });
@@ -76,39 +82,72 @@ public class GerberFileProcessingUtil {
 			}
     		//All file attributes
     		fileDet.setAttributes(results);
-    	}
+    }
     	//Return fileDetail with processed attributes set
     	return fileDet;
 	}
-
-	public static Map<String, Set<String>> processFilesByExtension(Report report, 
+        
+       public static Map<String, Set<String>> processFilesByExtension(Report report, 
 			Map<String, String> extensionToFileMapping,
 			Set<String> foundFiles) {
-		
+            
+		System.out.println("Layer No.    FileName         Polarity");
 		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-		
-		report.getExctractedFileNames().forEach( exfile -> {
-			
-			String[] nameParts = exfile.split("\\.");
-			String extn = nameParts[nameParts.length-1].toLowerCase();
-			
-        	if(extensionToFileMapping.containsKey( extn ) ) {
-        		
-        		Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
-       		
-        		if( currentMapping == null) {
-        			currentMapping = new HashSet<String>();
-        		}
-        		currentMapping.add(exfile);
-        		String fileType = extensionToFileMapping.get( extn );
-        		filePurposeToNameMapping.put(fileType, currentMapping);
-        		foundFiles.add( fileType );
-        		
-        	}
-		});
-		return filePurposeToNameMapping;
+         report.getExctractedFileNames().forEach( (String exfile) -> {
+                String[] nameParts = exfile.split("\\.");
+                      //  System.out.println(" FileName is without extension --" +nameParts[0]);
+                String extn = nameParts[nameParts.length-1].toLowerCase();
+                      //  System.out.println(" FileName is  --" +exfile);
+                        
+        	if(extensionToFileMapping.containsKey( extn ) )
+                {
+        	    Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
+                    if( currentMapping == null) 
+        		currentMapping = new HashSet<String>();
+                        
+                    currentMapping.add(exfile);
+        	    String fileType = extensionToFileMapping.get( extn );
+                     //   System.out.println("Extension - " + extn + "  FileType -"+fileType );
+        	    filePurposeToNameMapping.put(fileType, currentMapping);
+                    foundFiles.add( fileType );
+                }
+                try 
+                {  
+                    String st; 
+                    if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf") && ! extn.toLowerCase().equals("apr"))
+                    {   
+                        File file = new File("C:\\Users\\pc\\Documents\\NetBeansProjects\\pcb\\analyze\\uploads\\abc12344\\"+ exfile); 
+                        BufferedReader br = new BufferedReader(new FileReader(file));
+                        String polarity="Negative";
+                        String layer="";
+                        while ((st = br.readLine()) != null) 
+                        {
+                            if(st.startsWith("G04"))
+                            {
+                                if(st.contains("Layer_Physical_Order"))
+                                {
+                                    String[] layers=st.replace("*","").split("=");
+                                    layer=layers[1];
+                                }
+                            }
+                            if(st.contains("FilePolarity"))
+                            {
+                                String[] polarities=st.replace("*%","").split(",");                               
+                                polarity=polarities[1];
+                            }
+                        }
+                        if(!layer.isEmpty())
+                            System.out.println(layer + "      "  +exfile + "    " + polarity);
+                    }
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+            });
+            return filePurposeToNameMapping;
 	}
-	
+       
 	public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
 
@@ -146,9 +185,9 @@ public class GerberFileProcessingUtil {
         else if(line.startsWith("%LS")){
             attributes.putAll(processLS(line));
         }
-        attributes.keySet().forEach((p) -> {
+        /*attributes.keySet().forEach((p) -> {
             System.out.println(p+" = "+attributes.get(p));
-        });
+        });*/
         return attributes;
     }
     
@@ -172,8 +211,10 @@ public class GerberFileProcessingUtil {
             }
             if(temp[0].toLowerCase().contains("order")) {
             	returnMap.put("Layer", temp[1].replace("*", ""));
+                
             }
             returnMap.put(temp[0], temp[1].replace("*", ""));
+            
         }
         
         if( keyQualifier != null ) {
@@ -185,7 +226,7 @@ public class GerberFileProcessingUtil {
         	}
         	returnMap = tempMap;
         }
-
+     //   System.out.println("GO4 Values -------"+returnMap);
         return returnMap;
     }
 

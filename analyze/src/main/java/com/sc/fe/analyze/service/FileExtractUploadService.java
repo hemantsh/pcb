@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInputs;
-import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
@@ -46,8 +45,9 @@ public class FileExtractUploadService {
 		
 // Local file based
 		String fileName = util.storeFile(inputs.getProjectId(), file);		
-		util.extractFiles(inputs.getProjectId(), fileName);   	
-// END local
+                util.extractFiles(inputs.getProjectId(), fileName);   
+              
+     // END local
 		
 //S3 Based
 //		util.storeFile(inputs.getProjectId(), file);
@@ -60,13 +60,13 @@ public class FileExtractUploadService {
 		inputs.setServiceType("Assembly");
 		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
 		
-		List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
+                List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
 		Set<String> foundFiles = new HashSet<String>();
 		
 		Map<String, Set<String> > filePurposeToNameMapping = GerberFileProcessingUtil.processFilesByExtension(report, 
 				baseService.getExtensionToFileMapping(), 
 				foundFiles);
-		
+                
 		if(requiredFiles.size() != foundFiles.size()) {
 			report.setValidationStatus("Invalid design.");
 			report.addError("Some required files are missing for the selected service.");
