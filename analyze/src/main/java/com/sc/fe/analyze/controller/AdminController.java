@@ -54,6 +54,10 @@ public class AdminController {
     public void createExtensions(@RequestBody Extensions extn){
          fileExtnServ.save(extn);
     }
+    @PostMapping(path="/extensions/update")
+    public void updateExtensions(@RequestBody Extensions extn){
+         fileExtnServ.save(extn);
+    }
     @GetMapping(path="/extensions/retrive/{id}")
     public Extensions retriveExtensions(@PathVariable("id") int id){
          return fileExtnServ.getExtensionById(id);
@@ -68,6 +72,10 @@ public class AdminController {
     }
     @PostMapping(path="/services/create")
     public void createService(@RequestBody Services services){
+        fileService.save(services);
+    }
+    @PostMapping(path="/services/update")
+    public void updateService(@RequestBody Services services){
         fileService.save(services);
     }
     
@@ -86,6 +94,10 @@ public class AdminController {
     public void createFileType(@RequestBody FileTypes ft){
     fileTypeService.save(ft);
     }
+    @PostMapping(path="/filetypes/update")
+    public void updateFileType(@RequestBody FileTypes ft){
+    fileTypeService.save(ft);
+    }
     @GetMapping(path="/filetypes/retrive/{id}")
     public FileTypes retriveFileType(@PathVariable("id")int id){
         return fileTypeService.getTypeById(id);
@@ -102,10 +114,14 @@ public class AdminController {
     public void createServiceFiles(@RequestBody ServiceFiles sf){
     serviceFileservice.save(sf);
     }
+    @PostMapping(path="/servicefiles/update")
+    public void updateServiceFiles(@RequestBody ServiceFiles sf){
+    serviceFileservice.save(sf);
+    }
     
     @GetMapping(path="/servicefiles/retrive/{id}")
-    public ServiceFiles retriveServiceFiles(@PathVariable("id")int id){
-        return serviceFileservice.getFilesByService(id);
+    public List<ServiceFiles> retriveServiceFiles(@PathVariable("id")int service_id){
+        return serviceFileservice.getFilesByService(service_id);
     }
     
     
@@ -117,6 +133,11 @@ public class AdminController {
     }
     @PostMapping(path="/report/create")
     public void createReport(@RequestBody Report report){
+       reportServices.save(report);
+    }
+    
+    @PostMapping(path="/report/update")
+    public void updateReport(@RequestBody Report report){
        reportServices.save(report);
     }
 }

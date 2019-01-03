@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 
 @Injectable()
-export class FileUploadService{
+export class FileService{
     constructor(private http: Http){}
     fileUpload(UploadedForm){
         // var headers = new Headers();
@@ -13,5 +13,10 @@ export class FileUploadService{
         // console.log("file to upload", JSON.stringify(UploadedForm));
            return this.http.post('http://localhost:8080/pcb/api/uploadAndExtract',UploadedForm);
         }
+
+        getExtensions(){
+            return this.http.get('http://localhost:8080/pcb/admin/extensions');
+        }
     
+
 }

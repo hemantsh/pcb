@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
-import { FileUploadService } from '../servers.service';
+import { FileService } from '../servers.service';
 @Component({
   selector: 'app-customerinputs',
   templateUrl: './customerinputs.component.html',
   styleUrls: ['./customerinputs.component.css'],
-  providers:[FileUploadService]
+  providers:[FileService]
 })
 export class CustomerinputsComponent implements OnInit {
   uploadForm:FormGroup;
   changeFile:any;
-  constructor(private fileUploadService:FileUploadService) { }
+  constructor(private fileUploadService:FileService) { }
 
   ngOnInit() {
     this.uploadForm= new FormGroup({

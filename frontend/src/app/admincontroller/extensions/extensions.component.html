@@ -1,0 +1,16 @@
+<div>
+  <table class="table table-boredered">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Extensions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let extn of extns">
+            <td>{{extn.id}}</td>
+            <td>{{extn.name}}</td>
+          </tr>
+        </tbody>
+  </table>
+</div>
