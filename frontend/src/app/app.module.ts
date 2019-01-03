@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -9,6 +10,8 @@ import { FileService } from './servers.service';
 import { HttpModule } from '@angular/http';
 import { AdmincontrollerComponent } from './admincontroller/admincontroller.component';
 import { ExtensionsComponent } from './admincontroller/extensions/extensions.component';
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// import {MatTableModule} from '@angular/material/table';
 
 const appRoutes: Routes = [
   { path: '', component: CustomerinputsComponent ,
@@ -28,11 +31,12 @@ const appRoutes: Routes = [
     AppComponent,
     CustomerinputsComponent,
     AdmincontrollerComponent,
-    ExtensionsComponent
+    ExtensionsComponent   
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],

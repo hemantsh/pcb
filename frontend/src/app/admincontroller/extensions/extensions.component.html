@@ -1,16 +1,29 @@
 <div>
   <table class="table table-boredered">
-      <thead>
-          <tr>
-            <th>Id</th>
-            <th>Extensions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let extn of extns">
-            <td>{{extn.id}}</td>
-            <td>{{extn.name}}</td>
-          </tr>
-        </tbody>
+    <thead>
+      <tr>
+        <th>Extensions</th>
+        <th>Action</th>
+        <!-- <th><button class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal"></button></th> -->
+        <th><button type="button" class="btn btn-default btn-md" (click)="addExtn()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extension</button>
+          
+          
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let extn of extns">
+        <td *ngIf="!extn.edit && !extn.add">{{extn.name}}</td>
+        <td *ngIf="extn.edit || extn.add"> <input type="text" class="form-control" [(ngModel)]="extn.name" /></td>
+        <td>
+          <button *ngIf="!extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.edit}" (click)="extn.originalData = extn.name; updateExtn(extn); extn.edit = !extn.edit; ">{{extn.edit
+            ? 'Update':'Edit' }}</button>
+            <button *ngIf="extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.add}" (click)="updateExtn(extn); extn.add = !extn.add; ">Save</button>
+          <button class="btn btn-danger" *ngIf="extn.edit || extn.add" (click)="cancelClick(extn)">Cancel</button>
+        </td>
+      </tr>
+
+
+    </tbody>
   </table>
 </div>
