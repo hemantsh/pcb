@@ -29,6 +29,7 @@ import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.service.*;
+import java.io.File;
 
 @RestController
 @RequestMapping(path="/api")
@@ -42,12 +43,13 @@ public class AnalyzePackageController {
         	
 	@PostMapping(path="/uploadAndExtract")
 	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
-		System.out.println("Parameters : "+file.getOriginalFilename() + " projectId: "+projectId);
+                             
+		System.out.println("Parameters : "+file.getOriginalFilename() + "   ProjectId: "+projectId);
 		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
 		
 		CustomerInputs custInputs = new CustomerInputs();
 		custInputs.setProjectId(projectId);
-		
+		                             
 		return fileUploadService.uploadAndExtractFile(file, custInputs);
 		
 	}

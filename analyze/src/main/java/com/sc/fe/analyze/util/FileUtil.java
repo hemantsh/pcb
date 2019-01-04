@@ -24,7 +24,7 @@ public class FileUtil {
 	
 	/**
 	 * Save the file based on projectID
-	 * @param projectId - Normally each project create a sub folder in uoload directory
+	 * @param projectId - Normally each project create a sub folder in upload directory
 	 * @param file the file to be uploaded
 	 * @param fileStorageProperties - property file containing file upload options
 	 * @return location of the file
@@ -36,7 +36,7 @@ public class FileUtil {
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId ).toAbsolutePath().normalize();
 		//If folder does not exist, create it
         if( ! Files.exists(folder)) {
-        	try {
+        	try {    
     	        Files.createDirectories(folder);
     	    } catch (Exception ex) {
     	    	folder = null;
