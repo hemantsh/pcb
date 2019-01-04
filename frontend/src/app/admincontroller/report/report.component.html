@@ -1,0 +1,46 @@
+<div class="reportscroll">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ProjectId</th>
+        <th>Version</th>
+        <th>CustomerId</th>
+        <th>Errors</th>
+        <th>FileType_FileName</th>
+        <th>Notes</th>
+        <th>Project_Files</th>
+        <th>Service_Id</th>
+        <th>Status</th>
+        <th>Summary</th>
+        <!-- <th><button type="button" class="btn btn-default btn-md" (click)="addExtn()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extension</button></th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of reports">
+          <td >{{report.projectId}}</td>
+          <td>{{report.version}}</td>
+          <td>{{report.customerId}}</td>
+          <td>{{report.errors}}</td>
+          <td >
+            <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner] }}</span></td>
+          <td>{{report.notes}}</td>
+          <td>{{report.projectFiles}}</td>
+          <td>{{report.serviceTypeId}}</td>
+          <td>{{report.status}}</td>
+          <td>{{report.summary}}</td>
+      </tr>
+      <!--<tr *ngFor="let extn of extns">
+        <td *ngIf="!extn.edit && !extn.add">{{extn.name}}</td>
+        <td *ngIf="extn.edit || extn.add"> <input type="text" class="form-control" [(ngModel)]="extn.name" ngModel name="addExtn" required/></td>
+        <td>
+          <button *ngIf="!extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.edit}" (click)="extn.originalData = extn.name; updateExtn(extn); extn.edit = !extn.edit;" [disabled]="!extn.name">{{extn.edit
+            ? 'Update':'Edit' }}</button>
+            <button *ngIf="extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.add}" (click)="updateExtn(extn); extn.add = !extn.add;" [disabled]="!extn.name">Save</button>
+          <button class="btn btn-danger" *ngIf="extn.edit || extn.add" (click)="cancelClick(extn)">Cancel</button>
+        </td>
+      </tr>
+    -->
+
+    </tbody>
+  </table>
+</div>

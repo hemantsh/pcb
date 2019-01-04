@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
-
 @Component({
   selector: 'app-extensions',
   templateUrl: './extensions.component.html',
   styleUrls: ['./extensions.component.css']
 })
 export class ExtensionsComponent implements OnInit {
+  
   extns = [];
-  displayedColumns: string[] = ['Extensions'];
+  // displayedColumns: string[] = ['Extensions'];
 
   constructor(private fileService: FileService) { }
   ngOnInit() {
