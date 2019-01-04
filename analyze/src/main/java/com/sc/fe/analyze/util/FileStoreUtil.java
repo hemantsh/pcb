@@ -58,15 +58,14 @@ public class FileStoreUtil {
     }
 	
 	/**
-	 * Extrat files from ZIP (fileName) into given folder
+	 * Extract files from ZIP (fileName) into given folder
 	 * @param projectId the project id
 	 * @param fileName -  the path of zip file under the project
 	 */
 	public void extractFiles(String projectId, String fileName) {
 		
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
-        
-		try {
+                try {
 			
 			ZipFile zipFile = new ZipFile(folder.resolve(fileName).normalize().toFile());
 			zipFile.extractAll(folder.toString());
@@ -86,7 +85,7 @@ public class FileStoreUtil {
 	public Set<String> listFiles(String projectId) {
 		
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
-        
+              
 		Set<String> extractedFiles = new HashSet<String>();
 		
 		try (Stream<Path> paths = Files.walk(Paths.get(folder.toString()))) {

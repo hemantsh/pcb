@@ -1,16 +1,14 @@
 package com.sc.fe.analyze.util;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
-
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -23,19 +21,63 @@ import com.amazonaws.services.rekognition.model.DetectTextResult;
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
-import static com.amazonaws.waiters.AcceptorPathMatcher.path;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import static java.nio.file.Files.list;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 
 public class GerberFileProcessingUtil {
-    
-	public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping) {
-		
+            static List<LayersInformation> layerInfo = new ArrayList<>();
+                        
+            //static ArrayList layerNoo=new ArrayList();
+            //static ArrayList fileNamee=new ArrayList();
+           // static ArrayList polarityy=new ArrayList();
+            
+         public static void processFilesByExtn(Report report, 
+			Map<String, String> extensionToFileMapping,
+			Set<String> foundFiles,Path folder) {
+                 
+                                 
+                      Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+                report.getExctractedFileNames().forEach( (String exfile) -> {
+                        String[] nameParts = exfile.split("\\.");
+                        String extn = nameParts[nameParts.length-1].toLowerCase();
+                       
+                       //Call processFile() method 
+                       FileDetails fdetails=processFile(exfile,extensionToFileMapping,folder);      
+        	if(extensionToFileMapping.containsKey( extn ) )
+                {
+        	    Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
+                    if( currentMapping == null) 
+        		currentMapping = new HashSet<String>();   
+                                                         
+                    currentMapping.add(exfile);
+        	    String fileType = extensionToFileMapping.get( extn );
+               //         System.out.println("Extension - " + extn + "  FileType -"+fileType );
+        	    filePurposeToNameMapping.put(fileType, currentMapping);
+                    foundFiles.add( fileType );
+                } 
+           });
+           
+             
+          System.out.println("LayerNo     FileName       Polarity");
+         for (LayersInformation t: layerInfo) {
+            
+            System.out.println(t.layerr +"   "+ t.fileNamee +"    "+ t.polarityy);
+                 
+       }
+        
+      
+         }
+	public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping,Path folder) {
+	
 		String[] nameParts = exfile.split("\\.");
 		String extn = nameParts[nameParts.length-1].toLowerCase();
 		
@@ -46,16 +88,17 @@ public class GerberFileProcessingUtil {
 		
 		FileDetails fileDet = new FileDetails();
 		fileDet.setName(exfile);
-		
-    	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
+                   
+               if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
     		//we will process it line by line to get attributes   		 		
     		//Results for the whole file
-    		Map<String, String> results = new HashMap<String, String>();
-    		
-    		try (
-    			Stream<String> stream = Files.lines(Paths.get(exfile))) { 
+                Map<String, String> results = new HashMap<String, String>();
+                
+                String filePath=folder+File.separator+exfile;
+                // System.out.println("FileName is---------"+exfile);
+    		try(Stream<String> stream = Files.lines(Paths.get(filePath))) { 
     			//For each line in file
-	    			stream.forEach( line -> {
+                       	stream.forEach( line -> {
 	    				
 	    				String currentKey = flagMap.get("currentKey");
 	    				if( line.startsWith("M48") ) {
@@ -72,17 +115,38 @@ public class GerberFileProcessingUtil {
 	    					
 	    				}else {
 	    					//Regular attribute line
-	    					results.putAll( processLine(line) );
-                                               
+	    					results.putAll( processLine(line) );  
+                                                                           
+                                               /* if(results.containsKey("Layer"))
+                                                {                                                    
+                                                    layerNo[counter]=results.get("Layer");
+                                                    fileNamee[counter]=exfile;
+                                                    polarityy[counter]=results.get("FilePolarity");
+                                                }*/                                                                                 
+                                                
 	    				}
 	    	        	
 	    	        });
+                      if(results.containsKey("Layer"))
+                      {
+                          String polarity;
+                           if(results.containsKey("FilePolarity"))
+                            polarity=results.get("FilePolarity");
+                          else
+                              polarity="";
+                        
+                         layerInfo.add(new LayersInformation(results.get("Layer"), exfile,polarity));
+                                                                          
+                      }
     		} catch (IOException e) {
 				e.printStackTrace();
 			}
-    		//All file attributes
+               
+           
+    		//All file attributes                
     		fileDet.setAttributes(results);
-    }
+    	
+     }
     	//Return fileDetail with processed attributes set
     	return fileDet;
 	}
@@ -90,63 +154,26 @@ public class GerberFileProcessingUtil {
        public static Map<String, Set<String>> processFilesByExtension(Report report, 
 			Map<String, String> extensionToFileMapping,
 			Set<String> foundFiles) {
-            
-		System.out.println("Layer No.    FileName         Polarity");
-		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-         report.getExctractedFileNames().forEach( (String exfile) -> {
-                String[] nameParts = exfile.split("\\.");
-                      //  System.out.println(" FileName is without extension --" +nameParts[0]);
-                String extn = nameParts[nameParts.length-1].toLowerCase();
-                      //  System.out.println(" FileName is  --" +exfile);
-                        
+           
+           Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+                report.getExctractedFileNames().forEach( (String exfile) -> {
+                        String[] nameParts = exfile.split("\\.");
+                        String extn = nameParts[nameParts.length-1].toLowerCase();
+                                             
         	if(extensionToFileMapping.containsKey( extn ) )
                 {
         	    Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get( extn ) );
                     if( currentMapping == null) 
-        		currentMapping = new HashSet<String>();
-                        
+        		currentMapping = new HashSet<String>();   
+                                                         
                     currentMapping.add(exfile);
         	    String fileType = extensionToFileMapping.get( extn );
-                     //   System.out.println("Extension - " + extn + "  FileType -"+fileType );
-        	    filePurposeToNameMapping.put(fileType, currentMapping);
+                    filePurposeToNameMapping.put(fileType, currentMapping);
                     foundFiles.add( fileType );
-                }
-                try 
-                {  
-                    String st; 
-                    if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf") && ! extn.toLowerCase().equals("apr"))
-                    {   
-                        File file = new File("C:\\Users\\pc\\Documents\\NetBeansProjects\\pcb\\analyze\\uploads\\abc12344\\"+ exfile); 
-                        BufferedReader br = new BufferedReader(new FileReader(file));
-                        String polarity="Negative";
-                        String layer="";
-                        while ((st = br.readLine()) != null) 
-                        {
-                            if(st.startsWith("G04"))
-                            {
-                                if(st.contains("Layer_Physical_Order"))
-                                {
-                                    String[] layers=st.replace("*","").split("=");
-                                    layer=layers[1];
-                                }
-                            }
-                            if(st.contains("FilePolarity"))
-                            {
-                                String[] polarities=st.replace("*%","").split(",");                               
-                                polarity=polarities[1];
-                            }
-                        }
-                        if(!layer.isEmpty())
-                            System.out.println(layer + "      "  +exfile + "    " + polarity);
-                    }
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
                 }
             });
             return filePurposeToNameMapping;
-	}
+    }
        
 	public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
@@ -213,7 +240,7 @@ public class GerberFileProcessingUtil {
             	returnMap.put("Layer", temp[1].replace("*", ""));
                 
             }
-            returnMap.put(temp[0], temp[1].replace("*", ""));
+           returnMap.put(temp[0], temp[1].replace("*", ""));
             
         }
         
@@ -226,7 +253,6 @@ public class GerberFileProcessingUtil {
         	}
         	returnMap = tempMap;
         }
-     //   System.out.println("GO4 Values -------"+returnMap);
         return returnMap;
     }
 
@@ -306,7 +332,7 @@ public class GerberFileProcessingUtil {
             }
 
         }
-
+       
         return returnMap;
     }
     //Below method will be call if line starts with %TA 

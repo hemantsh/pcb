@@ -49,8 +49,7 @@ public class AnalyzePackageController {
 		
 		CustomerInputs custInputs = new CustomerInputs();
 		custInputs.setProjectId(projectId);
-		             
-                
+		                             
 		return fileUploadService.uploadAndExtractFile(file, custInputs);
 		
 	}

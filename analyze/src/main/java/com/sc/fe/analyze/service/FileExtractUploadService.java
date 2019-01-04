@@ -1,7 +1,6 @@
 package com.sc.fe.analyze.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInputs;
@@ -21,10 +19,12 @@ import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ReportUtility;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class FileExtractUploadService {
-	
+	private  FileStorageProperties fileStorageProperties;
 	private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
 	private FileStoreUtil util;
 	
@@ -44,28 +44,29 @@ public class FileExtractUploadService {
 	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
 		
 // Local file based
-		String fileName = util.storeFile(inputs.getProjectId(), file);		
+                fileStorageProperties=util.getFileStorageProperties();
+		String fileName = util.storeFile(inputs.getProjectId(), file);
                 util.extractFiles(inputs.getProjectId(), fileName);   
-              
-     // END local
-		
+                Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
+ // END local		
 //S3 Based
 //		util.storeFile(inputs.getProjectId(), file);
 //		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
 // end S3
-		
 		Report report = new Report();
 		report.setCustomerInputs(inputs);
 		report.setSummary("****** File upload and basic validation by extension. *******");
 		inputs.setServiceType("Assembly");
 		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
-		
+                
                 List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
-		Set<String> foundFiles = new HashSet<String>();
+                Set<String> foundFiles = new HashSet<String>();
 		
 		Map<String, Set<String> > filePurposeToNameMapping = GerberFileProcessingUtil.processFilesByExtension(report, 
 				baseService.getExtensionToFileMapping(), 
 				foundFiles);
+                
+               GerberFileProcessingUtil.processFilesByExtn(report, baseService.getExtensionToFileMapping(),foundFiles, folder);
                 
 		if(requiredFiles.size() != foundFiles.size()) {
 			report.setValidationStatus("Invalid design.");
@@ -86,8 +87,10 @@ public class FileExtractUploadService {
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
 		
-//		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
-//		
+               // Path pathToFile = Paths.get(filename);
+             //   System.out.println(pathToFile);
+		String folders = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
+             		
 //		FileDetails fd = GerberFileProcessingUtil.processFile(folder+"8000-4890CPWIZA-SquareHoles.TXT", 
 //				baseService.getExtensionToFileMapping());
 //		
