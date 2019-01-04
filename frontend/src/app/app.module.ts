@@ -10,6 +10,11 @@ import { FileService } from './servers.service';
 import { HttpModule } from '@angular/http';
 import { AdmincontrollerComponent } from './admincontroller/admincontroller.component';
 import { ExtensionsComponent } from './admincontroller/extensions/extensions.component';
+import { ServicesComponent } from './admincontroller/services/services.component';
+import { ServicefilesComponent } from './admincontroller/servicefiles/servicefiles.component';
+import { FiletypesComponent } from './admincontroller/filetypes/filetypes.component';
+import { ReportComponent } from './admincontroller/report/report.component';
+import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
 // import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // import {MatTableModule} from '@angular/material/table';
 
@@ -22,16 +27,26 @@ const appRoutes: Routes = [
   {
     path: 'adminController', component: AdmincontrollerComponent,
     children:[
-      {path:"extensions",component:ExtensionsComponent}
+      {path:"extensions",component:ExtensionsComponent},
+      {path:"services",component:ServicesComponent},
+      {path:"filetypes",component:FiletypesComponent},
+      {path:"servicefiles",component:ServicefilesComponent},
+      {path:"extensionfiles",component:ExtenfilesComponent},
+      {path:"report",component:ReportComponent}
     ]
-  }
+  },
 ]
 @NgModule({
   declarations: [
     AppComponent,
     CustomerinputsComponent,
     AdmincontrollerComponent,
-    ExtensionsComponent   
+    ExtensionsComponent,
+    ServicesComponent,
+    ServicefilesComponent,
+    FiletypesComponent,
+    ReportComponent,
+    ExtenfilesComponent   
   ],
   imports: [
     BrowserModule,

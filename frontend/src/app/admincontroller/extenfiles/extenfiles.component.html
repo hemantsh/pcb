@@ -1,0 +1,28 @@
+<!-- <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Extension</th>
+          <th>File</th>
+          <th>Action</th>
+          <th><button type="button" class="btn btn-default btn-md" ><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add ServiceFiles</button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let files of extnFiles">
+          <td *ngIf="!files.edit && !files.add">{{files.extension}}</td>
+          <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.extension" ngModel name="addFile" required/></td>        
+          <td *ngIf="!files.edit && !files.add">{{files.file}}</td>
+          <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.file" ngModel name="addService" required/></td>
+          <td>
+              <button *ngIf="!files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.edit}" (click)="files.originalExtension = files.extension; files.originalFiles=files.file; updateFiles(files); files.edit = !files.edit;" [disabled]="!files.extension">{{files.edit
+                ? 'Update':'Edit' }}</button>
+                <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;" [disabled]="!files.service">Save</button>
+              <button class="btn btn-danger" *ngIf="files.edit || files.add" (click)="cancelClick(files)">Cancel</button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>  -->
+  <p>extensinFiles</p>

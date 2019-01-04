@@ -1,0 +1,29 @@
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Services Name</th>
+        <th>Action</th>
+        <!-- <th><button class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal"></button></th> -->
+        <th><button type="button" class="btn btn-default btn-md" (click)="addService()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</button>
+          
+          
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of services">
+        <td *ngIf="!service.edit && !service.add">{{service.name}}</td>
+        <td *ngIf="service.edit || service.add"> <input type="text" class="form-control" [(ngModel)]="service.name" ngModel name="addService" required/></td>
+        <td>
+          <button *ngIf="!service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.edit}" (click)="service.originalData = service.name; updateService(service); service.edit = !service.edit;" [disabled]="!service.name">{{service.edit
+            ? 'Update':'Edit' }}</button>
+            <button *ngIf="service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.add}" (click)="updateService(service); service.add = !service.add;" [disabled]="!service.name">Save</button>
+          <button class="btn btn-danger" *ngIf="service.edit || service.add" (click)="cancelClick(service)">Cancel</button>
+        </td>
+      </tr>
+
+
+    </tbody>
+  </table>
+</div>
