@@ -28,8 +28,6 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
-import com.sc.fe.analyze.service.*;
-import java.io.File;
 
 @RestController
 @RequestMapping(path="/api")

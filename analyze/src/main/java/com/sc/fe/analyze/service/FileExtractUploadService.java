@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 
 @Service
 public class FileExtractUploadService {
-	private  FileStorageProperties fileStorageProperties;
+	
 	private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
 	private FileStoreUtil util;
 	
@@ -44,10 +44,9 @@ public class FileExtractUploadService {
 	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
 		
 // Local file based
-                fileStorageProperties=util.getFileStorageProperties();
 		String fileName = util.storeFile(inputs.getProjectId(), file);
-                util.extractFiles(inputs.getProjectId(), fileName);   
-                Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
+        util.extractFiles(inputs.getProjectId(), fileName);   
+        Path folder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
  // END local		
 //S3 Based
 //		util.storeFile(inputs.getProjectId(), file);
@@ -59,14 +58,14 @@ public class FileExtractUploadService {
 		inputs.setServiceType("Assembly");
 		report.setExctractedFileNames( util.listFiles(inputs.getProjectId()) );
                 
-                List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
-                Set<String> foundFiles = new HashSet<String>();
+        List<String> requiredFiles = baseService.getServiceFiles( MappingUtil.getServiceId(inputs.getServiceType()));
+        Set<String> foundFiles = new HashSet<String>();
 		
 		Map<String, Set<String> > filePurposeToNameMapping = GerberFileProcessingUtil.processFilesByExtension(report, 
 				baseService.getExtensionToFileMapping(), 
 				foundFiles);
                 
-               GerberFileProcessingUtil.processFilesByExtn(report, baseService.getExtensionToFileMapping(),foundFiles, folder);
+        GerberFileProcessingUtil.findLayerInformation(report, baseService.getExtensionToFileMapping(), folder);
                 
 		if(requiredFiles.size() != foundFiles.size()) {
 			report.setValidationStatus("Invalid design.");
@@ -86,18 +85,7 @@ public class FileExtractUploadService {
 		
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");
-		
-               // Path pathToFile = Paths.get(filename);
-             //   System.out.println(pathToFile);
-		String folders = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
-             		
-//		FileDetails fd = GerberFileProcessingUtil.processFile(folder+"8000-4890CPWIZA-SquareHoles.TXT", 
-//				baseService.getExtensionToFileMapping());
-//		
-//		System.out.println("Drill file properties: "+ fd.getAttributes());
-//
-//		GerberFileProcessingUtil.ocrImage( util.getFileStorageProperties() );
-		
+
 		return report;
 	}
 	
