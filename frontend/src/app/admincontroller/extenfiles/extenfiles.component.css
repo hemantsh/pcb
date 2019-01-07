@@ -1,0 +1,17 @@
+.reportscroll{
+    overflow: scroll;
+    height: 500px;
+}
+.fix{
+   position:fixed;
+   width: 100%;
+   background-color: #fff;
+   padding:10px;
+   border-bottom:1px solid #ddd;
+}
+.static{
+    position: relative;
+}
+.table{
+    margin-top: 50px;    
+}

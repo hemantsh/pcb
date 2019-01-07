@@ -36,7 +36,10 @@ export class FileService{
         updateServiceFiles(servicefiles){
             return this.http.post('http://localhost:8080/pcb/admin/services/update',servicefiles);
         }
-        // getExtnFiles(){
-        //     return this.http.get('http://localhost:8080/pcb/admin/extension_file');
-        // }
+        getExtnFiles(){
+            return this.http.get('http://localhost:8080/pcb/admin/extensionfiles');
+        }
+        updateExtnFiles(exFT){
+            return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/update',exFT);
+        }
 }

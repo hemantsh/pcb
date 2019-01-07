@@ -34,7 +34,7 @@ const appRoutes: Routes = [
       {path:"extensionfiles",component:ExtenfilesComponent},
       {path:"report",component:ReportComponent}
     ]
-  },
+  }
 ]
 @NgModule({
   declarations: [
