@@ -40,17 +40,20 @@ public class GerberFileProcessingUtil {
 			// Call processFile() method
 			FileDetails fdetails = processFile(exfile, extensionToFileMapping, folder);
 			
-			if(fdetails.getAttributes().containsKey("Layer"))
-            {
-                String polarity;
-                 if(fdetails.getAttributes().containsKey("FilePolarity"))
-                  polarity=fdetails.getAttributes().get("FilePolarity");
-                else
-                    polarity="";
-              
-               layerInfo.add(new LayersInformation(fdetails.getAttributes().get("Layer"), exfile,polarity));
-                                                                
-            }
+			if(fdetails != null && fdetails.getAttributes() != null) {
+
+				if(fdetails.getAttributes().containsKey("Layer"))
+	            {
+	                String polarity;
+	                 if(fdetails.getAttributes().containsKey("FilePolarity"))
+	                  polarity=fdetails.getAttributes().get("FilePolarity");
+	                else
+	                    polarity="";
+	              
+	               layerInfo.add(new LayersInformation(fdetails.getAttributes().get("Layer"), exfile,polarity));
+	                                                                
+	            }
+			}
 		});
 
 		System.out.println("LayerNo     FileName       Polarity");
@@ -68,8 +71,7 @@ public class GerberFileProcessingUtil {
 		Map<String, String> flagMap = new HashMap<String, String>();
 		flagMap.put("isDrillFile", "N");
 		flagMap.put("currentKey", "");
-		flagMap.put("drillFileEnd", "N");
-
+		
 		FileDetails fileDet = new FileDetails();
 		fileDet.setName(exfile);
 
@@ -89,10 +91,10 @@ public class GerberFileProcessingUtil {
 						flagMap.put("isDrillFile", "Y");
 					}
 					if (line.startsWith("%") || line.startsWith("M95")) {
-						flagMap.put("drillFileEnd", "Y");
+						flagMap.put("isDrillFile", "N");
 					}
 
-					if ("Y".equals(flagMap.get("isDrillFile")) && "N".equals(flagMap.get("drillFileEnd"))) {
+					if ("Y".equals(flagMap.get("isDrillFile")) ) {
 						// Drill file line attributes
 						currentKey = processM48(line, results, currentKey);
 						flagMap.put("currentKey", currentKey);
