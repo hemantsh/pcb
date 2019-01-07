@@ -18,9 +18,18 @@ import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
+import com.sc.fe.analyze.util.ODBProcessing;
+
 import com.sc.fe.analyze.util.ReportUtility;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import static java.lang.System.exit;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Stream;
 
 @Service
 public class FileExtractUploadService {
@@ -78,8 +87,12 @@ public class FileExtractUploadService {
 		}else {
 			report.setValidationStatus("Good design with all required files.");
 		}
-		
-		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
+                
+             
+         HashMap<String, String> Mapping=ODBProcessing.processODB(folder);
+                
+                
+                report.setFilePurposeToNameMapping(filePurposeToNameMapping);
 		
 		reportRepo.insert(ReportUtility.convertToDBObject(report));
 		

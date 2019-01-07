@@ -28,10 +28,11 @@ import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.LayersInformation;
 import com.sc.fe.analyze.to.Report;
 
 public class GerberFileProcessingUtil {
-
+     
 	public static void findLayerInformation(Report report, Map<String, String> extensionToFileMapping, Path folder) {
 
 		List<LayersInformation> layerInfo = new ArrayList<>();
@@ -42,7 +43,7 @@ public class GerberFileProcessingUtil {
 			
 			if(fdetails != null && fdetails.getAttributes() != null) {
 
-				if(fdetails.getAttributes().containsKey("Layer"))
+                    if(fdetails.getAttributes().containsKey("Layer"))
 	            {
 	                String polarity;
 	                 if(fdetails.getAttributes().containsKey("FilePolarity"))
@@ -58,7 +59,7 @@ public class GerberFileProcessingUtil {
 
 		System.out.println("LayerNo     FileName       Polarity");
 		for (LayersInformation t : layerInfo) {
-			System.out.println(t.layerr + "   " + t.fileNamee + "    " + t.polarityy);
+			System.out.println(t.layerSequence + "   " + t.fileNamee + "    " + t.polarityy);
 		}
 
 	}
@@ -139,6 +140,24 @@ public class GerberFileProcessingUtil {
 		});
 		return filePurposeToNameMapping;
 	}
+        // Below method will be call if line starts with Layer
+        public static HashMap<String, String> processODB(Integer row,String line) 
+        {
+            HashMap<String, String> returnMap = new HashMap<String, String>();
+            String[] splitedValue = line.trim().split("=",2);
+            //System.out.println(splitedValue[0]+"ddd"+splitedValue[1]+"Bvalue");
+            if(splitedValue[0].equals("ROW"))
+            {
+                splitedValue[1]=row.toString();
+                returnMap.put(splitedValue[0],row.toString());
+            }
+            else
+                  returnMap.put(splitedValue[0], splitedValue[1]);                    
+                       
+           
+          //  System.out.println("Key is:" +splitedValue[0] +"  Value is:"+ splitedValue[1]);
+            return returnMap;
+        }
 
 	public static HashMap<String, String> processLine(String line) {
 		HashMap<String, String> attributes = new HashMap<>();
@@ -210,7 +229,7 @@ public class GerberFileProcessingUtil {
 		}
 		return returnMap;
 	}
-
+        
 	// Below method will be call if line starts with %MO
 	private static HashMap<String, String> processMO(String line) {
 		HashMap<String, String> returnMap = new HashMap<>();
@@ -374,7 +393,8 @@ public class GerberFileProcessingUtil {
 		return returnMap;
 	}
 
-	private static HashMap<String, String> processLS(String line) {
+	private static HashMap<String, String> processLS(String line)
+        {
 		HashMap<String, String> returnMap = new HashMap<>();
 		line = line.replace("%LS", "").replace("*%", "").trim();
 		returnMap.put("LS", line);
