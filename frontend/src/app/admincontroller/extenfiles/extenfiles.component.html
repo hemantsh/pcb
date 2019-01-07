@@ -1,28 +1,64 @@
-<!-- <div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Extension</th>
-          <th>File</th>
-          <th>Action</th>
-          <th><button type="button" class="btn btn-default btn-md" ><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add ServiceFiles</button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let files of extnFiles">
-          <td *ngIf="!files.edit && !files.add">{{files.extension}}</td>
-          <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.extension" ngModel name="addFile" required/></td>        
-          <td *ngIf="!files.edit && !files.add">{{files.file}}</td>
-          <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.file" ngModel name="addService" required/></td>
-          <td>
-              <button *ngIf="!files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.edit}" (click)="files.originalExtension = files.extension; files.originalFiles=files.file; updateFiles(files); files.edit = !files.edit;" [disabled]="!files.extension">{{files.edit
-                ? 'Update':'Edit' }}</button>
-                <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;" [disabled]="!files.service">Save</button>
-              <button class="btn btn-danger" *ngIf="files.edit || files.add" (click)="cancelClick(files)">Cancel</button>
-            </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>  -->
-  <p>extensinFiles</p>
+<!-- Table Code -->
+<div class="reportscroll">
+  <div class="static">
+    <div class="fix">
+      <a routerLink="../extensions"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extensions</a>&nbsp;&nbsp;
+      <a routerLink="../filetypes"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</a>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Extension</th>
+        <th>File</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let files of extnFilesArr">
+        <td *ngIf="!files.edit && !files.add">{{files.extension}}</td>
+        <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.extension"
+            ngModel name="addExtension" required /></td>
+        <td *ngIf="!files.edit && !files.add">{{files.file}}</td>
+        <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.file" ngModel
+            name="addFile" required /></td>
+        <td>
+          <button *ngIf="!files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.edit}" (click)="files.originalExtension = files.extension; files.originalFiles=files.file; updateFiles(files); files.edit = !files.edit;"
+            [disabled]="!files.extension">{{files.edit
+            ? 'Update':'Edit' }}</button>
+          <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;"
+            [disabled]="!files.service">Save</button>
+          <button class="btn btn-danger" *ngIf="files.edit || files.add" (click)="cancelClick(files)">Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Drop Down Code -->
+<div>
+  <div>
+    <div class="form-group">
+      <label for="filetype" class="control-label col-sm-2">Select FileType:</label>
+      <div class="col-xs-4">
+        <select name="fileTypes" id="file_type" class="form-control" [(ngModel)]="fileTypes">
+          <option *ngFor="let extFile of extnFilesArr" [value]="extFile.filetypeId">{{extFile.file}}</option>
+          <option value="0" selected>Please Select a FileType</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="extnType" class="control-label col-sm-2">Select Extension:</label>
+    <div class="col-xs-4">
+      <select name="extnType" id="extn_Type" class="form-control" [(ngModel)]="extnType">
+        <option value="0" selected>Please Select a Extension Type</option>
+        <option *ngFor="let extn of extnTypeArr" [value]="extn.extensionId">{{extn.extension}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="form-group col-sm-offset-5">
+  <br /><br /><br />
+  <button class="btn btn-primary">Save</button>
+</div>

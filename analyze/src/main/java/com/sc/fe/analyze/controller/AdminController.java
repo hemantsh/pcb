@@ -5,11 +5,13 @@
  */
 package com.sc.fe.analyze.controller;
 
+import com.sc.fe.analyze.data.entity.ExtensionFileType;
 import com.sc.fe.analyze.data.entity.Extensions;
 import com.sc.fe.analyze.data.entity.FileTypes;
 import com.sc.fe.analyze.data.entity.Report;
 import com.sc.fe.analyze.data.entity.ServiceFiles;
 import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.service.ExtensionFileService;
 import com.sc.fe.analyze.service.FileExtensionService;
 import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
@@ -44,6 +46,8 @@ public class AdminController {
     private ServiceFilesServices serviceFileservice;
     @Autowired
     private ReportServices reportServices;
+    @Autowired
+    private ExtensionFileService extnFileService;
     
     //Extension Services
     @GetMapping(path="/extensions")
@@ -123,7 +127,23 @@ public class AdminController {
     public List<ServiceFiles> retriveServiceFiles(@PathVariable("id")int service_id){
         return serviceFileservice.getFilesByService(service_id);
     }
-    
+    //ExtensionFileServices
+    @GetMapping(path="/extensionfiles")
+    public List<ExtensionFileType> getExtensionFiles(){
+        return extnFileService.findAll();
+    }
+    @PostMapping(path="/extensionfiles/create")
+    public void createExtensionFiles(@RequestBody ExtensionFileType exFT){
+         extnFileService.save(exFT);
+    }
+    @PostMapping(path="/extensionfiles/update")
+    public void updateExtensionFiles(@RequestBody ExtensionFileType exFT){
+        extnFileService.save(exFT);
+    }
+    @GetMapping(path="/extensionfiles/retrive/{id}")
+    public List<ExtensionFileType> getExtensionFilesById(@PathVariable("id") int extnId){
+        return extnFileService.getExtenFileTypeById(extnId);
+    }
     
     //Report Services
     
