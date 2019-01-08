@@ -142,6 +142,8 @@ public class AdminController {
     }
     @GetMapping(path="/extensionfiles/retrive/{id}")
     public List<ExtensionFileType> getExtensionFilesById(@PathVariable("id") int extnId){
+        //return extnFileService.getExtenFileTypeById(extnId);
+        //return extnFileService.getExtenFileTypeById(extnId);
         return extnFileService.getExtenFileTypeById(extnId);
     }
     
