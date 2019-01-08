@@ -1,12 +1,64 @@
 <!-- Table Code -->
-<div class="reportscroll">
+
   <div class="static">
     <div class="fix">
-      <a routerLink="../extensions"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extensions</a>&nbsp;&nbsp;
-      <a routerLink="../filetypes"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</a>
+      
+        <a routerLink="../extensions"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extensions</a>&nbsp;&nbsp;
+        <a routerLink="../filetypes"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</a>
     </div>
   </div>
-  <table class="table">
+<!-- Drop Down Code -->
+<div class="new-div">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-12">
+    <label for="filetype" class="control-label">Select FileType:</label>
+      <select id="file_type" class="form-control" [(ngModel)]="fileTypes" (change)="onSelect(fileTypes)">
+        <option *ngFor="let extFile of extnFilesArr" [value]="extFile.filetypeId">{{extFile.file}}</option>
+        <option value="0" selected>Please Select a FileType</option>
+      </select>
+      </div>
+  </div>
+  <div class="row">
+    <div class="reportscroll col-md-12">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Extension</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let files of filterTypeArr">
+                <td>{{files.extension}}</td>
+                <td>
+                  <!-- <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;"
+                    [disabled]="!files.service">Save</button> -->
+                  <button class="btn btn-danger btn-md" (click)="cancelClick(files)"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <label for="extnType" class="control-label">Select Extension:</label>
+            <select multiple id="extn_Type" class="form-control" [(ngModel)]="extnType">
+              <option value="0" selected>Please Select a Extension Type</option>
+              <option *ngFor="let extn of extnTypeArr" [value]="extn.extensionId">{{extn.extension}}</option>
+            </select>
+      </div>
+  </div>
+  </div>
+  <div class="form-group btn-center">
+      <button class="btn btn-primary">Save</button>
+    </div>
+</div>
+
+
+
+  <!-- <table class="table">
     <thead>
       <tr>
         <th>Extension</th>
@@ -32,33 +84,4 @@
         </td>
       </tr>
     </tbody>
-  </table>
-</div>
-<!-- Drop Down Code -->
-<div>
-  <div>
-    <div class="form-group">
-      <label for="filetype" class="control-label col-sm-2">Select FileType:</label>
-      <div class="col-xs-4">
-        <select name="fileTypes" id="file_type" class="form-control" [(ngModel)]="fileTypes">
-          <option *ngFor="let extFile of extnFilesArr" [value]="extFile.filetypeId">{{extFile.file}}</option>
-          <option value="0" selected>Please Select a FileType</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="extnType" class="control-label col-sm-2">Select Extension:</label>
-    <div class="col-xs-4">
-      <select name="extnType" id="extn_Type" class="form-control" [(ngModel)]="extnType">
-        <option value="0" selected>Please Select a Extension Type</option>
-        <option *ngFor="let extn of extnTypeArr" [value]="extn.extensionId">{{extn.extension}}</option>
-      </select>
-    </div>
-  </div>
-</div>
-<div class="form-group col-sm-offset-5">
-  <br /><br /><br />
-  <button class="btn btn-primary">Save</button>
-</div>
+  </table> -->

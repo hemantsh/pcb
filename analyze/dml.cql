@@ -18,6 +18,21 @@ INSERT into file_types (id,type) VALUES (12,'Assembly Drawing');
 INSERT into file_types (id,type) VALUES (13,'Layer Sequence');
 INSERT into file_types (id,type) VALUES (14,'BOM');
 INSERT into file_types (id,type) VALUES (15, 'XY');
+INSERT into file_types (id,type) VALUES (16, 'JPG');
+INSERT into file_types (id,type) VALUES (17, 'Internal Plane Layers');
+INSERT into file_types (id,type) VALUES (18, 'Readme');
+INSERT into file_types (id,type) VALUES (19, 'Top Paste');
+INSERT into file_types (id,type) VALUES (20, 'Bot Paste');
+INSERT into file_types (id,type) VALUES (21, 'Internal Signal Layers');
+INSERT into file_types (id,type) VALUES (22, 'Gerber Drawings');
+INSERT into file_types (id,type) VALUES (23, 'EIA NC Drill File');
+
+
+
+
+
+
+
 
 
  	
@@ -79,6 +94,29 @@ INSERT into extensions (id,name) VALUES (24, 'gp1');
 INSERT into extensions (id,name) VALUES (25, 'g1');
 INSERT into extensions (id,name) VALUES (26, 'gp2');
 INSERT into extensions (id,name) VALUES (27, 'pdf');
+INSERT into extensions (id,name) VALUES (28, 'jpeg');
+INSERT into extensions (id,name) VALUES (29, 'gtp');
+INSERT into extensions (id,name) VALUES (30, 'gbp');
+INSERT into extensions (id,name) VALUES (31, 'gm');
+INSERT into extensions (id,name) VALUES (32, 'gd');
+INSERT into extensions (id,name) VALUES (33, 'gg');
+INSERT into extensions (id,name) VALUES (34, 'drl');
+INSERT into extensions (id,name) VALUES (35, 'tap');
+INSERT into extensions (id,name) VALUES (36, 'npt');
+INSERT into extensions (id,name) VALUES (37, 'bol');
+INSERT into extensions (id,name) VALUES (38, 'in');
+INSERT into extensions (id,name) VALUES (39, 'spt');
+INSERT into extensions (id,name) VALUES (40, 'spb');
+INSERT into extensions (id,name) VALUES (41, 'asb');
+INSERT into extensions (id,name) VALUES (42, 'ast');
+INSERT into extensions (id,name) VALUES (43, 'fab');
+INSERT into extensions (id,name) VALUES (44, 'gtm');
+INSERT into extensions (id,name) VALUES (45, 'gbm');
+INSERT into extensions (id,name) VALUES (46, 'gtd');
+INSERT into extensions (id,name) VALUES (47, 'dim');
+INSERT into extensions (id,name) VALUES (48, 'i');
+INSERT into extensions (id,name) VALUES (49, 'crc');
+INSERT into extensions (id,name) VALUES (50, 'crs');
 
 
  
