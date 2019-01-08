@@ -7,6 +7,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @JsonInclude(Include.NON_EMPTY)
 public class FileDetails implements Serializable {
@@ -20,17 +23,16 @@ public class FileDetails implements Serializable {
 	private String name;
 	private String version;
 	private String fileFormat; //Gerber, odb, drill
-	private Map<String, String> attributes; //Attributes in key:value form
+	private Map<String,String> attributes; //Attributes in key:value form
 	
-	private String[] purposeType;
+   	private String[] purposeType;
 	private boolean valid;
 	private Date modifiedDate;
 	private String fileSize;
 	
 	private List<String> parserNotes;
 	
-
-	/**
+        /**
 	 * @return the projectId
 	 */
 	public String getProjectId() {
@@ -138,12 +140,20 @@ public class FileDetails implements Serializable {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public Map<String, String> getAttributes() {
-		return attributes;
+	/*public Map<String,Map<String,String>> getfileAttributes() {
+		return attrFile;
 	}
 
-	public void setAttributes(Map<String, String> attributes) {
-		this.attributes = attributes;
+	public void setfileAttributes(Map<String,String> attributes,String Name)
+        {
+                this.attrFile.put(Name, attributes);
+                System.out.println(this.attrFile);
+        }*/
+	public Map<String,String> getAttributes()
+        {
+		return attributes;
 	}
-	
+        public void setAttributes(Map<String,String> attributes) {
+		this.attributes=attributes;
+	}
 }

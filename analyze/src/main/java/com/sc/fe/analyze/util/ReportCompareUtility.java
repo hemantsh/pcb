@@ -40,7 +40,7 @@ public class ReportCompareUtility {
 		fileNameSet.stream().forEach( fileName -> {
 			
 			FileDetails newFD = newReport.getFileDetails(fileName);
-			FileDetails oldFD = oldReport.getFileDetails(fileName);
+                        FileDetails oldFD = oldReport.getFileDetails(fileName);
 			
 			if( newFD == null && oldFD != null) {
 				differences.put("File Removed", fileName);
