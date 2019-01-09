@@ -11,6 +11,7 @@ export class ExtenfilesComponent implements OnInit {
   extnFilesArr = [];
   extnType=0;
   extnTypeArr=[];
+  filterTypeArr=[];
 
   constructor(private fileService:FileService) { }
 
@@ -24,19 +25,20 @@ export class ExtenfilesComponent implements OnInit {
       .subscribe(
         (response: Response) => {
           this.extnFilesArr = response.json();
-          console.log("Data is fetching...", this.extnFilesArr);
+          this.extnTypeArr=response.json();
+           console.log("Data is fetching...", this.extnFilesArr);
         },
         (error) => console.log(error)
       );
 
-      this.fileService.getExtnFiles()
-      .subscribe(
-        (response: Response) => {
-          this.extnTypeArr = response.json();
-          console.log("Data is fetching...", this.extnTypeArr);
-        },
-        (error) => console.log(error)
-      );
+      // this.fileService.getExtnFiles()
+      // .subscribe(
+      //   (response: Response) => {
+      //     this.extnTypeArr = response.json();
+      //     console.log("Data is fetching...", this.extnTypeArr);
+      //   },
+      //   (error) => console.log(error)
+      // );
   }
 
 
@@ -53,10 +55,20 @@ export class ExtenfilesComponent implements OnInit {
 
     }
   }
-
-  addExtn() {
-    this.extnTypeArr.unshift({ id: this.extnTypeArr.length + 1, extension: null, file:null ,add: true });
+  onSelect(fileTypes){
+    console.log(fileTypes);
+    this.fileService.getExtnFiletypesById(fileTypes)
+      .subscribe(
+        (response: Response) => {
+          this.filterTypeArr = response.json();
+           console.log("Data is fetching...", this.filterTypeArr);
+        },
+        (error) => console.log(error)
+      );
   }
+  // addExtn() {
+  //   this.extnTypeArr.unshift({ id: this.extnTypeArr.length + 1, extension: null, file:null ,add: true });
+  // }
 
   cancelClick(files) {
     if (files.add) {

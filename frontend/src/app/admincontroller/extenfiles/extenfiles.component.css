@@ -1,6 +1,6 @@
 .reportscroll{
     overflow: scroll;
-    height: 500px;
+    height: 300px;
 }
 .fix{
    position:fixed;
@@ -14,4 +14,12 @@
 }
 .table{
     margin-top: 50px;    
+}
+.new-div .form-group{
+    margin-bottom: 5px;
+    overflow: hidden;
+    padding-top: 70px;
+}
+.btn-center{
+    text-align: center;
 }

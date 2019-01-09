@@ -25,7 +25,7 @@ export class FileService{
             return this.http.get('http://localhost:8080/pcb/admin/filetypes');
         }
         updateFiletypes(filetypes){
-            return this.http.post('http://localhost:8080/pcb/admin/services/update',filetypes);
+            return this.http.post('http://localhost:8080/pcb/admin/filetypes/update',filetypes);
         }
         getReport(){
             return this.http.get('http://localhost:8080/pcb/admin/report');
@@ -34,12 +34,15 @@ export class FileService{
             return this.http.get('http://localhost:8080/pcb/admin/servicefiles');
         }
         updateServiceFiles(servicefiles){
-            return this.http.post('http://localhost:8080/pcb/admin/services/update',servicefiles);
+            return this.http.post('http://localhost:8080/pcb/admin/servicefiles/update',servicefiles);
         }
         getExtnFiles(){
             return this.http.get('http://localhost:8080/pcb/admin/extensionfiles');
         }
         updateExtnFiles(exFT){
             return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/update',exFT);
+        }
+        getExtnFiletypesById(id){
+            return this.http.get(`http://localhost:8080/pcb/admin/extensionfiles/retrive/${id}`)
         }
 }

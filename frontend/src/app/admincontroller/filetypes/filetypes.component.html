@@ -18,7 +18,7 @@
         <td>
           <button *ngIf="!fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.edit}" (click)="fileType.originalData = fileType.type; updateFileType(fileType); fileType.edit = !fileType.edit;" [disabled]="!fileType.type">{{fileType.edit
             ? 'Update':'Edit' }}</button>
-            <button *ngIf="fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.add}" (click)="updateFileType(fileType); fileType.add = !fileType.add;" [disabled]="!fileType.name">Save</button>
+            <button *ngIf="fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.add}" (click)="updateFileType(fileType); fileType.add = !fileType.add;" [disabled]="!fileType.type">Save</button>
           <button class="btn btn-danger" *ngIf="fileType.edit || fileType.add" (click)="cancelClick(fileType)">Cancel</button>
         </td>
       </tr>
