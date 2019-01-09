@@ -141,23 +141,7 @@ public class GerberFileProcessingUtil {
 		return filePurposeToNameMapping;
 	}
         // Below method will be call if line starts with Layer
-        public static HashMap<String, String> processODB(Integer row,String line) 
-        {
-            HashMap<String, String> returnMap = new HashMap<String, String>();
-            String[] splitedValue = line.trim().split("=",2);
-            //System.out.println(splitedValue[0]+"ddd"+splitedValue[1]+"Bvalue");
-            if(splitedValue[0].equals("ROW"))
-            {
-                splitedValue[1]=row.toString();
-                returnMap.put(splitedValue[0],row.toString());
-            }
-            else
-                  returnMap.put(splitedValue[0], splitedValue[1]);                    
-                       
-           
-          //  System.out.println("Key is:" +splitedValue[0] +"  Value is:"+ splitedValue[1]);
-            return returnMap;
-        }
+       
 
 	public static HashMap<String, String> processLine(String line) {
 		HashMap<String, String> attributes = new HashMap<>();

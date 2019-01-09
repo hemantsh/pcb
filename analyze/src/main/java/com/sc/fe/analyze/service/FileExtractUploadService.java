@@ -13,23 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.repo.ReportRepo;
+import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
-
 import com.sc.fe.analyze.util.ReportUtility;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import static java.lang.System.exit;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 @Service
 public class FileExtractUploadService {
@@ -74,7 +69,7 @@ public class FileExtractUploadService {
 				baseService.getExtensionToFileMapping(), 
 				foundFiles);
                 
-        GerberFileProcessingUtil.findLayerInformation(report, baseService.getExtensionToFileMapping(), folder);
+        //GerberFileProcessingUtil.findLayerInformation(report, baseService.getExtensionToFileMapping(), folder);
                 
 		if(requiredFiles.size() != foundFiles.size()) {
 			report.setValidationStatus("Invalid design.");
@@ -88,8 +83,9 @@ public class FileExtractUploadService {
 			report.setValidationStatus("Good design with all required files.");
 		}
                 
-             
-         HashMap<String, String> Mapping=ODBProcessing.processODB(folder);
+         
+         HashMap<String, String> mapping=ODBProcessing.processODB(folder);
+    
                 
                 
                 report.setFilePurposeToNameMapping(filePurposeToNameMapping);
