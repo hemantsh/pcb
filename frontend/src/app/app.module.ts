@@ -15,8 +15,7 @@ import { ServicefilesComponent } from './admincontroller/servicefiles/servicefil
 import { FiletypesComponent } from './admincontroller/filetypes/filetypes.component';
 import { ReportComponent } from './admincontroller/report/report.component';
 import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
-// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-// import {MatTableModule} from '@angular/material/table';
+import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
 
 const appRoutes: Routes = [
   { path: '', component: CustomerinputsComponent ,
@@ -31,7 +30,7 @@ const appRoutes: Routes = [
       {path:"services",component:ServicesComponent},
       {path:"filetypes",component:FiletypesComponent},
       {path:"servicefiles",component:ServicefilesComponent},
-      {path:"extensionfiles",component:ExtenfilesComponent},
+      {path:"extensionfiles",component:ExtenfilesComponent,canDeactivate:[CanDeactivateGuard]},
       {path:"report",component:ReportComponent}
     ]
   }
@@ -46,7 +45,7 @@ const appRoutes: Routes = [
     ServicefilesComponent,
     FiletypesComponent,
     ReportComponent,
-    ExtenfilesComponent   
+    ExtenfilesComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +54,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [FileService],
+  providers: [FileService,CanDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

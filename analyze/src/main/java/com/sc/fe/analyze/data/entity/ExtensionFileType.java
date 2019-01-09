@@ -31,10 +31,10 @@ public class ExtensionFileType {
 		this.getKey().setExtensionId(extensionId);
 	}
 	public int getFiletypeId() {
-		return getKey().getExtensionId();
+		return getKey().getFiletypeId();
 	}
 	public void setFiletypeId(int filetypeId) {
-		this.getKey().setExtensionId(filetypeId);
+		this.getKey().setFiletypeId(filetypeId);
 	}
 	public ExtensionFilePK getKey() {
 		if(key == null) {

@@ -13,8 +13,8 @@
     <div class="row">
       <div class="col-md-12">
     <label for="filetype" class="control-label">Select FileType:</label>
-      <select id="file_type" class="form-control" [(ngModel)]="fileTypes" (change)="onSelect(fileTypes)">
-        <option *ngFor="let extFile of extnFilesArr" [value]="extFile.filetypeId">{{extFile.file}}</option>
+      <select id="file_type" class="form-control" [(ngModel)]="selectedFileTypeId" (change)="onFileTypeSelect(selectedFileTypeId)">
+        <option *ngFor="let file of fileTypeArr" [value]="file.filetypeId">{{file.file}}</option>
         <option value="0" selected>Please Select a FileType</option>
       </select>
       </div>
@@ -29,12 +29,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let files of filterTypeArr">
-                <td>{{files.extension}}</td>
+              <tr *ngFor="let extension of extensionsArr">
+                <td>{{extension.extension}}</td>
                 <td>
-                  <!-- <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;"
-                    [disabled]="!files.service">Save</button> -->
-                  <button class="btn btn-danger btn-md" (click)="cancelClick(files)"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                  <button class="btn btn-danger btn-md" (click)="removeExtension(extension)"><span class="glyphicon glyphicon-remove-sign"></span></button>
                 </td>
               </tr>
             </tbody>
@@ -44,15 +42,15 @@
   <div class="row">
       <div class="col-md-12">
           <label for="extnType" class="control-label">Select Extension:</label>
-            <select multiple id="extn_Type" class="form-control" [(ngModel)]="extnType">
-              <option value="0" selected>Please Select a Extension Type</option>
-              <option *ngFor="let extn of extnTypeArr" [value]="extn.extensionId">{{extn.extension}}</option>
+            <select id="extn_Type" class="form-control" [(ngModel)]="selectedExtensionId" (change)="onExtensionSelect(selectedExtensionId)">
+              <option value="0" >Please Select a Extension Type</option>
+              <option *ngFor="let extn of extensionsList" [value]="extn.id" >{{extn.name}}</option>
             </select>
       </div>
   </div>
   </div>
   <div class="form-group btn-center">
-      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-primary" (click)="onSaveClick()">Save</button>
     </div>
 </div>
 
