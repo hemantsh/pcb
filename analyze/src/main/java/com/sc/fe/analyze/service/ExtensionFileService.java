@@ -29,9 +29,7 @@ public class ExtensionFileService {
     }
     
     public List<ExtensionFileType> getExtenFileTypeById(Integer id){
-    //return extensionFileRepo.findByKeyFiletypeId(id);
-    //return extensionFileRepo.findByKeyFiletypeId(id);
-    return extensionFileRepo.findByKeyExtensionId(id);
+    return extensionFileRepo.findByKeyFiletypeId(id);
     }
     
 }

@@ -1,83 +1,114 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
-import {Response} from '@angular/http';
+import { Response } from '@angular/http';
+import { Router } from '@angular/router';
+import { CanComponentDeactivate } from './candeactivate-guard.service';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-extenfiles',
   templateUrl: './extenfiles.component.html',
   styleUrls: ['./extenfiles.component.css']
 })
-export class ExtenfilesComponent implements OnInit {
-  fileTypes=0;
-  extnFilesArr = [];
-  extnType=0;
-  extnTypeArr=[];
-  filterTypeArr=[];
 
-  constructor(private fileService:FileService) { }
+
+export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
+  selectedFileTypeId = 0;
+  selectedExtensionId = 0;
+
+  fileTypeArr = [];
+  extensionsList = [];
+
+  extensionsArr = [];
+  changesSaved = false;
+  
+
+  constructor(private fileService: FileService, private router: Router) { }
 
   ngOnInit() {
-   this.retriveExtnFiles();
+    this.retriveFilesTypes();
+    this.retriveExtension();
   }
 
-  retriveExtnFiles() {
-
+  /** 
+   * To reterive file types
+  */
+  retriveFilesTypes() {
     this.fileService.getExtnFiles()
       .subscribe(
         (response: Response) => {
-          this.extnFilesArr = response.json();
-          this.extnTypeArr=response.json();
-           console.log("Data is fetching...", this.extnFilesArr);
+          this.fileTypeArr = response.json();
+          console.log("Data is fetching...", this.fileTypeArr);
         },
         (error) => console.log(error)
-      );
-
-      // this.fileService.getExtnFiles()
-      // .subscribe(
-      //   (response: Response) => {
-      //     this.extnTypeArr = response.json();
-      //     console.log("Data is fetching...", this.extnTypeArr);
-      //   },
-      //   (error) => console.log(error)
-      // );
+      ); 
   }
 
+  /** 
+   * To reterive extensions
+  */
 
-   updateFiles(files) {
-    if (files.edit || files.add ) {
-      console.log(files.edit);
-      this.fileService.updateExtnFiles(files)
-        .subscribe(
-          (response: Response) => {
-            console.log("Your data is updated", response);
-          },
-          (error) => console.log(error)
-        );
-
-    }
-  }
-  onSelect(fileTypes){
-    console.log(fileTypes);
-    this.fileService.getExtnFiletypesById(fileTypes)
+  retriveExtension(){
+    this.fileService.getExtensions()
       .subscribe(
         (response: Response) => {
-          this.filterTypeArr = response.json();
-           console.log("Data is fetching...", this.filterTypeArr);
+          this.extensionsList = response.json();
+          console.log("Data is fetching...", this.extensionsList);
         },
         (error) => console.log(error)
       );
   }
-  // addExtn() {
-  //   this.extnTypeArr.unshift({ id: this.extnTypeArr.length + 1, extension: null, file:null ,add: true });
-  // }
 
-  cancelClick(files) {
-    if (files.add) {
-      this.extnFilesArr.shift();
-    } else {
-      files.edit = false;
-      files.extension = files.originalExtension;
-      files.file= files.originalFiles;
-    }
+  onFileTypeSelect(fileTypeId) {
+    this.fileService.getExtnFiletypesById(fileTypeId)
+      .subscribe(
+        (response: Response) => {
+          this.extensionsArr = response.json();
+          console.log("FilterTypeArr Data is fetching...", this.extensionsArr);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+
  
+
+  onExtensionSelect(id) {
+    console.log("selected extension id", id);
+    if(this.extensionsArr && this.extensionsArr.findIndex(ext => ext.extensionId == id) > -1){
+      this.selectedExtensionId = 0;
+    }else if(this.selectedFileTypeId > 0){
+      let selectedExtension  = this.extensionsList.filter(ext => ext.id == id)[0];
+      let selectedFileType = this.fileTypeArr.filter(file => file.filetypeId == this.selectedFileTypeId)[0];
+      this.extensionsArr.push({key: {extensionId : selectedExtension.id, filetypeId: selectedFileType.filetypeId}, extension : selectedExtension.name, extensionId : selectedExtension.id, file: selectedFileType.file, filetypeId : selectedFileType.filetypeId})
+
+    }
+  }
+
+
+  removeExtension(extension){
+    console.log("remove Extension", extension);
+    let index = this.extensionsArr.indexOf(extension);
+    console.log("index", index);
+    this.extensionsArr.splice(index,1);
+  }
+
+  onSaveClick(){
+    this.fileService.saveExtensionFile(this.extensionsArr)
+      .subscribe(
+        (response: Response) => {console.log("this.ext",response);
+          this.changesSaved=true;
+      },
+        (error) => console.log(error)
+      );
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!(this.changesSaved)) {
+      return confirm("Do you want to discard the changes?");
+    }
+    else {
+      return true;
+    }
   }
 }

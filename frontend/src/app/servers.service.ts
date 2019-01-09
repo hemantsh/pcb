@@ -45,4 +45,7 @@ export class FileService{
         getExtnFiletypesById(id){
             return this.http.get(`http://localhost:8080/pcb/admin/extensionfiles/retrive/${id}`)
         }
+        saveExtensionFile(temp:any[]){
+                return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/create',temp);
+        }
 }

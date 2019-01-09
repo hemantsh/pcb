@@ -38,7 +38,8 @@ CREATE KEYSPACE fileexchange
  	file text,
  	PRIMARY KEY ( extension_id, filetype_id)
  );
- 
+ CREATE INDEX on extension_file (filetype_id); 
+
  CREATE INDEX on extension_file (extension);
  
  CREATE TABLE report (

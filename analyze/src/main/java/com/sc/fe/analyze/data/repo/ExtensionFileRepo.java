@@ -12,6 +12,5 @@ import org.springframework.data.cassandra.repository.Query;
 @Repository
 public interface ExtensionFileRepo extends CassandraRepository <ExtensionFileType, ExtensionFilePK > {
 	List<ExtensionFileType> findByKeyExtensionId(final int extensionId);
-        @Query("select * from extension_file where filetype_id=?0 ALLOW FILTERING;")
         List<ExtensionFileType> findByKeyFiletypeId(final int filetypeId);
 }
