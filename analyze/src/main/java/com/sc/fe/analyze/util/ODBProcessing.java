@@ -5,9 +5,6 @@
  */
 package com.sc.fe.analyze.util;
 
-import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.LayersInformation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -17,7 +14,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.LayersInformation;
 
 /**
  *
@@ -25,15 +24,17 @@ import java.util.Map;
  */
 public class ODBProcessing {   
                 
-           public static HashMap<String, String> processODB(Path folder) 
+           public static List<FileDetails> processODB(Path folder) 
            {                       
-               List<LayersInformation> layerInfo = new ArrayList<>();
-               Integer counter=0;   
+               LayersInformation layerInfo = new LayersInformation();
+               List<FileDetails> fileDetlList = new ArrayList<FileDetails>();
+               //TODO: return list FileDetails
+               Integer counter=0;   //NOT being used
                String folderName="";
                HashMap<String, String> results = new HashMap<String, String>();
              try
              {
-                Path odbfilepath = Paths.get(folder+ File.separator + "\\odb\\matrix\\matrix").toAbsolutePath().normalize();
+                Path odbfilepath = Paths.get(folder+ File.separator + "odb"+File.separator+"matrix"+File.separator+"matrix").toAbsolutePath().normalize();
                 BufferedReader br = new BufferedReader(new FileReader(odbfilepath.toFile())); 
                 String line;
                 //process the matrix file
@@ -72,38 +73,46 @@ public class ODBProcessing {
                          }
                          if(results.containsKey("ROW")) 
                          {
-                           // System.out.println("Layer Information"+results);
-                            HashMap attr=processAttribute(folder,results.get("NAME"),folderName);                            
-                            if(attr.isEmpty())
-                            {
-                                counter=counter-1;                                 
-                            }
-                            else
-                            {   
-                               layerInfo.add(new LayersInformation(results.get("ROW"),results.get("CONTEXT"),results.get("TYPE"),results.get("NAME"),results.get("POLARITY"),results.get("START_NAME"),results.get("END_NAME"),results.get("OLD_NAME")));                               
-                             }
+                        	 FileDetails fd = processAttribute(folder,results.get("NAME"),folderName);
+                        	 if(fd != null) {
+	                        	 
+                        		 fileDetlList.add( fd );
+	                        	 
+	                            if( fd.getAttributes() == null || fd.getAttributes().isEmpty()) {
+	                                counter=counter-1;                                 
+	                            }
+	                            else {   
+	                               layerInfo = new LayersInformation(results.get("ROW"),
+	                            		   results.get("CONTEXT"),results.get("TYPE"),
+	                            		   results.get("NAME"),results.get("POLARITY"),
+	                            		   results.get("START_NAME"),results.get("END_NAME"),
+	                            		   results.get("OLD_NAME"));    
+	                               
+	                               fd.setLayerInfo(layerInfo);
+	                             }
+                        	 }
+                            //Set the layerinfo in fileDetail
                          }            
                     }
                  } 
+                br.close();
                 //Print on console layerInformations from layerInfo list
                 System.out.println("ROW CONTEXT   TYPE         NAME       POLARITY    STARTNAME   ENDNAME     OLDNAME");
-                for (LayersInformation t : layerInfo) {
-			System.out.println(t.row+"  "+t.context+ "  "+t.type + "    " +t.name + "   "+ t.polarity + "   "+ t.start_name 
-                        + "   "+t.end_name+ "   "+t.old_name);
+                System.out.println(layerInfo);
 		}                
              
-               }
+               //}
                catch(IOException e)
                {
                    e.printStackTrace();
                }
-                return results;
+                return fileDetlList;
            }
        
-         private static HashMap<String, String> processAttribute(Path folder,String layerFolderName,String topFolder) 
+         private static FileDetails processAttribute(Path folder,String layerFolderName,String topFolder) 
          {
-            HashMap<String, String> returnMap = new HashMap<>();
-            FileDetails attrInfo=new FileDetails();
+            HashMap<String, String> fileAttributes = new HashMap<>();
+            FileDetails fileDetail = new FileDetails(); //RETURN this
             try
             {
                 //Process the attrFile Information
@@ -121,18 +130,20 @@ public class ODBProcessing {
                             break;
                         }                   
                         String[] splitValue = st.replaceFirst(".", "").split("=",2); 
-                        returnMap.put(splitValue[0],splitValue[1] );                                                                
+                        fileAttributes.put(splitValue[0],splitValue[1] );                                                                
                      }
                      //System.out.println("Values of attrList file - "+returnMap + "\n");
                      //stored the information in FileDetails attribute object
-                     attrInfo.setAttributes(returnMap);
+                     fileDetail.setAttributes(fileAttributes);
+                     fileDetail.setName(file.getName());
+                     brr.close();
                 }
             }                
             catch(IOException e)
             {
                 e.printStackTrace();
             }
-            return returnMap;
+            return fileDetail;
          }
          
         private static HashMap<String, String> processLayer(Integer row,String line) 

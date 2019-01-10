@@ -13,6 +13,9 @@ public class LayersInformation{
    public String polarity;
    public String start_name,end_name,old_name;
 
+   public LayersInformation() {
+	   
+   }
     public LayersInformation(String layer, String fileName, String polarity) {
        this.layerSequence=Integer.parseInt(layer);
        this.fileNamee=fileName;
@@ -32,4 +35,7 @@ public class LayersInformation{
     }
 
 
+    public String toString() {
+    	return row+"  "+context+ "  "+type + "    " +name + "   "+ polarity + "   "+ start_name  + "   "+end_name+ "   "+old_name;
+    }
 }
