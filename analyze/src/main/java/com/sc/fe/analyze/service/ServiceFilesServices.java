@@ -30,6 +30,9 @@ public class ServiceFilesServices {
     public void save(ServiceFiles sf){
     serviceFileRepo.save(sf);
     }
+    public void saveAll(List<ServiceFiles> sf){
+        serviceFileRepo.saveAll(sf);
+    }
     public List<ServiceFiles> getFilesByService(Integer service_id){
         
     return serviceFileRepo.findByKeyServiceId(service_id);

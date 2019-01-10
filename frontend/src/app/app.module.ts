@@ -16,6 +16,7 @@ import { FiletypesComponent } from './admincontroller/filetypes/filetypes.compon
 import { ReportComponent } from './admincontroller/report/report.component';
 import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
 import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
+import {CanServiceFilesDeactivateGuard} from './admincontroller/servicefiles/candeactivate-servicefilesguard.service';
 
 const appRoutes: Routes = [
   { path: '', component: CustomerinputsComponent ,
@@ -29,7 +30,7 @@ const appRoutes: Routes = [
       {path:"extensions",component:ExtensionsComponent},
       {path:"services",component:ServicesComponent},
       {path:"filetypes",component:FiletypesComponent},
-      {path:"servicefiles",component:ServicefilesComponent},
+      {path:"servicefiles",component:ServicefilesComponent,canDeactivate:[CanServiceFilesDeactivateGuard]},
       {path:"extensionfiles",component:ExtenfilesComponent,canDeactivate:[CanDeactivateGuard]},
       {path:"report",component:ReportComponent}
     ]
@@ -54,7 +55,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [FileService,CanDeactivateGuard],
+  providers: [FileService,CanDeactivateGuard,CanServiceFilesDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

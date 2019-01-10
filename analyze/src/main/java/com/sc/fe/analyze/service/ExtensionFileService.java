@@ -27,7 +27,9 @@ public class ExtensionFileService {
     public void save(ExtensionFileType exFT){
         extensionFileRepo.save(exFT);
     }
-    
+    public void saveAll(List<ExtensionFileType> exFT){
+        extensionFileRepo.saveAll(exFT);
+    }
     public List<ExtensionFileType> getExtenFileTypeById(Integer id){
     return extensionFileRepo.findByKeyFiletypeId(id);
     }

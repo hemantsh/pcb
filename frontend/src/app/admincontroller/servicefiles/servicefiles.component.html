@@ -1,29 +1,56 @@
-<div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>File</th>
-        <th>Service</th>
-        <th>Action</th>
-        <th><button type="button" class="btn btn-default btn-md" ><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add ServiceFiles</button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let files of serviceFiles">
-        <td *ngIf="!files.edit && !files.add">{{files.file}}</td>
-        <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.file" ngModel name="addFile" required/></td>        
-        <td *ngIf="!files.edit && !files.add">{{files.service}}</td>
-        <td *ngIf="files.edit || files.add"> <input type="text" class="form-control" [(ngModel)]="files.service" ngModel name="addService" required/></td>
-        <td>
-            <button *ngIf="!files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.edit}" (click)="files.originalService = files.service; files.originalFiles=files.file; updateFiles(files); files.edit = !files.edit;" [disabled]="!files.service">{{files.edit
-              ? 'Update':'Edit' }}</button>
-              <button *ngIf="files.add" class="btn btn-primary" [ngClass]="{'btn-success' : files.add}" (click)="updateFiles(files); files.add = !files.add;" [disabled]="!files.service">Save</button>
-            <button class="btn btn-danger" *ngIf="files.edit || files.add" (click)="cancelClick(files)">Cancel</button>
-          </td>
-      </tr>
+<!-- Table Code -->
 
+<div class="static">
+  <div class="fix">
 
-    </tbody>
-  </table>
-</div> 
+    <a routerLink="../services"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</a>&nbsp;&nbsp;
+    <a routerLink="../filetypes"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</a>
+  </div>
+</div>
+<!-- Drop Down Code -->
+<div class="new-div">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="services" class="control-label">Select Services:</label>
+        <select id="services" class="form-control" [(ngModel)]="selectedServiceId" (change)="onServiceSelect(selectedServiceId)">
+          <option value="0" selected disabled="true">Please Select a Service</option>
+          <option *ngFor="let service of serviceArr" [value]="service.serviceId">{{service.service}}</option>
+
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="reportscroll col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>FileTypes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let filetype of fileTypeArr">
+              <td>{{filetype.file}}</td>
+              <td>
+                <button class="btn btn-danger btn-md" (click)="removeFiletype(filetype)"><span class="glyphicon glyphicon-remove-sign"></span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row pad-top">
+      <div class="col-md-12">
+        <label for="filetypes" class="control-label">Select FileTypes:</label>
+        <select id="file_type" class="form-control" [(ngModel)]="selectedFileTypeId" (change)="onFiletypeSelect(selectedFileTypeId)">
+          <option value="0" disabled="true">Please Select a Filetype</option>
+          <option *ngFor="let filetype of fileTypeList" [value]="filetype.id">{{filetype.type}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="form-group btn-center">
+    <button class="btn btn-primary" (click)="onSaveClick()">Save</button>
+  </div>
+</div>
