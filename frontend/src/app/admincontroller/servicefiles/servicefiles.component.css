@@ -1,3 +1,34 @@
-input.ng-invalid.ng-touched{
-    border:1px solid red ;
-  }
+.reportscroll{
+    overflow: scroll;
+    height: 300px;
+}
+.fix{
+   position: relative;
+   width: 100%;
+   background-color: #fff;
+   padding:10px;
+   border-bottom:1px solid #ddd;
+}
+.static{
+    position: relative;
+}
+.table{
+    margin-top: 50px;    
+}
+.new-div .form-group{
+    margin-bottom: 5px;
+    overflow: hidden;
+    padding-top: 20px;
+}
+.btn-center{
+    text-align: center;
+}
+.pad-top{
+    padding-top:30px; 
+}
+@media only screen and (max-width:767px){
+    
+}
+@media only screen and (min-width:768px) and (max-width:991px){
+
+}

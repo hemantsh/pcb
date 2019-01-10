@@ -21,7 +21,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
 
   extensionsArr = [];
   changesSaved = false;
-  
+
 
   constructor(private fileService: FileService, private router: Router) { }
 
@@ -39,21 +39,23 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
         (response: Response) => {
           this.fileTypeArr = response.json();
           console.log("Data is fetching...", this.fileTypeArr);
+          this.changesSaved=true;
         },
         (error) => console.log(error)
-      ); 
+      );
   }
 
   /** 
    * To reterive extensions
   */
 
-  retriveExtension(){
+  retriveExtension() {
     this.fileService.getExtensions()
       .subscribe(
         (response: Response) => {
           this.extensionsList = response.json();
           console.log("Data is fetching...", this.extensionsList);
+          this.changesSaved=true;
         },
         (error) => console.log(error)
       );
@@ -65,40 +67,44 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
         (response: Response) => {
           this.extensionsArr = response.json();
           console.log("FilterTypeArr Data is fetching...", this.extensionsArr);
+          this.changesSaved=false;
         },
         (error) => console.log(error)
       );
   }
 
 
- 
+
 
   onExtensionSelect(id) {
     console.log("selected extension id", id);
-    if(this.extensionsArr && this.extensionsArr.findIndex(ext => ext.extensionId == id) > -1){
+    if (this.extensionsArr && this.extensionsArr.findIndex(ext => ext.extensionId == id) > -1) {
       this.selectedExtensionId = 0;
-    }else if(this.selectedFileTypeId > 0){
-      let selectedExtension  = this.extensionsList.filter(ext => ext.id == id)[0];
+      alert("This Extension already exists! Please choose another Extension");
+    } else if (this.selectedFileTypeId > 0) {
+      let selectedExtension = this.extensionsList.filter(ext => ext.id == id)[0];
       let selectedFileType = this.fileTypeArr.filter(file => file.filetypeId == this.selectedFileTypeId)[0];
-      this.extensionsArr.push({key: {extensionId : selectedExtension.id, filetypeId: selectedFileType.filetypeId}, extension : selectedExtension.name, extensionId : selectedExtension.id, file: selectedFileType.file, filetypeId : selectedFileType.filetypeId})
-
+      this.extensionsArr.push({ key: { extensionId: selectedExtension.id, filetypeId: selectedFileType.filetypeId }, extension: selectedExtension.name, extensionId: selectedExtension.id, file: selectedFileType.file, filetypeId: selectedFileType.filetypeId })
     }
+    this.changesSaved=false;
   }
 
 
-  removeExtension(extension){
+  removeExtension(extension) {
     console.log("remove Extension", extension);
     let index = this.extensionsArr.indexOf(extension);
     console.log("index", index);
-    this.extensionsArr.splice(index,1);
+    this.extensionsArr.splice(index, 1);
   }
 
-  onSaveClick(){
+  onSaveClick() {
     this.fileService.saveExtensionFile(this.extensionsArr)
       .subscribe(
-        (response: Response) => {console.log("this.ext",response);
-          this.changesSaved=true;
-      },
+        (response: Response) => {
+          console.log("this.ext", response);
+          alert("Your changes have been saved succesfully!");
+          this.changesSaved = true;
+        },
         (error) => console.log(error)
       );
   }
