@@ -7,9 +7,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @JsonInclude(Include.NON_EMPTY)
 public class FileDetails implements Serializable {
@@ -31,6 +28,7 @@ public class FileDetails implements Serializable {
 	private String fileSize;
 	
 	private List<String> parserNotes;
+	private LayersInformation layerInfo;
 	
         /**
 	 * @return the projectId
@@ -156,4 +154,12 @@ public class FileDetails implements Serializable {
         public void setAttributes(Map<String,String> attributes) {
 		this.attributes=attributes;
 	}
+
+		public LayersInformation getLayerInfo() {
+			return layerInfo;
+		}
+
+		public void setLayerInfo(LayersInformation layerInfo) {
+			this.layerInfo = layerInfo;
+		}
 }
