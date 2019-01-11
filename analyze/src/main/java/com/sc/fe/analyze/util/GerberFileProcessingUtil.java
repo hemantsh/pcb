@@ -144,7 +144,10 @@ public class GerberFileProcessingUtil {
 
 	public static HashMap<String, String> processLine(String line) {
 		HashMap<String, String> attributes = new HashMap<>();
-
+                if(line==null && line.isEmpty())
+                {
+                    return attributes;
+                }                
 		if (line.startsWith("G04")) {
 			attributes.putAll(processG04(line));
 		} else if (line.startsWith("%TO")) {
@@ -176,15 +179,16 @@ public class GerberFileProcessingUtil {
 	}
 
 	// Below Code will process the line that has G04
-	private static HashMap<String, String> processG04(String line) {
+	public static HashMap<String, String> processG04(String line) {
                 HashMap<String, String> returnMap = new HashMap<String, String>();
                 if (line == null || line.isEmpty()) {
                 return returnMap;
                 }
+                if (line.startsWith("G04")) {
                 String keyQualifier = null;
                 String[] splitedValue = line.split("[|]");
 
-		for (String currentValue : splitedValue) {
+                for (String currentValue : splitedValue) {
                     if (!currentValue.contains("=")) {
                         continue;
                     }
@@ -213,36 +217,38 @@ public class GerberFileProcessingUtil {
                     }
                     returnMap = tempMap;
                 }
-		return returnMap;
+            }
+	    return returnMap;
 	}
         
 	// Below method will be call if line starts with %TF or %TA or %TO
-	private static HashMap<String, String> processTFTATO(String line,String word) {
+	public static HashMap<String, String> processTFTATO(String line,String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
-                if(line==null || line.isEmpty())
-                {
+                if (line == null || line.isEmpty()) {
                     return returnMap;
                 }
-                String dotword=word+".";
-		// If block will exetues if it is a reserved attribute name otherwise else block will execute
-                if (line.startsWith(dotword)) {
-                    if (line.contains(",")) {
-                        line = line.replace(dotword, "").replace("*%", "");
-                        String[] splitValue = line.split(",", 2);
-                        returnMap.put(splitValue[0], splitValue[1]);
+                String dotword = word + ".";
+                  
+                if (line.startsWith(word)) {
+                    // If block will exetues if it is a reserved attribute name otherwise else block will execute
+                    if (line.startsWith(dotword)) {
+                        if (line.contains(",")) {
+                            line = line.replace(dotword, "").replace("*%", "");
+                            String[] splitValue = line.split(",", 2);
+                            returnMap.put(splitValue[0], splitValue[1]);
+                        } else {
+                            line = line.replace(dotword, "").replace("*%", "");
+                            returnMap.put(line, "");
+                        }
                     } else {
-                        line = line.replace(dotword, "").replace("*%", "");
-                        returnMap.put(line, "");
-                    }
-                }
-                else {
-                    if (line.contains(",")) {
-                        line = line.replace(word, "").replace("*%", "");
-                        String[] splitValue = line.split(",", 2);
-                        returnMap.put(splitValue[0], splitValue[1]);
-                    } else {
-                        line = line.replace(word, "").replace("*%", "");
-                        returnMap.put(line, "");
+                        if (line.contains(",")) {
+                            line = line.replace(word, "").replace("*%", "");
+                            String[] splitValue = line.split(",", 2);
+                            returnMap.put(splitValue[0], splitValue[1]);
+                        } else {
+                            line = line.replace(word, "").replace("*%", "");
+                            returnMap.put(line, "");
+                        }
                     }
                 }
 		return returnMap;
@@ -250,65 +256,73 @@ public class GerberFileProcessingUtil {
 
 	
 	// This code will execute if line starts with %FSLA	 
-	private static HashMap<String, String> processFSLA(String line) {
+	public static HashMap<String, String> processFSLA(String line) {
 		HashMap<String, String> returnMap = new HashMap<>();
                 if (line == null || line.isEmpty()) {
                     return returnMap;
                 }
-                int x, y, star;
-                String Xvalue, Yvalue;
-                x = line.indexOf("X");
-                y = line.indexOf("Y");
-                star = line.indexOf("*");
-            /*
-		 * In below code we'll store the substring into two different variables which
-		 * needs to be put into the hashmap with the help of x and y index that we have
-		 * extracted above.
-             */
-                Xvalue = line.substring(x + 1, y);
-                Yvalue = line.substring(y + 1, star);
-                // Below lines will put the x value and y value into the hashmap along with  there keys.
-                returnMap.put("X", Xvalue);
-                returnMap.put("Y", Yvalue);
-
+                if (line.startsWith("%FSLA")) {
+                    int x, y, star;
+                    String Xvalue, Yvalue;
+                    x = line.indexOf("X");
+                    y = line.indexOf("Y");
+                    star = line.indexOf("*");
+                    /*
+                     * In below code we'll store the substring into two different variables which
+                     * needs to be put into the hashmap with the help of x and y index that we have
+                     * extracted above.
+                     */
+                    Xvalue = line.substring(x + 1, y);
+                    Yvalue = line.substring(y + 1, star);
+                    // Below lines will put the x value and y value into the hashmap along with  there keys.
+                    returnMap.put("X", Xvalue);
+                    returnMap.put("Y", Yvalue);
+                }
                 return returnMap;
 	}
 
-	private static HashMap<String, String> processTD(String line) {
+	public static HashMap<String, String> processTD(String line) {
                 HashMap<String, String> returnMap = new HashMap<>();
                 if (line == null || line.isEmpty()) {
                     return returnMap;
                 }
-                if (line.startsWith("%TD.")) {
-                    line = line.replace("%TD.", "").replace("*%", "").trim();
-                } else {
-                    line = line.replace("%TD", "").replace("*%", "").trim();
+                if (line.startsWith("%TD")) {
+                    if (line.startsWith("%TD.")) {
+                        line = line.replace("%TD.", "").replace("*%", "").trim();
+                    } else {
+                        line = line.replace("%TD", "").replace("*%", "").trim();
+                    }
+                    returnMap.put(line, "");
                 }
-                returnMap.put(line, "");
                 return returnMap;
 	}
 
         // Below method will be call if line starts with %MO or %LP or %LM
-	private static HashMap<String, String> processMOLPLM(String line,String word) {
+	public static HashMap<String, String> processMOLPLM(String line,String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
                 if (line == null || line.isEmpty()) {
                     return returnMap;
                 }
                 String percentword = "%" + word;
-                line = line.replace(percentword, "").replace("*%", "").trim();
-                returnMap.put(word, line);
+                if(line.startsWith(percentword))
+                {
+                    line = line.replace(percentword, "").replace("*%", "").trim();
+                    returnMap.put(word, line);
+                }
                 return returnMap;
 	}
 
         // Below method will be call if line starts with %LR or %LS
-	private static HashMap<String, String> processLRLS(String line,String word) {
+	public static HashMap<String, String> processLRLS(String line,String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
-                if(line==null || line.isEmpty())  {
+                if (line == null || line.isEmpty()) {
                     return returnMap;
                 }
-                String percentWord="%"+word;
-		line = line.replace(percentWord, "").replace("*%", "").trim();
-		returnMap.put(word, line);
+                String percentWord = "%" + word;
+                if (line.startsWith(percentWord)) {
+                    line = line.replace(percentWord, "").replace("*%", "").trim();
+                    returnMap.put(word, line);
+                }
 		return returnMap;
 	}
 	
