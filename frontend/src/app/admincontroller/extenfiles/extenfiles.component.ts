@@ -22,7 +22,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   extensionsArr = [];
   changesSaved = false;
 
-
+  divStyle= 'hide';
   constructor(private fileService: FileService, private router: Router) { }
 
   ngOnInit() {
@@ -102,7 +102,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       .subscribe(
         (response: Response) => {
           console.log("this.ext", response);
-          alert("Your changes have been saved succesfully!");
+          this.divStyle= 'show';
           this.changesSaved = true;
         },
         (error) => console.log(error)

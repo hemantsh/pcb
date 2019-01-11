@@ -37,6 +37,8 @@ public class ServiceFilesServices {
         
     return serviceFileRepo.findByKeyServiceId(service_id);
     }
-    
+    public void delete(ServiceFiles df){
+        serviceFileRepo.delete(df);
+    }
     
 }

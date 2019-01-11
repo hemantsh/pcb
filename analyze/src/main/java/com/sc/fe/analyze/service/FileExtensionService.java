@@ -19,28 +19,26 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author pc
  */
-        @Service("ExtensionService")
-        @Transactional
+@Service("ExtensionService")
+@Transactional
 public class FileExtensionService {
+
     @Autowired
     private ExtensionsRepo extensionRepo;
-    
-            
-   
-    public List<Extensions> findAll(){
-    return extensionRepo.findAll();
+
+    public List<Extensions> findAll() {
+        return extensionRepo.findAll();
     }
-    
-    public void save(Extensions ext){
+
+    public void save(Extensions ext) {
         extensionRepo.save(ext);
     }
-    
+
 //    public void delete(Extensions extn){
 //    extensionRepo.delete(extn);
 //    }
-   
-    public Extensions getExtensionById(Integer id){
+    public Extensions getExtensionById(Integer id) {
         return extensionRepo.findById(id).get();
     }
-    
+
 }
