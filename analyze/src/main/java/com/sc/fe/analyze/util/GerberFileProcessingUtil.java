@@ -30,7 +30,6 @@ import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
 import com.sc.fe.analyze.to.Report;
-import java.util.function.Consumer;
 
 public class GerberFileProcessingUtil {
      
