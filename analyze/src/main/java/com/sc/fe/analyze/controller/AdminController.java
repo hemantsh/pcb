@@ -118,6 +118,10 @@ public class AdminController {
     public void createServiceFiles(@RequestBody ServiceFiles sf){
     serviceFileservice.save(sf);
     }
+    @PostMapping(path="/servicefiles/createmulti")
+    public void createServiceFilesAll(@RequestBody List<ServiceFiles> sf){
+    serviceFileservice.saveAll(sf);
+    }
     @PostMapping(path="/servicefiles/update")
     public void updateServiceFiles(@RequestBody ServiceFiles sf){
     serviceFileservice.save(sf);
@@ -127,6 +131,7 @@ public class AdminController {
     public List<ServiceFiles> retriveServiceFiles(@PathVariable("id")int service_id){
         return serviceFileservice.getFilesByService(service_id);
     }
+    
     //ExtensionFileServices
     @GetMapping(path="/extensionfiles")
     public List<ExtensionFileType> getExtensionFiles(){
@@ -135,6 +140,10 @@ public class AdminController {
     @PostMapping(path="/extensionfiles/create")
     public void createExtensionFiles(@RequestBody ExtensionFileType exFT){
          extnFileService.save(exFT);
+    }
+    @PostMapping(path="/extensionfiles/createmulti")
+    public void createExtensionFilesAll(@RequestBody List<ExtensionFileType> exFT){
+         extnFileService.saveAll(exFT);
     }
     @PostMapping(path="/extensionfiles/update")
     public void updateExtensionFiles(@RequestBody ExtensionFileType exFT){
@@ -156,7 +165,6 @@ public class AdminController {
     public void createReport(@RequestBody Report report){
        reportServices.save(report);
     }
-    
     @PostMapping(path="/report/update")
     public void updateReport(@RequestBody Report report){
        reportServices.save(report);
