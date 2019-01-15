@@ -22,7 +22,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
   serviceArr = []; //extensionsArr
   changesSaved = false;
 
-
+  divStyle= 'hide';
   constructor(private fileService: FileService, private router: Router) { }
 
   ngOnInit() {
@@ -101,7 +101,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
       .subscribe(
         (response: Response) => {
           console.log("OnSaveResult", response);
-          alert("Your changes have been saved succesfully!");
+          this.divStyle='show';
           this.changesSaved = true;
         },
         (error) => console.log(error)

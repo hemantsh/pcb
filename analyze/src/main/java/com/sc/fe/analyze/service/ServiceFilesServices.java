@@ -49,6 +49,8 @@ public class ServiceFilesServices {
     	List<ServiceFiles> retList = findAll();
     	return retList.stream().filter( e -> e.getServiceId() == service_id ).collect(Collectors.toList());
     }
-    
+    public void delete(ServiceFiles df){
+        serviceFileRepo.delete(df);
+    }
     
 }

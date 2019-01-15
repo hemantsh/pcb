@@ -24,8 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("ExtensionService")
 @Transactional
 public class FileExtensionService {
+
     @Autowired
     private ExtensionsRepo extensionRepo;
+
     @Autowired
     private CachingService cacheService;
     
@@ -34,16 +36,17 @@ public class FileExtensionService {
     public List<Extensions> findAll(){
     	return extensionRepo.findAll();
     }
-    
-    public void save(Extensions ext){
+
+    public void save(Extensions ext) {
         extensionRepo.save(ext);
         cacheService.evictAllCacheValues("Extensions");
     }
-    
+
 //    public void delete(Extensions extn){
 //    extensionRepo.delete(extn);
 //    }
-    
+
+ 
     public Extensions getExtensionById(Integer id) {
     	Extensions extn = null;
     	List<Extensions> retList = findAll();
@@ -53,5 +56,5 @@ public class FileExtensionService {
     	}
     	return extn;
     }
-    
+
 }

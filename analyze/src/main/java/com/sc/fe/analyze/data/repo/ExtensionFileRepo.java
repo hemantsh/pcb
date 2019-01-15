@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.sc.fe.analyze.data.entity.ExtensionFilePK;
 import com.sc.fe.analyze.data.entity.ExtensionFileType;
-import org.springframework.data.cassandra.repository.Query;
 
 @Repository
 public interface ExtensionFileRepo extends CassandraRepository <ExtensionFileType, ExtensionFilePK > {
