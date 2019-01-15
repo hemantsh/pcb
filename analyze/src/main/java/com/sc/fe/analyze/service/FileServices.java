@@ -5,12 +5,16 @@
  */
 package com.sc.fe.analyze.service;
 
-import com.sc.fe.analyze.data.entity.Services;
-import com.sc.fe.analyze.data.repo.ServicesRepo;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.data.repo.ServicesRepo;
 
 /**
  *
@@ -22,17 +26,32 @@ public class FileServices {
     @Autowired
     private ServicesRepo serviceRepo;
     
+    @Autowired
+    private CachingService cacheService;
+    
+    @Cacheable(value="Services")
     public List<Services>findAll(){
         return serviceRepo.findAll();
     }
+    
     public void save(Services services){
         serviceRepo.save(services);
+        cacheService.evictAllCacheValues("Services");
     }
+    
     public void delete(Services services){
-    serviceRepo.delete(services);
+    	serviceRepo.delete(services);	
+		cacheService.evictAllCacheValues("Services");
     }
+    
     public Services getServicesById(int id){
-    return serviceRepo.findById(id).get();
+    	Services srv = null;
+    	List<Services> retList = findAll();
+    	retList = retList.stream().filter( e -> e.getId() == id ).collect(Collectors.toList());
+    	if( retList != null ) {
+    		srv = retList.get(0);
+    	}
+    	return srv;
     }
     
 }

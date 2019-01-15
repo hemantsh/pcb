@@ -6,12 +6,16 @@
 package com.sc.fe.analyze.service;
 
 
-import com.sc.fe.analyze.data.entity.FileTypes;
-import com.sc.fe.analyze.data.repo.FileTypesRepo;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sc.fe.analyze.data.entity.FileTypes;
+import com.sc.fe.analyze.data.repo.FileTypesRepo;
 
 /**
  *
@@ -22,14 +26,26 @@ import org.springframework.transaction.annotation.Transactional;
 public class FileTypeService {
     @Autowired
     private FileTypesRepo fileTypesRepo;
+    @Autowired
+    private CachingService cacheService;
     
-    public List<FileTypes> findAll(){
+    @Cacheable(value="FileTypes")
+    public List<FileTypes> findAll() {
         return fileTypesRepo.findAll(); 
     }
-    public void save(FileTypes ft){
-    fileTypesRepo.save(ft);
+    
+    public void save(FileTypes ft) {
+    	fileTypesRepo.save(ft);
+    	cacheService.evictAllCacheValues("FileTypes");
     }
-    public FileTypes getTypeById(Integer id){
-    return fileTypesRepo.findById(id).get();
+    
+    public FileTypes getTypeById(Integer id) {
+    	FileTypes fileTyp = null;
+    	List<FileTypes> retList = findAll();
+    	retList = retList.stream().filter( e -> e.getId() == id ).collect(Collectors.toList());
+    	if( retList != null ) {
+    		fileTyp = retList.get(0);
+    	}
+    	return fileTyp;
     }
 }
