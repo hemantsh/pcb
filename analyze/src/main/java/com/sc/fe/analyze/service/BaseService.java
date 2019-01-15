@@ -43,7 +43,6 @@ public class BaseService {
 		MappingUtil.init(getExtensionMap(), getFileTypeMap(), getServiceMap());
 	}
 	
-	@Cacheable
 	public Map<Integer, String> getExtensionMap() {
 		
 		Map<Integer, String> retMap = new HashMap<Integer, String>();
@@ -56,7 +55,6 @@ public class BaseService {
 		return retMap;
 	}
 	
-	@Cacheable
 	public Map<Integer, String> getFileTypeMap() {
 		
 		Map<Integer, String> retMap = new HashMap<Integer, String>();
@@ -69,7 +67,6 @@ public class BaseService {
 		return retMap;
 	}
 	
-	@Cacheable
 	public Map<Integer, String> getServiceMap() {
 		
 		Map<Integer, String> retMap = new HashMap<Integer, String>();
@@ -84,14 +81,12 @@ public class BaseService {
 	
 	
 	
-	@Cacheable
 	public List<String> getServiceFiles(int serviceId) {
 		
 		List<ServiceFiles> serviceFiles = serviceFilesRepo.findByKeyServiceId(serviceId);
 		return serviceFiles.stream().map(ServiceFiles::getFile).collect(Collectors.toList());
 	}
 	
-	@Cacheable
 	public Map<String, String> getExtensionToFileMapping() {
 		
 		Map<String, String> returnMap = new HashMap<String, String>();
