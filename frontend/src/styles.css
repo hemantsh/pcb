@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+input.ng-invalid.ng-touched{
+    border:1px solid red ;
+  }
+  
+  table{
+    border: 1px solid #ddd;
+    padding: 10px;
+  } 
+  
+   .fix   { overflow-y: auto; height: 100px; }
+  th { position: sticky; top: -1px; }
+  
+  th, td { padding: 8px 16px; border-right: 1px solid #ddd; }
+  th     { background:#eee; } 
+  .fix {
+    height: 500px;
+    overflow-x: scroll;
+    position: relative;
+  }
+  
