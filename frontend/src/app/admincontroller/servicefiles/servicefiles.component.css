@@ -1,8 +1,8 @@
 .reportscroll{
-    overflow: scroll;
+    overflow-y: auto;
     height: 300px;
 }
-.fix{
+.fixback{
    position: relative;
    width: 100%;
    background-color: #fff;

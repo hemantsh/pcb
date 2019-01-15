@@ -20,7 +20,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   extensionsList = [];
 
   extensionsArr = [];
-  changesSaved = false;
+  changesSaved = true;
 
   divStyle= 'hide';
   constructor(private fileService: FileService, private router: Router) { }

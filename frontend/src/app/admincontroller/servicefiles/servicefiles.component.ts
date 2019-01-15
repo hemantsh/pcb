@@ -20,7 +20,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
   fileTypeList = []; //extensionsList
 
   serviceArr = []; //extensionsArr
-  changesSaved = false;
+  changesSaved = true;
 
   divStyle= 'hide';
   constructor(private fileService: FileService, private router: Router) { }
