@@ -40,12 +40,6 @@ public class FileTypeService {
     }
     
     public FileTypes getTypeById(Integer id) {
-    	FileTypes fileTyp = null;
-    	List<FileTypes> retList = findAll();
-    	retList = retList.stream().filter( e -> e.getId() == id ).collect(Collectors.toList());
-    	if( retList != null ) {
-    		fileTyp = retList.get(0);
-    	}
-    	return fileTyp;
+    	return fileTypesRepo.findById(id).get();
     }
 }

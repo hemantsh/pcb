@@ -42,9 +42,9 @@ public class ExtensionFileService {
     
     public List<ExtensionFileType> getExtenFileTypeById(Integer id){
     	
-    	List<ExtensionFileType> retList = findAll();
-    	return retList.stream().filter( e -> e.getFiletypeId() == id ).collect(Collectors.toList());
-    	
+//    	List<ExtensionFileType> retList = findAll();
+//    	return retList.stream().filter( e -> e.getFiletypeId() == id ).collect(Collectors.toList());
+    	return extensionFileRepo.findByKeyFiletypeId(id);
     }
     
 }

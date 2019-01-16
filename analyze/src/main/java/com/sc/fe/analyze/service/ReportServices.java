@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 /**
  *
  * @author pc
@@ -21,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReportServices {
     @Autowired
     private ReportRepo reportRepo;
-    
+   
     public List<Report> findAll(){
         return reportRepo.findAll();
     }
@@ -29,5 +28,4 @@ public class ReportServices {
     public void save(Report report){
         reportRepo.save(report);
     }
-    
 }

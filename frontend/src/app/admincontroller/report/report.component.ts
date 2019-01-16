@@ -8,7 +8,8 @@ import {Response} from '@angular/http';
 })
 export class ReportComponent implements OnInit {
   objectKeys = Object.keys;
-reports=[];
+  reports=[];
+  fileType=[];
   constructor(private fileService:FileService) { }
 
   ngOnInit() {
@@ -23,6 +24,18 @@ reports=[];
           this.reports = response.json();
 
           console.log("Data is fetching...", this.reports);
+        },
+        (error) => console.log(error)
+      );
+  }
+  retriveFiletype(fileType) {
+
+    this.fileService.getFiletype(fileType)
+      .subscribe(
+        (response: Response) => {
+          this.fileType = response.json();
+
+          console.log("Data is fetching...", this.fileType);
         },
         (error) => console.log(error)
       );
