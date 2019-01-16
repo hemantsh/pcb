@@ -1,5 +1,6 @@
 <div>
-  <div class="col-md-2 col-sm-3">
+  <div class="col-md-2 col-sm-3" >
+    <div>
     <ul class="nav nav-pills nav-stacked">
       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="extensions">Show Extensions</a></li>
       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="services">Show Services</a></li>
@@ -9,6 +10,7 @@
       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="report">Show Report</a></li>
     </ul>
   </div>
+</div>
   <div class="col-md-10 col-sm-9">
     <p><router-outlet></router-outlet></p>
   </div>

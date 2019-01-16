@@ -48,13 +48,7 @@ public class FileExtensionService {
 
  
     public Extensions getExtensionById(Integer id) {
-    	Extensions extn = null;
-    	List<Extensions> retList = findAll();
-    	retList = retList.stream().filter( e -> e.getId() == id ).collect(Collectors.toList());
-    	if( retList != null ) {
-    		extn = retList.get(0);
-    	}
-    	return extn;
+        return extensionRepo.findById(id).get();
     }
 
 }

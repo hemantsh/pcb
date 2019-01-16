@@ -45,13 +45,7 @@ public class FileServices {
     }
     
     public Services getServicesById(int id){
-    	Services srv = null;
-    	List<Services> retList = findAll();
-    	retList = retList.stream().filter( e -> e.getId() == id ).collect(Collectors.toList());
-    	if( retList != null ) {
-    		srv = retList.get(0);
-    	}
-    	return srv;
+    	return serviceRepo.findById(id).get();
     }
     
 }

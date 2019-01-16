@@ -17,6 +17,7 @@ import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.ReportServices;
 import com.sc.fe.analyze.service.ServiceFilesServices;
+import com.sc.fe.analyze.util.MappingUtil;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,5 +169,10 @@ public class AdminController {
     @PostMapping(path="/report/update")
     public void updateReport(@RequestBody Report report){
        reportServices.save(report);
+    }
+   
+     @GetMapping(path="/report/filetype/{id}")
+    public String getFiletype(@PathVariable("id") Integer fileId){
+        return (MappingUtil.getFileType(fileId));
     }
 }

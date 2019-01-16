@@ -29,10 +29,7 @@ export class FileService{
         updateFiletypes(filetypes){
             return this.http.post('http://localhost:8080/pcb/admin/filetypes/update',filetypes);
         }
-    //Services for Report
-        getReport(){
-            return this.http.get('http://localhost:8080/pcb/admin/report');
-        }
+    
     //Services for ServicesFiles
         getServiceFiles(){
             return this.http.get('http://localhost:8080/pcb/admin/servicefiles');
@@ -58,5 +55,13 @@ export class FileService{
         }
         saveExtensionFile(temp:any[]){
                 return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/createmulti',temp);
+        }
+
+        //Services for Report
+        getReport(){
+            return this.http.get('http://localhost:8080/pcb/admin/report');
+        }
+        getFiletype(fileId){
+            return this.http.get('http://localhost:8080/pcb/admin/report/filetype/'+fileId);
         }
 }

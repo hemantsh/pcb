@@ -1,35 +1,79 @@
-<div class="reportscroll">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ProjectId</th>
-        <th>Version</th>
-        <th>CustomerId</th>
-        <th>Errors</th>
-        <th>FileType_FileName</th>
-        <th>Notes</th>
-        <th>Project_Files</th>
-        <th>Service_Id</th>
-        <th>Status</th>
-        <th>Summary</th>
-        <!-- <th><button type="button" class="btn btn-default btn-md" (click)="addExtn()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Extension</button></th>-->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let report of reports">
-          <td >{{report.projectId}}</td>
-          <td>{{report.version}}</td>
-          <td>{{report.customerId}}</td>
-          <td>{{report.errors}}</td>
-          <td >
-            <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner] }}</span></td>
-          <td>{{report.notes}}</td>
-          <td>{{report.projectFiles}}</td>
-          <td>{{report.serviceTypeId}}</td>
-          <td>{{report.status}}</td>
-          <td>{{report.summary}}</td>
-      </tr>
-      <!--<tr *ngFor="let extn of extns">
+<div>
+   <div class="row">
+    <div class="col-md-12">
+      <!--<span style="font-weight: bold;">Errors</span>
+      <ul>
+        <li type="disc" *ngFor="let report of reports">
+          <span style="font-weight: bold;">Error for projectId:{{report.projectId}} <br /> </span>
+          {{report.errors}}
+        </li>
+      </ul>
+      <span style="font-weight: bold;">Additional Notes</span>
+      <ul>
+        <li type="disc" *ngFor="let report of reports">
+          <span style="font-weight: bold;">Additional Notes for projectId:{{report.projectId}} <br /> </span>
+          {{report.notes}}
+        </li>
+      </ul>
+      <div class="reportscroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>FileName</th>
+              <th>FileType</th>
+              <th>Polarity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let report of reports">
+              <td>
+                <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner]}}<br />
+                </span>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>-->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ProjectId</th>
+            <th>Version</th>
+            <th>CustomerId</th>
+            <th>Errors</th>
+            <th>FileType_FileName</th>
+            <th>Notes</th>
+            <th>Project_Files</th>
+            <th>Service_Id</th>
+            <th>Status</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports">
+              <td >{{report.projectId}}</td>
+              <td>{{report.version}}</td>
+              <td>{{report.customerId}}</td>
+              <td>{{report.errors}}</td>
+              <td >
+                <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner] }}</span></td>
+              <td>{{report.notes}}</td>
+              <td>{{report.projectFiles}}</td>
+              <td>{{report.serviceTypeId}}</td>
+              <td>{{report.status}}</td>
+              <td>{{report.summary}}</td>
+          </tr>
+        </tbody>
+      </table> 
+    </div>
+  </div> 
+</div>
+ 
+
+
+<!--<tr *ngFor="let extn of extns">
         <td *ngIf="!extn.edit && !extn.add">{{extn.name}}</td>
         <td *ngIf="extn.edit || extn.add"> <input type="text" class="form-control" [(ngModel)]="extn.name" ngModel name="addExtn" required/></td>
         <td>
@@ -40,7 +84,3 @@
         </td>
       </tr>
     -->
-
-    </tbody>
-  </table>
-</div>
