@@ -6,12 +6,12 @@ public class LayersInformation{
    public String polarityy;
    
    //For process matrix file,use this variables
-   public Integer row;
-   public String context;
-   public String type;
-   public String name;
-   public String polarity;
-   public String start_name,end_name,old_name;
+   private Integer row;
+   private String context;
+   private String type;
+   private String name;
+   private String polarity;
+   private String start_name,end_name,old_name;
 
    public LayersInformation() {
 	   
@@ -33,9 +33,15 @@ public class LayersInformation{
        this.end_name=endName;
        this.old_name=oldName;
     }
+    
+    public String printLayers()
+    {
+        return layerSequence + " "+fileNamee + "  " + polarityy;
+    }
+    
 
-
-    public String toString() {
+    public String printLayerInfo() 
+    {
     	return row+"  "+context+ "  "+type + "    " +name + "   "+ polarity + "   "+ start_name  + "   "+end_name+ "   "+old_name;
     }
 }
