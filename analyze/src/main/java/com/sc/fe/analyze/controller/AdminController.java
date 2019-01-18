@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -172,7 +173,8 @@ public class AdminController {
     }
    
      @GetMapping(path="/report/filetype/{id}")
-    public String getFiletype(@PathVariable("id") Integer fileId){
-        return (MappingUtil.getFileType(fileId));
+     @ResponseBody
+    public FileTypes getFiletype(@PathVariable("id") Integer fileId){
+        return fileTypeService.getTypeById(fileId);
     }
 }

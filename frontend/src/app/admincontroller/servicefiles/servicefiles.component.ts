@@ -20,6 +20,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
   fileTypeList = []; //extensionsList
 
   serviceArr = []; //extensionsArr
+  serviceFiles=[];
   changesSaved = true;
 
   divStyle= 'hide';
@@ -28,8 +29,23 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
   ngOnInit() {
     this.retriveServiceFiles();
     this.retriveFilesTypes();
+    this.retriveServices();
   }
 
+  /** 
+   * To reterive services
+  */
+  retriveServices(){
+    this.fileService.getServices()
+      .subscribe(
+        (response: Response) => {
+          this.serviceArr = response.json();
+          console.log("Service is fetching...", this.serviceArr);
+          this.changesSaved=true;
+        },
+        (error) => console.log(error)
+      );
+  }
   /** 
    * To reterive serviceFiles
   */
@@ -37,8 +53,8 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
     this.fileService.getServiceFiles()
       .subscribe(
         (response: Response) => {
-          this.serviceArr = response.json();
-          console.log("ServiceFiles is fetching...", this.serviceArr);
+          this.serviceFiles = response.json();
+          console.log("ServiceFiles is fetching...", this.serviceFiles);
           this.changesSaved=true;
         },
         (error) => console.log(error)

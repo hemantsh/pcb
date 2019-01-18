@@ -20,7 +20,7 @@
         <label for="services" class="control-label">Select Services:</label>
         <select id="services" class="form-control" [(ngModel)]="selectedServiceId" (change)="onServiceSelect(selectedServiceId)">
           <option value="0" selected disabled="true">Please Select a Service</option>
-          <option *ngFor="let service of serviceArr" [value]="service.serviceId">{{service.service}}</option>
+          <option *ngFor="let service of serviceArr" [value]="service.id">{{service.name}}</option>
 
         </select>
       </div>

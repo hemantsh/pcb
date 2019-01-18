@@ -17,6 +17,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   selectedExtensionId = 0;
 
   fileTypeArr = [];
+  filtypeList=[];
   extensionsList = [];
 
   extensionsArr = [];
@@ -26,14 +27,30 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   constructor(private fileService: FileService, private router: Router) { }
 
   ngOnInit() {
-    this.retriveFilesTypes();
+    this.retriveExtnFilesTypes();
     this.retriveExtension();
+    this.retriveFilesTypes();
   }
 
   /** 
    * To reterive file types
   */
-  retriveFilesTypes() {
+ retriveFilesTypes() {
+  this.fileService.getFiletypes()
+    .subscribe(
+      (response: Response) => {
+        this.filtypeList = response.json();
+        console.log("FileTypes is fetching...", this.filtypeList);
+        this.changesSaved=true;
+      },
+      (error) => console.log(error)
+    );
+}
+
+/** 
+   * To reterive ExtnfilesTypes
+  */
+  retriveExtnFilesTypes() {
     this.fileService.getExtnFiles()
       .subscribe(
         (response: Response) => {
