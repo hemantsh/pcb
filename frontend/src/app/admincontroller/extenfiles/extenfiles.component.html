@@ -18,7 +18,7 @@
       <label for="filetype" class="control-label">Select FileType:</label>
       <select id="file_type" class="form-control" [(ngModel)]="selectedFileTypeId" (change)="onFileTypeSelect(selectedFileTypeId)">
         <option value="0" selected disabled="true">Please Select a FileType</option>
-        <option *ngFor="let file of fileTypeArr" [value]="file.filetypeId">{{file.file}}</option>
+        <option *ngFor="let file of filtypeList" [value]="file.id">{{file.type}}</option>
 
       </select>
     </div>
