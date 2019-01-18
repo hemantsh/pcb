@@ -45,8 +45,8 @@ public class FileExtractUploadService {
     }
 	
 
-	public Report uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
-		Report report = new Report();
+	public AdvancedReport uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
+		AdvancedReport report = new AdvancedReport();
 // Local file based
 		String fileName = util.storeFile(inputs.getProjectId(), file);
         util.extractFiles(inputs.getProjectId(), fileName);   
@@ -69,27 +69,28 @@ public class FileExtractUploadService {
 				baseService.getExtensionToFileMapping(), 
 				foundFiles);
                 
-        GerberFileProcessingUtil.findLayerInformation(report, baseService.getExtensionToFileMapping(), folder);
+		List<FileDetails> fileDetails = GerberFileProcessingUtil.extractFileDetails(report, 
+				baseService.getExtensionToFileMapping(), folder);
+		
+		report.setFileDetails(fileDetails);
                 
 		if(requiredFiles.size() != foundFiles.size()) {
 			report.setValidationStatus("Invalid design.");
 			report.addError("Some required files are missing for the selected service.");
 			requiredFiles.removeAll(foundFiles);
-			//report.addAdditionalNote( "Following are the missing files in the package." );
+			
 			requiredFiles.stream().forEach( missedFile -> {
 				report.addAdditionalNote( missedFile + " file missing");
 			});
 		}else {
-			report.setValidationStatus("Good design with all required files.");
+			report.setValidationStatus("All required files are found.");
 		}
+                
+        List<FileDetails> fdList = ODBProcessing.processODB(folder);
+        report.getFileDetails().addAll(fdList);
+                
         report.setFilePurposeToNameMapping(filePurposeToNameMapping);
         reportRepo.insert(ReportUtility.convertToDBObject(report));
-                
-        AdvancedReport advReport = new AdvancedReport();
-        advReport.setCustomerInputs(inputs);
-		List<FileDetails> fdList = ODBProcessing.processODB(folder);//TODO this return List<FileDetails> Set it in AdvancedReport
-		advReport.setFileDetails(fdList);
-                
 
 		System.out.println("****** Done generating report *******");
 		logger.debug("****** Done generating report *******");

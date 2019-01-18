@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sc.fe.analyze.data.entity.Report;
+import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 
 public class ReportUtility {
@@ -52,7 +53,7 @@ public class ReportUtility {
 		return report;
 	}
 	
-	public static Report convertToDBObject(com.sc.fe.analyze.to.Report report) {
+	public static Report convertToDBObject(AdvancedReport report) {
 		
 		Report dbReport = new Report();
 		

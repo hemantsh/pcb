@@ -2,10 +2,14 @@ package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author hemant
@@ -24,9 +28,34 @@ public class AdvancedReport implements Serializable {
 	 */
 	private List<FileDetails> fileDetails;
 	
-	private Set<String> errors;
-	
 	private String odbMatrix;
+	
+	/**
+	 * Summary of the report
+	 */
+	private String summary;
+	/**
+	 * Validation status after running validations
+	 */
+	private String validationStatus;
+	/**
+	 * All errors we found in the files
+	 */
+	private Set<String> errors;
+	/**
+	 * Any notes about package
+	 */
+	private Set<String> additionalNotes;
+	/**
+	 * Files found in the zip file 
+	 */
+	private Set<String> exctractedFileNames;
+	
+	/**
+	 * Mapping of file business purpose with the file name
+	 */
+	private Map<String, Set<String> > filePurposeToNameMapping;
+	
 	
 	public CustomerInputs getCustomerInputs() {
 		return customerInputs;
@@ -72,6 +101,7 @@ public class AdvancedReport implements Serializable {
 		return retVal;
 	}
 	
+	@JsonIgnore
 	public Set<String> getAllFileNames() {
 		if(fileDetails == null) {
 			return null;
@@ -87,5 +117,59 @@ public class AdvancedReport implements Serializable {
 
 	public void setErrors(Set<String> errors) {
 		this.errors = errors;
+	}
+
+	public void addError(String error) {
+		if(errors == null) {
+			errors = new HashSet<String>();
+		}
+		errors.add(error);
+	}
+	
+	public void addAdditionalNote(String note) {
+		if(additionalNotes == null) {
+			additionalNotes = new HashSet<String>();
+		}
+		additionalNotes.add(note);
+	}
+	
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public String getValidationStatus() {
+		return validationStatus;
+	}
+
+	public void setValidationStatus(String validationStatus) {
+		this.validationStatus = validationStatus;
+	}
+
+	public Set<String> getAdditionalNotes() {
+		return additionalNotes;
+	}
+
+	public void setAdditionalNotes(Set<String> additionalNotes) {
+		this.additionalNotes = additionalNotes;
+	}
+
+	public Set<String> getExctractedFileNames() {
+		return exctractedFileNames;
+	}
+
+	public void setExctractedFileNames(Set<String> exctractedFileNames) {
+		this.exctractedFileNames = exctractedFileNames;
+	}
+
+	public Map<String, Set<String>> getFilePurposeToNameMapping() {
+		return filePurposeToNameMapping;
+	}
+
+	public void setFilePurposeToNameMapping(Map<String, Set<String>> filePurposeToNameMapping) {
+		this.filePurposeToNameMapping = filePurposeToNameMapping;
 	}
 }

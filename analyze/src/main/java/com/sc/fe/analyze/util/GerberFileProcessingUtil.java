@@ -27,40 +27,41 @@ import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
 import com.sc.fe.analyze.to.Report;
 
 public class GerberFileProcessingUtil {
-     
-	   public static void findLayerInformation(Report report, Map<String, String> extensionToFileMapping, Path folder) {
 
-        List<LayersInformation> layerInfo = new ArrayList<>();
+	public static List<FileDetails> extractFileDetails(final AdvancedReport report, Map<String, String> extensionToFileMapping, Path folder) {
 
-        report.getExctractedFileNames().forEach((String exfile) -> {
-            // Call processFile() method
-            FileDetails fdetails = processFile(exfile, extensionToFileMapping, folder);
+		List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 
-            if (fdetails != null && fdetails.getAttributes() != null)
-            {
+		report.getExctractedFileNames().forEach((String exfile) -> {
+			// Call processFile() method
+			FileDetails fdetails = processFile(exfile, extensionToFileMapping, folder);
 
-                if (fdetails.getAttributes().containsKey("Layer")) {
-                    String polarity;
-                    if (fdetails.getAttributes().containsKey("FilePolarity"))
-                    {
-                        polarity = fdetails.getAttributes().get("FilePolarity");
-                    }
-                    else 
-                    {
-                        polarity = "";
-                    }
+			if (fdetails != null && fdetails.getAttributes() != null) {
 
-                    layerInfo.add(new LayersInformation(fdetails.getAttributes().get("Layer"), exfile, polarity));
+				if (fdetails.getAttributes().containsKey("Layer")) {
+					String polarity;
+					if (fdetails.getAttributes().containsKey("FilePolarity")) {
+						polarity = fdetails.getAttributes().get("FilePolarity");
+					} else {
+						polarity = "";
+					}
 
-                }
-            }
-        });
-    }
+					LayersInformation layerInfo = new LayersInformation(fdetails.getAttributes().get("Layer"), exfile, polarity);
+					fdetails.setLayerInfo(layerInfo);
+				}
+			}
+			
+			fileDetails.add(fdetails);
+		});
+		return fileDetails;
+	}
+
 	public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping, Path folder) {
 
 		String[] nameParts = exfile.split("\\.");
@@ -69,45 +70,44 @@ public class GerberFileProcessingUtil {
 		Map<String, String> flagMap = new HashMap<String, String>();
 		flagMap.put("isDrillFile", "N");
 		flagMap.put("currentKey", "");
-		
+
 		FileDetails fileDet = new FileDetails();
 		fileDet.setName(exfile);
 
-		if (extensionToFileMapping.containsKey(extn) && !extn.toLowerCase().equals("pdf")) 
-                {
-                // we will process it line by line to get attributes
-                // Results for the whole file
-                Map<String, String> results = new HashMap<String, String>();
+		if (extensionToFileMapping.containsKey(extn) && !extn.toLowerCase().equals("pdf")) {
+			// we will process it line by line to get attributes
+			// Results for the whole file
+			Map<String, String> results = new HashMap<String, String>();
 
-                String filePath = folder + File.separator + exfile;
-                // System.out.println("FileName is---------"+exfile);
-                try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-                    // For each line in file
-                    stream.forEach(line -> {
+			String filePath = folder + File.separator + exfile;
+			// System.out.println("FileName is---------"+exfile);
+			try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
+				// For each line in file
+				stream.forEach(line -> {
 
-                        String currentKey = flagMap.get("currentKey");
-                        if (line.startsWith("M48")) {
-                            flagMap.put("isDrillFile", "Y");
-                        }
-                        if (line.startsWith("%") || line.startsWith("M95")) {
-                            flagMap.put("isDrillFile", "N");
-                        }
+					String currentKey = flagMap.get("currentKey");
+					if (line.startsWith("M48")) {
+						flagMap.put("isDrillFile", "Y");
+					}
+					if (line.startsWith("%") || line.startsWith("M95")) {
+						flagMap.put("isDrillFile", "N");
+					}
 
-                        if ("Y".equals(flagMap.get("isDrillFile"))) {
-                            // Drill file line attributes
-                            currentKey = processM48(line, results, currentKey);
-                            flagMap.put("currentKey", currentKey);
+					if ("Y".equals(flagMap.get("isDrillFile"))) {
+						// Drill file line attributes
+						currentKey = processM48(line, results, currentKey);
+						flagMap.put("currentKey", currentKey);
 
-                        } else {
-                            // Regular attribute line
-                            results.putAll(processLine(line));
-                        }
+					} else {
+						// Regular attribute line
+						results.putAll(processLine(line));
+					}
 
-                    });
+				});
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			// All file attributes
 			fileDet.setAttributes(results);
@@ -117,7 +117,7 @@ public class GerberFileProcessingUtil {
 		return fileDet;
 	}
 
-	public static Map<String, Set<String>> processFilesByExtension(Report report,
+	public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
 			Map<String, String> extensionToFileMapping, Set<String> foundFiles) {
 
 		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
@@ -138,37 +138,35 @@ public class GerberFileProcessingUtil {
 		});
 		return filePurposeToNameMapping;
 	}
-        // Below method will be call if line starts with Layer
-       
+	// Below method will be call if line starts with Layer
 
 	public static HashMap<String, String> processLine(String line) {
 		HashMap<String, String> attributes = new HashMap<>();
-                if(line==null && line.isEmpty())
-                {
-                    return attributes;
-                }                
+		if (line == null && line.isEmpty()) {
+			return attributes;
+		}
 		if (line.startsWith("G04")) {
 			attributes.putAll(processG04(line));
 		} else if (line.startsWith("%TO")) {
-			attributes.putAll(processTFTATO(line,"%TO"));
+			attributes.putAll(processTFTATO(line, "%TO"));
 		} else if (line.startsWith("%TF")) {
-			attributes.putAll(processTFTATO(line,"%TF"));
+			attributes.putAll(processTFTATO(line, "%TF"));
 		} else if (line.startsWith("%TA")) {
-			attributes.putAll(processTFTATO(line,"%TA"));
+			attributes.putAll(processTFTATO(line, "%TA"));
 		} else if (line.startsWith("%FSLA")) {
 			attributes.putAll(processFSLA(line));
 		} else if (line.startsWith("%TD")) {
 			attributes.putAll(processTD(line));
 		} else if (line.startsWith("%MO")) {
-			attributes.putAll(processMOLPLM(line,"MO"));
-		}else if (line.startsWith("%LP")) {
-			attributes.putAll(processMOLPLM(line,"LP"));
+			attributes.putAll(processMOLPLM(line, "MO"));
+		} else if (line.startsWith("%LP")) {
+			attributes.putAll(processMOLPLM(line, "LP"));
 		} else if (line.startsWith("%LM")) {
-			attributes.putAll(processMOLPLM(line,"LM"));
+			attributes.putAll(processMOLPLM(line, "LM"));
 		} else if (line.startsWith("%LR")) {
-			attributes.putAll(processLRLS(line,"LR"));
+			attributes.putAll(processLRLS(line, "LR"));
 		} else if (line.startsWith("%LS")) {
-			attributes.putAll(processLRLS(line,"LS"));
+			attributes.putAll(processLRLS(line, "LS"));
 		}
 		/*
 		 * attributes.keySet().forEach((p) -> {
@@ -179,152 +177,152 @@ public class GerberFileProcessingUtil {
 
 	// Below Code will process the line that has G04
 	public static HashMap<String, String> processG04(String line) {
-                HashMap<String, String> returnMap = new HashMap<String, String>();
-                if (line == null || line.isEmpty()) {
-                return returnMap;
-                }
-                if (line.startsWith("G04")) {
-                String keyQualifier = null;
-                String[] splitedValue = line.split("[|]");
+		HashMap<String, String> returnMap = new HashMap<String, String>();
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		if (line.startsWith("G04")) {
+			String keyQualifier = null;
+			String[] splitedValue = line.split("[|]");
 
-                for (String currentValue : splitedValue) {
-                    if (!currentValue.contains("=")) {
-                        continue;
-                    }
-                    String[] temp = currentValue.split("=");
+			for (String currentValue : splitedValue) {
+				if (!currentValue.contains("=")) {
+					continue;
+				}
+				String[] temp = currentValue.split("=");
 
-                    if ("dcode".equals(temp[0].toLowerCase())) {
-                        keyQualifier = "D" + temp[1] + ".";
-                        continue;
-                    }
-                    if (temp[0].startsWith("G04")) {
-                        temp[0] = temp[0].replace("G04", "").trim();
-                    }
-                    if (temp[0].toLowerCase().contains("order")) {
-                        returnMap.put("Layer", temp[1].replace("*", ""));
+				if ("dcode".equals(temp[0].toLowerCase())) {
+					keyQualifier = "D" + temp[1] + ".";
+					continue;
+				}
+				if (temp[0].startsWith("G04")) {
+					temp[0] = temp[0].replace("G04", "").trim();
+				}
+				if (temp[0].toLowerCase().contains("order")) {
+					returnMap.put("Layer", temp[1].replace("*", ""));
 
-                    }
-                    returnMap.put(temp[0], temp[1].replace("*", ""));
-                }
-                if (keyQualifier != null) {
-                    HashMap<String, String> tempMap = (HashMap<String, String>) returnMap.clone();
-                    Iterator<String> keyItr = returnMap.keySet().iterator();
+				}
+				returnMap.put(temp[0], temp[1].replace("*", ""));
+			}
+			if (keyQualifier != null) {
+				HashMap<String, String> tempMap = (HashMap<String, String>) returnMap.clone();
+				Iterator<String> keyItr = returnMap.keySet().iterator();
 
-                    while (keyItr.hasNext()) {
-                        String key = keyItr.next();
-                        tempMap.put(keyQualifier + key, tempMap.remove(key));
-                    }
-                    returnMap = tempMap;
-                }
-            }
-	    return returnMap;
-	}
-        
-	// Below method will be call if line starts with %TF or %TA or %TO
-	public static HashMap<String, String> processTFTATO(String line,String word) {
-		HashMap<String, String> returnMap = new HashMap<>();
-                if (line == null || line.isEmpty()) {
-                    return returnMap;
-                }
-                String dotword = word + ".";
-                  
-                if (line.startsWith(word)) {
-                    // If block will exetues if it is a reserved attribute name otherwise else block will execute
-                    if (line.startsWith(dotword)) {
-                        if (line.contains(",")) {
-                            line = line.replace(dotword, "").replace("*%", "");
-                            String[] splitValue = line.split(",", 2);
-                            returnMap.put(splitValue[0], splitValue[1]);
-                        } else {
-                            line = line.replace(dotword, "").replace("*%", "");
-                            returnMap.put(line, "");
-                        }
-                    } else {
-                        if (line.contains(",")) {
-                            line = line.replace(word, "").replace("*%", "");
-                            String[] splitValue = line.split(",", 2);
-                            returnMap.put(splitValue[0], splitValue[1]);
-                        } else {
-                            line = line.replace(word, "").replace("*%", "");
-                            returnMap.put(line, "");
-                        }
-                    }
-                }
+				while (keyItr.hasNext()) {
+					String key = keyItr.next();
+					tempMap.put(keyQualifier + key, tempMap.remove(key));
+				}
+				returnMap = tempMap;
+			}
+		}
 		return returnMap;
 	}
 
-	
-	// This code will execute if line starts with %FSLA	 
+	// Below method will be call if line starts with %TF or %TA or %TO
+	public static HashMap<String, String> processTFTATO(String line, String word) {
+		HashMap<String, String> returnMap = new HashMap<>();
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		String dotword = word + ".";
+
+		if (line.startsWith(word)) {
+			// If block will exetues if it is a reserved attribute name otherwise else block
+			// will execute
+			if (line.startsWith(dotword)) {
+				if (line.contains(",")) {
+					line = line.replace(dotword, "").replace("*%", "");
+					String[] splitValue = line.split(",", 2);
+					returnMap.put(splitValue[0], splitValue[1]);
+				} else {
+					line = line.replace(dotword, "").replace("*%", "");
+					returnMap.put(line, "");
+				}
+			} else {
+				if (line.contains(",")) {
+					line = line.replace(word, "").replace("*%", "");
+					String[] splitValue = line.split(",", 2);
+					returnMap.put(splitValue[0], splitValue[1]);
+				} else {
+					line = line.replace(word, "").replace("*%", "");
+					returnMap.put(line, "");
+				}
+			}
+		}
+		return returnMap;
+	}
+
+	// This code will execute if line starts with %FSLA
 	public static HashMap<String, String> processFSLA(String line) {
 		HashMap<String, String> returnMap = new HashMap<>();
-                if (line == null || line.isEmpty()) {
-                    return returnMap;
-                }
-                if (line.startsWith("%FSLA")) {
-                    int x, y, star;
-                    String Xvalue, Yvalue;
-                    x = line.indexOf("X");
-                    y = line.indexOf("Y");
-                    star = line.indexOf("*");
-                    /*
-                     * In below code we'll store the substring into two different variables which
-                     * needs to be put into the hashmap with the help of x and y index that we have
-                     * extracted above.
-                     */
-                    Xvalue = line.substring(x + 1, y);
-                    Yvalue = line.substring(y + 1, star);
-                    // Below lines will put the x value and y value into the hashmap along with  there keys.
-                    returnMap.put("X", Xvalue);
-                    returnMap.put("Y", Yvalue);
-                }
-                return returnMap;
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		if (line.startsWith("%FSLA")) {
+			int x, y, star;
+			String Xvalue, Yvalue;
+			x = line.indexOf("X");
+			y = line.indexOf("Y");
+			star = line.indexOf("*");
+			/*
+			 * In below code we'll store the substring into two different variables which
+			 * needs to be put into the hashmap with the help of x and y index that we have
+			 * extracted above.
+			 */
+			Xvalue = line.substring(x + 1, y);
+			Yvalue = line.substring(y + 1, star);
+			// Below lines will put the x value and y value into the hashmap along with
+			// there keys.
+			returnMap.put("X", Xvalue);
+			returnMap.put("Y", Yvalue);
+		}
+		return returnMap;
 	}
 
 	public static HashMap<String, String> processTD(String line) {
-                HashMap<String, String> returnMap = new HashMap<>();
-                if (line == null || line.isEmpty()) {
-                    return returnMap;
-                }
-                if (line.startsWith("%TD")) {
-                    if (line.startsWith("%TD.")) {
-                        line = line.replace("%TD.", "").replace("*%", "").trim();
-                    } else {
-                        line = line.replace("%TD", "").replace("*%", "").trim();
-                    }
-                    returnMap.put(line, "");
-                }
-                return returnMap;
-	}
-
-        // Below method will be call if line starts with %MO or %LP or %LM
-	public static HashMap<String, String> processMOLPLM(String line,String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
-                if (line == null || line.isEmpty()) {
-                    return returnMap;
-                }
-                String percentword = "%" + word;
-                if(line.startsWith(percentword))
-                {
-                    line = line.replace(percentword, "").replace("*%", "").trim();
-                    returnMap.put(word, line);
-                }
-                return returnMap;
-	}
-
-        // Below method will be call if line starts with %LR or %LS
-	public static HashMap<String, String> processLRLS(String line,String word) {
-		HashMap<String, String> returnMap = new HashMap<>();
-                if (line == null || line.isEmpty()) {
-                    return returnMap;
-                }
-                String percentWord = "%" + word;
-                if (line.startsWith(percentWord)) {
-                    line = line.replace(percentWord, "").replace("*%", "").trim();
-                    returnMap.put(word, line);
-                }
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		if (line.startsWith("%TD")) {
+			if (line.startsWith("%TD.")) {
+				line = line.replace("%TD.", "").replace("*%", "").trim();
+			} else {
+				line = line.replace("%TD", "").replace("*%", "").trim();
+			}
+			returnMap.put(line, "");
+		}
 		return returnMap;
 	}
-	
+
+	// Below method will be call if line starts with %MO or %LP or %LM
+	public static HashMap<String, String> processMOLPLM(String line, String word) {
+		HashMap<String, String> returnMap = new HashMap<>();
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		String percentword = "%" + word;
+		if (line.startsWith(percentword)) {
+			line = line.replace(percentword, "").replace("*%", "").trim();
+			returnMap.put(word, line);
+		}
+		return returnMap;
+	}
+
+	// Below method will be call if line starts with %LR or %LS
+	public static HashMap<String, String> processLRLS(String line, String word) {
+		HashMap<String, String> returnMap = new HashMap<>();
+		if (line == null || line.isEmpty()) {
+			return returnMap;
+		}
+		String percentWord = "%" + word;
+		if (line.startsWith(percentWord)) {
+			line = line.replace(percentWord, "").replace("*%", "").trim();
+			returnMap.put(word, line);
+		}
+		return returnMap;
+	}
+
 	public static String processM48(String line, Map<String, String> results, String currentKey) {
 		if (line.startsWith("%") || line.startsWith("M95")) {
 			return currentKey;

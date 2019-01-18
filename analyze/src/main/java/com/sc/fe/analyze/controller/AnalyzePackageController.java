@@ -40,7 +40,7 @@ public class AnalyzePackageController {
         private FileExtractUploadService fileUploadService;
         	
 	@PostMapping(path="/uploadAndExtract")
-	public Report uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
+	public AdvancedReport uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
                              
 		System.out.println("Parameters : "+file.getOriginalFilename() + "   ProjectId: "+projectId);
 		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
@@ -72,6 +72,8 @@ public class AnalyzePackageController {
 		custInputs.setServiceType("Assembly");
 		custInputs.setCustomerId("CustId");
 		custInputs.setEmailAddress("abc@xyz.com");
+		custInputs.setQuantity(100);
+		custInputs.setTurnTime(5);
 		
 		report.setCustomerInputs(custInputs);
 		
@@ -81,6 +83,11 @@ public class AnalyzePackageController {
 		
 		fd.setFileSize("125 MB");
 		fd.setModifiedDate(new Date());
+		
+		fd.setCopperWeight(".95");
+		fd.setLayerSequence(1);
+		fd.setEndName("endName");
+		fd.setStartName("startName");
 		
 		report.addFileDetail(fd);
 		

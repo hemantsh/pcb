@@ -14,6 +14,9 @@ public class CustomerInputs implements Serializable {
 		super();
 	}
 	
+	private int quantity;
+	private int turnTime;
+	
 	/**
 	 * The projectId
 	 */
@@ -67,6 +70,18 @@ public class CustomerInputs implements Serializable {
 	}
 	public void setZipFileSize(String zipFileSize) {
 		this.zipFileSize = zipFileSize;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public int getTurnTime() {
+		return turnTime;
+	}
+	public void setTurnTime(int turnTime) {
+		this.turnTime = turnTime;
 	}
 	
 }

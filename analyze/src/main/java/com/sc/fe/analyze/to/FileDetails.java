@@ -29,6 +29,11 @@ public class FileDetails implements Serializable {
 	
 	private List<String> parserNotes;
 	private LayersInformation layerInfo;
+	private String startName;
+	private String endName;
+	private String copperWeight;
+	private int layerSequence;
+	
 	
         /**
 	 * @return the projectId
@@ -161,5 +166,37 @@ public class FileDetails implements Serializable {
 
 		public void setLayerInfo(LayersInformation layerInfo) {
 			this.layerInfo = layerInfo;
+		}
+
+		public String getStartName() {
+			return startName;
+		}
+
+		public void setStartName(String startName) {
+			this.startName = startName;
+		}
+
+		public String getEndName() {
+			return endName;
+		}
+
+		public void setEndName(String endName) {
+			this.endName = endName;
+		}
+
+		public String getCopperWeight() {
+			return copperWeight;
+		}
+
+		public void setCopperWeight(String copperWeight) {
+			this.copperWeight = copperWeight;
+		}
+
+		public int getLayerSequence() {
+			return layerSequence;
+		}
+
+		public void setLayerSequence(int layerSequence) {
+			this.layerSequence = layerSequence;
 		}
 }
