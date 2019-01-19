@@ -97,9 +97,10 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
       this.selectedFileTypeId = 0;
       alert("This Filtype already exists! Please choose another Filetype");
     } else if (this.selectedFileTypeId > 0) {
+      console.log("service files", this.serviceFiles);
       let selectedFiletype = this.fileTypeList.filter(type => type.id == id)[0];
-      let selectedService = this.serviceArr.filter(service => service.serviceId == this.selectedServiceId)[0];
-      this.fileTypeArr.push({ key: { serviceId: selectedService.serviceId, filetypeId: selectedFiletype.id }, service: selectedService.service, serviceId: selectedService.serviceId, file: selectedFiletype.type, filetypeId: selectedFiletype.id })
+      let selectedService = this.serviceArr.filter(service => service.id == this.selectedServiceId)[0];
+      this.fileTypeArr.push({ key: { serviceId: selectedService.id, filetypeId: selectedFiletype.id }, service: selectedService.name, serviceId: selectedService.id, file: selectedFiletype.type, filetypeId: selectedFiletype.id })
     }
       this.changesSaved=false;
   }
