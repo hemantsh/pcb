@@ -55,7 +55,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       .subscribe(
         (response: Response) => {
           this.fileTypeArr = response.json();
-          console.log("Data is fetching...", this.fileTypeArr);
+          console.log("ExtnFiles is fetching...", this.fileTypeArr);
           this.changesSaved=true;
         },
         (error) => console.log(error)
@@ -71,7 +71,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       .subscribe(
         (response: Response) => {
           this.extensionsList = response.json();
-          console.log("Data is fetching...", this.extensionsList);
+          console.log("Extension is fetching...", this.extensionsList);
           this.changesSaved=true;
         },
         (error) => console.log(error)
@@ -83,7 +83,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       .subscribe(
         (response: Response) => {
           this.extensionsArr = response.json();
-          console.log("FilterTypeArr Data is fetching...", this.extensionsArr);
+          console.log("onFiletypeSelect Data is fetching...", this.extensionsArr);
           this.changesSaved=false;
         },
         (error) => console.log(error)
@@ -100,7 +100,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       alert("This Extension already exists! Please choose another Extension");
     } else if (this.selectedFileTypeId > 0) {
       let selectedExtension = this.extensionsList.filter(ext => ext.id == id)[0];
-      let selectedFileType = this.fileTypeArr.filter(file => file.filetypeId == this.selectedFileTypeId)[0];
+      let selectedFileType = this.filtypeList.filter(file => file.id == this.selectedFileTypeId)[0];
       this.extensionsArr.push({ key: { extensionId: selectedExtension.id, filetypeId: selectedFileType.filetypeId }, extension: selectedExtension.name, extensionId: selectedExtension.id, file: selectedFileType.file, filetypeId: selectedFileType.filetypeId })
     }
     this.changesSaved=false;
