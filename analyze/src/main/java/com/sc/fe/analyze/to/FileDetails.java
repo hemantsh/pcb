@@ -8,6 +8,10 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ *
+ * @author Hemant
+ */
 @JsonInclude(Include.NON_EMPTY)
 public class FileDetails implements Serializable {
 
@@ -43,7 +47,7 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param projectId the projectId to set
+	 * @param projectId - the projectId to set
 	 */
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
@@ -57,7 +61,7 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name - the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -71,7 +75,7 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param purposeType the purposeType to set
+	 * @param purposeType - the purposeType to set
 	 */
 	public void setPurposeType(String[] purposeType) {
 		this.purposeType = purposeType;
@@ -85,7 +89,7 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param valid the valid to set
+	 * @param valid - the valid to set
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
@@ -99,7 +103,7 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param parserNotes the parserNotes to set
+	 * @param parserNotes - the parserNotes to set
 	 */
 	public void setParserNotes(List<String> parserNotes) {
 		this.parserNotes = parserNotes;
@@ -113,33 +117,57 @@ public class FileDetails implements Serializable {
 	}
 
 	/**
-	 * @param version the version to set
+	 * @param version - the version to set
 	 */
 	public void setVersion(String version) {
 		this.version = version;
 	}
 
-	public String getFileSize() {
+    /**
+     *
+     * @return the fileSize
+     */
+    public String getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(String fileSize) {
+    /**
+     *
+     * @param fileSize - the fileSize to set
+     */
+    public void setFileSize(String fileSize) {
 		this.fileSize = fileSize;
 	}
 
-	public String getFileFormat() {
+    /**
+     *
+     * @return the fileFormat
+     */
+    public String getFileFormat() {
 		return fileFormat;
 	}
 
-	public void setFileFormat(String fileFormat) {
+    /**
+     *
+     * @param fileFormat - the fileFormat to set
+     */
+    public void setFileFormat(String fileFormat) {
 		this.fileFormat = fileFormat;
 	}
 	
-	public Date getModifiedDate() {
+    /**
+     *
+     * @return the modifiedDate
+     */
+    public Date getModifiedDate() {
 		return modifiedDate;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
+    /**
+     *
+     * @param modifiedDate - the modifiedDate to set
+     */
+    public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
@@ -152,51 +180,102 @@ public class FileDetails implements Serializable {
                 this.attrFile.put(Name, attributes);
                 System.out.println(this.attrFile);
         }*/
+
+    /**
+     *
+     * @return the attributes
+     */
+
 	public Map<String,String> getAttributes()
         {
 		return attributes;
 	}
-        public void setAttributes(Map<String,String> attributes) {
+
+    /**
+     *
+     * @param attributes - the attributes to set in the Map((key,value) pair) form
+     */
+    public void setAttributes(Map<String,String> attributes) {
 		this.attributes=attributes;
 	}
 
-		public LayersInformation getLayerInfo() {
+    /**
+     *
+     * @return the LayersInformation
+     */
+    public LayersInformation getLayerInfo() {
 			return layerInfo;
 		}
 
-		public void setLayerInfo(LayersInformation layerInfo) {
+    /**
+     *
+     * @param layerInfo - the layerInfo to set
+     */
+    public void setLayerInfo(LayersInformation layerInfo) {
 			this.layerInfo = layerInfo;
 		}
 
-		public String getStartName() {
+    /**
+     *
+     * @return the startName
+     */
+    public String getStartName() {
 			return startName;
 		}
 
-		public void setStartName(String startName) {
+    /**
+     *
+     * @param startName - the startName to set
+     */
+    public void setStartName(String startName) {
 			this.startName = startName;
 		}
 
-		public String getEndName() {
+    /**
+     *
+     * @return the endName
+     */
+    public String getEndName() {
 			return endName;
 		}
 
-		public void setEndName(String endName) {
+    /**
+     *
+     * @param endName - the endName to set
+     */
+    public void setEndName(String endName) {
 			this.endName = endName;
 		}
 
-		public String getCopperWeight() {
+    /**
+     *
+     * @return the copperWeight
+     */
+    public String getCopperWeight() {
 			return copperWeight;
 		}
 
-		public void setCopperWeight(String copperWeight) {
+    /**
+     *
+     * @param copperWeight - the copperWeight to set
+     */
+    public void setCopperWeight(String copperWeight) {
 			this.copperWeight = copperWeight;
 		}
 
-		public int getLayerSequence() {
+    /**
+     *
+     * @return the layerSequence
+     */
+    public int getLayerSequence() {
 			return layerSequence;
 		}
 
-		public void setLayerSequence(int layerSequence) {
+    /**
+     *
+     * @param layerSequence - the layerSequence to set
+     */
+    public void setLayerSequence(int layerSequence) {
 			this.layerSequence = layerSequence;
 		}
 }

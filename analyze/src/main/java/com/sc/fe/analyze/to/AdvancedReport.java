@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * @author hemant
+ * @author Hemant
  *
  */
 public class AdvancedReport implements Serializable {
@@ -20,7 +20,7 @@ public class AdvancedReport implements Serializable {
 	private static final long serialVersionUID = -3742223075854910617L;
 	
 	/**
-	 * Customer inputs
+	 * Customer inputs 
 	 */
 	private CustomerInputs customerInputs;
 	/**
@@ -56,39 +56,71 @@ public class AdvancedReport implements Serializable {
 	 */
 	private Map<String, Set<String> > filePurposeToNameMapping;
 	
-	
-	public CustomerInputs getCustomerInputs() {
+    /**
+     *
+     * @return the customerInputs
+     */
+    public CustomerInputs getCustomerInputs() {
 		return customerInputs;
 	}
 
-	public void setCustomerInputs(CustomerInputs customerInputs) {
+    /**
+     *
+     * @param customerInputs - set the customerInputs in a database
+     */
+    public void setCustomerInputs(CustomerInputs customerInputs) {
 		this.customerInputs = customerInputs;
 	}
 
-	public List<FileDetails> getFileDetails() {
+    /**
+     *
+     * @return the fileDetails from the database
+     */
+    public List<FileDetails> getFileDetails() {
 		return fileDetails;
 	}
 
-	public void setFileDetails(List<FileDetails> fileDetails) {
+    /**
+     *
+     * @param fileDetails - set the fileDetails in the database
+     */
+    public void setFileDetails(List<FileDetails> fileDetails) {
 		this.fileDetails = fileDetails;
 	}
 
-	public void addFileDetail(FileDetails fileDetail) {
+    /**
+     *
+     * @param fileDetail - add the fileDetail in fileDetails instance variable
+     */
+    public void addFileDetail(FileDetails fileDetail) {
 		if(fileDetails == null) {
 			fileDetails = new ArrayList<FileDetails>();
 		}
 		fileDetails.add(fileDetail);
 	}
 
-	public String getOdbMatrix() {
+    /**
+     *
+     * @return the String
+     */
+    public String getOdbMatrix() {
 		return odbMatrix;
 	}
 
-	public void setOdbMatrix(String odbMatrix) {
+    /**
+     *
+     * @param odbMatrix - set the odbMatrix
+     */
+    public void setOdbMatrix(String odbMatrix) {
 		this.odbMatrix = odbMatrix;
 	}
 	
-	public FileDetails getFileDetails(String fileName) {
+    /**
+     *
+     * @param fileName - retrieve  fileDetails from specific fileName 
+     * @return fileDetails of fileName from the database
+     */
+    public FileDetails getFileDetails(String fileName) {
 		FileDetails retVal = null;
 		
 		List<FileDetails> shortList = fileDetails.stream()
@@ -101,7 +133,11 @@ public class AdvancedReport implements Serializable {
 		return retVal;
 	}
 	
-	@JsonIgnore
+    /**
+     *
+     * @return set of all fileNames which stored in the database
+     */
+    @JsonIgnore
 	public Set<String> getAllFileNames() {
 		if(fileDetails == null) {
 			return null;
@@ -111,65 +147,121 @@ public class AdvancedReport implements Serializable {
 				.collect(Collectors.toCollection(TreeSet::new));
 	}
 
-	public Set<String> getErrors() {
+    /**
+     *
+     * @return errors from the database
+     */
+    public Set<String> getErrors() {
 		return errors;
 	}
 
-	public void setErrors(Set<String> errors) {
+    /**
+     *
+     * @param errors - set error in the database
+     */
+    public void setErrors(Set<String> errors) {
 		this.errors = errors;
 	}
 
-	public void addError(String error) {
+    /**
+     *
+     * @param error - add error in the database
+     */
+    public void addError(String error) {
 		if(errors == null) {
 			errors = new HashSet<String>();
 		}
 		errors.add(error);
 	}
 	
-	public void addAdditionalNote(String note) {
+    /**
+     *
+     * @param note - add  note in the database
+     */
+    public void addAdditionalNote(String note) {
 		if(additionalNotes == null) {
 			additionalNotes = new HashSet<String>();
 		}
 		additionalNotes.add(note);
 	}
 	
-	public String getSummary() {
+    /**
+     *
+     * @return summary from the database
+     */
+    public String getSummary() {
 		return summary;
 	}
 
-	public void setSummary(String summary) {
+    /**
+     *
+     * @param summary - set summary in the database
+     */
+    public void setSummary(String summary) {
 		this.summary = summary;
 	}
 
-	public String getValidationStatus() {
+    /**
+     *
+     * @return validationStatus from the database
+     */
+    public String getValidationStatus() {
 		return validationStatus;
 	}
 
-	public void setValidationStatus(String validationStatus) {
+    /**
+     *
+     * @param validationStatus - set validationStatus in the database
+     */
+    public void setValidationStatus(String validationStatus) {
 		this.validationStatus = validationStatus;
 	}
 
-	public Set<String> getAdditionalNotes() {
+    /**
+     *
+     * @return additionalNotes in set of string from the database
+     */
+    public Set<String> getAdditionalNotes() {
 		return additionalNotes;
 	}
 
-	public void setAdditionalNotes(Set<String> additionalNotes) {
+    /**
+     *
+     * @param additionalNotes - set additionalNotes in the database
+     */
+    public void setAdditionalNotes(Set<String> additionalNotes) {
 		this.additionalNotes = additionalNotes;
 	}
 
-	public Set<String> getExctractedFileNames() {
+    /**
+     *
+     * @return exctractedFileNames from the database
+     */
+    public Set<String> getExctractedFileNames() {
 		return exctractedFileNames;
 	}
 
-	public void setExctractedFileNames(Set<String> exctractedFileNames) {
+    /**
+     *
+     * @param exctractedFileNames - set exctractedFileNames in the database
+     */
+    public void setExctractedFileNames(Set<String> exctractedFileNames) {
 		this.exctractedFileNames = exctractedFileNames;
 	}
 
-	public Map<String, Set<String>> getFilePurposeToNameMapping() {
+    /**
+     *
+     * @return filePurposeToNameMapping in (key,value) pair from the database
+     */
+    public Map<String, Set<String>> getFilePurposeToNameMapping() {
 		return filePurposeToNameMapping;
 	}
 
-	public void setFilePurposeToNameMapping(Map<String, Set<String>> filePurposeToNameMapping) {
+    /**
+     *
+     * @param filePurposeToNameMapping - set filePurposeToNameMapping in (key,value) pair in the database 
+     */
+    public void setFilePurposeToNameMapping(Map<String, Set<String>> filePurposeToNameMapping) {
 		this.filePurposeToNameMapping = filePurposeToNameMapping;
 	}
 }

@@ -25,11 +25,10 @@ public class FileUtil {
 	/**
 	 * Save the file based on projectID
 	 * @param projectId - Normally each project create a sub folder in upload directory
-	 * @param file the file to be uploaded
+	 * @param file - the file to be uploaded
 	 * @param fileStorageProperties - property file containing file upload options
 	 * @return location of the file
-	 * @throws IOException
-	 */
+	*/
 	public static String saveUploadedZipFile(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
 		
 		//New folder for each project
@@ -52,12 +51,11 @@ public class FileUtil {
 	}
 	
 	/**
-	 * Save and extract the zip file locally, under the project subfolder
-	 * @param projectId
-	 * @param file
-	 * @param fileStorageProperties
-	 * @throws IOException
-	 */
+	 * Save and extract the zip file locally, under the project sub-folder
+	 * @param projectId - Normally each project create a sub folder in upload directory
+	 * @param file -  the file to be uploaded
+	 * @param fileStorageProperties - property file containing file upload options
+	*/
 	public static void saveAndExtractZip(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
 		//If folder does not exist, create it
@@ -88,7 +86,7 @@ public class FileUtil {
 	
 	/**
 	 * Delete the folder recursively. If files are there they will be deleted
-	 * @param file
+	 * @param file - the name of the file which will be deleted
 	 */
 	public static void deleteFolder(File file) {
 		if(file.isDirectory()) {

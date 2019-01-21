@@ -32,9 +32,20 @@ import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
 import com.sc.fe.analyze.to.Report;
 
+/**
+ *
+ * @author Hemant
+ */
 public class GerberFileProcessingUtil {
 
-	public static List<FileDetails> extractFileDetails(final AdvancedReport report, Map<String, String> extensionToFileMapping, Path folder) {
+    /**
+     * This method retrieves the file from the report once at a time and store the layerInformation details of the file in the database.
+     * @param report - object of AdvancedReport
+     * @param extensionToFileMapping  - the extensionToFileMapping store the file information in (key-extension of file,value-fileName) pair
+     * @param folder - path of folder 
+     * @return the list of fileDeatils 
+     */
+    public static List<FileDetails> extractFileDetails(final AdvancedReport report, Map<String, String> extensionToFileMapping, Path folder) {
 
 		List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 
@@ -62,7 +73,14 @@ public class GerberFileProcessingUtil {
 		return fileDetails;
 	}
 
-	public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping, Path folder) {
+    /**
+     * This method process the file  and store the file information in FileDeatils object.
+     * @param exfile - fileName of the file
+     * @param extensionToFileMapping - the extensionToFileMapping store the file information in (key-extension of file,value-fileName) pair
+     * @param folder - the path of folder under the project
+     * @return the fileDeatils
+     */
+    public static FileDetails processFile(String exfile, Map<String, String> extensionToFileMapping, Path folder) {
 
 		String[] nameParts = exfile.split("\\.");
 		String extn = nameParts[nameParts.length - 1].toLowerCase();
@@ -117,7 +135,14 @@ public class GerberFileProcessingUtil {
 		return fileDet;
 	}
 
-	public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
+    /**
+     * This method process the files by their extension.
+     * @param report - object of AdvancedReport
+     * @param extensionToFileMapping  - the extensionToFileMapping store the file information in (key-extension of file,value-fileName) pair
+     * @param foundFiles - It stored the fileTypes of file.
+     * @return the filePurposeToNameMapping
+     */
+    public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
 			Map<String, String> extensionToFileMapping, Set<String> foundFiles) {
 
 		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
@@ -140,7 +165,12 @@ public class GerberFileProcessingUtil {
 	}
 	// Below method will be call if line starts with Layer
 
-	public static HashMap<String, String> processLine(String line) {
+    /**
+     * This method process each line in the file.
+     * @param line - a single line in the file.
+     * @return the information of line in (key,value) pair.
+     */
+    public static HashMap<String, String> processLine(String line) {
 		HashMap<String, String> attributes = new HashMap<>();
 		if (line == null && line.isEmpty()) {
 			return attributes;
@@ -176,6 +206,12 @@ public class GerberFileProcessingUtil {
 	}
 
 	// Below Code will process the line that has G04
+
+    /**
+     *This method process those lines in the line which starts with GO4.
+     * @param line - a single line in the file
+     * @return the information of line in (key,value) pair.
+     */
 	public static HashMap<String, String> processG04(String line) {
 		HashMap<String, String> returnMap = new HashMap<String, String>();
 		if (line == null || line.isEmpty()) {
@@ -219,6 +255,13 @@ public class GerberFileProcessingUtil {
 	}
 
 	// Below method will be call if line starts with %TF or %TA or %TO
+
+    /**
+     * This method process those lines in the line which starts with TA or TF or TO.
+     * @param line - a single line in the file
+     * @param word - It contains - TA or TF or TO
+     * @return the information of the line in (key,value) pair.
+     */
 	public static HashMap<String, String> processTFTATO(String line, String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
 		if (line == null || line.isEmpty()) {
@@ -253,6 +296,12 @@ public class GerberFileProcessingUtil {
 	}
 
 	// This code will execute if line starts with %FSLA
+
+    /**
+     * This method process those lines in the line which starts with FSLA.
+     * @param line  - a single line in the file
+     * @return the information of the line in (key,value) pair.
+     */
 	public static HashMap<String, String> processFSLA(String line) {
 		HashMap<String, String> returnMap = new HashMap<>();
 		if (line == null || line.isEmpty()) {
@@ -279,7 +328,12 @@ public class GerberFileProcessingUtil {
 		return returnMap;
 	}
 
-	public static HashMap<String, String> processTD(String line) {
+    /**
+     * This method process those lines in the line which starts with TD.
+     * @param line - a single line in the file
+     * @return the information of the line in (key,value) pair.
+     */
+    public static HashMap<String, String> processTD(String line) {
 		HashMap<String, String> returnMap = new HashMap<>();
 		if (line == null || line.isEmpty()) {
 			return returnMap;
@@ -296,6 +350,13 @@ public class GerberFileProcessingUtil {
 	}
 
 	// Below method will be call if line starts with %MO or %LP or %LM
+
+    /**
+     * This method process those lines in the line which starts with MO or LP or LM.
+     * @param line - a single line in the file
+     * @param word- It contains - MO or LP or LM.
+     * @return the information of the line in (key,value) pair.
+     */
 	public static HashMap<String, String> processMOLPLM(String line, String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
 		if (line == null || line.isEmpty()) {
@@ -310,6 +371,13 @@ public class GerberFileProcessingUtil {
 	}
 
 	// Below method will be call if line starts with %LR or %LS
+
+    /**
+     * This method process those lines in the line which starts with LR or LS.
+     * @param line - a single line in the file
+     * @param word - It contains - LR or LS.
+     * @return the information of the line in (key,value) pair.
+     */
 	public static HashMap<String, String> processLRLS(String line, String word) {
 		HashMap<String, String> returnMap = new HashMap<>();
 		if (line == null || line.isEmpty()) {
@@ -323,7 +391,14 @@ public class GerberFileProcessingUtil {
 		return returnMap;
 	}
 
-	public static String processM48(String line, Map<String, String> results, String currentKey) {
+    /**
+     * This method process those lines in the line which starts with M48.
+     * @param line - a single line in the file
+     * @param results - store the information of the line in (key,value) pair.
+     * @param currentKey - key of the line
+     * @return the information of the line in (key,value) pair.
+     */
+    public static String processM48(String line, Map<String, String> results, String currentKey) {
 		if (line.startsWith("%") || line.startsWith("M95")) {
 			return currentKey;
 		}
@@ -358,7 +433,11 @@ public class GerberFileProcessingUtil {
 		return currentKey;
 	}
 
-	public static void ocrImage(FileStorageProperties fileStorageProperties) throws Exception {
+    /**
+     * This method reads the image(from S3 bucket) by OCR tool.
+     * @param fileStorageProperties - property file containing file upload options
+    */
+    public static void ocrImage(FileStorageProperties fileStorageProperties) throws Exception {
 
 		String photo = "bus.png";
 		String bucket = "test.hemant";

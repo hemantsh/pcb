@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Service("ExtensionService")
 @Transactional
@@ -31,12 +31,19 @@ public class FileExtensionService {
     @Autowired
     private CachingService cacheService;
     
-            
-   @Cacheable(value="Extensions")
+    /**
+     * This method find the extensions
+     * @return all the extensions which found in the database
+     */
+    @Cacheable(value="Extensions")
     public List<Extensions> findAll(){
     	return extensionRepo.findAll();
     }
 
+    /**
+     *
+     * @param ext -the extensions to store in a database
+     */
     public void save(Extensions ext) {
         extensionRepo.save(ext);
         cacheService.evictAllCacheValues("Extensions");
@@ -46,7 +53,11 @@ public class FileExtensionService {
 //    extensionRepo.delete(extn);
 //    }
 
- 
+    /**
+     * 
+     * @param id - the specific extension to find from database by id
+     * @return the extension
+     */
     public Extensions getExtensionById(Integer id) {
         return extensionRepo.findById(id).get();
     }

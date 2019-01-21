@@ -129,35 +129,45 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%TFFilePolarityPositive*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TF");
-        assertEquals("", check.get("FilePolarityPositive"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("FilePolarityPositive", "");
+        assertEquals(expectedResult,check);                
     }
     @Test
     public void testProcessTF5()
     {
         String line="%TFFileFunction,Copper,L1,Top*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TF");
-        assertEquals("Copper,L1,Top", check.get("FileFunction"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("FileFunction", "Copper,L1,Top");
+        assertEquals(expectedResult,check);                        
     }
      @Test    
     public void testProcessTF6()
     {
         String line="%TF.FilePolarity,Positive*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TF");
-        assertEquals("Positive", check.get("FilePolarity"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("FilePolarity", "Positive");
+        assertEquals(expectedResult,check);                                
     }
     @Test
     public void testProcessTF7()
     {
         String line="%TF.FileFunction,Copper,L1,Top*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TF");
-        assertEquals("Copper,L1,Top", check.get("FileFunction"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("FileFunction", "Copper,L1,Top");
+        assertEquals(expectedResult,check);                                        
     }
     @Test
     public void testProcessTF8()
     {
         String line="%TF.CreationDate,2016-04-25T00:00:00+01:00*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TF");
-        assertEquals("2016-04-25T00:00:00+01:00", check.get("CreationDate"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("CreationDate", "2016-04-25T00:00:00+01:00");
+        assertEquals(expectedResult,check);                                                
     }
      
      /**
@@ -182,35 +192,45 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%TOC,R6*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TO");
-        assertEquals("R6", check.get("C"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("C", "R6");
+        assertEquals(expectedResult,check);                                                        
     }
     @Test
     public void testProcessTO4()
     {
         String line="%TOP,R5,1*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TO");
-        assertEquals("R5,1", check.get("P"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("P", "R5,1");
+        assertEquals(expectedResult,check);                                                                
     }
     @Test
     public void testProcessTO5()
     {
         String line="%TO.C,R6*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TO");
-        assertEquals("R6", check.get("C"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("C", "R6");
+        assertEquals(expectedResult,check);                                                                        
     }
     @Test
     public void testProcessTO6()
     {
         String line="%TO.P,R5,1*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TO");
-        assertEquals("R5,1", check.get("P"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("P", "R5,1");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessTO7()
     {
         String line="%TO.N,N/C*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTFTATO(line, "%TO");
-        assertEquals("N/C", check.get("N"));            
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("N", "N/C");
+        assertEquals(expectedResult,check);                 
     }
         
      /*************
@@ -235,15 +255,19 @@ public class GerberFileProcessingUtilTest {
     {
         String line="G04 Layer_Physical_Order=4*";
         HashMap<String,String> check=GerberFileProcessingUtil.processG04(line);
-        assertEquals("4", check.get("Layer_Physical_Order"));   
-        assertEquals("4", check.get("Layer"));
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("Layer_Physical_Order", "4");
+        expectedResult.put("Layer", "4");
+        assertEquals(expectedResult,check);                 
     }
     @Test
     public void testProcessGO44()
     {
         String line="G04 Layer_Color=16711680*";
         HashMap<String,String> check=GerberFileProcessingUtil.processG04(line);
-        assertEquals("16711680", check.get("Layer_Color"));   
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("Layer_Color", "16711680");
+        assertEquals(expectedResult,check);                       
     }
     @Test
     public void testProcessGO45()
@@ -321,21 +345,27 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%TD.AperFunction*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTD(line);
-        assertEquals("", check.get("AperFunction"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("AperFunction", "");
+        assertEquals(expectedResult,check); 
     }
     @Test
     public void testProcessTD4()
     {
         String line="%TDIAmATA*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTD(line);
-        assertEquals("", check.get("IAmATA"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("IAmATA", "");
+        assertEquals(expectedResult,check);        
     }
     @Test
     public void testProcessTD5()
     {
         String line="%TD*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processTD(line);
-        assertEquals("", check.get(""));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("", "");
+        assertEquals(expectedResult,check);             
     }
     
      /*************
@@ -360,14 +390,18 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%MOIN*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "MO");
-        assertEquals("IN", check.get("MO"));    
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("MO", "IN");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessMO4()
     {
         String line="%MOMM*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "MO");
-        assertEquals("MM", check.get("MO"));    
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("MO", "MM");
+        assertEquals(expectedResult,check);                 
     }
     
     /*************
@@ -392,14 +426,18 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%LPD*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LP");
-        assertEquals("D", check.get("LP"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LP", "D");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLP4()
     {
         String line="%LPC*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LP");
-        assertEquals("C", check.get("LP"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LP", "C");
+        assertEquals(expectedResult,check);         
     } 
     
      /*************
@@ -424,35 +462,45 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%LMX*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LM");
-        assertEquals("X", check.get("LM"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LM", "X");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLM4()
     {
         String line="%LMN*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LM");
-        assertEquals("N", check.get("LM"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LM", "N");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLM5()
     {
         String line="%LMY*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LM");
-        assertEquals("Y", check.get("LM"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LM", "Y");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLM6()
     {
         String line="%LMXY*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LM");
-        assertEquals("XY", check.get("LM"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LM", "XY");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLM7()
     {
         String line="%LMn*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processMOLPLM(line, "LM");
-        assertEquals("n", check.get("LM"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LM", "n");
+        assertEquals(expectedResult,check);         
     }
     
     /*************
@@ -477,21 +525,27 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%LR90.0*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LR");
-        assertEquals("90.0", check.get("LR"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LR", "90.0");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLR4()
     {
         String line="%LR-90*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LR");
-        assertEquals("-90", check.get("LR"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LR", "-90");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLR5()
     {
         String line="%LR0.0*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LR");
-        assertEquals("0.0", check.get("LR"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LR", "0.0");
+        assertEquals(expectedResult,check);         
     }
     
     /*************
@@ -501,7 +555,7 @@ public class GerberFileProcessingUtilTest {
     public void testProcessLS1()
     {
         String line="";
-        HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LS");
+        HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LS");        
         assertEquals(null, check.get(null));            
     }
     @Test
@@ -523,14 +577,18 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%LS0.8*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LS");
-        assertEquals("0.8", check.get("LS"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LS", "0.8");
+        assertEquals(expectedResult,check);         
     }
     @Test
     public void testProcessLS5()
     {
         String line="%LS-90*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LS");
-        assertEquals("-90", check.get("LS"));            
+        Map<String, String> expectedResult = new HashMap<>();        
+        expectedResult.put("LS", "-90");
+        assertEquals(expectedResult,check);         
     }
     //If user wrongly put LR instead of LS and to process LS
     @Test
@@ -538,7 +596,6 @@ public class GerberFileProcessingUtilTest {
     {
         String line="%LS90*%";
         HashMap<String,String> check=GerberFileProcessingUtil.processLRLS(line, "LR");
-        assertEquals(null, check.get("LR"));            
-      
+        assertEquals(null, check.get("LR"));                  
     }
 }

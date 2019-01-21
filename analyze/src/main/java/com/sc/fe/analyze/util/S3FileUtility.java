@@ -25,7 +25,10 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.sc.fe.analyze.FileStorageProperties;
 
-
+/**
+ *
+ * @author Hemant
+ */
 @Component
 public class S3FileUtility {
 	
@@ -35,7 +38,12 @@ public class S3FileUtility {
 	private static FileStorageProperties fileStorageProperties;
 	private static S3FileUtility instance;
 	
-	public static S3FileUtility getInstance( FileStorageProperties fileStorageProperties) {
+    /**
+     *
+     * @param fileStorageProperties - property file containing file upload options
+     * @return the instance of S3FileUtility
+     */
+    public static S3FileUtility getInstance( FileStorageProperties fileStorageProperties) {
 		if(instance == null ) {
 			instance = new S3FileUtility(fileStorageProperties);
 		}
@@ -63,10 +71,9 @@ public class S3FileUtility {
 	
 	/**
 	 * Store the file in S3 location
-	 * @param projectId
-	 * @param file
-	 * @throws IOException
-	 */
+	 * @param projectId - Normally each project create a sub folder in upload directory
+	 * @param file - the file to be uploaded
+	*/
 	public void storeFile(String projectId, MultipartFile file) throws IOException {
 		
 		//Save extract files locally first
@@ -101,9 +108,9 @@ public class S3FileUtility {
 
 	/**
 	 * Save file to S3
-	 * @param projectId
-	 * @param file
-	 * @param tempFile
+	 * @param projectId - Normally each project create a sub folder in upload directory
+	 * @param file - the file to be uploaded
+	 * @param tempFile - path of file.
 	 */
 	private  void saveFile(String projectId, MultipartFile file, Path tempFile)  {
 		s3client.putObject(
@@ -117,10 +124,9 @@ public class S3FileUtility {
 	/**
 	 * Save extracted file to S3. 
 	 * Only take relative path of file starting from projectId
-	 * @param projectId
-	 * @param file
-	 * @throws IOException
-	 */
+	 * @param projectId - Normally each project create a sub folder in upload directory
+	 * @param file - the file to be uploaded
+	*/
 	private void saveFile(String projectId, File file) throws IOException {
 		
 		Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId ).toAbsolutePath().normalize();
@@ -134,8 +140,8 @@ public class S3FileUtility {
 	
 	/**
 	 * Listing of project files in S3 bucket
-	 * @param projectId
-	 * @return
+	 * @param projectId - Normally each project create a sub folder in upload directory
+	 * @return the list of project files
 	 */
 	public List<String> listObjects(String projectId) {
 		

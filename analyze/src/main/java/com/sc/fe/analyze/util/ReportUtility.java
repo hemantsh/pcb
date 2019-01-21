@@ -10,11 +10,20 @@ import com.sc.fe.analyze.data.entity.Report;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 
+/**
+ *
+ * @author Hemant
+ */
 public class ReportUtility {
 
 	private ReportUtility() {};
 	
-	public static com.sc.fe.analyze.to.Report convertToObject(Report dbData) {
+    /**
+     * This method is convert the report into object.
+     * @param dbData - report of any object
+     * @return the report
+     */
+    public static com.sc.fe.analyze.to.Report convertToObject(Report dbData) {
 		
 		com.sc.fe.analyze.to.Report report = new com.sc.fe.analyze.to.Report();
 		report.setAdditionalNotes(dbData.getNotes());
@@ -53,7 +62,12 @@ public class ReportUtility {
 		return report;
 	}
 	
-	public static Report convertToDBObject(AdvancedReport report) {
+    /**
+     * This method is convert the AdvancedReport object into database object.
+     * @param report - object of AdvancedReport
+     * @return the report
+     */
+    public static Report convertToDBObject(AdvancedReport report) {
 		
 		Report dbReport = new Report();
 		
