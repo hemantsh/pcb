@@ -1,0 +1,96 @@
+{
+    "customerInputs": {
+        "projectId": "1234",
+        "serviceType": "Assembly"
+    },
+    "summary": "<optional summary text>",
+    "validationStatus": "<optional>",
+    
+    "errors": [
+        "<optional error messages, If nothing is there, no need to send this. It can be a list comma separated>"
+    ],
+    
+    "additionalNotes": [
+        "<optional notes, If nothing is there, no need to send this. It can be a list comma separated>"
+    ],
+    
+    "exctractedFileNames": [
+        "standard",
+        "components",
+        "8000-4890.zip",
+        "data",
+        "stephdr",
+        "8000-4890CPWIZA.GBL",
+        "8000-4890CPWIZA.GBO",
+        "matrix",
+        "8000-4890CPWIZA.GBP",
+        "tools",
+        "features",
+        "8000-4891 REV A PCB, CONTROL PANEL (FAB).pdf",
+        "8000-4890CPWIZA.REP",
+        "8000-4891CPWIZA_ARTWORK.PDF",
+        "8000-4890CPWIZA-SquareHoles.TXT",
+        "8000-4890CPWIZA.GTL",
+        "8000-4890CPWIZA.GTO",
+        "8000-4890CPWIZA.GTP",
+        "8000-4890CPWIZA.DRR",
+        "8000-4890CPWIZA.EXTREP",
+        "8000-4890 REV A PCA, CONTROL PANEL (ASSY).pdf",
+        "8000-4890CPWIZA_RoHS.xlsx",
+        "8000-4890CPWIZA.GTS",
+        "attrlist",
+        "ax8604a_8000-4890cpwiza_netlist.rep",
+        "8000-4890CPWIZA.GP1",
+        "8000-4890CPWIZA.RUL",
+        "8000-4890CPWIZA.GP2",
+        "netlist",
+        "profile",
+        "8000-4890CPWIZA.txt",
+        "8000-4890CPWIZA-macro.APR_LIB",
+        "8000-4890CPWIZA-RoundHoles.TXT",
+        "8000-4892 REV A SCH. CONTROL PANEL.PDF",
+        "8000-4890CPWIZA.GBS",
+        "8000-4890CPWIZA.LDP",
+        "8000-4890CPWIZA.ipc",
+        "8000-4890CPWIZA.apr",
+        "8000-4890CPWIZA-RectHoles.TXT",
+        "8000-4890CPWIZA.tgz"
+    ],
+    
+    "filePurposeToNameMapping": {
+        "Bottom Copper": [
+            "8000-4890CPWIZA.GBL"
+        ],
+        "Assembly Drawing": [
+            "8000-4890 REV A PCA, CONTROL PANEL (ASSY).pdf",
+            "8000-4892 REV A SCH. CONTROL PANEL.PDF"
+        ],
+        "Top Copper": [
+            "8000-4890CPWIZA.GTL"
+        ],
+        "V3P3 Plane": [
+            "8000-4890CPWIZA.GP2"
+        ],
+        "NC Drill File": [
+            "8000-4890CPWIZA-SquareHoles.TXT",
+            "8000-4890CPWIZA.txt",
+            "8000-4890CPWIZA-RectHoles.TXT",
+            "8000-4890CPWIZA-RoundHoles.TXT"
+        ],
+        "Bottom Silkscreen": [
+            "8000-4890CPWIZA.GBO"
+        ],
+        "Top Silkscreen": [
+            "8000-4890CPWIZA.GTO"
+        ],
+        "Top Soldermask": [
+            "8000-4890CPWIZA.GTS"
+        ],
+        "GND Plane": [
+            "8000-4890CPWIZA.GP1"
+        ],
+        "Bottom Soldermask": [
+            "8000-4890CPWIZA.GBS"
+        ]
+    }
+}

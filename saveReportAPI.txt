@@ -1,0 +1,25 @@
+URL: 
+POST http://<host:port>/pcb/api/saveReport
+Payload:
+{
+    "customerInputs": {
+        "projectId": "1234",
+        "customerId": "CustId",
+        "serviceType": "Assembly",
+        "emailAddress": "abc@xyz.com",
+        "zipFileName": "8000-4890.zip",
+        "zipFileSize": "4.6 MB"
+    },
+    "fileDetails": [
+        {
+            "name": "xyz/abc/123.gbr",
+            "modifiedDate": "2018-12-28T00:25:42.253+0000",
+            "fileSize": "125 MB",
+            "fileFormat": "Gerber",
+            "layer": 1,
+            "polarity": "Positive",
+            "copperWeight": 0.9
+        }
+    ],
+    "odbMatrix": null
+}

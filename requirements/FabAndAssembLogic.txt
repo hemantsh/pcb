@@ -1,0 +1,61 @@
+
+For Fabrication we need:
+
+1.       Gerber/ODB++ ipc2581 . ipc356 netlist 
+
+2.       Drill layers (this can be on Gerber, Excellon ASCII or Excellon EIA). Prefer is Exellon ASCII
+
+3.       Fab Drawings (this can be on Gerber, DXF, DWG, PDF).
+
+4.       Layer Sequence ( this can be, readme, Fab Drawing, Gerber Header)
+
+5.       ODB++ (This could contain all the above)
+
+Layer count. 
+
+
+ 
+
+For Assembly we need:
+
+1.       All of the above
+
+2.       BOM excel format 
+
+3.       Assembly Drawings (this can be ODB++, gerber, PDF, DXF, DWG)
+
+4.       Paste Layers (this can be gerber or ODB++)
+
+5.       X&Y
+
+
+------ ODB
+Layer types signal, mixed or power_ground and the context is board. 
+These will be the copper layers. 
+By looking at the row number you can calculate the layer sequence and layer count.
+
+-Other layer types with context board will define mask, silk, paste and drill layers.
+
+-Layer types with context misc will most likely be the drawing and the name may define what type of drawing.
+
+-Layers types called component maybe used as assembly drawings.
+
+--------
+
+Assembly Logic:
+
+1.       BOM. For the most part they are excel format. In some cases they are PDF. You can Identify this by file name and parsing or OCR and 
+look for the following key words: ITEM|SN|MANUF|MPN|PARTNUM|MANFPART|MFG|MANFP|MFRP|MFGR|MP#|VENDOR|VPN|DISTRIBUTOR|DPN|DIGIKEY|DISTRIBUTOR_P|
+QUANTITY|REFERENCE|DESIGNATOR|REFDES|SCHEMATIC|DONOTINSTALL|DNI|DNP|DONOTPOPULATE|STUFF|DESC|LIBREF|PARTDESCRIPTION
+
+2.       Assembly drawings. This is going to be the same as Fab drawing, but different keywords like assem.
+
+3.       Paste Layers. This can be found thru the FAB logic. 
+
+4.       X&Y. I’m not very familiar with this, I believe they can be ASCII files or excel. 
+I do not believe that there is a standard format for this. 
+Somebody in assembly will have to give more input.
+
+
+
+

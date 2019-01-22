@@ -1,0 +1,94 @@
+{
+	"customerInputs": {
+		"quantity": 100,
+		"turnTime": 5,
+		"projectId": "1234",
+		"customerId": "CustId",
+		"serviceType": "Assembly",
+		"emailAddress": "abc@xyz.com",
+		"zipFileName": "8000-4890.zip",
+		"zipFileSize": "4.6 MB"
+	},
+	"fileDetails": [
+	  {
+		"name": "xyz/abc/8000-4890CPWIZA.GP2",
+		"attributes": {
+            "D118.HoleSize": "0mil",
+            "MO": "IN",
+            "D118.XOffset": "0mil",
+            "D118.HoleType": "Round",
+            "D118.YOffset": "0mil",
+            "D118.CornerRadius": "0mil",
+            "D118.XSize": "74mil",
+            "D118.Usage": "FLASHONLY",
+            "D118.Shape": "Octagon",
+            "X": "25",
+            "Y": "25",
+            "Layer_Color": "8388736",
+            "D118.Rotation": "0.000",
+            "D118.YSize": "74mil"
+        },
+		"fileFormat": "Gerber",
+		"valid": false,
+		"modifiedDate": "2019-01-18T08:36:48.279+0000",
+		"fileSize": "125 MB",
+		"startName": "startName",
+		"endName": "endName",
+		"copperWeight": ".95",
+		"layerSequence": 1
+	}],
+	"layerInfo": {
+		"layerSequence": 1,
+		"fileNamee": "8000-4890CPWIZA.GP2",
+		"polarityy": "",
+		"row": null,
+		"context": null,
+		"type": null,
+		"name": null,
+		"polarity": null,
+		"start_name": null,
+		"end_name": null,
+		"old_name": null
+	},
+	
+	"filePurposeToNameMapping": {
+	
+		"Bottom Copper": [
+			"8000-4890CPWIZA.GBL"
+		],
+		"Assembly Drawing": [
+			"8000-4891 REV A PCB, CONTROL PANEL (FAB).pdf",
+			"8000-4891CPWIZA_ARTWORK.PDF",
+			"8000-4890 REV A PCA, CONTROL PANEL (ASSY).pdf",
+			"8000-4892 REV A SCH. CONTROL PANEL.PDF"
+		],
+		"Top Copper": [
+			"8000-4890CPWIZA.GTL"
+		],
+		"V3P3 Plane": [
+			"8000-4890CPWIZA.GP2"
+		],
+		"NC Drill File": [
+			"8000-4890CPWIZA-SquareHoles.TXT",
+			"8000-4890CPWIZA.txt",
+			"8000-4890CPWIZA-RectHoles.TXT",
+			"8000-4890CPWIZA-RoundHoles.TXT"
+		],
+		"Bottom Silkscreen": [
+			"8000-4890CPWIZA.GBO"
+		],
+		"Top Silkscreen": [
+			"8000-4890CPWIZA.GTO"
+		],
+		"Top Soldermask": [
+			"8000-4890CPWIZA.GTS"
+		],
+		"GND Plane": [
+			"8000-4890CPWIZA.GP1"
+		],
+		"Bottom Soldermask": [
+			"8000-4890CPWIZA.GBS"
+		]
+	}
+
+}
