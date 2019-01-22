@@ -5,12 +5,19 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ *
+ * @author Hemant
+ */
 @JsonInclude(Include.NON_EMPTY)
 public class CustomerInputs implements Serializable {
 	
 	private static final long serialVersionUID = 1388568635843885556L;
 	
-	public CustomerInputs() {
+    /**
+     *
+     */
+    public CustomerInputs() {
 		super();
 	}
 	
@@ -35,52 +42,131 @@ public class CustomerInputs implements Serializable {
 	private String zipFileName;
 	private String zipFileSize;
 	
-	public String getProjectId() {
+    /**
+     *
+     * @return the projectId from the database in the string format
+     */
+    public String getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(String projectId) {
+
+    /**
+     *
+     * @param projectId - to set the projectId in the database
+     */
+    public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-	public String getCustomerId() {
+
+    /**
+     *
+     * @return the customerId from the database in the string format
+     */
+    public String getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(String customerId) {
+
+    /**
+     *
+     * @param customerId - set the customerId in the database
+     */
+    public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
-	public String getServiceType() {
+
+    /**
+     *
+     * @return the serviceType from the database in the string format
+     */
+    public String getServiceType() {
 		return serviceType;
 	}
-	public void setServiceType(String serviceType) {
+
+    /**
+     *
+     * @param serviceType - set the serviceType in the database
+     */
+    public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
 	}
-	public String getEmailAddress() {
+
+    /**
+     *
+     * @return the emailAddress from the database in a string format
+     */
+    public String getEmailAddress() {
 		return emailAddress;
 	}
-	public void setEmailAddress(String emailAddress) {
+
+    /**
+     *
+     * @param emailAddress - set the emailAddress in the database
+     */
+    public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	public String getZipFileName() {
+
+    /**
+     *
+     * @return the ZIP filename from the database in the string format
+     */
+    public String getZipFileName() {
 		return zipFileName;
 	}
-	public void setZipFileName(String zipFileName) {
+
+    /**
+     *
+     * @param zipFileName - set the ZIP fileName in the database
+     */
+    public void setZipFileName(String zipFileName) {
 		this.zipFileName = zipFileName;
 	}
-	public String getZipFileSize() {
+
+    /**
+     *
+     * @return the ZIP fileSize from the database in the string format
+     */
+    public String getZipFileSize() {
 		return zipFileSize;
 	}
-	public void setZipFileSize(String zipFileSize) {
+
+    /**
+     *
+     * @param zipFileSize - set the ZIP fileSize in the database
+     */
+    public void setZipFileSize(String zipFileSize) {
 		this.zipFileSize = zipFileSize;
 	}
-	public int getQuantity() {
+
+    /**
+     *
+     * @return the quantity in integer format
+     */
+    public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(int quantity) {
+
+    /**
+     *
+     * @param quantity - set the quantity 
+     */
+    public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public int getTurnTime() {
+
+    /**
+     *
+     * @return the turnTime
+     */
+    public int getTurnTime() {
 		return turnTime;
 	}
-	public void setTurnTime(int turnTime) {
+
+    /**
+     *
+     * @param turnTime - set the turnTime 
+     */
+    public void setTurnTime(int turnTime) {
 		this.turnTime = turnTime;
 	}
 	

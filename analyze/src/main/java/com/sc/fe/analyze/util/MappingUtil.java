@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
+/**
+ *
+ * @author Hemant
+ */
 public class MappingUtil {
 	
 	private static Map<Integer, String> extensionMap;
@@ -18,7 +21,13 @@ public class MappingUtil {
 
 	private MappingUtil() {};
 	
-	public static void init(Map<Integer, String> p_extensionMap, 
+    /**
+     *
+     * @param p_extensionMap - initialize the extensionMap
+     * @param p_fileTypeMap -  initialize the fileTypeMap
+     * @param p_serviceMap - initialize the serviceMap
+     */
+    public static void init(Map<Integer, String> p_extensionMap, 
 			Map<Integer, String> p_fileTypeMap,
 			Map<Integer, String> p_serviceMap) {
 		
@@ -51,27 +60,57 @@ public class MappingUtil {
 		
 	}
 	
-	public static Integer getExtensionId(String extension) {
+    /**
+     *
+     * @param extension  - retrieve the id by extension
+     * @return the extension id
+     */
+    public static Integer getExtensionId(String extension) {
 		return extensionReverseMap.get(extension);
 	}
 	
-	public static String getExtension(Integer extId) {
+    /**
+     *
+     * @param extId - retrieve the extension by id
+     * @return the extension
+     */
+    public static String getExtension(Integer extId) {
 		return extensionMap.get(extId);
 	}
 	
-	public static Integer getFileTypeId(String fileType) {
+    /**
+     *
+     * @param fileType - retrieve the id by fileType
+     * @return the fileTypeId
+     */
+    public static Integer getFileTypeId(String fileType) {
 		return fileTypeReverseMap.get(fileType);
 	}
 	
-	public static String getFileType(Integer fileId) {
+    /**
+     *
+     * @param fileId - retrieve the fileTypeby id
+     * @return the fileType
+     */
+    public static String getFileType(Integer fileId) {
 		return fileTypeMap.get(fileId);
 	}
 	
-	public static Integer getServiceId(String serviceName) {
+    /**
+     *
+     * @param serviceName - retrieve the id by serviceName
+     * @return the service id
+     */ 
+    public static Integer getServiceId(String serviceName) {
 		return serviceReverseMap.get(serviceName);
 	}
 	
-	public static String getServiceName(Integer serviceId) {
+    /**
+     *
+     * @param serviceId- retrieve the serviceName by id
+     * @return the service Name
+     */
+    public static String getServiceName(Integer serviceId) {
 		return serviceMap.get(serviceId);
 	}
 	

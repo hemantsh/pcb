@@ -18,7 +18,7 @@ import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Service
 @Transactional
@@ -29,24 +29,46 @@ public class ServiceFilesServices {
     @Autowired
     private CachingService cacheService;
     
+    /**
+     * This method find the services_files
+     * @return all the service_files which found in the database
+     */
     @Cacheable(value="ServiceFiles")
     public List<ServiceFiles> findAll(){
     	return serviceFileRepo.findAll();
     }
     
+    /**
+     *
+     * @param sf - the service_files to store in a database
+     */
     public void save(ServiceFiles sf){
     	serviceFileRepo.save(sf);
     	cacheService.evictAllCacheValues("ServiceFiles");
     }
     
+    /**
+     *
+     * @param sf - the list of services_files to store in a database
+     */
     public void saveAll(List<ServiceFiles> sf){
         serviceFileRepo.saveAll(sf);
     	cacheService.evictAllCacheValues("ServiceFiles");
     }
     
+    /**
+     *
+     * @param service_id - the specific service_file to find from database
+     * @return the service_files
+     */
     public List<ServiceFiles> getFilesByService(Integer service_id) {
         return serviceFileRepo.findByKeyServiceId(service_id);
     }
+
+    /**
+     *
+     * @param df - - the list of services_files which will be deleted from the  database
+     */
     public void delete(ServiceFiles df){
         serviceFileRepo.delete(df);
     }

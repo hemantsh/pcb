@@ -8,10 +8,20 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInputs;
 import com.sc.fe.analyze.to.FileDetails;
 
+/**
+ *
+ * @author Hemant
+ */
 public class ReportCompareUtility {
 
     private static final String DELIMITER = "~";
 
+    /**
+     * This method is compare the new Object from the old Object of AdvancedReport Class.
+     * @param newReport- the new object details to set
+     * @param oldReport- the old object details to set
+     * @return the differences after comparing the new object from the old object 
+    */
     public static Map<String, String> compare(AdvancedReport newReport, AdvancedReport oldReport) throws IllegalArgumentException, IllegalAccessException {
         Map<String, String> differences = new HashMap<String, String>();
         if (newReport == null || oldReport == null) {

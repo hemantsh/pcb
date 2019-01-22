@@ -36,6 +36,33 @@ public class FileDetailCompareUtilityTest {
     /**
      * Test of compare method, of class ReportCompareUtility.
      */
+   
+    //Test with instanceVariables(layerInfo and ProjectId) of FileDetails in compareObject method, of class FileDetailCompareUtility.
+    @Test
+    public void testCompareFileDetails5() throws Exception {
+        FileDetails newFD = new FileDetails();
+        LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
+        newFD.setLayerInfo(newLayerInfo);
+        newFD.setProjectId("new123");
+
+        FileDetails oldFD = new FileDetails();
+        LayersInformation oldLayerInfo = new LayersInformation("5", "BOARD", "SILK_SCREEN", "TOP_OVERLAY", "POSITIVE", "", "", "");
+        oldFD.setLayerInfo(oldLayerInfo);
+        oldFD.setProjectId("old123");
+
+        FileDetailCompareUtility instance = new FileDetailCompareUtility();
+        Map<String, String> result = instance.compareObject(newLayerInfo, oldLayerInfo);
+        result.putAll(instance.compareObject(newFD, oldFD));
+
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("name", "BOTTOM_SOLDER~TOP_OVERLAY");
+        expectedResult.put("layerInfo", newLayerInfo + "~" + oldLayerInfo);
+        expectedResult.put("row", "1~5");
+        expectedResult.put("type", "SIGNAL~SILK_SCREEN");
+        expectedResult.put("projectId", "new123~old123");
+        assertEquals(expectedResult, result);
+    }
+
     @Test
     public void testCompareReportDetails1() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
@@ -198,33 +225,7 @@ public class FileDetailCompareUtilityTest {
         expectedResult.put("fileFormat", "Gerber~Drill");
         assertEquals(expectedResult, result);
     }
-
-    //Test with instanceVariables(layerInfo and ProjectId) of FileDetails in compareObject method, of class FileDetailCompareUtility.
-    @Test
-    public void testCompareFileDetails5() throws Exception {
-        FileDetails newFD = new FileDetails();
-        LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
-        newFD.setLayerInfo(newLayerInfo);
-        newFD.setProjectId("new123");
-
-        FileDetails oldFD = new FileDetails();
-        LayersInformation oldLayerInfo = new LayersInformation("5", "BOARD", "SILK_SCREEN", "TOP_OVERLAY", "POSITIVE", "", "", "");
-        oldFD.setLayerInfo(oldLayerInfo);
-        oldFD.setProjectId("old123");
-
-        FileDetailCompareUtility instance = new FileDetailCompareUtility();
-        Map<String, String> result = instance.compareObject(newLayerInfo, oldLayerInfo);
-        result.putAll(instance.compareObject(newFD, oldFD));
-
-        Map<String, String> expectedResult = new HashMap<>();
-        expectedResult.put("name", "BOTTOM_SOLDER~TOP_OVERLAY");
-        expectedResult.put("layerInfo", newLayerInfo + "~" + oldLayerInfo);
-        expectedResult.put("row", "1~5");
-        expectedResult.put("type", "SIGNAL~SILK_SCREEN");
-        expectedResult.put("projectId", "new123~old123");
-        assertEquals(expectedResult, result);
-    }
-
+   
     //Test with instanceVariables(attribute and ProjectId) of FileDetails in compareObject method, of class FileDetailCompareUtility.
     @Test
     public void testCompareFileDetails6() throws Exception {

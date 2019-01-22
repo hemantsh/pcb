@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Service
 @Transactional
@@ -21,10 +21,18 @@ public class ReportServices {
     @Autowired
     private ReportRepo reportRepo;
    
+    /**
+     * This method find the report
+     * @return all the reports which found in the database
+     */
     public List<Report> findAll(){
         return reportRepo.findAll();
     }
     
+    /**
+     *
+     * @param report - the report to store in a database
+     */
     public void save(Report report){
         reportRepo.save(report);
     }

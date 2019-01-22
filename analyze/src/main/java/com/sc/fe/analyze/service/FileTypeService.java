@@ -19,7 +19,7 @@ import com.sc.fe.analyze.data.repo.FileTypesRepo;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Service
 @Transactional
@@ -29,16 +29,29 @@ public class FileTypeService {
     @Autowired
     private CachingService cacheService;
     
+    /**
+     * This method find the file type services
+     * @return all the file type services which found in the database 
+     */
     @Cacheable(value="FileTypes")
     public List<FileTypes> findAll() {
         return fileTypesRepo.findAll(); 
     }
     
+    /**
+     *
+     * @param ft - the fileType to save in a database
+     */
     public void save(FileTypes ft) {
     	fileTypesRepo.save(ft);
     	cacheService.evictAllCacheValues("FileTypes");
     }
     
+    /**
+     *
+     * @param id - the specific FileType service to find from database by id
+     * @return the fileType 
+     */
     public FileTypes getTypeById(Integer id) {
     	return fileTypesRepo.findById(id).get();
     }

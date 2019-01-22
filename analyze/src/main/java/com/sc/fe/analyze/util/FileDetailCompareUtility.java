@@ -10,10 +10,20 @@ import java.util.Set;
 
 import com.sc.fe.analyze.to.FileDetails;
 
+/**
+ *  
+ * @author Hemant
+ */
 public class FileDetailCompareUtility {
 
     private static final String DELIMITER = "~";
 
+    /**
+     * This method is compare the new Object from the old Object details.
+     * @param newFD - the new object details to set
+     * @param oldFD - the old object details to set
+     * @return the differences after comparing the new object from the old object 
+    */
     public static Map<String, String> compareObject(Object newFD, Object oldFD) throws IllegalArgumentException, IllegalAccessException {
         if (newFD == null || oldFD == null) {
             return null;
@@ -37,6 +47,12 @@ public class FileDetailCompareUtility {
         return differences;
     }
 
+    /**
+     *
+     * @param newFD - the new FileDetails object details to set
+     * @param oldFD - the old FileDetails object details to set
+     * @return the differences after comparing the new FileDetails object from the old FileDetails object
+     */
     public static Map<String, String> compare(FileDetails newFD, FileDetails oldFD) {
         //Field name - newValue, oldValue
         Map<String, String> differences = new HashMap<String, String>();

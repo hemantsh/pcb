@@ -21,6 +21,10 @@ import com.sc.fe.analyze.FileStorageProperties;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
+/**
+ *
+ * @author Hemant
+ */
 @Component
 public class FileStoreUtil {
 
@@ -29,14 +33,23 @@ public class FileStoreUtil {
 	
 	private  FileStorageProperties fileStorageProperties;
 	
-	public static FileStoreUtil getInstance( FileStorageProperties fileStorageProperties) {
+    /**
+     *
+     * @param fileStorageProperties - from fileStorageProperties to set instance
+     * @return the FileStroeUtil
+     */
+    public static FileStoreUtil getInstance( FileStorageProperties fileStorageProperties) {
 		if(instance == null ) {
 			instance = new FileStoreUtil(fileStorageProperties);
 		}
 		return instance;
 	}
 	
-	public  String getUploadDir(){
+    /**
+     *
+     * @return the upload Directory name
+     */
+    public  String getUploadDir(){
         return fileStorageProperties.getUploadDir();
     }
 	
@@ -48,18 +61,17 @@ public class FileStoreUtil {
 	
 	/**
 	 * Store the uploaded file for given project. Overwrite existing file
-	 * @param projectId
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
+	 * @param projectId - store the projectId in the database
+	 * @param file - store the filename in the database
+	 * @return in the String format
+	*/
 	public String storeFile(String projectId, MultipartFile file) throws IOException {
 		return FileUtil.saveUploadedZipFile(projectId, file, fileStorageProperties);
     }
 	
 	/**
 	 * Extract files from ZIP (fileName) into given folder
-	 * @param projectId the project id
+	 * @param projectId - the project id
 	 * @param fileName -  the path of zip file under the project
 	 */
 	public void extractFiles(String projectId, String fileName) {
@@ -79,8 +91,8 @@ public class FileStoreUtil {
 	
 	/**
 	 * List all files in the project folder
-	 * @param projectId
-	 * @return
+	 * @param projectId - the project id
+	 * @return the all fileNames (extract from ZIP file)
 	 */
 	public Set<String> listFiles(String projectId) {
 		
@@ -105,11 +117,19 @@ public class FileStoreUtil {
 	
 	}
 
-	public FileStorageProperties getFileStorageProperties() {
+    /**
+     *
+     * @return the fileStroageProperties
+     */
+    public FileStorageProperties getFileStorageProperties() {
 		return fileStorageProperties;
 	}
 
-	public void setFileStorageProperties(FileStorageProperties fileStorageProperties) {
+    /**
+     *
+     * @param fileStorageProperties  - the fileStorageProperties to set
+     */
+    public void setFileStorageProperties(FileStorageProperties fileStorageProperties) {
 		this.fileStorageProperties = fileStorageProperties;
 	}
 
