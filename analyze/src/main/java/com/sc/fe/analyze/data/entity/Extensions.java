@@ -1,8 +1,10 @@
 package com.sc.fe.analyze.data.entity;
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+@ApiModel(value="Extensions",description="Table Structure of Extensions")
 @Table(value="extensions")
 public class Extensions {
 	

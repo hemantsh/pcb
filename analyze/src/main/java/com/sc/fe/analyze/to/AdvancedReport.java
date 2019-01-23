@@ -10,11 +10,13 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 
 /**
  * @author Hemant
  *
  */
+@ApiModel(value="AdvanceReport",description="Table Structure of AdvanceReport")
 public class AdvancedReport implements Serializable {
 	
 	private static final long serialVersionUID = -3742223075854910617L;
