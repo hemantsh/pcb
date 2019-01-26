@@ -1,37 +1,18 @@
-INSERT into services (id,name) VALUES (1, 'Quote');
+INSERT into services (id,name) VALUES (1, 'Fabrication and Assembly');
 INSERT into services (id,name) VALUES (2, 'Assembly');
 INSERT into services (id,name) VALUES (3, 'Fabrication');
 
 
-INSERT into file_types (id,type) VALUES (1, 'Top Silkscreen');
-INSERT into file_types (id,type) VALUES (2, 'Top Soldermask');
-INSERT into file_types (id,type) VALUES (3, 'Top Copper');
-INSERT into file_types (id,type) VALUES (4, 'Bottom Copper');
-INSERT into file_types (id,type) VALUES (5, 'Bottom Soldermask');
-INSERT into file_types (id,type) VALUES (6, 'Bottom Silkscreen');
-INSERT into file_types (id,type) VALUES (7, 'NC Drill File');
-INSERT into file_types (id,type) VALUES (8, 'Board Outline');
-INSERT into file_types (id,type) VALUES (9, 'GND Plane');
-INSERT into file_types (id,type) VALUES (10,'V3P3 Plane');
-INSERT into file_types (id,type) VALUES (11,'Fab Drawing');
-INSERT into file_types (id,type) VALUES (12,'Assembly Drawing');
-INSERT into file_types (id,type) VALUES (13,'Layer Sequence');
-INSERT into file_types (id,type) VALUES (14,'BOM');
-INSERT into file_types (id,type) VALUES (15, 'XY');
-INSERT into file_types (id,type) VALUES (16, 'JPG');
-INSERT into file_types (id,type) VALUES (17, 'Internal Plane Layers');
-INSERT into file_types (id,type) VALUES (18, 'Readme');
-INSERT into file_types (id,type) VALUES (19, 'Top Paste');
-INSERT into file_types (id,type) VALUES (20, 'Bot Paste');
-INSERT into file_types (id,type) VALUES (21, 'Internal Signal Layers');
-INSERT into file_types (id,type) VALUES (22, 'Gerber Drawings');
-INSERT into file_types (id,type) VALUES (23, 'EIA NC Drill File');
-
-
-
-
-
-
+INSERT into file_types (id,type) VALUES (1, 'Signal');
+INSERT into file_types (id,type) VALUES (2, 'Mixed');
+INSERT into file_types (id,type) VALUES (3, 'power_ground');
+INSERT into file_types (id,type) VALUES (4, 'solder_mask');
+INSERT into file_types (id,type) VALUES (5, 'silk_screen');
+INSERT into file_types (id,type) VALUES (6, 'solder_paste');
+INSERT into file_types (id,type) VALUES (7, 'drill');
+INSERT into file_types (id,type) VALUES (8, 'Rout');
+INSERT into file_types (id,type) VALUES (9, 'Document');
+INSERT into file_types (id,type) VALUES (10,'Component');
 
 
 

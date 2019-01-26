@@ -6,7 +6,7 @@
 package com.sc.fe.analyze.util;
 
 import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
 import java.util.Date;
@@ -36,7 +36,38 @@ public class FileDetailCompareUtilityTest {
 
     /**
      * Test of compare method, of class ReportCompareUtility.
+<<<<<<< HEAD
      */      
+=======
+     */
+   
+    //Test with instanceVariables(layerInfo and ProjectId) of FileDetails in compareObject method, of class FileDetailCompareUtility.
+    @Test
+    public void testCompareFileDetails5() throws Exception {
+        FileDetails newFD = new FileDetails();
+        LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
+//        newFD.setLayerInfo(newLayerInfo);
+//        newFD.setProjectId("new123");
+
+        FileDetails oldFD = new FileDetails();
+        LayersInformation oldLayerInfo = new LayersInformation("5", "BOARD", "SILK_SCREEN", "TOP_OVERLAY", "POSITIVE", "", "", "");
+//        oldFD.setLayerInfo(oldLayerInfo);
+//        oldFD.setProjectId("old123");
+
+        FileDetailCompareUtility instance = new FileDetailCompareUtility();
+        Map<String, String> result = instance.compareObject(newLayerInfo, oldLayerInfo);
+        result.putAll(instance.compareObject(newFD, oldFD));
+
+        Map<String, String> expectedResult = new HashMap<>();
+        expectedResult.put("name", "BOTTOM_SOLDER~TOP_OVERLAY");
+        expectedResult.put("layerInfo", newLayerInfo + "~" + oldLayerInfo);
+        expectedResult.put("row", "1~5");
+        expectedResult.put("type", "SIGNAL~SILK_SCREEN");
+        expectedResult.put("projectId", "new123~old123");
+        assertEquals(expectedResult, result);
+    }
+
+>>>>>>> upstream/hemant
     @Test
     public void testCompareReportDetails1() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
@@ -52,17 +83,17 @@ public class FileDetailCompareUtilityTest {
     public void testCompareReportDetails2() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
         AdvancedReport oldReport = new AdvancedReport();
-        CustomerInputs input = new CustomerInputs();
+        CustomerInformation input = new CustomerInformation();
         input.setEmailAddress("abc@gmail.com");
-        input.setZipFileName("8000-4000.zip");
-        input.setServiceType("Assembly");
-        newReport.setCustomerInputs(input);
+//        input.setZipFileName("8000-4000.zip");
+//        input.setServiceType("Assembly");
+//        newReport.setCustomerInputs(input);
 
-        CustomerInputs oldInput = new CustomerInputs();
+        CustomerInformation oldInput = new CustomerInformation();
         oldInput.setEmailAddress("xyz@gmail.com");
-        oldInput.setZipFileName("7850-3200.zip");
-        oldInput.setServiceType("Fabrication");
-        oldReport.setCustomerInputs(oldInput);
+//        oldInput.setZipFileName("7850-3200.zip");
+//        oldInput.setServiceType("Fabrication");
+//        oldReport.setCustomerInputs(oldInput);
         Map<String, String> result = ReportCompareUtility.compare(newReport, oldReport);
 
         Map<String, String> expectedResult = new HashMap<>();
@@ -77,13 +108,13 @@ public class FileDetailCompareUtilityTest {
     public void testCompareReportDetails3() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
         AdvancedReport oldReport = new AdvancedReport();
-        CustomerInputs input = new CustomerInputs();
+        CustomerInformation input = new CustomerInformation();
         input.setEmailAddress("abc@gmail.com");
-        input.setZipFileName("8000-4000.zip");
-        input.setServiceType("Assembly");
-        newReport.setCustomerInputs(input);
+//        input.setZipFileName("8000-4000.zip");
+//        input.setServiceType("Assembly");
+//        newReport.setCustomerInputs(input);
 
-        oldReport.setOdbMatrix("Tryy");
+//        oldReport.setOdbMatrix("Tryy");
         Map<String, String> result = ReportCompareUtility.compare(newReport, oldReport);
 
         Map<String, String> expectedResult = new HashMap<>();
@@ -95,8 +126,8 @@ public class FileDetailCompareUtilityTest {
     public void testCompareReportDetails4() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
         AdvancedReport oldReport = new AdvancedReport();
-        newReport.setOdbMatrix("newODBTEST");
-        oldReport.setOdbMatrix("oldODBMatrix");
+//        newReport.setOdbMatrix("newODBTEST");
+//        oldReport.setOdbMatrix("oldODBMatrix");
 
         Map<String, String> result = ReportCompareUtility.compare(newReport, oldReport);
 
@@ -318,11 +349,11 @@ public class FileDetailCompareUtilityTest {
     @Test
     public void testCompareFileDetails3() throws Exception {
         FileDetails newFD = new FileDetails();
-        newFD.setProjectId("abc123");
+//        newFD.setProjectId("abc123");
         newFD.setFileSize("20 MB");
 
         FileDetails oldFD = new FileDetails();
-        oldFD.setProjectId("111");
+//        oldFD.setProjectId("111");
         oldFD.setFileSize("35 MB");
 
         FileDetailCompareUtility instance = new FileDetailCompareUtility();
@@ -343,13 +374,13 @@ public class FileDetailCompareUtilityTest {
     @Test
     public void testCompareFileDetails4() throws Exception {
         FileDetails newFD = new FileDetails();
-        newFD.setProjectId("abc123");
-        newFD.setFileFormat("Gerber");
+//        newFD.setProjectId("abc123");
+//        newFD.setFileFormat("Gerber");
         newFD.setName("New");
 
         FileDetails oldFD = new FileDetails();
-        oldFD.setProjectId("111");
-        oldFD.setFileFormat("Drill");
+//        oldFD.setProjectId("111");
+//        oldFD.setFileFormat("Drill");
         oldFD.setName("OLD");
         FileDetailCompareUtility instance = new FileDetailCompareUtility();
         Map<String, String> result = instance.compareObject(newFD, oldFD);
@@ -400,14 +431,14 @@ public class FileDetailCompareUtilityTest {
         attr.put("et_adjacency", "20.000000");
         attr.put("eda_layers", "TopOverlay");
         newFD.setAttributes(attr);
-        newFD.setProjectId("new123");
+//        newFD.setProjectId("new123");
 
         FileDetails oldFD = new FileDetails();
         Map<String, String> oldattr = new HashMap<>();
         oldattr.put("et_adjacency", "10.000000");
         oldattr.put("eda_layers", "TopPaste");
         oldFD.setAttributes(oldattr);
-        oldFD.setProjectId("old123");
+//        oldFD.setProjectId("old123");
 
         FileDetailCompareUtility instance = new FileDetailCompareUtility();
         Map<String, String> result = instance.compareObject(newFD, oldFD);
@@ -431,18 +462,18 @@ public class FileDetailCompareUtilityTest {
         attr.put("et_adjacency", "20.000000");
         attr.put("eda_layers", "TopOverlay");
         newFD.setAttributes(attr);
-        newFD.setProjectId("new123");
+//        newFD.setProjectId("new123");
         LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
-        newFD.setLayerInfo(newLayerInfo);
+//        newFD.setLayerInfo(newLayerInfo);
 
         FileDetails oldFD = new FileDetails();
         Map<String, String> oldattr = new HashMap<>();
         oldattr.put("et_adjacency", "10.000000");
         oldattr.put("eda_layers", "TopPaste");
         oldFD.setAttributes(oldattr);
-        oldFD.setProjectId("old123");
+//        oldFD.setProjectId("old123");
         LayersInformation oldLayerInfo = new LayersInformation("5", "BOARD", "SILK_SCREEN", "TOP_OVERLAY", "POSITIVE", "", "", "");
-        oldFD.setLayerInfo(oldLayerInfo);
+//        oldFD.setLayerInfo(oldLayerInfo);
 
         FileDetailCompareUtility instance = new FileDetailCompareUtility();
         Map<String, String> result = instance.compareObject(newLayerInfo, oldLayerInfo);

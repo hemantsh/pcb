@@ -30,7 +30,6 @@ import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
-import com.sc.fe.analyze.to.Report;
 
 /**
  *
@@ -63,8 +62,8 @@ public class GerberFileProcessingUtil {
 						polarity = "";
 					}
 
-					LayersInformation layerInfo = new LayersInformation(fdetails.getAttributes().get("Layer"), exfile, polarity);
-					fdetails.setLayerInfo(layerInfo);
+					//LayersInformation layerInfo = new LayersInformation(fdetails.getAttributes().get("Layer"), exfile, polarity);
+					//fdetails.setLayerInfo(layerInfo);
 				}
 			}
 			
@@ -475,6 +474,7 @@ public class GerberFileProcessingUtil {
 		}
 
 	}
+    
 
 //	private void createAdvancedReport(AdvancedReport report, 
 //	Map<String, String> extensionToFileMapping,

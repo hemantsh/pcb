@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.sc.fe.analyze.data.entity.Report;
 import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.CustomerInformation;
 
 /**
  *
@@ -52,10 +52,10 @@ public class ReportUtility {
 		report.setSummary(dbData.getSummary());
 		report.setValidationStatus(dbData.getStatus());
 		
-		CustomerInputs customerInputs = new CustomerInputs();
+		CustomerInformation customerInputs = new CustomerInformation();
 		customerInputs.setProjectId(dbData.getProjectId());
 		customerInputs.setCustomerId(dbData.getCustomerId());
-		customerInputs.setServiceType(MappingUtil.getServiceName(dbData.getServiceTypeId()) );
+		//customerInputs.setServiceType(MappingUtil.getServiceName(dbData.getServiceTypeId()) );
 		
 		report.setCustomerInputs(customerInputs );
 		
@@ -71,29 +71,29 @@ public class ReportUtility {
 		
 		Report dbReport = new Report();
 		
-		CustomerInputs customerInputs = report.getCustomerInputs();
+		CustomerInformation customerInputs = report.getCustomerInformation();
 		dbReport.setCustomerId( customerInputs.getCustomerId() );
 		dbReport.setProjectId( customerInputs.getProjectId() );
-		dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
+		//dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
 		
 		dbReport.setErrors(report.getErrors());
 		
 		Map<Integer, String> dbMap = new HashMap<Integer, String> ();
-		Map<String, Set<String>> sourceMap = report.getFilePurposeToNameMapping();
+		//Map<String, Set<String>> sourceMap = report.getFilePurposeToNameMapping();
 		
-		Iterator<String> keyIter = sourceMap.keySet().iterator();
-		
-		while( keyIter.hasNext()) {
-			String key = keyIter.next();
-			Set<String> values = sourceMap.get(key);
-			values.stream().forEach( e -> { ;
-				dbMap.put(MappingUtil.getFileTypeId(key), e );
-			});
-		}
+//		Iterator<String> keyIter = sourceMap.keySet().iterator();
+//		
+//		while( keyIter.hasNext()) {
+//			String key = keyIter.next();
+//			Set<String> values = sourceMap.get(key);
+//			values.stream().forEach( e -> { ;
+//				dbMap.put(MappingUtil.getFileTypeId(key), e );
+//			});
+//		}
 		
 		dbReport.setFileTypeToFileNameMapping(dbMap);
 		
-		dbReport.setNotes(report.getAdditionalNotes());
+		//dbReport.setNotes(report.getAdditionalNotes());
 		dbReport.setProjectFiles(report.getExctractedFileNames());
 		dbReport.setStatus(report.getValidationStatus());
 		dbReport.setSummary(report.getSummary());

@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.FileStoreUtil;
@@ -58,7 +58,7 @@ public class FileExtractUploadService {
      * @param inputs - the inputs of CustomerInputs
      * @return AdvancedReport
      */
-    public AdvancedReport uploadAndExtractFile(MultipartFile file, CustomerInputs inputs) throws Exception {
+    public AdvancedReport uploadAndExtractFile(MultipartFile file, CustomerInformation inputs) throws Exception {
         AdvancedReport report = new AdvancedReport();
 // Local file based
         String fileName = util.storeFile(inputs.getProjectId(), file);
@@ -70,12 +70,12 @@ public class FileExtractUploadService {
 //		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
 // end S3
 
-        report.setCustomerInputs(inputs);
+        report.setCustomerInformation(inputs);
         report.setSummary("****** File upload and basic validation by extension. *******");
-        inputs.setServiceType("Assembly");
+        //inputs.setServiceType("Assembly");
         report.setExctractedFileNames(util.listFiles(inputs.getProjectId()));
 
-        List<String> requiredFiles = baseService.getServiceFiles(MappingUtil.getServiceId(inputs.getServiceType()));
+        List<String> requiredFiles = baseService.getServiceFiles(MappingUtil.getServiceId( "Assembly" ));
         Set<String> foundFiles = new HashSet<String>();
 
         Map<String, Set<String>> filePurposeToNameMapping = GerberFileProcessingUtil.processFilesByExtension(report,
@@ -93,7 +93,7 @@ public class FileExtractUploadService {
             requiredFiles.removeAll(foundFiles);
 
             requiredFiles.stream().forEach(missedFile -> {
-                report.addAdditionalNote(missedFile + " file missing");
+                report.addError(missedFile + " file missing");
             });
         } else {
             report.setValidationStatus("All required files are found.");
@@ -111,7 +111,7 @@ public class FileExtractUploadService {
                     Path checkFolder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
                     if (checkFolder.toFile().exists()) {
                         //System.out.println(checkFolder);
-                        report.setCustomerInputs(inputs);
+                        report.setCustomerInformation(inputs);
                         List<FileDetails> fdList = ODBProcessing.processODB(folder);//TODO this return List<FileDetails> Set it in AdvancedReport
                         report.setFileDetails(fdList);
                     }
@@ -119,7 +119,7 @@ public class FileExtractUploadService {
             }
         }
 
-        report.setFilePurposeToNameMapping(filePurposeToNameMapping);
+        //report.setFilePurposeToNameMapping(filePurposeToNameMapping);
         reportRepo.insert(ReportUtility.convertToDBObject(report));
 
         System.out.println("****** Done generating report *******");
