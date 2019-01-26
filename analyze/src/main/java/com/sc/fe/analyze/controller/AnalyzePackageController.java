@@ -2,7 +2,6 @@ package com.sc.fe.analyze.controller;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +30,16 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
-import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(path="/api")
 @CrossOrigin(origins = "http://localhost:4200")
+@Api(value="AnalyzePackageController",produces=MediaType.APPLICATION_JSON_VALUE)
 public class AnalyzePackageController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnalyzePackageController.class);
@@ -44,7 +48,8 @@ public class AnalyzePackageController {
         private FileExtractUploadService fileUploadService;
         	
 	@PostMapping(path="/uploadAndExtract")
-	public AdvancedReport uploadAndAnalyze( @RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId) throws Exception {
+        @ApiOperation("Uploaded file gets Analyzed and Extracted")
+	public AdvancedReport uploadAndAnalyze( @ApiParam("Takes ZIP file as Input") @RequestParam("file") MultipartFile file, @ApiParam("ProjectId i.e. Folder Name in which zip file gets extracted.") @RequestParam("projectId") String projectId) throws Exception {
                              
 		System.out.println("Parameters : "+file.getOriginalFilename() + "   ProjectId: "+projectId);
 		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
@@ -57,17 +62,19 @@ public class AnalyzePackageController {
 	}
 	
 	@PostMapping(path="/saveReport")
+        @ApiOperation("Generates a report and store the data into database.")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public String saveExternalReport(@RequestBody AdvancedReport reqBody) {
+	public String saveExternalReport(@ApiParam("Takes JSON of Report Object as Input") @RequestBody AdvancedReport reqBody) {
 		
 		return "{\"success\":1}";
 	}
 	
 	@GetMapping(path="/report/{id}")
+        @ApiOperation("Sets the customer inputs and generates the report.")
 	@ResponseBody
-	public AdvancedReport getReport(@PathParam("id") String id ) {
-		
+
+	public AdvancedReport getReport(@ApiParam("Takes ProjectId as Input") @PathParam("id") String id ) {
 		AdvancedReport report = new AdvancedReport();
 		
 		CustomerInformation custInputs = new CustomerInformation();

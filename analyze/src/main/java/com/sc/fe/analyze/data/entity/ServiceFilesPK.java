@@ -1,11 +1,14 @@
 package com.sc.fe.analyze.data.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
+@ApiModel(value="ServiceFiles",description="Combined Primary Key Structure of ServiceFiles")
 @PrimaryKeyClass
 public class ServiceFilesPK implements Serializable  {
 
@@ -15,9 +18,11 @@ public class ServiceFilesPK implements Serializable  {
 	private static final long serialVersionUID = 7133581623671470779L;
 	
 	@PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name="service_id")
+        @ApiModelProperty("First Primary Key")
 	private int serviceId;
 	@PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name="filetype_id")
-    private int filetypeId;
+        @ApiModelProperty("Second Primary Key")
+        private int filetypeId;
 	
 	@Override
     public int hashCode() {

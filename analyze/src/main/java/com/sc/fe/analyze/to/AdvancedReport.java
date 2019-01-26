@@ -11,12 +11,16 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import io.swagger.annotations.ApiModel;
 
 /**
  * @author Hemant
  *
  */
+
 @JsonInclude(Include.NON_EMPTY)
+@ApiModel(value="AdvanceReport",description="Table Structure of AdvanceReport")
+
 public class AdvancedReport implements Serializable {
 	
 	private static final long serialVersionUID = -3742223075854910617L;

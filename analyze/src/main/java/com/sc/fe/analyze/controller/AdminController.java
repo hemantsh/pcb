@@ -17,10 +17,13 @@ import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.ReportServices;
 import com.sc.fe.analyze.service.ServiceFilesServices;
-import com.sc.fe.analyze.util.MappingUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path="/admin")
 @CrossOrigin(origins = "http://localhost:4200")
+@Api(value="AdministrationController",produces=MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
     @Autowired
     private FileExtensionService fileExtnServ;
@@ -52,128 +56,148 @@ public class AdminController {
     private ExtensionFileService extnFileService;
     
     //Extension Services
+    @ApiOperation("Retrieve all the Extensions from the Database.")
     @GetMapping(path="/extensions")
     public List<Extensions> getAllExtensions(){
         return  fileExtnServ.findAll();
     }
+    @ApiOperation("Insert a new Extension and store into Database.")
     @PostMapping(path="/extensions/create")
-    public void createExtensions(@RequestBody Extensions extn){
-         fileExtnServ.save(extn);
+    public void createExtensions(@ApiParam("Takes JSON of Extension Type as Input") @RequestBody Extensions extension){
+         fileExtnServ.save(extension);
     }
+    @ApiOperation("Update existing Extension stored into the Database.")
     @PostMapping(path="/extensions/update")
-    public void updateExtensions(@RequestBody Extensions extn){
-         fileExtnServ.save(extn);
+    public void updateExtensions(@ApiParam("Takes JSON of Extension as Input") @RequestBody Extensions extension){
+         fileExtnServ.save(extension);
     }
+    @ApiOperation("Retrieve the Extension By Id from the Database.")
     @GetMapping(path="/extensions/retrive/{id}")
-    public Extensions retriveExtensions(@PathVariable("id") int id){
-         return fileExtnServ.getExtensionById(id);
+    public Extensions retriveExtensions(@ApiParam("Takes Extension Id as Input") @PathVariable("id") int extensionId){
+         return fileExtnServ.getExtensionById(extensionId);
     }
     
     
     
     //Service Services
+    @ApiOperation("Retrieve all the Services from the Database.")
     @GetMapping(path="/services")
     public List<Services> getAllServices(){
         return fileService.findAll();
     }
+    @ApiOperation("Insert a new Services and store into Database.")
     @PostMapping(path="/services/create")
-    public void createService(@RequestBody Services services){
+    public void createService(@ApiParam("Takes JSON of Services Type as Input") @RequestBody Services services){
         fileService.save(services);
     }
+    @ApiOperation("Updates the existing Service stored into Database.")
     @PostMapping(path="/services/update")
-    public void updateService(@RequestBody Services services){
+    public void updateService(@ApiParam("Takes JSON of Services as Input") @RequestBody Services services){
         fileService.save(services);
     }
-    
+    @ApiOperation("Retrieve the Services By Id from the Database")
     @GetMapping(path="/services/retrive/{id}")
-    public Services retriveServices(@PathVariable("id") int id ){
-    return fileService.getServicesById(id);
+    public Services retriveServices(@ApiParam("Takes Service Id as Input") @PathVariable("id") int serviceId ){
+    return fileService.getServicesById(serviceId);
     }
-    
     
     //FileType Services
+    @ApiOperation("Retrieve all the Filetypes from the Database.")
     @GetMapping(path="/filetypes")
     public List<FileTypes> getAllFileTypes(){
         return fileTypeService.findAll();
     }
+    @ApiOperation("Insert a new Filetype and store into Database.")
     @PostMapping(path="/filetypes/create")
-    public void createFileType(@RequestBody FileTypes ft){
-    fileTypeService.save(ft);
+    public void createFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype){
+    fileTypeService.save(filetype);
     }
+    @ApiOperation("Updates the existing Filetype stored into Database.")
     @PostMapping(path="/filetypes/update")
-    public void updateFileType(@RequestBody FileTypes ft){
-    fileTypeService.save(ft);
+    public void updateFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype){
+    fileTypeService.save(filetype);
     }
+    @ApiOperation("Retrieve the Filetype By Id from the Database")
     @GetMapping(path="/filetypes/retrive/{id}")
-    public FileTypes retriveFileType(@PathVariable("id")int id){
-        return fileTypeService.getTypeById(id);
+    public FileTypes retriveFileType(@ApiParam("Takes filetypeId as Input") @PathVariable("id")int filetypeId){
+        return fileTypeService.getTypeById(filetypeId);
     }
     
     //ServiceFiles services
+    @ApiOperation("Retrieve all the Service To Files Mapping from the Database.")
     @GetMapping(path="/servicefiles")
     public List<ServiceFiles> getAllServiceFile()
     {
         return serviceFileservice.findAll();
     }
-    
+    @ApiOperation("Insert a new Service To Files Mapping and store into Database.")
     @PostMapping(path="/servicefiles/create")
-    public void createServiceFiles(@RequestBody ServiceFiles sf){
-    serviceFileservice.save(sf);
+    public void createServiceFiles(@ApiParam("Takes JSON of ServiceFiles as Input") @RequestBody ServiceFiles serviceFiles){
+    serviceFileservice.save(serviceFiles);
     }
+    @ApiOperation("Inserts an Array of Service To Files Mapping and store into Database.")
     @PostMapping(path="/servicefiles/createmulti")
-    public void createServiceFilesAll(@RequestBody List<ServiceFiles> sf){
-    serviceFileservice.saveAll(sf);
+    public void createServiceFilesAll(@ApiParam("Takes Array JSON of ServiceFiles Mapping") @RequestBody List<ServiceFiles> serviceFiles){
+    serviceFileservice.saveAll(serviceFiles);
     }
+    @ApiOperation("Updates the existing Service To Files Mapping stored into Database.")
     @PostMapping(path="/servicefiles/update")
-    public void updateServiceFiles(@RequestBody ServiceFiles sf){
-    serviceFileservice.save(sf);
+    public void updateServiceFiles(@ApiParam("Takes JSON of ServiceFiles as Input") @RequestBody ServiceFiles serviceFiles){
+    serviceFileservice.save(serviceFiles);
     }
-    
+    @ApiOperation("Retrieve the Service_Files By Id from the Database")
     @GetMapping(path="/servicefiles/retrive/{id}")
-    public List<ServiceFiles> retriveServiceFiles(@PathVariable("id")int service_id){
+    public List<ServiceFiles> retriveServiceFiles(@ApiParam("Takes Service Id as Input") @PathVariable("id")int service_id){
         return serviceFileservice.getFilesByService(service_id);
     }
     
     //ExtensionFileServices
+    @ApiOperation("Retrieve all the Extension To Files Mapping from the Database.")
     @GetMapping(path="/extensionfiles")
     public List<ExtensionFileType> getExtensionFiles(){
         return extnFileService.findAll();
     }
+    @ApiOperation("Map a new Extensions To File and store into Database.")
     @PostMapping(path="/extensionfiles/create")
-    public void createExtensionFiles(@RequestBody ExtensionFileType exFT){
-         extnFileService.save(exFT);
+    public void createExtensionFiles(@ApiParam("Takes JSON of ExtensionFiles Mapping") @RequestBody ExtensionFileType extensionfileType){
+         extnFileService.save(extensionfileType);
     }
+    @ApiOperation("Inserts an Array of Extension To Files Mapping and store into Database.")
     @PostMapping(path="/extensionfiles/createmulti")
-    public void createExtensionFilesAll(@RequestBody List<ExtensionFileType> exFT){
-         extnFileService.saveAll(exFT);
+    public void createExtensionFilesAll(@ApiParam("Takes Array JSON of ExtensionFiles Mapping") @RequestBody List<ExtensionFileType> extensionfileType){
+         extnFileService.saveAll(extensionfileType);
     }
+    @ApiOperation("Updates the existing Extension To Files Mapping stored into Database.")
     @PostMapping(path="/extensionfiles/update")
-    public void updateExtensionFiles(@RequestBody ExtensionFileType exFT){
-        extnFileService.save(exFT);
+    public void updateExtensionFiles(@ApiParam("Takes JSON of ExtensionFiles Mapping") @RequestBody ExtensionFileType extensionfileType){
+        extnFileService.save(extensionfileType);
     }
+    @ApiOperation("Retrieve the Extension To Files Mapping By Id from the Database")
     @GetMapping(path="/extensionfiles/retrive/{id}")
-    public List<ExtensionFileType> getExtensionFilesById(@PathVariable("id") int extnId){
-        List<ExtensionFileType> temp=extnFileService.getExtenFileTypeById(extnId);
+    public List<ExtensionFileType> getExtensionFilesById(@ApiParam("Takes Extension Id as Input") @PathVariable("id") int extensionId){
+        List<ExtensionFileType> temp=extnFileService.getExtenFileTypeById(extensionId);
         return temp;
     }
     
     //Report Services
-    
+    @ApiOperation("Retrieve all the Report from the Database.")
     @GetMapping(path="/report")
     public List<Report> getAllReport(){
         return reportServices.findAll();
     }
+    @ApiOperation("Generates Report and store into the Database.")
     @PostMapping(path="/report/create")
-    public void createReport(@RequestBody Report report){
+    public void createReport(@ApiParam("Takes JSON of Report Object") @RequestBody Report report){
        reportServices.save(report);
     }
+    @ApiOperation("Updates Report already stored into the Database.")
     @PostMapping(path="/report/update")
-    public void updateReport(@RequestBody Report report){
+    public void updateReport(@ApiParam("Takes JSON of Report Object to update") @RequestBody Report report){
        reportServices.save(report);
     }
-   
-     @GetMapping(path="/report/filetype/{id}")
-     @ResponseBody
+    @ApiOperation("Retrieve Filetype By Id from the Database.")
+    @GetMapping(path="/report/filetype/{id}")
+    @ResponseBody
     public FileTypes getFiletype(@PathVariable("id") Integer fileId){
         return fileTypeService.getTypeById(fileId);
     }

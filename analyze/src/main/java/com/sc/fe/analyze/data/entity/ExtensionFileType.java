@@ -1,8 +1,10 @@
 package com.sc.fe.analyze.data.entity;
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+@ApiModel(value="ExtensionFileType",description="Table Structure of ExtensionFiletype")
 @Table(value="extension_file")
 public class ExtensionFileType {
 
