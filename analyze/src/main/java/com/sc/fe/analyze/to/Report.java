@@ -27,7 +27,7 @@ public class Report implements Serializable {
     /**
      * Customer inputs
      */
-    private CustomerInputs customerInputs;
+    private CustomerInformation customerInputs;
     /**
      * Summary of the report
      */
@@ -135,14 +135,14 @@ public class Report implements Serializable {
     /**
      * @return the customerInputs
      */
-    public CustomerInputs getCustomerInputs() {
+    public CustomerInformation getCustomerInputs() {
         return customerInputs;
     }
 
     /**
      * @param customerInputs - the customerInputs to set
      */
-    public void setCustomerInputs(CustomerInputs customerInputs) {
+    public void setCustomerInputs(CustomerInformation customerInputs) {
         this.customerInputs = customerInputs;
     }
 

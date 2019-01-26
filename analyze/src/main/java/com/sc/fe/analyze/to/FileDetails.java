@@ -1,8 +1,7 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,38 +19,41 @@ public class FileDetails implements Serializable {
 	 */
 	private static final long serialVersionUID = 5547755272664009268L;
 	
-	private String projectId;
 	private String name;
 	private String version;
-	private String fileFormat; //Gerber, odb, drill
-	private Map<String,String> attributes; //Attributes in key:value form
+	private String format; //Gerber, odb, drill
 	
-   	private String[] purposeType;
-	private boolean valid;
-	private Date modifiedDate;
+   	private boolean valid;
+	private String modifiedDate;
 	private String fileSize;
-	
-	private List<String> parserNotes;
-	private LayersInformation layerInfo;
+
+	private String step;
+	private String context;
+	private String type;
+	private String polarity;
+	private String side;
+	private int layerOrder;
 	private String startName;
 	private String endName;
 	private String copperWeight;
-	private int layerSequence;
+	
+	private Map<String,String> attributes; //Attributes in key:value form
 	
 	
-        /**
-	 * @return the projectId
-	 */
-	public String getProjectId() {
-		return projectId;
-	}
-
-	/**
-	 * @param projectId - the projectId to set
-	 */
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
+//	#	 name    - layer name 
+//	#    context - layer context (board, misc)
+//	#    type    - layer type (signal, drill, rout,,,,,etc)
+//	#    polarity- layer polarity (positive, negative)
+//	#    side    - top, bottom or none
+//	#    serial  - layer's serial number (0 - don't care)
+	
+//			CONTEXT=BOARD
+//		    TYPE=COMPONENT
+//		    NAME=COMP_+_TOP
+//		    POLARITY=POSITIVE
+//		    START_NAME=
+//		    END_NAME=
+ 
 
 	/**
 	 * @return the name
@@ -67,19 +69,6 @@ public class FileDetails implements Serializable {
 		this.name = name;
 	}
 
-	/**
-	 * @return the purposeType
-	 */
-	public String[] getPurposeType() {
-		return purposeType;
-	}
-
-	/**
-	 * @param purposeType - the purposeType to set
-	 */
-	public void setPurposeType(String[] purposeType) {
-		this.purposeType = purposeType;
-	}
 
 	/**
 	 * @return the valid
@@ -95,19 +84,6 @@ public class FileDetails implements Serializable {
 		this.valid = valid;
 	}
 
-	/**
-	 * @return the parserNotes
-	 */
-	public List<String> getParserNotes() {
-		return parserNotes;
-	}
-
-	/**
-	 * @param parserNotes - the parserNotes to set
-	 */
-	public void setParserNotes(List<String> parserNotes) {
-		this.parserNotes = parserNotes;
-	}
 
 	/**
 	 * @return the version
@@ -139,27 +115,12 @@ public class FileDetails implements Serializable {
 		this.fileSize = fileSize;
 	}
 
-    /**
-     *
-     * @return the fileFormat
-     */
-    public String getFileFormat() {
-		return fileFormat;
-	}
-
-    /**
-     *
-     * @param fileFormat - the fileFormat to set
-     */
-    public void setFileFormat(String fileFormat) {
-		this.fileFormat = fileFormat;
-	}
-	
+    
     /**
      *
      * @return the modifiedDate
      */
-    public Date getModifiedDate() {
+    public String getModifiedDate() {
 		return modifiedDate;
 	}
 
@@ -167,19 +128,9 @@ public class FileDetails implements Serializable {
      *
      * @param modifiedDate - the modifiedDate to set
      */
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-
-	/*public Map<String,Map<String,String>> getfileAttributes() {
-		return attrFile;
-	}
-
-	public void setfileAttributes(Map<String,String> attributes,String Name)
-        {
-                this.attrFile.put(Name, attributes);
-                System.out.println(this.attrFile);
-        }*/
 
     /**
      *
@@ -199,21 +150,13 @@ public class FileDetails implements Serializable {
 		this.attributes=attributes;
 	}
 
-    /**
-     *
-     * @return the LayersInformation
-     */
-    public LayersInformation getLayerInfo() {
-			return layerInfo;
+    public void addAttribute( String key, String value) {
+		if(this.attributes == null ) {
+			this.attributes = new HashMap<String, String>();
 		}
-
-    /**
-     *
-     * @param layerInfo - the layerInfo to set
-     */
-    public void setLayerInfo(LayersInformation layerInfo) {
-			this.layerInfo = layerInfo;
-		}
+		attributes.put(key, value);
+	}
+    
 
     /**
      *
@@ -263,19 +206,63 @@ public class FileDetails implements Serializable {
 			this.copperWeight = copperWeight;
 		}
 
-    /**
-     *
-     * @return the layerSequence
-     */
-    public int getLayerSequence() {
-			return layerSequence;
-		}
+    
 
-    /**
-     *
-     * @param layerSequence - the layerSequence to set
-     */
-    public void setLayerSequence(int layerSequence) {
-			this.layerSequence = layerSequence;
-		}
+	public String getPolarity() {
+		return polarity;
+	}
+
+	public void setPolarity(String polarity) {
+		this.polarity = polarity;
+	}
+
+
+	public String getStep() {
+		return step;
+	}
+
+	public void setStep(String step) {
+		this.step = step;
+	}
+
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getSide() {
+		return side;
+	}
+
+	public void setSide(String side) {
+		this.side = side;
+	}
+
+	public int getLayerOrder() {
+		return layerOrder;
+	}
+
+	public void setLayerOrder(int layerOrder) {
+		this.layerOrder = layerOrder;
+	}
+
 }

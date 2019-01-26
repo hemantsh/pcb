@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInputs;
+import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 
 /**
@@ -27,17 +27,17 @@ public class ReportCompareUtility {
         if (newReport == null || oldReport == null) {
             return null;
         }
-        if (!(newReport.getOdbMatrix() == null || oldReport.getOdbMatrix() == null)) {
-            if (!(newReport.getOdbMatrix().equalsIgnoreCase(oldReport.getOdbMatrix()))) {
-                differences.put("odbMatrix", newReport.getOdbMatrix() + DELIMITER + oldReport.getOdbMatrix());
-            }
-        }
-
-        if (!(newReport.getCustomerInputs() == null || oldReport.getCustomerInputs() == null)) {
-            CustomerInputs newCI = newReport.getCustomerInputs();
-            CustomerInputs oldCI = oldReport.getCustomerInputs();
-            differences.putAll(FileDetailCompareUtility.compareObject(newCI, oldCI));
-        }
+//        if (!(newReport.getOdbMatrix() == null || oldReport.getOdbMatrix() == null)) {
+//            if (!(newReport.getOdbMatrix().equalsIgnoreCase(oldReport.getOdbMatrix()))) {
+//                differences.put("odbMatrix", newReport.getOdbMatrix() + DELIMITER + oldReport.getOdbMatrix());
+//            }
+//        }
+//
+//        if (!(newReport.getCustomerInputs() == null || oldReport.getCustomerInputs() == null)) {
+//            CustomerInformation newCI = newReport.getCustomerInputs();
+//            CustomerInformation oldCI = oldReport.getCustomerInputs();
+//            differences.putAll(FileDetailCompareUtility.compareObject(newCI, oldCI));
+//        }
 
         if (!(newReport.getAllFileNames() == null || oldReport.getAllFileNames() == null)) {
             Set<String> fileNameSet = newReport.getAllFileNames();

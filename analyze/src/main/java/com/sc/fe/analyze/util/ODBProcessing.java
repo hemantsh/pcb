@@ -80,7 +80,7 @@ public class ODBProcessing {
                                         results.get("START_NAME"), results.get("END_NAME"),
                                         results.get("OLD_NAME"));
 
-                                fd.setLayerInfo(layerInfo);
+                                //fd.setLayerInfo(layerInfo);
                             }
                         }
                         //Set the layerinfo in fileDetail
