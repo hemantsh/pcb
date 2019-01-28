@@ -43,7 +43,7 @@ public class Report implements Serializable {
     /**
      * Files found in the zip file
      */
-    private Set<String> exctractedFileNames;
+    //private Set<String> exctractedFileNames;
 
     
     /**
@@ -102,16 +102,16 @@ public class Report implements Serializable {
     /**
      * @return the exctractedFileNames
      */
-    public Set<String> getExctractedFileNames() {
-        return exctractedFileNames;
-    }
-
-    /**
-     * @param exctractedFileNames - the exctractedFileNames to set
-     */
-    public void setExctractedFileNames(Set<String> exctractedFileNames) {
-        this.exctractedFileNames = exctractedFileNames;
-    }
+//    public Set<String> getExctractedFileNames() {
+//        return exctractedFileNames;
+//    }
+//
+//    /**
+//     * @param exctractedFileNames - the exctractedFileNames to set
+//     */
+//    public void setExctractedFileNames(Set<String> exctractedFileNames) {
+//        this.exctractedFileNames = exctractedFileNames;
+//    }
 
 	public ProjectDetails getProjectDetail() {
 		return projectDetail;

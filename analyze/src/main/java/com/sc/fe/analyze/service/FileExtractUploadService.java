@@ -58,10 +58,10 @@ public class FileExtractUploadService {
     }
 
     /**
-     * Main Method 
+     * Upload, extract and validates files 
      * @param file -  the file to be uploaded
      * @param inputs - the inputs of CustomerInputs
-     * @return AdvancedReport
+     * @return Report - report with validation status
      */
     public Report uploadAndExtractFile(
     		MultipartFile file, 
@@ -73,14 +73,11 @@ public class FileExtractUploadService {
         ProjectDetails projectDetails = new ProjectDetails();
     	projectDetails.setCustomerInformation(inputs);
     	projectDetails.setBoardInfo(boardInfo);
+    	projectDetails.setProjectId( inputs.getProjectId() );
         
         
     	Report report = validateFiles(projectDetails);
     	
-    	if( report.getExctractedFileNames() == null || report.getExctractedFileNames().size() <= 0 ) {
-    		report.setExctractedFileNames(filesExtracted);
-    	}
-
         reportRepo.insert(ReportUtility.convertToDBObject(report));
 
         logger.debug("****** Done generating report *******");
@@ -113,7 +110,6 @@ public class FileExtractUploadService {
     	
     	report.setProjectDetail( projectDetails );
         report.setSummary("****** File upload and basic validation by name and extension. *******");
-        report.setExctractedFileNames( projectDetails.getFileNames() );
         
     	List<String> requiredFilesTypes = baseService.getServiceFiles(
     			MappingUtil.getServiceId( 
@@ -180,7 +176,7 @@ public class FileExtractUploadService {
      * Performs all possible Gerber file processing.
      * @param fileDetails - These given file details will be updated if we find more details during processing
      */
-    private void processGerber(List<FileDetails> fileDetails) {
+    private void processGerber( List<FileDetails> fileDetails ) {
     	
     	GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping() );
     	

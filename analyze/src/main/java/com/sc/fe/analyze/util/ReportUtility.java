@@ -28,7 +28,6 @@ public class ReportUtility {
 		com.sc.fe.analyze.to.Report report = new com.sc.fe.analyze.to.Report();
 		
 		report.setErrors(dbData.getErrors());
-		report.setExctractedFileNames(dbData.getProjectFiles());
 		
 		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
 		
@@ -92,7 +91,7 @@ public class ReportUtility {
 		
 		dbReport.setFileTypeToFileNameMapping(dbMap);
 		
-		dbReport.setProjectFiles(report.getExctractedFileNames());
+		//dbReport.setProjectFiles(report.getExctractedFileNames());
 		dbReport.setStatus(report.getValidationStatus());
 		dbReport.setSummary(report.getSummary());
 		dbReport.setVersion(1);
