@@ -5,6 +5,7 @@
  */
 package com.sc.fe.analyze.util;
 
+import com.sc.fe.analyze.to.CustomerInformation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,19 +27,19 @@ public class ODBProcessing {
 
     /**
      * This method read and processes the ODB file.
-     * @param folder - the path of folder where projectId exists
+     *
+     * @param file - the path of folder where matrix file exists
      * @return the list of fileDetails
      */
-    public static List<FileDetails> processODB(Path folder) {
+    public static List<FileDetails> processODB(Path file) {
         //LayersInformation layerInfo = new LayersInformation();
         List<FileDetails> fileDetlList = new ArrayList<FileDetails>();
-        //TODO: return list FileDetails
-        //Integer counter = 0;   //NOT being used
+        //TODO: return list FileDetails        
         String folderName = "";
         HashMap<String, String> results = new HashMap<String, String>();
-        try {
-            Path odbfilepath = Paths.get(folder + File.separator + "odb" + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
-            BufferedReader br = new BufferedReader(new FileReader(odbfilepath.toFile()));
+        try {                       
+          //Path odbfilepath = Paths.get(file + File.separator + "odb" + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();                                  
+            BufferedReader br = new BufferedReader(new FileReader(file.toFile()));
             String line;
             //process the matrix file
             while ((line = br.readLine()) != null) {
@@ -56,26 +57,29 @@ public class ODBProcessing {
                         }
                     }
                 }
-                if (line.startsWith("LAYER")) {
-                    //counter++;
+                if (line.startsWith("LAYER")) {                    
                     while ((line = br.readLine()) != null) {
                         if (line.endsWith("}")) {
+//                            results.keySet().forEach((p)->
+//                                System.out.println(p+ " = "+results.get(p)));
                             break;
                         }
-                        results.putAll(processLayer(line));
-
+                        //Set the attribute values in HashMap
+                        String[] splitedValue = line.trim().split("=", 2);
+                        results.put(splitedValue[0], splitedValue[1]);
                     }
                     if (results.containsKey("ROW")) {
                         FileDetails fd = new FileDetails();
                         fd.setName(results.get("NAME"));
                         fd.setFormat("odb");
                         fd.setContext(results.get("CONTEXT"));
-                        fd.setPolarity( results.get("POLARITY"));
+                        fd.setPolarity(results.get("POLARITY"));
                         fd.setStartName(results.get("START_NAME"));
                         fd.setEndName(results.get("END_NAME"));
                         fd.setType(results.get("TYPE"));
+
+                        fileDetlList.add(fd);                        
                         
-                        fileDetlList.add(fd);
                         //processAttribute(folder, results.get("NAME"), folderName);
 //                        if (fd != null) {
 //
@@ -92,16 +96,12 @@ public class ODBProcessing {
 //
 //                                //fd.setLayerInfo(layerInfo);
 //                            }
-//                        }
-                        //Set the layerinfo in fileDetail
+//                        }                        
                     }
                 }
             }
-            br.close();
-            //Print on console layerInformations from layerInfo list
-            //  System.out.println("ROW CONTEXT   TYPE         NAME       POLARITY    STARTNAME   ENDNAME     OLDNAME");
-            // System.out.println(layerInfo.printLayerInfo());
-        } //}
+            br.close();            
+        } 
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,18 +137,4 @@ public class ODBProcessing {
         }
         return fileDetail;
     }
-
-    private static HashMap<String, String> processLayer( String line) {
-        HashMap<String, String> returnMap = new HashMap<String, String>();
-        String[] splitedValue = line.trim().split("=", 2);
-//        if (splitedValue[0].equals("ROW")) {
-//            splitedValue[1] = row.toString();
-//            returnMap.put(splitedValue[0], row.toString());
-//        } else {
-//            returnMap.put(splitedValue[0], splitedValue[1]);
-//        }
-        returnMap.put(splitedValue[0], splitedValue[1]);
-        return returnMap;
-    }
-
 }

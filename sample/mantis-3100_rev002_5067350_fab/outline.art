@@ -1,0 +1,33 @@
+G04 ================== begin FILE IDENTIFICATION RECORD ==================*
+G04 Layout Name:  mantis-3100_rev002.brd*
+G04 Film Name:    outline.art*
+G04 File Format:  Gerber RS274X*
+G04 File Origin:  Cadence Allegro 17.2-S041*
+G04 Origin Date:  Tue Dec 11 12:39:34 2018*
+G04 *
+G04 Layer:  BOARD GEOMETRY/DESIGN_OUTLINE*
+G04 *
+G04 Offset:    (0.00 0.00)*
+G04 Mirror:    No*
+G04 Mode:      Positive*
+G04 Rotation:  0*
+G04 FullContactRelief:  No*
+G04 UndefLineWidth:     10.00*
+G04 ================== end FILE IDENTIFICATION RECORD ====================*
+%FSLAX55Y55*MOIN*%
+%IR0*IPPOS*OFA0.00000B0.00000*MIA0B0*SFA1.00000B1.00000*%
+%ADD10C,.01*%
+G75*
+%LPD*%
+G75*
+G54D10*
+G01X300000Y6000D02*
+Y169000D01*
+G03X294000Y175000I-6000J0D01*
+G01X6000D01*
+G03X0Y169000I0J-6000D01*
+G01Y6000D01*
+G03X6000Y0I6000J0D01*
+G01X294000D01*
+G03X300000Y6000I0J6000D01*
+M02*
