@@ -5,12 +5,18 @@
  */
 package com.sc.fe.analyze.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.sc.fe.analyze.to.FileDetails;
 /**
  *
  * @author pc
@@ -28,6 +34,14 @@ public class GerberFileProcessingUtilTest {
     public static void tearDownClass() {
     }
 
+    @Test
+    public void testFileParsing() {
+    	FileDetails fd = new FileDetails();
+    	fd.setName("88000-4890 REV A PCA, CONTROL PANEL (FAB).pdf");
+    	GerberFileProcessingUtil.parseFileName( fd );
+    	assertNotNull(fd.getType());
+    }
+    
     /********************
      * Test of TA attribute of processTFTATO() method, of class GerberFileProcessingUtil.
      */

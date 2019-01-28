@@ -1,10 +1,10 @@
 package com.sc.fe.analyze.controller;
 
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.websocket.server.PathParam;
 
@@ -24,12 +24,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sc.fe.analyze.data.entity.FileTypes;
 import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
+import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 
 import io.swagger.annotations.Api;
@@ -40,29 +41,53 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(path="/api")
 @CrossOrigin(origins = "http://localhost:4200")
 @Api(value="AnalyzePackageController",produces=MediaType.APPLICATION_JSON_VALUE)
+
 public class AnalyzePackageController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnalyzePackageController.class);
 	
 	@Autowired
-        private FileExtractUploadService fileUploadService;
+    private FileExtractUploadService fileUploadService;
         	
-	@PostMapping(path="/uploadAndExtract")
-        @ApiOperation("Uploaded file gets Analyzed and Extracted")
-	public AdvancedReport uploadAndAnalyze( @ApiParam("Takes ZIP file as Input") @RequestParam("file") MultipartFile file, @ApiParam("ProjectId i.e. Folder Name in which zip file gets extracted.") @RequestParam("projectId") String projectId) throws Exception {
+	@PostMapping(path="/uploadAndValidate")
+    @ApiOperation("Uploaded file gets Analyzed and Extracted")
+	public Report uploadAndAnalyze ( 
+			@ApiParam("Takes ZIP file as Input") @RequestParam("file") MultipartFile file, 
+			@ApiParam("ProjectId i.e. Folder Name in which zip file gets extracted.") @RequestParam("projectId") String projectId,
+			@RequestParam("serviceType") String serviceType ) throws Exception {
                              
 		System.out.println("Parameters : "+file.getOriginalFilename() + "   ProjectId: "+projectId);
 		logger.debug( "Parameters : "+file.getOriginalFilename() + " projectId: "+projectId );
 		
 		CustomerInformation custInputs = new CustomerInformation();
 		custInputs.setProjectId(projectId);
-		                             
-		return fileUploadService.uploadAndExtractFile(file, custInputs);
 		
+		PCBInformation boardInfo = new PCBInformation();
+		boardInfo.setServiceType(serviceType);
+		                             
+		return fileUploadService.uploadAndExtractFile(file, custInputs, boardInfo);	
+	}
+	
+	@PostMapping(path="/uploadAndSave")
+	public Set<String> uploadProjectFiles(
+			@RequestParam("file") MultipartFile file, 
+			@RequestParam("projectId") String projectId ) throws IOException {
+		
+		CustomerInformation inputs = new CustomerInformation();
+		inputs.setProjectId(projectId);
+		
+		return fileUploadService.extractAndSaveFiles(file, inputs );
+	}
+	
+	@PostMapping(path="/validate")
+	@ResponseBody
+	public Report validate(@RequestBody ProjectDetails projectDetails) {
+		
+		 return fileUploadService.validateFiles(projectDetails);
 	}
 	
 	@PostMapping(path="/saveReport")
-        @ApiOperation("Generates a report and store the data into database.")
+    @ApiOperation("Generates a report and store the data into database.")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public String saveExternalReport(@ApiParam("Takes JSON of Report Object as Input") @RequestBody AdvancedReport reqBody) {
@@ -70,18 +95,22 @@ public class AnalyzePackageController {
 		return "{\"success\":1}";
 	}
 	
-	@GetMapping(path="/report/{id}")
-        @ApiOperation("Sets the customer inputs and generates the report.")
+	@GetMapping(path="/project/{id}/report")
+    @ApiOperation("Sets the customer inputs and generates the report.")
 	@ResponseBody
 
-	public AdvancedReport getReport(@ApiParam("Takes ProjectId as Input") @PathParam("id") String id ) {
-		AdvancedReport report = new AdvancedReport();
+	public Report getReport(@ApiParam("Takes ProjectId as Input") @PathParam("id") String id ) {
+		
+		Report report = new Report();
+		ProjectDetails projectDetail = new ProjectDetails();
 		
 		CustomerInformation custInputs = new CustomerInformation();
-		custInputs.setProjectId("1234");
+		
 		custInputs.setCustomerId("CustId");
 		custInputs.setEmailAddress("abc@xyz.com");
-		report.setCustomerInformation( custInputs );
+		
+		projectDetail.setCustomerInformation( custInputs );
+		projectDetail.setProjectId("1234");
 		
 		PCBInformation pcbInfo = new PCBInformation();
 		
@@ -92,7 +121,7 @@ public class AnalyzePackageController {
 		pcbInfo.setLayers(8);
 		pcbInfo.setPcbClass("Class 2");		
 		pcbInfo.addTurnTimeQuantity(new TurnTimeQuantity(5, 100));
-		report.setBoardInfo(pcbInfo);
+		projectDetail.setBoardInfo(pcbInfo);
 		
 		FileDetails fd = new FileDetails();
 		fd.setFormat("Gerber");
@@ -128,25 +157,12 @@ public class AnalyzePackageController {
 		
 		fd.setAttributes(attributes);
 		
-		report.addFileDetail(fd);
+		projectDetail.addFileDetail(fd);
+		
+		report.setProjectDetail(projectDetail);
 		
 		return report;
 	}
 	
 	
-	@GetMapping(path="/allFileTypes")
-	@ResponseBody
-	public List<FileTypes> getAllFilesTypes() {
-		List<FileTypes> types = new ArrayList<FileTypes>();
-		
-		return types;
-	}
-	
-	@GetMapping(path="/getServiceFiles/{serviceId}")
-	@ResponseBody
-	public List<FileTypes> getServiceFiles() {
-		List<FileTypes> types = new ArrayList<FileTypes>();
-		
-		return types;
-	}
 }

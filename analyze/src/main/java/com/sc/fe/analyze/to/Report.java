@@ -2,7 +2,6 @@ package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,9 +24,9 @@ public class Report implements Serializable {
     }
 
     /**
-     * Customer inputs
+     * The initial input that was processed, populated and validated
      */
-    private CustomerInformation customerInputs;
+    private ProjectDetails projectDetail;
     /**
      * Summary of the report
      */
@@ -40,20 +39,13 @@ public class Report implements Serializable {
      * All errors we found in the files
      */
     private Set<String> errors;
-    /**
-     * Any notes about package
-     */
-    private Set<String> additionalNotes;
+    
     /**
      * Files found in the zip file
      */
     private Set<String> exctractedFileNames;
 
-    /**
-     * Mapping of file business purpose with the file name
-     */
-    private Map<String, Set<String>> filePurposeToNameMapping;
-
+    
     /**
      * @return the summary
      */
@@ -108,59 +100,6 @@ public class Report implements Serializable {
     }
 
     /**
-     * @return the additionalNotes
-     */
-    public Set<String> getAdditionalNotes() {
-        return additionalNotes;
-    }
-
-    /**
-     * @param additionalNotes - the additionalNotes to set
-     */
-    public void setAdditionalNotes(Set<String> additionalNotes) {
-        this.additionalNotes = additionalNotes;
-    }
-
-    /**
-     *
-     * @param note - the note to add in the additionalNotes
-     */
-    public void addAdditionalNote(String note) {
-        if (additionalNotes == null) {
-            additionalNotes = new HashSet<String>();
-        }
-        additionalNotes.add(note);
-    }
-
-    /**
-     * @return the customerInputs
-     */
-    public CustomerInformation getCustomerInputs() {
-        return customerInputs;
-    }
-
-    /**
-     * @param customerInputs - the customerInputs to set
-     */
-    public void setCustomerInputs(CustomerInformation customerInputs) {
-        this.customerInputs = customerInputs;
-    }
-
-    /**
-     * @return the filePurposeToNameMapping
-     */
-    public Map<String, Set<String>> getFilePurposeToNameMapping() {
-        return filePurposeToNameMapping;
-    }
-
-    /**
-     * @param filePurposeToNameMapping - the filePurposeToNameMapping to set
-     */
-    public void setFilePurposeToNameMapping(Map<String, Set<String>> filePurposeToNameMapping) {
-        this.filePurposeToNameMapping = filePurposeToNameMapping;
-    }
-
-    /**
      * @return the exctractedFileNames
      */
     public Set<String> getExctractedFileNames() {
@@ -173,5 +112,13 @@ public class Report implements Serializable {
     public void setExctractedFileNames(Set<String> exctractedFileNames) {
         this.exctractedFileNames = exctractedFileNames;
     }
+
+	public ProjectDetails getProjectDetail() {
+		return projectDetail;
+	}
+
+	public void setProjectDetail(ProjectDetails projectDetail) {
+		this.projectDetail = projectDetail;
+	}
 
 }

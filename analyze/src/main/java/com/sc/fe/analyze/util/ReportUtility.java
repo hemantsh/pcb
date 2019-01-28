@@ -26,7 +26,7 @@ public class ReportUtility {
     public static com.sc.fe.analyze.to.Report convertToObject(Report dbData) {
 		
 		com.sc.fe.analyze.to.Report report = new com.sc.fe.analyze.to.Report();
-		report.setAdditionalNotes(dbData.getNotes());
+		
 		report.setErrors(dbData.getErrors());
 		report.setExctractedFileNames(dbData.getProjectFiles());
 		
@@ -48,7 +48,6 @@ public class ReportUtility {
 			}
 		}
 		
-		report.setFilePurposeToNameMapping(filePurposeToNameMapping);
 		report.setSummary(dbData.getSummary());
 		report.setValidationStatus(dbData.getStatus());
 		
@@ -57,7 +56,7 @@ public class ReportUtility {
 		customerInputs.setCustomerId(dbData.getCustomerId());
 		//customerInputs.setServiceType(MappingUtil.getServiceName(dbData.getServiceTypeId()) );
 		
-		report.setCustomerInputs(customerInputs );
+		//report.setCustomerInputs(customerInputs );
 		
 		return report;
 	}
@@ -67,11 +66,11 @@ public class ReportUtility {
      * @param report - object of AdvancedReport
      * @return the report
      */
-    public static Report convertToDBObject(AdvancedReport report) {
+    public static Report convertToDBObject(com.sc.fe.analyze.to.Report report) {
 		
 		Report dbReport = new Report();
 		
-		CustomerInformation customerInputs = report.getCustomerInformation();
+		CustomerInformation customerInputs = report.getProjectDetail().getCustomerInformation();
 		dbReport.setCustomerId( customerInputs.getCustomerId() );
 		dbReport.setProjectId( customerInputs.getProjectId() );
 		//dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
@@ -93,7 +92,6 @@ public class ReportUtility {
 		
 		dbReport.setFileTypeToFileNameMapping(dbMap);
 		
-		//dbReport.setNotes(report.getAdditionalNotes());
 		dbReport.setProjectFiles(report.getExctractedFileNames());
 		dbReport.setStatus(report.getValidationStatus());
 		dbReport.setSummary(report.getSummary());

@@ -1,12 +1,15 @@
 package com.sc.fe.analyze.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,8 @@ import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.PCBInformation;
+import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
@@ -58,49 +63,146 @@ public class FileExtractUploadService {
      * @param inputs - the inputs of CustomerInputs
      * @return AdvancedReport
      */
-    public AdvancedReport uploadAndExtractFile(MultipartFile file, CustomerInformation inputs) throws Exception {
-        AdvancedReport report = new AdvancedReport();
-// Local file based
+    public Report uploadAndExtractFile(
+    		MultipartFile file, 
+    		CustomerInformation inputs, 
+    		PCBInformation boardInfo) throws Exception {
+
+        Set<String> filesExtracted = extractAndSaveFiles(file, inputs);
+        
+        ProjectDetails projectDetails = new ProjectDetails();
+    	projectDetails.setCustomerInformation(inputs);
+    	projectDetails.setBoardInfo(boardInfo);
+        
+        
+    	Report report = validateFiles(projectDetails);
+    	
+    	if( report.getExctractedFileNames() == null || report.getExctractedFileNames().size() <= 0 ) {
+    		report.setExctractedFileNames(filesExtracted);
+    	}
+
+        reportRepo.insert(ReportUtility.convertToDBObject(report));
+
+        logger.debug("****** Done generating report *******");
+
+        return report;
+    }
+    
+    /**
+     * Validates the project files and send a report.
+     * @param projectDetails
+     * @return
+     */
+    public Report validateFiles( ProjectDetails projectDetails ) {
+    	
+    	List<FileDetails> fileDetails = projectDetails.getFileDetails();
+    	//If no file details,  try to create it
+    	if( fileDetails == null || fileDetails.size() <= 0) {
+    		Set<String> allFiles = util.listFiles(projectDetails.getCustomerInformation().getProjectId());
+    		allFiles.stream().forEach( name -> {
+    			FileDetails fd = new FileDetails();
+    			fd.setName(name);
+    			fileDetails.add(fd);
+    		});
+    	}
+    	//Gerber, odb and others
+    	processGerber(fileDetails);
+    	
+    	/// REPORT
+    	Report report = new Report();
+    	
+    	report.setProjectDetail( projectDetails );
+        report.setSummary("****** File upload and basic validation by name and extension. *******");
+        report.setExctractedFileNames( projectDetails.getFileNames() );
+        
+    	List<String> requiredFilesTypes = baseService.getServiceFiles(
+    			MappingUtil.getServiceId( 
+    					projectDetails.getBoardInfo().getServiceType() 
+    			)
+    	);
+        
+        List<String> availFileTypes = projectDetails.getFileDetails().stream()
+        		.filter( fd -> fd.getType() != null )
+        		.map( FileDetails::getType )
+        		.collect( Collectors.toList() );
+        
+        List<String> missingTypes = new ArrayList<String>();
+        
+        if( availFileTypes != null ) {
+        	
+        	if( ! availFileTypes.containsAll( requiredFilesTypes ) ) {
+        		missingTypes.addAll( requiredFilesTypes );
+        		missingTypes.removeAll( availFileTypes );
+        	}
+        }
+         
+        if( missingTypes.size() > 0 ) {
+        	report.setValidationStatus("We found some missing information. ");
+        	missingTypes.stream().forEach( type -> {
+        		report.addError("Missing file type - " + type);
+        	});
+        } else {
+        	report.setValidationStatus("Matched with all required file types. All information collected.");
+        }
+        
+        return report;
+    }
+
+    public void validateFiles( String projectId ) {
+    	//TODO: implememt
+    	//Get the projectDetails by projectId
+    	//call validateFiles( ProjectDetails projectDetails ) to get results
+    }
+    
+    /**
+     * Extract and save the zip file. No validations.
+     * @param file
+     * @param inputs
+     * @return
+     * @throws IOException
+     */
+    public Set<String> extractAndSaveFiles( MultipartFile file, CustomerInformation inputs ) throws IOException {
+    	// Local file based
         String fileName = util.storeFile(inputs.getProjectId(), file);
         util.extractFiles(inputs.getProjectId(), fileName);
-        Path folder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
-        // END local		
-//S3 Based
-//		util.storeFile(inputs.getProjectId(), file);
-//		report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
-// end S3
+        //Path folder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
+        // END local	
+        
+        //S3 Based
+		//util.storeFile(inputs.getProjectId(), file);
+		//report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
+        // end S3
+        
+        return util.listFiles(inputs.getProjectId());
+    }
+    
+    /**
+     * Performs all possible Gerber file processing.
+     * @param fileDetails - These given file details will be updated if we find more details during processing
+     */
+    private void processGerber(List<FileDetails> fileDetails) {
+    	
+    	GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping() );
+    	
+    	//For each file that is gerber format
+        fileDetails.stream()
+	    	//.filter( fd -> "gerber".equalsIgnoreCase( fd.getFormat()) ) //TODO: add later
+	    	.forEach( fileDtl -> {
+	    		//Apply rules by name pattern
+	        	GerberFileProcessingUtil.parseFileName(fileDtl);
+	    	});
+    }
 
-        report.setCustomerInformation(inputs);
-        report.setSummary("****** File upload and basic validation by extension. *******");
-        //inputs.setServiceType("Assembly");
-        report.setExctractedFileNames(util.listFiles(inputs.getProjectId()));
-
-        List<String> requiredFiles = baseService.getServiceFiles(MappingUtil.getServiceId( "Assembly" ));
-        Set<String> foundFiles = new HashSet<String>();
-
-        Map<String, Set<String>> filePurposeToNameMapping = GerberFileProcessingUtil.processFilesByExtension(report,
-                baseService.getExtensionToFileMapping(),
-                foundFiles);
-
-        List<FileDetails> fileDetails = GerberFileProcessingUtil.extractFileDetails(report,
-                baseService.getExtensionToFileMapping(), folder);
-
-        report.setFileDetails(fileDetails);
-
-        if (requiredFiles.size() != foundFiles.size()) {
-            report.setValidationStatus("Invalid design.");
-            report.addError("Some required files are missing for the selected service.");
-            requiredFiles.removeAll(foundFiles);
-
-            requiredFiles.stream().forEach(missedFile -> {
-                report.addError(missedFile + " file missing");
-            });
-        } else {
-            report.setValidationStatus("All required files are found.");
-        }
-
-        //To check that whether file type is ODB or Gerber.
+    /**
+     * ODB processing. Mainly parse matrix file to get fileDetils
+     * @param folder
+     * @param projectId
+     * @return
+     */
+    private List<FileDetails> processODB( Path folder, String projectId ) {
+    	//To check that whether file type is ODB or Gerber.
         File[] listOfFiles = folder.toFile().listFiles();
+        List<FileDetails> fdList = new ArrayList<FileDetails>();
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
@@ -108,24 +210,13 @@ public class FileExtractUploadService {
             } else if (listOfFiles[i].isDirectory()) {
                 //System.out.println("Directory - " + listOfFiles[i].getName());
                 if (listOfFiles[i].getName().toLowerCase().equals("odb")) {
-                    Path checkFolder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
+                    Path checkFolder = Paths.get(util.getUploadDir() + File.separator + projectId + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
                     if (checkFolder.toFile().exists()) {
-                        //System.out.println(checkFolder);
-                        report.setCustomerInformation(inputs);
-                        List<FileDetails> fdList = ODBProcessing.processODB(folder);//TODO this return List<FileDetails> Set it in AdvancedReport
-                        report.setFileDetails(fdList);
+                        fdList = ODBProcessing.processODB(folder);
                     }
                 }
             }
         }
-
-        //report.setFilePurposeToNameMapping(filePurposeToNameMapping);
-        reportRepo.insert(ReportUtility.convertToDBObject(report));
-
-        System.out.println("****** Done generating report *******");
-        logger.debug("****** Done generating report *******");
-
-        return report;
+        return fdList;
     }
-
 }

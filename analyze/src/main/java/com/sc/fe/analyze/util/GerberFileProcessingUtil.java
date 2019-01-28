@@ -1,6 +1,8 @@
 package com.sc.fe.analyze.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import org.springframework.util.StringUtils;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -29,7 +34,6 @@ import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.LayersInformation;
 
 /**
  *
@@ -48,6 +52,8 @@ public class GerberFileProcessingUtil {
 
 		List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 
+		//TODO: fileDetails can be in report already
+		
 		report.getExctractedFileNames().forEach((String exfile) -> {
 			// Call processFile() method
 			FileDetails fdetails = processFile(exfile, extensionToFileMapping, folder);
@@ -141,27 +147,41 @@ public class GerberFileProcessingUtil {
      * @param foundFiles - It stored the fileTypes of file.
      * @return the filePurposeToNameMapping
      */
-    public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
-			Map<String, String> extensionToFileMapping, Set<String> foundFiles) {
+    public static Map<String, Set<String>> processFilesByExtension(List<FileDetails> fileDetails,
+			Map<String, String> extensionToFileMapping ) {
 
 		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-		report.getExctractedFileNames().forEach((String exfile) -> {
+		
+		fileDetails.forEach( fileDetail -> {
+			
+			String exfile = fileDetail.getName();
+			
 			String[] nameParts = exfile.split("\\.");
 			String extn = nameParts[nameParts.length - 1].toLowerCase();
 
 			if (extensionToFileMapping.containsKey(extn)) {
+				
 				Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get(extn));
-				if (currentMapping == null)
+				if (currentMapping == null) {
 					currentMapping = new HashSet<String>();
+				}
 
 				currentMapping.add(exfile);
 				String fileType = extensionToFileMapping.get(extn);
 				filePurposeToNameMapping.put(fileType, currentMapping);
-				foundFiles.add(fileType);
+				fileDetail.setFormat("gerber");
 			}
+			
 		});
 		return filePurposeToNameMapping;
 	}
+    
+    public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
+			Map<String, String> extensionToFileMapping ) {
+    	
+    	return processFilesByExtension( report.getFileDetails() , extensionToFileMapping );
+    }
+    
 	// Below method will be call if line starts with Layer
 
     /**
@@ -475,41 +495,89 @@ public class GerberFileProcessingUtil {
 
 	}
     
-
-//	private void createAdvancedReport(AdvancedReport report, 
-//	Map<String, String> extensionToFileMapping,
-//	Set<String> allFiles) {
-//
-////Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-//
-//allFiles.forEach( exfile -> {
-//	
-//	String[] nameParts = exfile.split("\\.");
-//	String extn = nameParts[nameParts.length-1].toLowerCase();
-//	
-//	if(extensionToFileMapping.containsKey( extn ) && ! extn.toLowerCase().equals("pdf")) {
-//			
-//		//TODO: Now we have found the file that we are interested in, 
-//		//we will proecess it line by line to get attributes from our utility
-//		FileDetails fileDet = new FileDetails();
-//		fileDet.setName(exfile);
-//		
-//		String folder = util.getUploadDir() + File.separator + report.getCustomerInputs().getProjectId() + File.separator;
-//		
-//		Map<String, String> results = new HashMap<String, String>();
-//		try (
-//			Stream<String> stream = Files.lines(Paths.get(folder+exfile))) { 
-//			stream.forEach( line -> {
-//	        	results.putAll( GerberFileProcessingUtil.processLine(line) );
-//	        });
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		fileDet.setAttributes(results);
-//		report.addFileDetail(fileDet);
-//		
-//	}
-//});
-//
-//}
+    public static void parseFileName( FileDetails fd ) {
+    	if( fd == null || "odb".equalsIgnoreCase( fd.getFormat()) ) {
+    		return;
+    	}
+    	
+    	FileDetails parsedFD = parseFileName(fd.getName());
+    	if( parsedFD != null) {
+    		if( ! StringUtils.isEmpty(parsedFD.getContext() )  ) {
+    			fd.setContext( parsedFD.getContext());
+    		}
+    		if( ! StringUtils.isEmpty(parsedFD.getLayerName() )  ) {
+    			fd.setLayerName( parsedFD.getLayerName());
+    		}
+    		
+    		fd.setLayerOrder( parsedFD.getLayerOrder());
+    		
+    		if( ! StringUtils.isEmpty(parsedFD.getPolarity() )  ) {
+    			fd.setPolarity( parsedFD.getPolarity());
+    		}
+    		if( ! StringUtils.isEmpty(parsedFD.getSide() )  ) {
+    			fd.setSide( parsedFD.getSide());
+    		}
+    		if( ! StringUtils.isEmpty(parsedFD.getType() )  ) {
+    			fd.setType( parsedFD.getType());
+    		}
+    	}
+    }
+    
+	public static FileDetails parseFileName( String fileName ) {
+		
+		String filePath = "lyr_rule";
+		BufferedReader br;
+		if( fileName == null) {
+			return null;
+		}
+		FileDetails fd = new FileDetails();
+		try {
+			
+			br = new BufferedReader(new FileReader(filePath));
+			
+			fileName = fileName.toLowerCase();
+			
+			String line;
+			while ((line = br.readLine()) != null) {
+				// It checks that line is comment or not.
+				if (line.contains("->") && !(line.startsWith("#"))) {
+					String[] splitValue = line.split("->");
+					splitValue[0] = splitValue[0].trim();
+					
+					if( ! splitValue[0].endsWith("$")) {
+						splitValue[0] += ".*";
+					}
+					if( ! splitValue[0].startsWith("^")) {
+						splitValue[0] = ".*" +splitValue[0];
+					}
+					
+					// It matches the filename with regular expression
+					Pattern p = Pattern.compile(splitValue[0].trim());
+					
+					//if (splitValue[0].endsWith("$") ? p.matcher(fileName).matches() :p.matcher(fileName).find()) {
+					if ( p.matcher(fileName).matches() ) {
+						
+						// It separate all right side values by " " and stores in an array.
+						String[] splitRSide = splitValue[1].split(" ");
+						
+						fd.setLayerName(splitRSide[0]);
+						fd.setContext(splitRSide[1]);
+						fd.setType(splitRSide[2]);
+						fd.setPolarity(splitRSide[3]);
+						fd.setSide(splitRSide[4]);
+						fd.setLayerOrder( Integer.parseInt( splitRSide[5].replaceAll("[^0-9]+", "")) );
+						
+						break;
+					}
+				}
+			}
+			br.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		return fd;
+	}
+    
+ 
 }

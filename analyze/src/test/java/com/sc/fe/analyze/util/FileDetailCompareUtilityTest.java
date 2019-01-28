@@ -5,17 +5,19 @@
  */
 package com.sc.fe.analyze.util;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.LayersInformation;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -36,14 +38,12 @@ public class FileDetailCompareUtilityTest {
 
     /**
      * Test of compare method, of class ReportCompareUtility.
-<<<<<<< HEAD
-     */      
-=======
+
      */
    
     //Test with instanceVariables(layerInfo and ProjectId) of FileDetails in compareObject method, of class FileDetailCompareUtility.
     @Test
-    public void testCompareFileDetails5() throws Exception {
+    public void testCompareFileDetails5x() throws Exception {
         FileDetails newFD = new FileDetails();
         LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
 //        newFD.setLayerInfo(newLayerInfo);
@@ -67,7 +67,7 @@ public class FileDetailCompareUtilityTest {
         assertEquals(expectedResult, result);
     }
 
->>>>>>> upstream/hemant
+
     @Test
     public void testCompareReportDetails1() throws Exception {
         AdvancedReport newReport = new AdvancedReport();
@@ -141,23 +141,23 @@ public class FileDetailCompareUtilityTest {
     public void testCompareReportDetails5() throws Exception 
     {
         AdvancedReport oldReport = new AdvancedReport();
-        CustomerInputs custInputs = new CustomerInputs();
+        CustomerInformation custInputs = new CustomerInformation();
         custInputs.setProjectId("1234");
-        custInputs.setZipFileName("8000-4890.zip");
-        custInputs.setZipFileSize("4.6 MB");
-        custInputs.setServiceType("Assembly");
+//        custInputs.setZipFileName("8000-4890.zip");
+//        custInputs.setZipFileSize("4.6 MB");
+//        custInputs.setServiceType("Assembly");
         custInputs.setCustomerId("CustId");        
-        custInputs.setQuantity(100);
-        custInputs.setTurnTime(5);
-        oldReport.setCustomerInputs(custInputs);
+//        custInputs.setQuantity(100);
+//        custInputs.setTurnTime(5);
+        oldReport.setCustomerInformation( custInputs);
         
         FileDetails fd = new FileDetails();
-        fd.setFileFormat("Gerber");
+        //fd.setFileFormat("Gerber");
         fd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");
         fd.setFileSize("125 MB");
-        fd.setModifiedDate(new Date());
+        //fd.setModifiedDate(new Date());
         fd.setCopperWeight(".95");
-        fd.setLayerSequence(1);
+        //fd.setLayerSequence(1);
         fd.setEndName("endName");
         fd.setStartName("startName");
 
@@ -165,23 +165,23 @@ public class FileDetailCompareUtilityTest {
 
         //Add new AdvancedReport object
         AdvancedReport newReport = new AdvancedReport();
-        CustomerInputs newcustInputs = new CustomerInputs();
+        CustomerInformation newcustInputs = new CustomerInformation();
         newcustInputs.setProjectId("abc123");
-        newcustInputs.setZipFileName("8000-4890.zip");
-        newcustInputs.setZipFileSize("5.2 MB");
-        newcustInputs.setServiceType("Fabrication");
+//        newcustInputs.setZipFileName("8000-4890.zip");
+//        newcustInputs.setZipFileSize("5.2 MB");
+//        newcustInputs.setServiceType("Fabrication");
         newcustInputs.setCustomerId("newCustId");
-        newcustInputs.setQuantity(150);
-        newcustInputs.setTurnTime(15);
-        newReport.setCustomerInputs(newcustInputs);
+//        newcustInputs.setQuantity(150);
+//        newcustInputs.setTurnTime(15);
+//        newReport.setCustomerInputs(newcustInputs);
 
         FileDetails newfd = new FileDetails();
-        newfd.setFileFormat("ODB");        
+        //newfd.setFileFormat("ODB");        
         newfd.setName("uploads\\abc11\\8000-4890CPWIZA.GBO");
         newfd.setFileSize("350 MB");
-        newfd.setModifiedDate(new Date());
+        //newfd.setModifiedDate(new Date());
         newfd.setCopperWeight("1.95");
-        newfd.setLayerSequence(0);
+       // newfd.setLayerSequence(0);
         newfd.setEndName("endNamee");
         newfd.setStartName("startNamee");
         newReport.addFileDetail(newfd);
@@ -211,21 +211,21 @@ public class FileDetailCompareUtilityTest {
     {
         AdvancedReport oldReport = new AdvancedReport();   
         FileDetails fd = new FileDetails();
-        fd.setFileFormat("Gerber");
+        fd.setFormat("Gerber");
         fd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");
         fd.setFileSize("125 MB");
         fd.setCopperWeight(".95");
-        fd.setLayerSequence(1);        
+        fd.setLayerOrder(1);        
         oldReport.addFileDetail(fd);
 
         //Add new AdvancedReport object
         AdvancedReport newReport = new AdvancedReport();       
         FileDetails newfd = new FileDetails();
-        newfd.setFileFormat("ODB");        
+        newfd.setFormat("ODB");        
         newfd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");
         newfd.setFileSize("350 MB");        
         newfd.setCopperWeight("1.95");
-        newfd.setLayerSequence(0);
+        newfd.setLayerOrder(0);
         newReport.addFileDetail(newfd);
         Map<String, String> result = ReportCompareUtility.compare(newReport, oldReport);
         
@@ -242,18 +242,18 @@ public class FileDetailCompareUtilityTest {
     public void testCompareReportDetails7() throws Exception 
     {
         AdvancedReport oldReport = new AdvancedReport();  
-        oldReport.setOdbMatrix("oldODB");
+        //oldReport.setOdbMatrix("oldODB");
         FileDetails fd = new FileDetails();
-        fd.setFileFormat("Gerber");
+        fd.setFormat("Gerber");
         fd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");       
         fd.setCopperWeight(".95");        
         oldReport.addFileDetail(fd);       
 
         //Add new AdvancedReport object
         AdvancedReport newReport = new AdvancedReport();       
-        newReport.setOdbMatrix("newODB");
+       // newReport.setOdbMatrix("newODB");
         FileDetails newfd = new FileDetails();
-        newfd.setFileFormat("ODB");        
+        newfd.setFormat("ODB");        
         newfd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");        
         newfd.setCopperWeight("1.95");        
         newReport.addFileDetail(newfd);
@@ -271,7 +271,7 @@ public class FileDetailCompareUtilityTest {
     {
         AdvancedReport oldReport = new AdvancedReport();          
         FileDetails fd = new FileDetails();
-        fd.setFileFormat("Gerber");
+        fd.setFormat("Gerber");
         fd.setName("uploads\\abc11\\8000-4890CPWIZA.GBS");       
         
         Map<String, String> attr = new HashMap<>();       
@@ -283,7 +283,7 @@ public class FileDetailCompareUtilityTest {
         //Add new AdvancedReport object
         AdvancedReport newReport = new AdvancedReport();               
         FileDetails newfd = new FileDetails();
-        newfd.setFileFormat("Gerber");        
+        newfd.setFormat("Gerber");        
         newfd.setName("uploads\\abc11\\8000-4890CPWIZA.GBL");                
         newReport.addFileDetail(newfd);
         
@@ -402,13 +402,13 @@ public class FileDetailCompareUtilityTest {
     public void testCompareFileDetails5() throws Exception {
         FileDetails newFD = new FileDetails();
         LayersInformation newLayerInfo = new LayersInformation("1", "BOARD", "SIGNAL", "BOTTOM_SOLDER", "POSITIVE", "", "", "");
-        newFD.setLayerInfo(newLayerInfo);
-        newFD.setProjectId("new123");
+//        newFD.setLayerInfo(newLayerInfo);
+//        newFD.setProjectId("new123");
 
         FileDetails oldFD = new FileDetails();
         LayersInformation oldLayerInfo = new LayersInformation("5", "BOARD", "SILK_SCREEN", "TOP_OVERLAY", "POSITIVE", "", "", "");
-        oldFD.setLayerInfo(oldLayerInfo);
-        oldFD.setProjectId("old123");
+//        oldFD.setLayerInfo(oldLayerInfo);
+//        oldFD.setProjectId("old123");
 
         FileDetailCompareUtility instance = new FileDetailCompareUtility();
         Map<String, String> result = instance.compareObject(newLayerInfo, oldLayerInfo);

@@ -30,10 +30,10 @@ public class ODBProcessing {
      * @return the list of fileDetails
      */
     public static List<FileDetails> processODB(Path folder) {
-        LayersInformation layerInfo = new LayersInformation();
+        //LayersInformation layerInfo = new LayersInformation();
         List<FileDetails> fileDetlList = new ArrayList<FileDetails>();
         //TODO: return list FileDetails
-        Integer counter = 0;   //NOT being used
+        //Integer counter = 0;   //NOT being used
         String folderName = "";
         HashMap<String, String> results = new HashMap<String, String>();
         try {
@@ -57,32 +57,42 @@ public class ODBProcessing {
                     }
                 }
                 if (line.startsWith("LAYER")) {
-                    counter++;
+                    //counter++;
                     while ((line = br.readLine()) != null) {
                         if (line.endsWith("}")) {
                             break;
                         }
-                        results.putAll(processLayer(counter, line));
+                        results.putAll(processLayer(line));
 
                     }
                     if (results.containsKey("ROW")) {
-                        FileDetails fd = processAttribute(folder, results.get("NAME"), folderName);
-                        if (fd != null) {
-
-                            fileDetlList.add(fd);
-
-                            if (fd.getAttributes() == null || fd.getAttributes().isEmpty()) {
-                                counter = counter - 1;
-                            } else {
-                                layerInfo = new LayersInformation(results.get("ROW"),
-                                        results.get("CONTEXT"), results.get("TYPE"),
-                                        results.get("NAME"), results.get("POLARITY"),
-                                        results.get("START_NAME"), results.get("END_NAME"),
-                                        results.get("OLD_NAME"));
-
-                                //fd.setLayerInfo(layerInfo);
-                            }
-                        }
+                        FileDetails fd = new FileDetails();
+                        fd.setName(results.get("NAME"));
+                        fd.setFormat("odb");
+                        fd.setContext(results.get("CONTEXT"));
+                        fd.setPolarity( results.get("POLARITY"));
+                        fd.setStartName(results.get("START_NAME"));
+                        fd.setEndName(results.get("END_NAME"));
+                        fd.setType(results.get("TYPE"));
+                        
+                        fileDetlList.add(fd);
+                        //processAttribute(folder, results.get("NAME"), folderName);
+//                        if (fd != null) {
+//
+//                            fileDetlList.add(fd);
+//
+//                            if (fd.getAttributes() == null || fd.getAttributes().isEmpty()) {
+//                                counter = counter - 1;
+//                            } else {
+//                                layerInfo = new LayersInformation(results.get("ROW"),
+//                                        results.get("CONTEXT"), results.get("TYPE"),
+//                                        results.get("NAME"), results.get("POLARITY"),
+//                                        results.get("START_NAME"), results.get("END_NAME"),
+//                                        results.get("OLD_NAME"));
+//
+//                                //fd.setLayerInfo(layerInfo);
+//                            }
+//                        }
                         //Set the layerinfo in fileDetail
                     }
                 }
@@ -128,15 +138,16 @@ public class ODBProcessing {
         return fileDetail;
     }
 
-    private static HashMap<String, String> processLayer(Integer row, String line) {
+    private static HashMap<String, String> processLayer( String line) {
         HashMap<String, String> returnMap = new HashMap<String, String>();
         String[] splitedValue = line.trim().split("=", 2);
-        if (splitedValue[0].equals("ROW")) {
-            splitedValue[1] = row.toString();
-            returnMap.put(splitedValue[0], row.toString());
-        } else {
-            returnMap.put(splitedValue[0], splitedValue[1]);
-        }
+//        if (splitedValue[0].equals("ROW")) {
+//            splitedValue[1] = row.toString();
+//            returnMap.put(splitedValue[0], row.toString());
+//        } else {
+//            returnMap.put(splitedValue[0], splitedValue[1]);
+//        }
+        returnMap.put(splitedValue[0], splitedValue[1]);
         return returnMap;
     }
 

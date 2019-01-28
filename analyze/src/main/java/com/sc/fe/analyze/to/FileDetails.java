@@ -23,7 +23,7 @@ public class FileDetails implements Serializable {
 	
 	private String name;
 	private String version;
-	private String format; //Gerber, odb, drill
+	private String format = "unknown"; //Gerber, odb, drill
 	
    	private boolean valid;
 	private String modifiedDate;
@@ -38,6 +38,7 @@ public class FileDetails implements Serializable {
 	private String startName;
 	private String endName;
 	private String copperWeight;
+	private String layerName;
 	
 	private Map<String,String> attributes; //Attributes in key:value form
 	
@@ -265,6 +266,39 @@ public class FileDetails implements Serializable {
 
 	public void setLayerOrder(int layerOrder) {
 		this.layerOrder = layerOrder;
+	}
+
+	public String getLayerName() {
+		return layerName;
+	}
+
+	public void setLayerName(String layerName) {
+		this.layerName = layerName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FileDetails other = (FileDetails) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 }
