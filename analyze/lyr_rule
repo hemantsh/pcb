@@ -8,7 +8,7 @@
 #  .atr name - job attribute names that are used as
 #              additional filters to the format and
 #              customer name
-#
+# 
 # Each entry in the file contains the following fields :
 #
 #    format - format name or '*' for all formats

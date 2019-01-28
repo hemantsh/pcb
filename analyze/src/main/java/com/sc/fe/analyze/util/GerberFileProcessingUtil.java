@@ -569,7 +569,7 @@ public class GerberFileProcessingUtil {
                         //System.out.println("File Found--Filename--"+fileName+"--RegularExpression--"+p);                        
                         fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*",""));                        
                         fd.setContext(splitRSide[1]);
-                        fd.setType(splitRSide[2]);
+                        fd.setType(splitRSide[2]); 
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);                        
                         fd.setLayerOrder(Integer.parseInt(splitRSide[5].replaceAll("[^0-9]*", "")));

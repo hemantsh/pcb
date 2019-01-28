@@ -43,7 +43,7 @@ public class ODBProcessing {
             String line;
             //process the matrix file
             while ((line = br.readLine()) != null) {
-                if (line.isEmpty()) {
+                if (line.isEmpty()) { 
                     continue;
                 }
                 if (line.startsWith("STEP")) {
