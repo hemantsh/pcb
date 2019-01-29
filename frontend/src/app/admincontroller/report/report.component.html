@@ -1,20 +1,31 @@
 <div>
-   <div class="row">
+  <div class="row">
     <div class="col-md-12">
-      <!-- <span style="font-weight: bold;">Errors</span>
+      <div>
+        <label>Please Select Report Id:</label>
+        <span>
+          <select id="report_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
+            <option value="0" disabled="true">Please Select a Report You Want to Display</option>
+            <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
+          </select>
+        </span>
+      </div>
+      <br/>
+    <div>
+      <span style="font-weight:bold;">Summary</span>
+      <p *ngFor="let report of selectedReport">{{report.summary}}</p>
+      <span style="font-weight: bold;">Status</span>
       <ul>
-        <li type="disc" *ngFor="let report of reports">
-          <span style="font-weight: bold;">Error for projectId:{{report.projectId}} <br /> </span>
-          {{report.errors}}
+        <li type="disc" *ngFor="let report of selectedReport">
+          {{report.status}}
         </li>
       </ul>
-      <span style="font-weight: bold;">Additional Notes</span>
-      <ul>
-        <li type="disc" *ngFor="let report of reports">
-          <span style="font-weight: bold;">Additional Notes for projectId:{{report.projectId}} <br /> </span>
-          {{report.notes}}
-        </li>
+      <span style="font-weight: bold;" class="error">Errors</span>
+      <ul *ngFor="let report of selectedReport">
+        <span>{{report.errors}}</span>        
+        <li *ngFor="let inner of objectKeys(report.notes)"> {{report.notes[inner]}}</li>
       </ul>
+    </div><br/>
       <div class="reportscroll">
         <table class="table">
           <thead>
@@ -25,19 +36,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let report of reports">
+            <tr *ngFor="let report of selectedReport">
               <td>
-                <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner]}}<br />
-                </span>
+              <p *ngFor="let inner of objectKeys(report.projectFiles)">
+                {{report.projectFiles[inner]}}
+              </p>
               </td>
               <td></td>
               <td></td>
             </tr>
           </tbody>
         </table>
-      </div> -->
+      </div>
+
+
       <!-- Below code is important -->
-      <table class="table">
+      <!-- <table class="table">
         <thead>
           <tr>
             <th>ProjectId</th>
@@ -67,11 +81,11 @@
               <td>{{report.summary}}</td>
           </tr>
         </tbody>
-      </table> 
+      </table>  -->
     </div>
-  </div> 
+  </div>
 </div>
- 
+
 
 
 <!--<tr *ngFor="let extn of extns">

@@ -17,6 +17,7 @@ import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.ReportServices;
 import com.sc.fe.analyze.service.ServiceFilesServices;
+import com.sc.fe.analyze.util.MappingUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -190,15 +191,20 @@ public class AdminController {
     public void createReport(@ApiParam("Takes JSON of Report Object") @RequestBody Report report){
        reportServices.save(report);
     }
+    @ApiOperation("Retrieve the Report by Id from the Database.")
+    @GetMapping(path="/report/{id}")
+    public List<Report> getReportById(@PathVariable("id") String projectId){
+        return reportServices.getReportById(projectId);
+    }
     @ApiOperation("Updates Report already stored into the Database.")
     @PostMapping(path="/report/update")
     public void updateReport(@ApiParam("Takes JSON of Report Object to update") @RequestBody Report report){
        reportServices.save(report);
     }
-    @ApiOperation("Retrieve Filetype By Id from the Database.")
-    @GetMapping(path="/report/filetype/{id}")
+    @ApiOperation("Retrieve Filetype By fileId from the Database.")
+    @GetMapping(path="/report/getfiletype/{fileId}")
     @ResponseBody
-    public FileTypes getFiletype(@PathVariable("id") Integer fileId){
-        return fileTypeService.getTypeById(fileId);
+    public String getFiletype(@PathVariable("fileId") Integer fileId){
+        return reportServices.getFileType(fileId);
     }
 }

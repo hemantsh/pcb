@@ -10,6 +10,9 @@ export class ReportComponent implements OnInit {
   objectKeys = Object.keys;
   reports=[];
   fileType=[];
+
+  selectedReportId=0;
+  selectedReport=[];
   constructor(private fileService:FileService) { }
 
   ngOnInit() {
@@ -41,6 +44,18 @@ export class ReportComponent implements OnInit {
       );
   }
 
+  onProjectIdSelect(selectedReportId){
+    this.fileService.getReportById(selectedReportId)
+    .subscribe(
+      (response: Response) => {
+        this.selectedReport = response.json();
+
+        console.log("Selected Report is fetching...", this.selectedReport);
+      },
+      (error) => console.log(error)
+    );
+
+  }
 /*
   updateExtn(extn) {
     if (extn.edit || extn.add ) {

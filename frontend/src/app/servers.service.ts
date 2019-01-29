@@ -6,7 +6,7 @@ export class FileService{
     constructor(private http: Http){}
     //File Upload Service
     fileUpload(UploadedForm){
-           return this.http.post('http://localhost:8080/pcb/api/uploadAndExtract',UploadedForm);
+           return this.http.post('http://localhost:8080/pcb/api/uploadAndValidate',UploadedForm);
         }
     //Services for Extensions Start
         getExtensions(){
@@ -60,6 +60,9 @@ export class FileService{
         //Services for Report
         getReport(){
             return this.http.get('http://localhost:8080/pcb/admin/report');
+        }
+        getReportById(id){
+            return this.http.get('http://localhost:8080/pcb/admin/report/'+id);
         }
         getFiletype(fileId){
             return this.http.get('http://localhost:8080/pcb/admin/report/filetype/'+fileId);
