@@ -567,7 +567,7 @@ public class GerberFileProcessingUtil {
                         // It separate all right side values by " " and stores in an array.
                         String[] splitRSide = splitValue[1].split(" ");
                         //System.out.println("File Found--Filename--"+fileName+"--RegularExpression--"+p);                        
-                        fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*",""));                        
+                        fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*",""));                           
                         fd.setContext(splitRSide[1]);
                         fd.setType(splitRSide[2]); 
                         fd.setPolarity(splitRSide[3]);

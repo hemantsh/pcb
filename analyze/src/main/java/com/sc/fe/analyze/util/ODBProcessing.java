@@ -60,6 +60,7 @@ public class ODBProcessing {
                 if (line.startsWith("LAYER")) {                    
                     while ((line = br.readLine()) != null) {
                         if (line.endsWith("}")) {
+                            //Print layer Information of file
 //                            results.keySet().forEach((p)->
 //                                System.out.println(p+ " = "+results.get(p)));
                             break;

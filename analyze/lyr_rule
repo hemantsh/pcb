@@ -2053,8 +2053,6 @@ s([0-9]*).ger$->copper-\1 board board signal positive none \1
 ([0-9])\.pho$->copper-\1 board signal positive none \1
 ([0-9][0-9])\.pho$->copper-\1 board signal positive none \1
 
-
-
 # Rout
 ^rout->rout  board rout positive none 0
 rou$->rout board rout positive none 0
