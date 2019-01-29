@@ -5,3 +5,21 @@ h1{
 span{
     color: red;
 }
+
+.heading{
+    font-weight: bold;
+    color: black;
+}
+.tableBorder{
+    border: 1px solid gray;
+}
+.reportscroll{
+    overflow-y: scroll;
+    height: 257px;
+}
+.hide{
+    visibility:hidden; 
+}
+.show{
+    visibility: visible;
+}
