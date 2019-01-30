@@ -1,48 +1,55 @@
 <div class="container-fluid">
   <div class="row">
 
-    <div class="col-xs-12 col-sm-10 col-md-6">
-      <h1>Please enter below details </h1>
-      <form class="form-horizontal" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="projectId">Project Id</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="projectId" formControlName="projectId">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="test" [ngClass]="[hideStyle]">
+        <h1>Please enter below details </h1>
+        <form class="form-horizontal" [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="projectId">Project Id</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="projectId" formControlName="projectId">
+            </div>
           </div>
-        </div>
-        <span *ngIf="!this.uploadForm.get('projectId').valid && this.uploadForm.get('projectId').touched" class="help-block col-md-offset-2">This
-          Field Is Required!</span>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="customerId">customer Id</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="cutomerId" formControlName="customerId">
+          <span *ngIf="!this.uploadForm.get('projectId').valid && this.uploadForm.get('projectId').touched" class="help-block col-md-offset-2">This
+            Field Is Required!</span>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="customerId">customer Id</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="cutomerId" formControlName="customerId">
+            </div>
           </div>
-        </div>
-        <span *ngIf="!this.uploadForm.get('customerId').valid && this.uploadForm.get('customerId').touched" class="help-block col-sm-offset-2">This
-          Field Is Required!</span>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="serviceType">Service Type</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="serviceType" formControlName="serviceType">
+          <span *ngIf="!this.uploadForm.get('customerId').valid && this.uploadForm.get('customerId').touched" class="help-block col-sm-offset-2">This
+            Field Is Required!</span>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="serviceType">Service Type</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="serviceType" formControlName="serviceType">
+            </div>
           </div>
-        </div>
-        <span *ngIf="!this.uploadForm.get('serviceType').valid && this.uploadForm.get('serviceType').touched" class="help-block col-sm-offset-2">This
-          Field Is Required!</span>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="uploadFile">Upload File</label>
-          <div class="col-sm-10">
-            <input type="file" id="uploadFile" accept=".zip,.rar,.tar" (change)="fileChangeEvent($event)"
-              formControlName="uploadFile">
+          <span *ngIf="!this.uploadForm.get('serviceType').valid && this.uploadForm.get('serviceType').touched" class="help-block col-sm-offset-2">This
+            Field Is Required!</span>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="uploadFile">Upload File</label>
+            <div class="col-sm-10">
+              <input type="file" id="uploadFile" accept=".zip,.rar,.tar" (change)="fileChangeEvent($event)"
+                formControlName="uploadFile">
+            </div>
           </div>
-        </div>
-        <!-- <span *ngIf="!this.uploadForm.get('uploadFile').valid" class="help-block col-sm-offset-2">This Field Is Required!</span> -->
+          <!-- <span *ngIf="!this.uploadForm.get('uploadFile').valid" class="help-block col-sm-offset-2">This Field Is Required!</span> -->
 
-        <button class="btn btn-primary col-md-offset-5" type="submit">Submit</button>
-      </form>
+          <button class="btn btn-primary col-md-offset-5" type="submit">Submit</button>
+        </form>
+      </div>
     </div>
-    
-    <div class="col-md-6">
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
       <div [ngClass]="[divStyle]">
+        <div class="text-center">
+            <button class="btn btn-primary"  (click)="viewAnotherReport()">View Another Report</button>
+        </div>  
+        
         <div>
           <span class="heading">Summary</span>
           <p>{{responeGlobal.summary}}</p>

@@ -11,3 +11,10 @@
 .error{
     color: red;
 }
+.heading{
+    font-weight: bold;
+    color: black;
+}
+.tableBorder{
+    border: 1px solid gray;
+}
