@@ -13,6 +13,7 @@ export class CustomerinputsComponent implements OnInit {
   responeGlobal = [];
 
   divStyle='hide';
+  hideStyle='show';
   constructor(private fileUploadService: FileService) { }
 
   ngOnInit() {
@@ -41,6 +42,7 @@ export class CustomerinputsComponent implements OnInit {
         (response) => {
           this.responeGlobal = response.json();
           this.divStyle='show';
+          this.hideStyle='hide';
           console.log(this.responeGlobal)
         },
         (error) => console.log(error)
@@ -48,7 +50,10 @@ export class CustomerinputsComponent implements OnInit {
       );
 
   }
-
+  viewAnotherReport(){
+    this.hideStyle='show';
+    this.divStyle='hide';
+  }
 
   public fileChangeEvent(fileInput: any) {
 

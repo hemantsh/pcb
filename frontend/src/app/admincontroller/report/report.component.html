@@ -1,7 +1,7 @@
 <div>
   <div class="row">
     <div class="col-md-12">
-      <div>
+      <!-- <div>
         <label>Please Select Report Id:</label>
         <span>
           <select id="report_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
@@ -9,93 +9,48 @@
             <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
           </select>
         </span>
-      </div>
-      <br/>
-    <div>
-      <span style="font-weight:bold;">Summary</span>
-      <p *ngFor="let report of selectedReport">{{report.summary}}</p>
-      <span style="font-weight: bold;">Status</span>
-      <ul>
-        <li type="disc" *ngFor="let report of selectedReport">
-          {{report.status}}
-        </li>
-      </ul>
-      <span style="font-weight: bold;" class="error">Errors</span>
-      <ul *ngFor="let report of selectedReport">
-        <span>{{report.errors}}</span>        
-        <li *ngFor="let inner of objectKeys(report.notes)"> {{report.notes[inner]}}</li>
-      </ul>
-    </div><br/>
-      <div class="reportscroll">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>FileName</th>
-              <th>FileType</th>
-              <th>Polarity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let report of selectedReport">
-              <td>
-              <p *ngFor="let inner of objectKeys(report.projectFiles)">
-                {{report.projectFiles[inner]}}
-              </p>
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+      </div> -->
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <div>
+            <div>
+              <span class="heading">Summary</span>
+              <p>{{demoProjectJSON.summary}}</p>
+              <span class="heading">Status</span>
+              <p>{{demoProjectJSON.validationStatus}}</p>
+            </div>
+            <br />
+            <div class="tableBorder reportscroll">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>FileName</th>
+                    <th>FileType</th>
+                    <th>Polarity</th>
+                    <th>Layer Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let file of demoProjectJSON?.projectDetail?.fileDetails">
+                    <td>
+                      {{file.name}}
+                    </td>
+                    <td>
+                      {{file.type}}
+                    </td>
+                    <td>
+                      {{file.polarity}}
+                    </td>
+                    <td>
+                      {{file.layerOrder}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
-
-      <!-- Below code is important -->
-      <!-- <table class="table">
-        <thead>
-          <tr>
-            <th>ProjectId</th>
-            <th>Version</th>
-            <th>CustomerId</th>
-            <th>Errors</th>
-            <th>FileType_FileName</th>
-            <th>Notes</th>
-            <th>Project_Files</th>
-            <th>Service_Id</th>
-            <th>Status</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let report of reports">
-              <td >{{report.projectId}}</td>
-              <td>{{report.version}}</td>
-              <td>{{report.customerId}}</td>
-              <td>{{report.errors}}</td>
-              <td >
-                <span *ngFor="let inner of objectKeys(report.fileTypeToFileNameMapping)">{{report.fileTypeToFileNameMapping[inner] }}</span></td>
-              <td>{{report.notes}}</td>
-              <td>{{report.projectFiles}}</td>
-              <td>{{report.serviceTypeId}}</td>
-              <td>{{report.status}}</td>
-              <td>{{report.summary}}</td>
-          </tr>
-        </tbody>
-      </table>  -->
     </div>
   </div>
-</div>
-
-
-
-<!--<tr *ngFor="let extn of extns">
-        <td *ngIf="!extn.edit && !extn.add">{{extn.name}}</td>
-        <td *ngIf="extn.edit || extn.add"> <input type="text" class="form-control" [(ngModel)]="extn.name" ngModel name="addExtn" required/></td>
-        <td>
-          <button *ngIf="!extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.edit}" (click)="extn.originalData = extn.name; updateExtn(extn); extn.edit = !extn.edit;" [disabled]="!extn.name">{{extn.edit
-            ? 'Update':'Edit' }}</button>
-            <button *ngIf="extn.add" class="btn btn-primary" [ngClass]="{'btn-success' : extn.add}" (click)="updateExtn(extn); extn.add = !extn.add;" [disabled]="!extn.name">Save</button>
-          <button class="btn btn-danger" *ngIf="extn.edit || extn.add" (click)="cancelClick(extn)">Cancel</button>
-        </td>
-      </tr>
-    -->
