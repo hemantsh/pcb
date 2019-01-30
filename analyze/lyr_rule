@@ -8,7 +8,7 @@
 #  .atr name - job attribute names that are used as
 #              additional filters to the format and
 #              customer name
-#
+# 
 # Each entry in the file contains the following fields :
 #
 #    format - format name or '*' for all formats
@@ -66,8 +66,7 @@ crtdrw([0-9][0-9]*)->critical_pattern\1 misc document positive none 0
 ^.*selmsk\.->selective_mask\1 misc document positive bottom 0
 ^.*mildrw\.->milling_drawing misc document positive bottom 0
 ^.*pandrw\.->dimension_drawing misc document positive bottom 0
-#^.*pcl1__([0-9][0-9]*)\.*$
-#->print_conductive_bot misc conductive_paste positive bottom 0
+^.*pcl1__([0-9][0-9]*)\.*$->print_conductive_bot misc conductive_paste positive bottom 0
 ^.*pdl1__([0-9][0-9]*)\.*$->pcl_dielectric_1_bot misc document positive bottom 0
 ^.*pdl2__([0-9][0-9]*)\.*$->pcl_dielectric_1_bot misc document positive bottom 0
 plat_top->selective_plat_top  misc document positive top 0
@@ -147,10 +146,8 @@ pl[\-\_]cs[\-\_\.]->pl-cs misc document positive top 0
 pl[\-\_]ps[\-\_\.]->pl-ps misc document positive bottom 0
 [\-\_]plug$->plug misc document positive top 0
 [\-\_]plug(ging)?[\-\_\.]->plug misc document positive top 0
-#PLGV
-#->plgv misc document positive none 0
-#SPOT_TOP
-#->spot_top misc document positive top 0
+PLGV->plgv misc document positive none 0
+SPOT_TOP->spot_top misc document positive top 0
 
 # OSP mask
 [\-\_\.]osp$->osp misc document positive none 0
@@ -246,10 +243,8 @@ sp(t)?[\-\_](0)?[2-9][\-\_\.]->solder_paste-bot board solder_paste positive bott
 [\-\_]pst([\-\_])?(0)?[2-9][\-\_\.]->solder_paste-bot board solder_paste positive bottom 0
 
 #Some times confused with pad top and bottom
-#gpt$
-#->solder_paste-top board solder_paste positive top 0
-#gpb$
-#->solder_paste-bot board solder_paste positive bottom 0
+gpt$->solder_paste-top board solder_paste positive top 0
+gpb$->solder_paste-bot board solder_paste positive bottom 0
 tps$->solder_paste-top board solder_paste positive top 0
 bps$->solder_paste-bot board solder_paste positive bottom 0
 tpas(te)?$->solder_paste-top board solder_paste positive top 0
@@ -276,8 +271,7 @@ ssp\.->solder_paste-bot board solder_paste positive bottom 0
 ^pb[\-\_\.]->solder_paste-bot board solder_paste positive bottom 0
 
 # The next rule colide with copper layer
-#\.gtp$
-#->solder_paste-top board solder_paste positive top 0
+\.gtp$->solder_paste-top board solder_paste positive top 0
 \.gbp$->solder_paste-bot board solder_paste positive bottom 0
 
 tpm$->solder_paste-top board solder_paste positive top 0
@@ -296,9 +290,7 @@ b(ot)?([\-\_])?smd->solder_paste-bot board solder_paste positive bottom 0
 smd([\-\_])?top->solder_paste-top board solder_paste positive top 0
 smd([\-\_])?bot->solder_paste-bot board solder_paste positive bottom 0
 
-#pmt
-#->pmt board solder_paste positive top 0
-
+pmt->pmt board solder_paste positive top 0
 
 
 # Silk screen top
@@ -337,8 +329,7 @@ ss_bot->silk_screen-bot board silk_screen positive bottom 0
 
 top([\-\_])?silk->silk_screen-top board silk_screen positive top \1
 bot(tom)?[\-\_]silk->silk_screen-bot board silk_screen positive bottom \1
-#topsilk
-#->silk_screen-top board silk_screen positive top \1
+topsilk->silk_screen-top board silk_screen positive top \1
 slkcs->silk_screen-top board silk_screen positive top 0
 slkps->silk_screen-bot board silk_screen positive bottom 0
 s(i)?lk([\-\_])?1[0-9][\-\_\.]->silk_screen-bot board silk_screen positive bottom 0
@@ -445,26 +436,15 @@ b(ot)?([\-\_])?s(i)?lk->silk_screen-bot board silk_screen positive bottom 0
 ^vef([1-9][0-9]*])[\.\-\_]->silk_screen-bot board silk_screen positive bottom 0
 ^vef1[1-9][\.\-\_]->silk_screen-bot board silk_screen positive bottom 0
 
-#.gto$
-#->gto board silk_screen positive top 0
-#st.lgx$
-#->ss-cs board silk_screen positive top 0
-#_fs.art$
-#->fs board silk_screen positive top 0
-#aw-r01
-#->silk_top board silk_screen positive top 0
-#-mc
-#->mc board silk_screen positive top 0
-#-ms
-#->ms board silk_screen positive bottom 0
-#.GBO$
-#->gbo board silk_screen positive bottom 0
-#.gbo$
-#->gbo board silk_screen positive bottom 0
-#aw-r0
-#->silk_bot board silk_screen positive bottom 0
-
-
+.gto$->gto board silk_screen positive top 0
+st.lgx$->ss-cs board silk_screen positive top 0
+_fs.art$->fs board silk_screen positive top 0
+aw-r01->silk_top board silk_screen positive top 0
+-mc->mc board silk_screen positive top 0
+-ms->ms board silk_screen positive bottom 0
+.GBO$->gbo board silk_screen positive bottom 0
+.gbo$->gbo board silk_screen positive bottom 0
+aw-r0->silk_bot board silk_screen positive bottom 0
 
 # Solder mask top / bottom
 
@@ -638,29 +618,19 @@ t(op)?([\-\_])?mask->solder_mask-top board solder_mask positive top 0
 ^layer([0-9]+)_sm\.gbr$->solder_mask-\1 board solder_mask positive bottom \1
 
 
-#-sc
-#->sc board solder_mask positive top 0
-#r1.art$
-#->r1 board solder_mask positive top 0
-#SMT.GDO$
-#->smt board solder_mask positive top 0
-#MT.LGX$
-#->mt board solder_mask positive top 0
-#solderresist_top.gdo
-#->solder_top board solder_mask positive top 0
-#soldermasktop
-#->top-sm board solder_mask positive top 0
-#.tmsk$
-#->top-sm board solder_mask positive top 0
-#-ss
-#->ss board solder_mask positive bottom 0
-
-
+-sc->sc board solder_mask positive top 0
+r1.art$->r1 board solder_mask positive top 0
+SMT.GDO$->smt board solder_mask positive top 0
+MT.LGX$->mt board solder_mask positive top 0
+solderresist_top.gdo->solder_top board solder_mask positive top 0
+soldermasktop->top-sm board solder_mask positive top 0
+.tmsk$->top-sm board solder_mask positive top 0
+-ss->ss board solder_mask positive bottom 0
 
 
 #Drill
- npth->drlnpt board drill positive none 0 1 999 npth
- ^.*slot.*$->slot board rout positive none 0
+npth->drlnpt board drill positive none 0 1 999 npth
+^.*slot.*$->slot board rout positive none 0
 pick place->pickplace misc document positive none 0
 nonplated->drlnpt board drill positive top 0
 rout->rout board rout positive none 0
@@ -787,65 +757,35 @@ drill[\-\_\.]->drill board drill positive none 0
 drill$->drill board drill positive top 0
 
 
-#ThruHoleNonPlated
-#->ThruHoleNonPlated board drill positive none 0
-#plt.drl
-#->plt board drill positive none 0
-#unp.drl
-#->unp board drill positive none 0
-#ThruHolePlated
-#->ThruHolePlated board drill positive none 0
-#Drilldraw([0-9][0-9]*)
-#->drl\1 board drill positive none 0
-#nc([0-9][0-9]*)-([0-9][0-9]*).drl
-#->nc\1-\2 board drill positive none 0 \1 \2
-#([0-9][0-9]*)-([0-9][0-9]*).drl
-#->drl\1-\2 board drill positive none 0 \1 \2
-# .drl$
-#->drl board drill positive none 0
-# .DRL$
-#->drl board drill positive none 0
-#drl([0-9][0-9]*)-([0-9][0-9]*)
-#->drl\1-\2 board drill positive top 0 \1 \2
-#.txt$
-#->drill board drill positive none 0
-#slot([0-9][0-9]*)-([0-9][0-9]*)
-#->slot\1-\2 board drill positive top 0 \1 \2
-#s([0-9][0-9]*)-([0-9][0-9]*)
-#->s\1-\2 board drill positive top 0 \1 \2
-#slt_plt
-#->plated_slot board drill positive top 0
-# ncd$
-#->ncd board drill positive none 0
-# nc$
-#->nc board drill positive none 0
-# NCD$
-#->ncd board drill positive none 0
-# NC$
-#->nc board drill positive none 0
-# drlcor_n
-#->drl-npth board drill positive none 0
-# d_top_in([0-9][0-9]*)
-#->d_top-in\1 board drill positive top 0 1 \1
-#thruhole
-#->thruhole board drill positive none 0
+ThruHoleNonPlated->ThruHoleNonPlated board drill positive none 0
+plt.drl->plt board drill positive none 0
+unp.drl->unp board drill positive none 0
+ThruHolePlated->ThruHolePlated board drill positive none 0
+Drilldraw([0-9][0-9]*)->drl\1 board drill positive none 0
+nc([0-9][0-9]*)-([0-9][0-9]*).drl->nc\1-\2 board drill positive none 0 \1 \2
+([0-9][0-9]*)-([0-9][0-9]*).drl->drl\1-\2 board drill positive none 0 \1 \2
+.drl$->drl board drill positive none 0
+.DRL$->drl board drill positive none 0
+drl([0-9][0-9]*)-([0-9][0-9]*)->drl\1-\2 board drill positive top 0 \1 \2
+.txt$->drill board drill positive none 0
+slot([0-9][0-9]*)-([0-9][0-9]*)->slot\1-\2 board drill positive top 0 \1 \2
+s([0-9][0-9]*)-([0-9][0-9]*)->s\1-\2 board drill positive top 0 \1 \2
+slt_plt->plated_slot board drill positive top 0
+ncd$->ncd board drill positive none 0
+nc$->nc board drill positive none 0
+NCD$->ncd board drill positive none 0
+NC$->nc board drill positive none 0
+drlcor_n->drl-npth board drill positive none 0
+d_top_in([0-9][0-9]*)->d_top-in\1 board drill positive top 0 1 \1
+thruhole->thruhole board drill positive none 0
 ##Drill without specific file name
 
 
-#d([0-9][0-9]*)-([0-9][0-9]*)
-#->d\1-\2 board rout positive top 0
-# ([0-9][0-9]*)_([0-9][0-9]*)
-#->drill\1-\2 board drill positive top 0 \1 \2
-# .exc
-#->drill board drill positive none 0
-# ^drill-([0-9])
-#->drill-\1 board drill positive none 0
-# ^drill
-#->drill board drill positive none 0
-
-
-
-
+d([0-9][0-9]*)-([0-9][0-9]*)->d\1-\2 board rout positive top 0
+([0-9][0-9]*)_([0-9][0-9]*)->drill\1-\2 board drill positive top 0 \1 \2
+.exc->drill board drill positive none 0
+^drill-([0-9])->drill-\1 board drill positive none 0
+^drill->drill board drill positive none 0
 
 # Top/bottom signal
 signal.*top->copper-top board signal positive top 0
@@ -915,25 +855,15 @@ cop(per)?bot(tom)?->copper-bot board signal positive bottom 0
 \.gtp$->copper-top board signal positive top 0
 \.gbt$->copper-bot board signal positive bottom 0
 
-#l01_top
-#->l01_top board signal positive top 0
-#.GTP$
-#->gtp board signal positive top 0
-#^01CS
-#->01cs board signal positive top 0
-#L1-CS
-#->l1-cs board signal positive top 0
-#CSL1
-#->csl1 board signal positive top 0
-#_fm
-#->fm board signal positive top 0
-#CS
-#->cs board signal positive top 0
-#trace_top.gdo
-#->trace_top board signal positive top 0
-#top
-#->top board signal positive top 0
-
+l01_top->l01_top board signal positive top 0
+.GTP$->gtp board signal positive top 0
+^01CS->01cs board signal positive top 0
+L1-CS->l1-cs board signal positive top 0
+CSL1->csl1 board signal positive top 0
+_fm->fm board signal positive top 0
+CS->cs board signal positive top 0
+trace_top.gdo->trace_top board signal positive top 0
+top->top board signal positive top 0
 
 #inner layers
 [\-\_]sig([0-9][0-9]*)[\-\_\.]->copper-\1 board signal positive none \1
@@ -1093,157 +1023,83 @@ s([0-9]*).ger$->copper-\1 board board signal positive none \1
 .gnd([0-9]+)$->copper-\1n board power_ground negative none \1
 
 
-#brdlay01.ger
-#->brdlay01 board signal positive top 0
-#l([0-9][0-9]*)_gnd([0-9])
-#->l\1_gnd\2 board signal positive none \1
-#l([0-9][0-9]*)_pwr([0-9])
-#->l\1_pwr\2 board signal positive none \1
-#power_ground-bot
-#->power_ground-bot board power_ground positive none \1
-#power_ground-top
-#->power_ground-top board power_ground positive none \1
-#gnd_([0-9][0-9]*)
-#->gnd\1 board power_ground positive none \1
-#GND_([0-9][0-9]*)
-#->gnd\1 board power_ground positive none \1
-#^vcc_([0-9][0-9]*)$
-#->vcc\1 board power_ground positive none \1
-#VCC_([0-9][0-9]*)
-#->vcc\1 board power_ground positive none \1
-#^gnd_([0-9][0-9]*)$
-#->gnd\1 board power_ground positive none \1
-#^vcc_([0-9][0-9]*)$
-#->vcc\1 board power_ground positive none \1
-#^in([0-9][0-9]*)-p-pg
-#->in\1 board power_ground positive none \1
-#^in([0-9][0-9]*)-n-pg
-#->in\1 board power_ground negative none \1
-#^([0-9][0-9]*)GN
-#->gn\1 board power_ground negative none \1
-#^([0-9][0-9]*)VC
-#->vc\1 board power_ground negative none \1
-#GP.LGX$
-#->gp board power_ground negative none 0
-#PP.LGX$
-#->pp board power_ground negative none 0
-#.gp([0-9])$
-#->gp\1 board power_ground positive none \1
-#g([0-9][0-9]).gbr
-#->pg\1 board power_ground negative none \1
-#p([0-9][0-9]).gbr
-#->pg\1 board power_ground negative none \1
-#gd([0-9][0-9])
-#->pg\1 board power_ground negative none \1
-#etchlayer([0-9]+).gdo
-#->pg\1 board power_ground positive none \1
-#etchlayer([0-9]+)neg.gdo
-#->pg\1 board power_ground negative none \1
+brdlay01.ger->brdlay01 board signal positive top 0
+l([0-9][0-9]*)_gnd([0-9])->l\1_gnd\2 board signal positive none \1
+l([0-9][0-9]*)_pwr([0-9])->l\1_pwr\2 board signal positive none \1
+power_ground-bot->power_ground-bot board power_ground positive none \1
+power_ground-top->power_ground-top board power_ground positive none \1
+gnd_([0-9][0-9]*)->gnd\1 board power_ground positive none \1
+GND_([0-9][0-9]*)->gnd\1 board power_ground positive none \1
+^vcc_([0-9][0-9]*)$->vcc\1 board power_ground positive none \1
+VCC_([0-9][0-9]*)->vcc\1 board power_ground positive none \1
+^gnd_([0-9][0-9]*)$->gnd\1 board power_ground positive none \1
+^vcc_([0-9][0-9]*)$->vcc\1 board power_ground positive none \1
+^in([0-9][0-9]*)-p-pg->in\1 board power_ground positive none \1
+^in([0-9][0-9]*)-n-pg->in\1 board power_ground negative none \1
+^([0-9][0-9]*)GN->gn\1 board power_ground negative none \1
+^([0-9][0-9]*)VC->vc\1 board power_ground negative none \1
+GP.LGX$->gp board power_ground negative none 0
+PP.LGX$->pp board power_ground negative none 0
+.gp([0-9])$->gp\1 board power_ground positive none \1
+g([0-9][0-9]).gbr->pg\1 board power_ground negative none \1
+p([0-9][0-9]).gbr->pg\1 board power_ground negative none \1
+gd([0-9][0-9])->pg\1 board power_ground negative none \1
+etchlayer([0-9]+).gdo->pg\1 board power_ground positive none \1
+etchlayer([0-9]+)neg.gdo->pg\1 board power_ground negative none \1
 
 #Inner signal layers
-#l([0-9][0-9]*)_sig([0-9])
-#->l\1_sig\2 board signal positive none \1
-#pp([0-9][0-9]*)
-#->pp\1 board signal positive none \1
-#ph([0-9][0-9]*)
-#->ph\1 board signal positive none \1
-#SIG_([0-9][0-9]*)
-#->sig_\1 board signal positive none \1
-#SIGL([0-9][0-9]*)
-#->sigl\1 board signal positive none \1
-#PP([0-9][0-9]*)
-#->pp\1 board signal positive none \1
-#^in([0-9][0-9]*)$
-#->in\1 board signal positive none \1
-#^in([0-9][0-9]*).art
-#->in\1 board signal positive none \1
-#in([0-9][0-9]*)_
-#->in\1 board signal positive none \1
-#^l([0-9][0-9]*)$
-#->l\1 board signal positive none \1
-#^L([0-9][0-9]*)$
-#->l\1 board signal positive none \1
-#il([0-9][0-9]*)
-#->il\1 board signal positive none \1
-#IL([0-9][0-9]*)
-#->il\1 board signal positive none \1
-#l([0-9][0-9]*)
-#->l\1 board signal positive none \1
-#L([0-9][0-9]*)
-#->l\1 board signal positive none \1
-#gi([0-9][0-9]*)$
-#->gi\1 board signal positive none \1
-#F([0-9][0-9]*).GDO$
-#->f\1 board signal positive none \1
-#L([0-9][0-9]*).GDO$
-#->l\1 board signal positive none \1
-#^([0-9][0-9]*)SG
-#->sg\1 board signal positive none \1
-#-([0-9]).ger$
-#->l\1 board signal positive none \1
-#-([0-9][0-9]*).ger$
-#->l\1 board signal positive none \1
-#.GI([0-9][0-9]*)$
-#->gi\1 board signal positive none \1
-#.g([0-9][0-9]*)$
-#->gi\1 board signal positive none \1
-#([0-9][0-9]*).gbr$
-#->l\1 board signal positive none \1
-#([0-9][0-9]*).GER$
-#->l\1 board signal positive none \1
-#art([0-9][0-9]*)
-#->art\1 board signal positive none \1
-#brdlay([0-9][0-9]).ger
-#->brdlay\1 board signal positive none \1
-#layer([0-9]+)
-#->layer\1 board signal positive none \1
-#midlayer([0-9]+)
-#->mid\1 board signal positive none \1
-#.in([0-9]+)$
-#->in\1 board signal positive none \1
-
-
+l([0-9][0-9]*)_sig([0-9])->l\1_sig\2 board signal positive none \1
+pp([0-9][0-9]*)->pp\1 board signal positive none \1
+ph([0-9][0-9]*)->ph\1 board signal positive none \1
+SIG_([0-9][0-9]*)->sig_\1 board signal positive none \1
+SIGL([0-9][0-9]*)->sigl\1 board signal positive none \1
+PP([0-9][0-9]*)->pp\1 board signal positive none \1
+^in([0-9][0-9]*)$->in\1 board signal positive none \1
+^in([0-9][0-9]*).art->in\1 board signal positive none \1
+in([0-9][0-9]*)_->in\1 board signal positive none \1
+^l([0-9][0-9]*)$->l\1 board signal positive none \1
+^L([0-9][0-9]*)$->l\1 board signal positive none \1
+il([0-9][0-9]*)->il\1 board signal positive none \1
+IL([0-9][0-9]*)->il\1 board signal positive none \1
+l([0-9][0-9]*)->l\1 board signal positive none \1
+L([0-9][0-9]*)->l\1 board signal positive none \1
+gi([0-9][0-9]*)$->gi\1 board signal positive none \1
+F([0-9][0-9]*).GDO$->f\1 board signal positive none \1
+L([0-9][0-9]*).GDO$->l\1 board signal positive none \1
+^([0-9][0-9]*)SG->sg\1 board signal positive none \1
+-([0-9]).ger$->l\1 board signal positive none \1
+-([0-9][0-9]*).ger$->l\1 board signal positive none \1
+.GI([0-9][0-9]*)$->gi\1 board signal positive none \1
+.g([0-9][0-9]*)$->gi\1 board signal positive none \1
+([0-9][0-9]*).gbr$->l\1 board signal positive none \1
+([0-9][0-9]*).GER$->l\1 board signal positive none \1
+art([0-9][0-9]*)->art\1 board signal positive none \1
+brdlay([0-9][0-9]).ger->brdlay\1 board signal positive none \1
+layer([0-9]+)->layer\1 board signal positive none \1
+midlayer([0-9]+)->mid\1 board signal positive none \1
+.in([0-9]+)$->in\1 board signal positive none \1
 
 
 # Bot signal
-#signal-bot
-#->signal-bot board signal positive bottom 0
-#l([0-9][0-9]*)_bot
-#->l\1bot board signal positive bottom 0
-#ph([0-9][0-9]*)btm
-#->ph\1btm board signal positive bottom 0
-#trace_bot
-#->trace_bot board signal positive bottom 0
-#inbot
-#->inbot board signal positive none 1000
-#_bm
-#->bm board signal positive bottom 0
-#BOTTOM
-#->bottom board signal positive bottom 0
-#Bottom
-#->bottom board signal positive bottom 0
-#bottom
-#->bottom board signal positive bottom 0
-#bot
-#->bot board signal positive bottom 0
-#.GBL$
-#->gbl board signal positive bottom 0
-#.gbl$
-#->gbl board signal positive bottom 0
-#.GBT$
-#->gbt board signal positive bottom 0
-#^([0-9][0-9]*)PS
-#->ps\1 board signal positive bottom 0
-#L([0-9][0-9]*)-PS
-#->ps\1 board signal positive bottom 0
-#PSL([0-9][0-9]*)
-#->ps\1 board signal positive bottom 0
-#PS
-#->ps board signal positive bottom 0
-#ss_
-#->ss board signal positive bottom 0
-#secondary
-#->secondary board signal positive bottom 0
+signal-bot->signal-bot board signal positive bottom 0
+l([0-9][0-9]*)_bot->l\1bot board signal positive bottom 0
+ph([0-9][0-9]*)btm->ph\1btm board signal positive bottom 0
+trace_bot->trace_bot board signal positive bottom 0
+inbot->inbot board signal positive none 1000
+_bm->bm board signal positive bottom 0
+BOTTOM->bottom board signal positive bottom 0
+Bottom->bottom board signal positive bottom 0
+bottom->bottom board signal positive bottom 0
+bot->bot board signal positive bottom 0
+.GBL$->gbl board signal positive bottom 0
+.gbl$->gbl board signal positive bottom 0
+.GBT$->gbt board signal positive bottom 0
+^([0-9][0-9]*)PS->ps\1 board signal positive bottom 0
+L([0-9][0-9]*)-PS->ps\1 board signal positive bottom 0
+PSL([0-9][0-9]*)->ps\1 board signal positive bottom 0
+PS->ps board signal positive bottom 0
+ss_->ss board signal positive bottom 0
+secondary->secondary board signal positive bottom 0
 
 # Rout
 ^rout->rout  board rout positive none 0
@@ -1252,12 +1108,9 @@ rou$->rout board rout positive none 0
 contournonplate->rout board rout positive none 0
 contournplate->rout board rout positive none 0
 contourplate->rout board rout positive none 0
-#BO
-#->bo board rout positive none 0
+BO->bo board rout positive none 0
 outline->outline misc document positive none 0
-# mil$
-#->mil board rout positive none 0
-
+mil$->mil board rout positive none 0
 boa->outline misc document positive none 0
 
 
@@ -1306,7 +1159,7 @@ bot(tom)?[\_\-\.]assy->bot_assembly misc document positive bottom 0
 fab->fab misc drawing positive top 0
 
 # outline
- out->outline misc document positive none 0
+out->outline misc document positive none 0
 outline->outline misc document positive none 0
 profile->outline misc document positive none 0
 otl\.->outline misc document positive none 0
@@ -1338,10 +1191,8 @@ pl[\-\_]cs->pl-cs misc document positive top 0
 pl[\-\_]ps->pl-ps misc document positive bottom 0
 plug$->plug misc document positive top 0
 plug(ging)?->plug misc document positive top 0
-#PLGV
-#->plgv misc document positive none 0
-#SPOT_TOP
-#->spot_top misc document positive top 0
+PLGV->plgv misc document positive none 0
+SPOT_TOP->spot_top misc document positive top 0
 
 # OSP mask
 osp$->osp misc document positive none 0
@@ -1430,10 +1281,8 @@ pst([\-\_])?(0)?1->solder_paste-top board solder_paste positive top 0
 pst([\-\_])?(0)?[2-9]->solder_paste-bot board solder_paste positive bottom 0
 
 #Some times confused with pad top and bottom
-#gpt$
-#->solder_paste-top board solder_paste positive top 0
-#gpb$
-#->solder_paste-bot board solder_paste positive bottom 0
+gpt$->solder_paste-top board solder_paste positive top 0
+gpb$->solder_paste-bot board solder_paste positive bottom 0
 tps$->solder_paste-top board solder_paste positive top 0
 bps$->solder_paste-bot board solder_paste positive bottom 0
 tpas(te)?$->solder_paste-top board solder_paste positive top 0
@@ -1456,10 +1305,8 @@ tp\.->solder_paste-top board solder_paste positive top 0
 bp\.->solder_paste-bot board solder_paste positive bottom 0
 
 #Some times confused with pad top and bottom
-#pt
-#->solder_paste-top board solder_paste positive top 0
-#pb
-#->solder_paste-bot board solder_paste positive bottom 0
+pt->solder_paste-top board solder_paste positive top 0
+pb->solder_paste-bot board solder_paste positive bottom 0
 
 ^pt->solder_paste-top board solder_paste positive top 0
 ^pb->solder_paste-bot board solder_paste positive bottom 0
@@ -1484,10 +1331,7 @@ b(ot)?([\-\_])?smd->solder_paste-bot board solder_paste positive bottom 0
 smd([\-\_])?top->solder_paste-top board solder_paste positive top 0
 smd([\-\_])?bot->solder_paste-bot board solder_paste positive bottom 0
 
-#pmt
-#->pmt board solder_paste positive top 0
-
-
+pmt->pmt board solder_paste positive top 0
 
 # Silk screen top
 silk_screen\.*top->silk_screen-top board silk_screen positive top 0
@@ -1522,8 +1366,7 @@ ss_bot->silk_screen-bot board silk_screen positive bottom 0
 
 top([\-\_])?silk->silk_screen-top board silk_screen positive top 0
 bot(tom)?[\-\_]silk->silk_screen-bot board silk_screen positive bottom 0
-#topsilk
-#->silk_screen-top board silk_screen positive top 0
+topsilk->silk_screen-top board silk_screen positive top 0
 slkcs->silk_screen-top board silk_screen positive top 0
 slkps->silk_screen-bot board silk_screen positive bottom 0
 s(i)?lk([\-\_])?1[0-9]->silk_screen-bot board silk_screen positive bottom 0
@@ -1630,24 +1473,15 @@ vef([1-9][0-9]*])[\.\-\_]->silk_screen-bot board silk_screen positive bottom 0
 ^vef([1-9][0-9]*])[\.\-\_]->silk_screen-bot board silk_screen positive bottom 0
 ^vef1[1-9][\.\-\_]->silk_screen-bot board silk_screen positive bottom 0
 
-#.gto$
-#->gto board silk_screen positive top 0
-#st.lgx$
-#->ss-cs board silk_screen positive top 0
-#_fs.art$
-#->fs board silk_screen positive top 0
-#aw-r01
-#->silk_top board silk_screen positive top 0
-#-mc
-#->mc board silk_screen positive top 0
-#-ms
-#->ms board silk_screen positive bottom 0
-#.GBO$
-#->gbo board silk_screen positive bottom 0
-#.gbo$
-#->gbo board silk_screen positive bottom 0
-#aw-r0
-#->silk_bot board silk_screen positive bottom 0
+.gto$->gto board silk_screen positive top 0
+st.lgx$->ss-cs board silk_screen positive top 0
+_fs.art$->fs board silk_screen positive top 0
+aw-r01->silk_top board silk_screen positive top 0
+-mc->mc board silk_screen positive top 0
+-ms->ms board silk_screen positive bottom 0
+.GBO$->gbo board silk_screen positive bottom 0
+.gbo$->gbo board silk_screen positive bottom 0
+aw-r0->silk_bot board silk_screen positive bottom 0
 
 
 
@@ -1823,24 +1657,14 @@ t(op)?([\-\_])?mask->solder_mask-top board solder_mask positive top 0
 ^layer([0-9]+)_sm\.gbr$->solder_mask-\1 board solder_mask positive bottom \1
 
 
-#-sc
-#->sc board solder_mask positive top 0
-#r1.art$
-#->r1 board solder_mask positive top 0
-#SMT.GDO$
-#->smt board solder_mask positive top 0
-#MT.LGX$
-#->mt board solder_mask positive top 0
-#solderresist_top.gdo
-#->solder_top board solder_mask positive top 0
-#soldermasktop
-#->top-sm board solder_mask positive top 0
-#.tmsk$
-#->top-sm board solder_mask positive top 0
-#-ss
-#->ss board solder_mask positive bottom 0
-
-
+-sc->sc board solder_mask positive top 0
+r1.art$->r1 board solder_mask positive top 0
+SMT.GDO$->smt board solder_mask positive top 0
+MT.LGX$->mt board solder_mask positive top 0
+solderresist_top.gdo->solder_top board solder_mask positive top 0
+soldermasktop->top-sm board solder_mask positive top 0
+.tmsk$->top-sm board solder_mask positive top 0
+-ss->ss board solder_mask positive bottom 0
 
 
 #Drill
@@ -1940,7 +1764,7 @@ slt ->slot board drill positive top 0
 ([0-9][0-9]*)[\-\_]([0-9][0-9]*)\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
  ([0-9][0-9]*)[\-\_]([0-9][0-9]*)\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
 ([0-9][0-9]*)[\-\_]([0-9][0-9]*)[\-\_].*\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
- ([0-9][0-9]*)[\-\_]([0-9][0-9]*)[\-\_].*\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
+([0-9][0-9]*)[\-\_]([0-9][0-9]*)[\-\_].*\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
 ([0-9][0-9]*)[\-\_]([0-9][0-9]*)\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
  ([0-9][0-9]*)[\-\_]([0-9][0-9]*)\.ex1$->drill\1-\2 board drill positive top 0 \1 \2
 
@@ -1964,65 +1788,35 @@ pth$->gdr board drill positive none 0
 drill$->drill board drill positive top 0
 
 
-#ThruHoleNonPlated
-#->ThruHoleNonPlated board drill positive none 0
-#plt.drl
-#->plt board drill positive none 0
-#unp.drl
-#->unp board drill positive none 0
-#ThruHolePlated
-#->ThruHolePlated board drill positive none 0
-#Drilldraw([0-9][0-9]*)
-#->drl\1 board drill positive none 0
-#nc([0-9][0-9]*)-([0-9][0-9]*).drl
-#->nc\1-\2 board drill positive none 0 \1 \2
-#([0-9][0-9]*)-([0-9][0-9]*).drl
-#->drl\1-\2 board drill positive none 0 \1 \2
-# .drl$
-#->drl board drill positive none 0
-# .DRL$
-#->drl board drill positive none 0
-#drl([0-9][0-9]*)-([0-9][0-9]*)
-#->drl\1-\2 board drill positive top 0 \1 \2
-#.txt$
-#->drill board drill positive none 0
-#slot([0-9][0-9]*)-([0-9][0-9]*)
-#->slot\1-\2 board drill positive top 0 \1 \2
-#s([0-9][0-9]*)-([0-9][0-9]*)
-#->s\1-\2 board drill positive top 0 \1 \2
-#slt_plt
-#->plated_slot board drill positive top 0
-# ncd$
-#->ncd board drill positive none 0
-# nc$
-#->nc board drill positive none 0
-# NCD$
-#->ncd board drill positive none 0
-# NC$
-#->nc board drill positive none 0
-# drlcor_n
-#->drl-npth board drill positive none 0
-# d_top_in([0-9][0-9]*)
-#->d_top-in\1 board drill positive top 0 1 \1
-#thruhole
-#->thruhole board drill positive none 0
+ThruHoleNonPlated->ThruHoleNonPlated board drill positive none 0
+plt.drl->plt board drill positive none 0
+unp.drl->unp board drill positive none 0
+ThruHolePlated->ThruHolePlated board drill positive none 0
+Drilldraw([0-9][0-9]*)->drl\1 board drill positive none 0
+nc([0-9][0-9]*)-([0-9][0-9]*).drl->nc\1-\2 board drill positive none 0 \1 \2
+([0-9][0-9]*)-([0-9][0-9]*).drl->drl\1-\2 board drill positive none 0 \1 \2
+.drl$->drl board drill positive none 0
+.DRL$->drl board drill positive none 0
+drl([0-9][0-9]*)-([0-9][0-9]*)->drl\1-\2 board drill positive top 0 \1 \2
+.txt$->drill board drill positive none 0
+slot([0-9][0-9]*)-([0-9][0-9]*)->slot\1-\2 board drill positive top 0 \1 \2
+s([0-9][0-9]*)-([0-9][0-9]*)->s\1-\2 board drill positive top 0 \1 \2
+slt_plt->plated_slot board drill positive top 0
+ncd$->ncd board drill positive none 0
+nc$->nc board drill positive none 0
+NCD$->ncd board drill positive none 0
+NC$->nc board drill positive none 0
+drlcor_n->drl-npth board drill positive none 0
+d_top_in([0-9][0-9]*)->d_top-in\1 board drill positive top 0 1 \1
+thruhole->thruhole board drill positive none 0
 ##Drill without specific file name
 
 
-#d([0-9][0-9]*)-([0-9][0-9]*)
-#->d\1-\2 board rout positive top 0
-# ([0-9][0-9]*)_([0-9][0-9]*)
-#->drill\1-\2 board drill positive top 0 \1 \2
-# .exc
-#->drill board drill positive none 0
-# ^drill-([0-9])
-#->drill-\1 board drill positive none 0
-# ^drill
-#->drill board drill positive none 0
-
-
-
-
+d([0-9][0-9]*)-([0-9][0-9]*)->d\1-\2 board rout positive top 0
+([0-9][0-9]*)_([0-9][0-9]*)->drill\1-\2 board drill positive top 0 \1 \2
+.exc->drill board drill positive none 0
+^drill-([0-9])->drill-\1 board drill positive none 0
+^drill->drill board drill positive none 0
 
 # Top/bottom signal
 signal.*top->copper-top board signal positive top 0
@@ -2046,8 +1840,8 @@ inbot(tom)?\.->copper-bot board signal positive bottom 0
 ^1top ->copper-top board signal positive top 0
 ^1bot(tom)? ->copper-bot board signal positive bottom 0
 
- top$->copper-top board signal positive top 0
- bot(tom)?$->copper-bot board signal positive bottom 0
+top$->copper-top board signal positive top 0
+bot(tom)?$->copper-bot board signal positive bottom 0
 ^top$->copper-top board signal positive top 0
 ^bot(tom)?$->copper-bot board signal positive bottom 0
 top ->copper-top board signal positive top 0
@@ -2089,29 +1883,18 @@ bot(tom)?cop(per)?->copper-bot board signal positive bottom 0
 cop(per)?bot(tom)?->copper-bot board signal positive bottom 0
 
 # The next rule colide with solderpaste
-#\.gtp$
-#->copper-top board signal positive top 0
+\.gtp$->copper-top board signal positive top 0
 \.gbt$->copper-bot board signal positive bottom 0
 
-#l01_top
-#->l01_top board signal positive top 0
-#.GTP$
-#->gtp board signal positive top 0
-#^01CS
-#->01cs board signal positive top 0
-#L1-CS
-#->l1-cs board signal positive top 0
-#CSL1
-#->csl1 board signal positive top 0
-#_fm
-#->fm board signal positive top 0
-#CS
-#->cs board signal positive top 0
-#trace_top.gdo
-#->trace_top board signal positive top 0
-#top
-#->top board signal positive top 0
-
+l01_top->l01_top board signal positive top 0
+.GTP$->gtp board signal positive top 0
+^01CS->01cs board signal positive top 0
+L1-CS->l1-cs board signal positive top 0
+CSL1->csl1 board signal positive top 0
+_fm->fm board signal positive top 0
+CS->cs board signal positive top 0
+trace_top.gdo->trace_top board signal positive top 0
+top->top board signal positive top 0
 
 #inner layers
 sig([0-9][0-9]*) ->copper-\1 board signal positive none \1
@@ -2196,30 +1979,30 @@ il([0-9][0-9]*)\.->copper-\1 board signal positive none \1
 ^[a-z]([0-9]) ->copper-\1 board signal positive none \1
 ^[a-z]([0-9][0-9]) ->copper-\1 board signal positive none \1
 ^l([0-9][0-9]*)([a-z]*)$->copper-\1 board signal positive none \1
- ([0-9][0-9])\.ger$->copper-\1 board signal positive none \1
- ([0-9])\.ger$->copper-\1 board signal positive none \1
- ([0-9][0-9]*)\.gbr$->copper-\1 board signal positive none \1
- ([0-9][0-9]*)\.gbx$->copper-\1 board signal positive none \1
- ([0-9])\.art$->copper-\1 board signal positive none \1
- ([0-9][0-9])\.art$->copper-\1 board signal positive none \1
+([0-9][0-9])\.ger$->copper-\1 board signal positive none \1
+([0-9])\.ger$->copper-\1 board signal positive none \1
+([0-9][0-9]*)\.gbr$->copper-\1 board signal positive none \1
+([0-9][0-9]*)\.gbx$->copper-\1 board signal positive none \1
+([0-9])\.art$->copper-\1 board signal positive none \1
+([0-9][0-9])\.art$->copper-\1 board signal positive none \1
 \.[a-z]([0-9])$->copper-\1 board signal positive none \1
 \.[a-z]([0-9][0-9])$->copper-\1 board signal positive none \1
 
 gnd([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
- gnd([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
+gnd([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
 gnd([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 pwr([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
- pwr([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
+pwr([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
 pwr([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 \.gp([0-9][0-9]*)$->copper-\1n board power_ground negative none \1
 \.gbl$->gbl board signal positive bottom 0
 
 plane ->gndpwr board power_ground positive none 0
 
- pwr([0-9]*)$->pwr board power_ground positive none 0
- power([0-9]*)$->pwr board power_ground positive none 0
- gnd$->gnd board power_ground positive none 0
- vcc$->vcc board power_ground positive none 0
+pwr([0-9]*)$->pwr board power_ground positive none 0
+power([0-9]*)$->pwr board power_ground positive none 0
+gnd$->gnd board power_ground positive none 0
+vcc$->vcc board power_ground positive none 0
 pwr\.art$->pwr board power_ground positive none 0
 gnd\.art$->gnd board power_ground positive none 0
 vcc\.art$->vcc board power_ground positive none 0
@@ -2231,14 +2014,14 @@ gnd\.gbr$->gnd board power_ground positive none 0
 vcc\.gbr$->vcc board power_ground positive none 0
 
 vcc([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
- vcc([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
+vcc([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
 vcc([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 ^([0-9][0-9]*)vcc ->copper-\1 board signal positive none \1
 ([0-9][0-9]*)vcc ->copper-\1 board power_ground positive none \1
 
 pg([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 pgp([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
- pg([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
+pg([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
 ^pg([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 ^pgp([0-9][0-9]*) ->copper-\1 board power_ground positive none \1
 
@@ -2270,8 +2053,6 @@ s([0-9]*).ger$->copper-\1 board board signal positive none \1
 ([0-9])\.pho$->copper-\1 board signal positive none \1
 ([0-9][0-9])\.pho$->copper-\1 board signal positive none \1
 
-
-
 # Rout
 ^rout->rout  board rout positive none 0
 rou$->rout board rout positive none 0
@@ -2279,11 +2060,9 @@ rout ->rout board rout positive none 0
 contournonplate->rout board rout positive none 0
 contournplate->rout board rout positive none 0
 contourplate->rout board rout positive none 0
-#BO
-#->bo board rout positive none 0
+BO->bo board rout positive none 0
 outline->outline board rout positive none 0
-# mil$
-#->mil board rout positive none 0
+mil$->mil board rout positive none 0
 
 boa->outline misc document positive none 0
 ^.+0\.gbr$->fab misc document positive bottom 0
