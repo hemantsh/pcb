@@ -109,7 +109,6 @@ public class FileExtractUploadService {
         }
         /// REPORT
         Report report = new Report();
-
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
 
