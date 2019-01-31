@@ -1,27 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FileService } from '../servers.service';
 @Component({
   selector: 'app-customerinputs',
   templateUrl: './customerinputs.component.html',
   styleUrls: ['./customerinputs.component.css'],
-  providers:[FileService]
+  providers: [FileService]
 })
 export class CustomerinputsComponent implements OnInit {
-  uploadForm:FormGroup;
-  changeFile:any;
-  constructor(private fileUploadService:FileService) { }
+  uploadForm: FormGroup;
+  changeFile: any;
+  responeGlobal = [];
+
+  divStyle='hide';
+  hideStyle='show';
+  constructor(private fileUploadService: FileService) { }
 
   ngOnInit() {
-    this.uploadForm= new FormGroup({
-        'projectId':new FormControl(null,Validators.required),
-        'customerId':new FormControl(null,Validators.required),
-        'serviceType':new FormControl(null,Validators.required),
-        'uploadFile':new FormControl(null,Validators.required)
-      });
+    this.uploadForm = new FormGroup({
+      'projectId': new FormControl(null, Validators.required),
+      'customerId': new FormControl(null, Validators.required),
+      'serviceType': new FormControl(null, Validators.required),
+      'uploadFile': new FormControl(null, Validators.required)
+    });
   }
-  onSubmit(){
-    console.log("This is the form:",this.uploadForm);
+  onSubmit() {
+    console.log("This is the form:", this.uploadForm);
     var formData = new FormData();
     formData.append("projectId", this.uploadForm.value.projectId);
     formData.append("customerId", this.uploadForm.value.customerId);
@@ -34,26 +38,25 @@ export class CustomerinputsComponent implements OnInit {
     console.log("File deatils", fileDetails);
 
     this.fileUploadService.fileUpload(formData)
-    .subscribe(
-      (response) =>console.log(response),
-      (error) => console.log(error)
+      .subscribe(
+        (response) => {
+          this.responeGlobal = response.json();
+          this.divStyle='show';
+          this.hideStyle='hide';
+          console.log(this.responeGlobal)
+        },
+        (error) => console.log(error)
 
-    );
+      );
+
+  }
+  viewAnotherReport(){
+    this.hideStyle='show';
+    this.divStyle='hide';
   }
 
-  public fileChangeEvent(fileInput: any){
+  public fileChangeEvent(fileInput: any) {
 
     this.changeFile = fileInput.target.files[0];
-
-    // console.log(fileInput);
-    // var that = this;
-  //   if (fileInput.target.files && fileInput.target.files[0]) {
-  //     var reader = new FileReader();
-  //     reader.onload = function (e : any) {
-  //       that.changeFile = e.target.result;
-  //     }
-  //     console.log(reader.readAsArrayBuffer(fileInput.target.files[0]));
-  //     //  console.log(reader.readAsDataURL(fileInput.target.files[0]));
-  // }
-}
+  }
 }
