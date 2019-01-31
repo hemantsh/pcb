@@ -172,4 +172,49 @@ public class FileExtractUploadService {
         // end S3
         return util.listFiles(inputs.getProjectId());
     }
+     /**
+     * Performs all possible Gerber file processing.
+     *
+     * @param fileDetails - These given file details will be updated if we find
+     * more details during processing
+     */
+    private void processGerber(List<FileDetails> fileDetails) {
+
+        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping());
+
+        //For each file that is gerber format
+        fileDetails.stream()
+                //.filter( fd -> "gerber".equalsIgnoreCase( fd.getFormat()) ) //TODO: add later
+                .forEach(fileDtl -> {
+                    //Apply rules by name pattern
+                    GerberFileProcessingUtil.parseFileName(fileDtl);
+                });
+    }
+
+    /**
+     * ODB processing. Mainly parse matrix file to get fileDetils
+     *
+     * @param folder
+     * @param projectId
+     * @return
+     */
+    private List<FileDetails> processODB(Path folder, String projectId) {
+        //To check that whether file type is ODB or not.
+        File[] listOfFiles = folder.toFile().listFiles();        
+        List<FileDetails> fdList = new ArrayList<FileDetails>();        
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isDirectory()) {                
+                if (listOfFiles[i].getName().toLowerCase().equals("odb")) {
+                    Path checkODBFolder = Paths.get(util.getUploadDir() + File.separator + projectId + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
+                    if (checkODBFolder.toFile().exists()) {
+                       fdList = ODBProcessing.processODB(checkODBFolder); 
+                       //Print Result 
+                       //fdList.stream().forEach(fd->
+                            //System.out.println(fd.getName()));
+                    }
+                }
+            }
+        }
+        return fdList;
+    }
 }

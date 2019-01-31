@@ -176,7 +176,6 @@ public class GerberFileProcessingUtil {
                 filePurposeToNameMapping.put(fileType, currentMapping);
                 fileDetail.setFormat("gerber");
             }
-
         });
         return filePurposeToNameMapping;
     }

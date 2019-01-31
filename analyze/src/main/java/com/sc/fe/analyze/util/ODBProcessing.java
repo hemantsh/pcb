@@ -80,7 +80,6 @@ public class ODBProcessing {
                         fd.setType(results.get("TYPE"));
 
                         fileDetlList.add(fd);                        
-                        
                         //processAttribute(folder, results.get("NAME"), folderName);
 //                        if (fd != null) {
 //
