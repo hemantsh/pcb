@@ -28,6 +28,7 @@
                     <th>FileType</th>
                     <th>Polarity</th>
                     <th>Layer Number</th>
+                    <th>Copper Weight(CuOz)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,14 +37,21 @@
                       {{file.name}}
                     </td>
                     <td>
-                      {{file.type}}
-                    </td>
-                    <td>
-                      {{file.polarity}}
-                    </td>
-                    <td>
-                      {{file.layerOrder}}
-                    </td>
+                        <select id="file_type">
+                          <option value="0">{{file.type}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select id="file_polarity">
+                          <option value="0">{{file.polarity}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" value={{file.layerOrder}}/>
+                      </td>
+                      <td>
+                        <!-- Copper Weight will be displayed here -->
+                      </td>
                   </tr>
                 </tbody>
               </table>
