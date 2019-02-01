@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -27,36 +28,23 @@ public class FileDetails implements Serializable {
 	
    	private boolean valid;
 	private String modifiedDate;
-	private String fileSize;
+	private String size;
 
 	private String step;
 	private String context;
 	private String type;
 	private String polarity;
 	private String side;
-	private int layerOrder;
+	private int 	layerOrder;
 	private String startName;
 	private String endName;
 	private String copperWeight;
 	private String layerName;
 	
 	private Map<String,String> attributes; //Attributes in key:value form
+
+    private Map<String, String> errors;
 	
-	
-//	#	 name    - layer name 
-//	#    context - layer context (board, misc)
-//	#    type    - layer type (signal, drill, rout,,,,,etc)
-//	#    polarity- layer polarity (positive, negative)
-//	#    side    - top, bottom or none
-//	#    serial  - layer's serial number (0 - don't care)
-	
-//			CONTEXT=BOARD
-//		    TYPE=COMPONENT
-//		    NAME=COMP_+_TOP
-//		    POLARITY=POSITIVE
-//		    START_NAME=
-//		    END_NAME=
- 
 
 	/**
 	 * @return the name
@@ -100,22 +88,6 @@ public class FileDetails implements Serializable {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-	}
-
-    /**
-     *
-     * @return the fileSize
-     */
-    public String getFileSize() {
-		return fileSize;
-	}
-
-    /**
-     *
-     * @param fileSize - the fileSize to set
-     */
-    public void setFileSize(String fileSize) {
-		this.fileSize = fileSize;
 	}
 
     
@@ -276,6 +248,9 @@ public class FileDetails implements Serializable {
 		this.layerName = layerName;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -284,6 +259,9 @@ public class FileDetails implements Serializable {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -299,6 +277,34 @@ public class FileDetails implements Serializable {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @return the errors
+	 */
+	public Map<String, String> getErrors() {
+		return errors;
+	}
+
+	/**
+	 * @param errors the errors to set
+	 */
+	public void setErrors(Map<String, String> errors) {
+		this.errors = errors;
+	}
+
+	/**
+	 * @return the size
+	 */
+	public String getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(String size) {
+		this.size = size;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.sc.fe.analyze.to;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,11 +20,15 @@ public class ProjectDetails implements Serializable {
 
 	private String projectId;
 	
-	private String RNumber;
+	private String version;
 	
 	private CustomerInformation customerInformation;
 	
 	private PCBInformation boardInfo;
+	
+
+    private Map<String, String> errors;
+    
 	/**
 	 * Details about the files we found while processing
 	 */
@@ -35,12 +40,7 @@ public class ProjectDetails implements Serializable {
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-	public String getRNumber() {
-		return RNumber;
-	}
-	public void setRNumber(String rNumber) {
-		RNumber = rNumber;
-	}
+	
 	public CustomerInformation getCustomerInformation() {
 		return customerInformation;
 	}
@@ -69,5 +69,29 @@ public class ProjectDetails implements Serializable {
 	
 	public Set<String> getFileNames() {
 		return fileDetails.stream().map( FileDetails :: getName ).collect( Collectors.toSet() );
+	}
+	/**
+	 * @return the version
+	 */
+	public String getVersion() {
+		return version;
+	}
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	/**
+	 * @return the errors
+	 */
+	public Map<String, String> getErrors() {
+		return errors;
+	}
+	/**
+	 * @param errors the errors to set
+	 */
+	public void setErrors(Map<String, String> errors) {
+		this.errors = errors;
 	}
 }

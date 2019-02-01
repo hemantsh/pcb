@@ -20,7 +20,7 @@ public class PCBInformation implements Serializable {
     private String boardType;
     private boolean itar;
     private List<TurnTimeQuantity> turnTimeQuantityList;
-    private String designSecification;
+    private String designSpecification;
     
 	public String getServiceType() {
 		return serviceType;
@@ -78,10 +78,17 @@ public class PCBInformation implements Serializable {
 	public void setTurnTimeQuantityList(List<TurnTimeQuantity> turnTimeQuantityList) {
 		this.turnTimeQuantityList = turnTimeQuantityList;
 	}
-	public String getDesignSecification() {
-		return designSecification;
+	/**
+	 * @return the designSpecification
+	 */
+	public String getDesignSpecification() {
+		return designSpecification;
 	}
-	public void setDesignSecification(String designSecification) {
-		this.designSecification = designSecification;
+	/**
+	 * @param designSpecification the designSpecification to set
+	 */
+	public void setDesignSpecification(String designSpecification) {
+		this.designSpecification = designSpecification;
 	}
+	
 }
