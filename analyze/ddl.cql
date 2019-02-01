@@ -68,6 +68,8 @@ CREATE KEYSPACE fileexchange
  	PRIMARY KEY ( (project_id, version) )
  );
  
+CREATE INDEX on project (project_id);
+
  CREATE TABLE project_files (
  	
  	project_id text,
@@ -94,7 +96,7 @@ CREATE KEYSPACE fileexchange
  	PRIMARY KEY ( (project_id, version), name )
  );
  
- 
+ CREATE INDEX on extension_file (project_id);
  
  
  
