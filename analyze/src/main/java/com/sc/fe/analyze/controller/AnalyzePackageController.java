@@ -126,7 +126,9 @@ public class AnalyzePackageController {
 		FileDetails fd = new FileDetails();
 		fd.setFormat("Gerber");
 		fd.setName("xyz/abc/123.gbr");
-                fd.setSize("125 MB");		
+
+		fd.setSize("125 MB");
+
 		fd.setModifiedDate("MM-dd-yyyy HH:mm:ss");
 		fd.setCopperWeight(".95");
 		fd.setLayerOrder(1);
