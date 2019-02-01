@@ -176,7 +176,6 @@ public class GerberFileProcessingUtil {
                 filePurposeToNameMapping.put(fileType, currentMapping);
                 fileDetail.setFormat("gerber");
             }
-
         });
         return filePurposeToNameMapping;
     }
@@ -190,7 +189,6 @@ public class GerberFileProcessingUtil {
     // Below method will be call if line starts with Layer
     /**
      * This method process each line in the file.
-     *
      * @param line - a single line in the file.
      * @return the information of line in (key,value) pair.
      */

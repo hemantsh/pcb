@@ -37,13 +37,13 @@ public class ODBProcessing {
         //TODO: return list FileDetails        
         String folderName = "";
         HashMap<String, String> results = new HashMap<String, String>();
-        try {                       
-          //Path odbfilepath = Paths.get(file + File.separator + "odb" + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();                                  
+        try {
+            //Path odbfilepath = Paths.get(file + File.separator + "odb" + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();                                  
             BufferedReader br = new BufferedReader(new FileReader(file.toFile()));
             String line;
             //process the matrix file
             while ((line = br.readLine()) != null) {
-                if (line.isEmpty()) { 
+                if (line.isEmpty()) {
                     continue;
                 }
                 if (line.startsWith("STEP")) {
@@ -57,7 +57,7 @@ public class ODBProcessing {
                         }
                     }
                 }
-                if (line.startsWith("LAYER")) {                    
+                if (line.startsWith("LAYER")) {
                     while ((line = br.readLine()) != null) {
                         if (line.endsWith("}")) {
                             //Print layer Information of file
@@ -79,8 +79,7 @@ public class ODBProcessing {
                         fd.setEndName(results.get("END_NAME"));
                         fd.setType(results.get("TYPE"));
 
-                        fileDetlList.add(fd);                        
-                        
+                        fileDetlList.add(fd);
                         //processAttribute(folder, results.get("NAME"), folderName);
 //                        if (fd != null) {
 //
@@ -101,9 +100,8 @@ public class ODBProcessing {
                     }
                 }
             }
-            br.close();            
-        } 
-        catch (IOException e) {
+            br.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return fileDetlList;
