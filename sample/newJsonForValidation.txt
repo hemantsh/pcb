@@ -1,0 +1,101 @@
+{
+        "projectId": "1234",
+        "serviceType": "Assembly",
+        "zipFileName": "8000-4890.zip",
+        "zipFileSize": "4.6 MB",
+        "layers": 8,
+        "pcbClass": "Class 2",
+        "boardType": "Flexi",
+        "itar": false,
+        "turnTimeQuantity": {
+            "5": 100
+        },
+        "customerId": "CustId",
+        "emailAddress": "abc@xyz.com",
+        "errors": {
+            "E100": "Missing file type - silk_screen",
+            "E101": "Missing file type - drill"
+        },
+        "fileDetails": [
+            {
+                "name": "lyr_bottom.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "smask_top.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "lyr_top.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "mantis-3100_rev002.ipc",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "lyr_2.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "cid_bottom.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "cid_top.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "outline.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "mantis-3100_rev002_5067350_fab.zip",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "lyr_3.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "smask_bottom.art",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "mantis-3100_rev002-1-4.drl",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            },
+            {
+                "name": "mantis-3100_rev002_5067350_drill.pdf",
+                "format": "unknown",
+                "valid": false,
+                "layerOrder": 0
+            }
+        ],
+        "attachReplace": false,
+        "newProject": false
+    }
