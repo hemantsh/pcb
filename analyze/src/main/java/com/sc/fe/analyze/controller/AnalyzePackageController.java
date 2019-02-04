@@ -50,7 +50,7 @@ public class AnalyzePackageController {
     private FileExtractUploadService fileUploadService;
         	
 	@PostMapping(path="/uploadAndValidate")
-    @ApiOperation("Uploaded file gets Analyzed and Extracted")
+    @ApiOperation(value = "Upload file")
 	public Report uploadAndAnalyze ( 
 			@ApiParam("Takes ZIP file as Input") @RequestParam("file") MultipartFile file, 
 			@ApiParam("ProjectId i.e. Folder Name in which zip file gets extracted.") @RequestParam("projectId") String projectId,
@@ -104,24 +104,28 @@ public class AnalyzePackageController {
 		Report report = new Report();
 		ProjectDetails projectDetail = new ProjectDetails();
 		
-		CustomerInformation custInputs = new CustomerInformation();
+		projectDetail.setCustomerId("CustId");
+		projectDetail.setEmailAddress("abc@xyz.com");
 		
-		custInputs.setCustomerId("CustId");
-		custInputs.setEmailAddress("abc@xyz.com");
-		
-		projectDetail.setCustomerInformation( custInputs );
 		projectDetail.setProjectId("1234");
 		
-		PCBInformation pcbInfo = new PCBInformation();
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put("E100", "Missing file type - silk_screen");
+		errors.put("E101", "Missing file type - drill");
+		projectDetail.setErrors(errors);
 		
-		pcbInfo.setZipFileName("8000-4890.zip");
-		pcbInfo.setZipFileSize("4.6 MB");
-		pcbInfo.setServiceType("Assembly");	
-		pcbInfo.setBoardType("Flexi");
-		pcbInfo.setLayers(8);
-		pcbInfo.setPcbClass("Class 2");		
-		pcbInfo.addTurnTimeQuantity(new TurnTimeQuantity(5, 100));
-		projectDetail.setBoardInfo(pcbInfo);
+		
+		projectDetail.setZipFileName("8000-4890.zip");
+		projectDetail.setZipFileSize("4.6 MB");
+		projectDetail.setServiceType("Assembly");	
+		projectDetail.setBoardType("Flexi");
+		projectDetail.setLayers(8);
+		projectDetail.setPcbClass("Class 2");		
+		
+		Map<Integer, Integer> turnTimeQuantity = new HashMap<Integer, Integer>();
+		turnTimeQuantity.put(5, 100);
+		
+		projectDetail.setTurnTimeQuantity(turnTimeQuantity);
 		
 		FileDetails fd = new FileDetails();
 		fd.setFormat("Gerber");

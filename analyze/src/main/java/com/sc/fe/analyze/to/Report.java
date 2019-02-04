@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.sc.fe.analyze.util.ErrorCodes;
 
 /**
  *
@@ -39,6 +40,8 @@ public class Report implements Serializable {
      * All errors we found in the files
      */
     private Set<String> errors;
+    
+    private Set<ErrorCodes> errorCodes;
     
     /**
      * Files found in the zip file
@@ -121,4 +124,24 @@ public class Report implements Serializable {
 		this.projectDetail = projectDetail;
 	}
 
+	/**
+	 * @return the errorCodes
+	 */
+	public Set<ErrorCodes> getErrorCodes() {
+		return errorCodes;
+	}
+
+	/**
+	 * @param errorCodes the errorCodes to set
+	 */
+	public void setErrorCodes(Set<ErrorCodes> errorCodes) {
+		this.errorCodes = errorCodes;
+	}
+
+	public void addErrorCode(ErrorCodes code) {
+        if (errorCodes == null) {
+        	errorCodes = new HashSet<ErrorCodes>();
+        }
+        errorCodes.add(code);
+    }
 }

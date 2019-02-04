@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
@@ -25,6 +26,7 @@ import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
+import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.FileUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
@@ -100,7 +102,7 @@ public class FileExtractUploadService {
         List<FileDetails> fileDetails = projectDetails.getFileDetails();
         //If no file details,  try to create it
         if (fileDetails == null || fileDetails.size() <= 0) {
-            Set<String> allFiles = util.listFiles(projectDetails.getCustomerInformation().getProjectId());
+            Set<String> allFiles = util.listFiles(projectDetails.getProjectId());
             allFiles.stream().forEach(name -> {
                 FileDetails fd = new FileDetails();
                 fd.setName(name);
@@ -114,7 +116,7 @@ public class FileExtractUploadService {
 
         List<String> requiredFilesTypes = baseService.getServiceFiles(
                 MappingUtil.getServiceId(
-                        projectDetails.getBoardInfo().getServiceType()
+                        projectDetails.getServiceType()
                 )
         );
 
@@ -136,7 +138,8 @@ public class FileExtractUploadService {
         if (missingTypes.size() > 0) {
             report.setValidationStatus("We found some missing information. ");
             missingTypes.stream().forEach(type -> {
-                report.addError("Missing file type - " + type);
+                report.addError( type );
+                report.addErrorCode( ErrorCodeMap.getCodeForFileType(type) );
             });
         } else {
             report.setValidationStatus("Matched with all required file types. All information collected.");
@@ -150,6 +153,82 @@ public class FileExtractUploadService {
         //call validateFiles( ProjectDetails projectDetails ) to get results
     }
 
+    public void save(ProjectDetails projectDetails) {
+		// TODO Auto-generated method stub
+		//If projectID/R# is not there, get it from FEMS API call. Stub the call for now
+    	//Check if new version is required or its an add/replace for existing version.
+    	getProjectId(projectDetails);
+    	//TODO: Save into project and project_file table
+	}
+    
+    private String getProjectId( ProjectDetails projectDetails ) {
+    	String projectId = null;
+    	
+    	if( !StringUtils.isEmpty(projectDetails.getProjectId()) ) {
+    		 return projectDetails.getProjectId();
+    	}
+    	
+    	if( ! projectDetails.isNewProject() ) {
+    		projectId = getProjectIdByCustomerId( projectDetails.getCustomerId() );
+    		if( StringUtils.isEmpty(projectId) ) {
+    			projectId = getProjectIdByCustomerEmail( projectDetails.getEmailAddress() );
+    		}
+    		if( StringUtils.isEmpty(projectId) ) {
+    			projectId = getProjectIdByZipName( projectDetails.getZipFileName() );
+    		}
+    	}else {
+    		//get it from FEMS API call. Stub the call for now
+    	}
+    	
+    	return projectId;
+    }
+    
+    private String getProjectIdByCustomerId(String customerId) {
+    	String projectId = null;
+    	if( StringUtils.isEmpty(customerId) ) {
+    		return projectId;
+    	}
+    	//TODO:
+    	//Get latest record from project table by customerId.
+    	//If found matching, use the projectId from that record
+    	return projectId;
+    }
+    
+    private String getProjectIdByCustomerEmail(String emailId) {
+    	String projectId = null;
+    	if( StringUtils.isEmpty(emailId) ) {
+    		return projectId;
+    	}
+    	//TODO
+    	//Get latest record from project table by emailId.
+    	//If found matching, use the projectId from that record
+    	return projectId;
+    }
+    
+    private String getProjectIdByZipName(String zipFileName) {
+    	String projectId = null;
+    	if( StringUtils.isEmpty(zipFileName) ) {
+    		return projectId;
+    	}
+    	//TODO
+    	//Get latest record from project table by zipFileName.
+    	//If found matching, use the projectId from that record
+    	return projectId;
+    }
+    
+    private String getVersion( ProjectDetails projectDetails ) {
+    	
+    	String version = null;
+    	
+    	if( projectDetails.isAttachReplace() ) {
+    		 return projectDetails.getVersion();
+    	}else {
+    		//TODO: get the new version based on timeuuid
+    	}
+    	return version;
+    }
+    
+    
     /**
      * Extract and save the zip file. No validations.
      *
@@ -216,4 +295,6 @@ public class FileExtractUploadService {
         }
         return fdList;
     }
+
+	
 }
