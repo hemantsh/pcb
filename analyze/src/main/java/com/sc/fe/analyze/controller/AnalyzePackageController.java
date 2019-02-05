@@ -36,6 +36,7 @@ import com.sc.fe.analyze.to.TurnTimeQuantity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Date;
 
 @RestController
 @RequestMapping(path="/api")
@@ -133,7 +134,7 @@ public class AnalyzePackageController {
 
 		fd.setSize("125 MB");
 
-		fd.setModifiedDate("MM-dd-yyyy HH:mm:ss");
+		fd.setModifiedDate(new Date());
 		fd.setCopperWeight(".95");
 		fd.setLayerOrder(1);
 		fd.setPolarity("Positive");
