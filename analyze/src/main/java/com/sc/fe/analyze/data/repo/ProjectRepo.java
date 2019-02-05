@@ -13,10 +13,12 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Repository
 public interface ProjectRepo extends CassandraRepository<Project, ProjectPK>{
     
     List<Project> findByKeyProjectId(final String projectId);
+    List<Project> findByCustomerId(final String customerId);
+    List<Project> findByZipFileName(final String zipFileName);    
 }

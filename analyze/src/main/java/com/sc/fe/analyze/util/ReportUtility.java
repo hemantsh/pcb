@@ -1,5 +1,6 @@
 package com.sc.fe.analyze.util;
 
+import com.datastax.driver.core.utils.UUIDs;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,6 +10,10 @@ import java.util.Set;
 import com.sc.fe.analyze.data.entity.Report;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
+import com.sc.fe.analyze.data.entity.Project;
+import com.sc.fe.analyze.to.ProjectDetails;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  *
@@ -69,9 +74,9 @@ public class ReportUtility {
 		
 		Report dbReport = new Report();
 		
-		CustomerInformation customerInputs = report.getProjectDetail().getCustomerInformation();
-		dbReport.setCustomerId( customerInputs.getCustomerId() );
-		dbReport.setProjectId( customerInputs.getProjectId() );
+//		CustomerInformation customerInputs = report.getProjectDetail().getCustomerInformation();
+//		dbReport.setCustomerId( customerInputs.getCustomerId() );
+//		dbReport.setProjectId( customerInputs.getProjectId() );
 		//dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
 		
 		dbReport.setErrors(report.getErrors());
@@ -98,6 +103,28 @@ public class ReportUtility {
 		
 		return dbReport;
 	}
+        public static Project convertToDBObject(ProjectDetails projectDetails)
+        {
+            Project dbDetail=new Project();
+            dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
+            dbDetail.setCustomerId(projectDetails.getCustomerId());
+            dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
+            dbDetail.setErrors(projectDetails.getErrors());
+            dbDetail.setPcbClass(projectDetails.getPcbClass());
+            dbDetail.setProjectId(projectDetails.getProjectId());
+            dbDetail.setVersion(UUIDs.timeBased());            
+            
+            dbDetail.setTurnTimeQuantity(projectDetails.getTurnTimeQuantity());
+            dbDetail.setServiceType(projectDetails.getServiceType());
+            dbDetail.setZipFileName(projectDetails.getZipFileName());
+            dbDetail.setZipFileSize(projectDetails.getZipFileSize());
+            dbDetail.setLayerCount(projectDetails.getLayers());
+            dbDetail.setModifiedDate(new Date());
+            dbDetail.setCreateDate(new Date());
+            dbDetail.setCustomerName("ABC");                 
+            
+            return dbDetail;
+        }
 	
 
 }
