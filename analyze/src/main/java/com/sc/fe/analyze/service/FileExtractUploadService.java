@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,11 +17,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.data.repo.ReportRepo;
-import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
+import com.sc.fe.analyze.to.Project;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.ErrorCodeMap;
@@ -49,6 +48,8 @@ public class FileExtractUploadService {
     BaseService baseService;
     @Autowired
     ReportRepo reportRepo;
+    @Autowired
+    ProjectRepo projectRepo;
 
     /**
      *
@@ -75,8 +76,8 @@ public class FileExtractUploadService {
         Set<String> filesExtracted = extractAndSaveFiles(file, inputs);
 
         ProjectDetails projectDetails = new ProjectDetails();
-        projectDetails.setCustomerInformation(inputs);
-        projectDetails.setBoardInfo(boardInfo);
+        //  projectDetails.setCustomerInformation(inputs);
+        // projectDetails.setBoardInfo(boardInfo);
         projectDetails.setProjectId(inputs.getProjectId());
 
         Report report = validateFiles(projectDetails);
@@ -138,8 +139,8 @@ public class FileExtractUploadService {
         if (missingTypes.size() > 0) {
             report.setValidationStatus("We found some missing information. ");
             missingTypes.stream().forEach(type -> {
-                report.addError( type );
-                report.addErrorCode( ErrorCodeMap.getCodeForFileType(type) );
+                report.addError(type);
+                report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
             });
         } else {
             report.setValidationStatus("Matched with all required file types. All information collected.");
@@ -154,81 +155,97 @@ public class FileExtractUploadService {
     }
 
     public void save(ProjectDetails projectDetails) {
-		// TODO Auto-generated method stub
-		//If projectID/R# is not there, get it from FEMS API call. Stub the call for now
-    	//Check if new version is required or its an add/replace for existing version.
-    	getProjectId(projectDetails);
-    	//TODO: Save into project and project_file table
-	}
-    
-    private String getProjectId( ProjectDetails projectDetails ) {
-    	String projectId = null;
-    	
-    	if( !StringUtils.isEmpty(projectDetails.getProjectId()) ) {
-    		 return projectDetails.getProjectId();
-    	}
-    	
-    	if( ! projectDetails.isNewProject() ) {
-    		projectId = getProjectIdByCustomerId( projectDetails.getCustomerId() );
-    		if( StringUtils.isEmpty(projectId) ) {
-    			projectId = getProjectIdByCustomerEmail( projectDetails.getEmailAddress() );
-    		}
-    		if( StringUtils.isEmpty(projectId) ) {
-    			projectId = getProjectIdByZipName( projectDetails.getZipFileName() );
-    		}
-    	}else {
-    		//get it from FEMS API call. Stub the call for now
-    	}
-    	
-    	return projectId;
+        // TODO Auto-generated method stub
+        //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
+        //Check if new version is required or its an add/replace for existing version.
+        projectDetails.setProjectId(getProjectId(projectDetails));
+
+        //TODO: Save into project and project_file table   
+        Project prjSave = new Project();        
+        prjSave.setProjectDetail(projectDetails);        
+        //projectRepo.insert(ReportUtility.convertToDBObject(projectDetails));
+        //List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerIdOrderByCreateDateDesc("c123");
+        //System.out.println("#####**********@@@@@@@@@@@@@@@@@@@--------"+projDtl.size());
+       //com.sc.fe.analyze.data.entity.Project projDtl=projectRepo.findTop1OrderByCustomerId("c123");
+       com.sc.fe.analyze.data.entity.Project projDtl=projectRepo.findTop1OrderByCustomerId("c123");
+       System.out.println(projDtl.getProjectId()+"---"+projDtl.getVersion());        
     }
     
+
+    private String getProjectId(ProjectDetails projectDetails) {
+        String projectId = null;
+
+        if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
+            return projectDetails.getProjectId();
+        }
+
+        if (!projectDetails.isNewProject()) {
+            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());
+            if (StringUtils.isEmpty(projectId)) {
+                projectId = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
+            }
+            if (StringUtils.isEmpty(projectId)) {
+                projectId = getProjectIdByZipName(projectDetails.getZipFileName());
+            }
+        }else {
+            //get it from FEMS API call. Stub the call for now
+               projectId=Long.toHexString(Double.doubleToLongBits(Math.random()));
+            
+        }
+
+        return projectId;
+    }
+
     private String getProjectIdByCustomerId(String customerId) {
-    	String projectId = null;
-    	if( StringUtils.isEmpty(customerId) ) {
-    		return projectId;
-    	}
-    	//TODO:
-    	//Get latest record from project table by customerId.
-    	//If found matching, use the projectId from that record
-    	return projectId;
+        String projectId = null;
+        if (StringUtils.isEmpty(customerId)) {
+            return projectId;
+        }
+        else
+        {
+            List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerId(customerId);
+            
+        }
+        //TODO:
+        //Get latest record from project table by customerId.
+        //If found matching, use the projectId from that record
+        return projectId;
     }
-    
+
     private String getProjectIdByCustomerEmail(String emailId) {
-    	String projectId = null;
-    	if( StringUtils.isEmpty(emailId) ) {
-    		return projectId;
-    	}
-    	//TODO
-    	//Get latest record from project table by emailId.
-    	//If found matching, use the projectId from that record
-    	return projectId;
+        String projectId = null;
+        if (StringUtils.isEmpty(emailId)) {
+            return projectId;
+        }
+        //TODO
+        //Get latest record from project table by emailId.
+        //If found matching, use the projectId from that record
+        return projectId;
     }
-    
+
     private String getProjectIdByZipName(String zipFileName) {
-    	String projectId = null;
-    	if( StringUtils.isEmpty(zipFileName) ) {
-    		return projectId;
-    	}
-    	//TODO
-    	//Get latest record from project table by zipFileName.
-    	//If found matching, use the projectId from that record
-    	return projectId;
+        String projectId = null;
+        if (StringUtils.isEmpty(zipFileName)) {
+            return projectId;
+        }
+        //TODO
+        //Get latest record from project table by zipFileName.
+        //If found matching, use the projectId from that record
+        return projectId;
     }
-    
-    private String getVersion( ProjectDetails projectDetails ) {
-    	
-    	String version = null;
-    	
-    	if( projectDetails.isAttachReplace() ) {
-    		 return projectDetails.getVersion();
-    	}else {
-    		//TODO: get the new version based on timeuuid
-    	}
-    	return version;
+
+    private String getVersion(ProjectDetails projectDetails) {
+
+        String version = null;
+
+        if (projectDetails.isAttachReplace()) {
+            return projectDetails.getVersion();
+        } else {
+            //TODO: get the new version based on timeuuid
+        }
+        return version;
     }
-    
-    
+
     /**
      * Extract and save the zip file. No validations.
      *
@@ -250,7 +267,8 @@ public class FileExtractUploadService {
         // end S3
         return util.listFiles(inputs.getProjectId());
     }
-     /**
+
+    /**
      * Performs all possible Gerber file processing.
      *
      * @param fileDetails - These given file details will be updated if we find
@@ -278,17 +296,17 @@ public class FileExtractUploadService {
      */
     private List<FileDetails> processODB(Path folder, String projectId) {
         //To check that whether file type is ODB or not.
-        File[] listOfFiles = folder.toFile().listFiles();        
-        List<FileDetails> fdList = new ArrayList<FileDetails>();        
+        File[] listOfFiles = folder.toFile().listFiles();
+        List<FileDetails> fdList = new ArrayList<FileDetails>();
         for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isDirectory()) {                
+            if (listOfFiles[i].isDirectory()) {
                 if (listOfFiles[i].getName().toLowerCase().equals("odb")) {
                     Path checkODBFolder = Paths.get(util.getUploadDir() + File.separator + projectId + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
                     if (checkODBFolder.toFile().exists()) {
-                       fdList = ODBProcessing.processODB(checkODBFolder); 
-                       //Print Result 
-                       //fdList.stream().forEach(fd->
-                            //System.out.println(fd.getName()));
+                        fdList = ODBProcessing.processODB(checkODBFolder);
+                        //Print Result 
+                        //fdList.stream().forEach(fd->
+                        //System.out.println(fd.getName()));
                     }
                 }
             }
@@ -296,5 +314,4 @@ public class FileExtractUploadService {
         return fdList;
     }
 
-	
 }
