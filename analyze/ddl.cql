@@ -99,7 +99,7 @@ CREATE INDEX on project (zipfile_name);
  	PRIMARY KEY ( (project_id, version), name )
  );
  
- CREATE INDEX on extension_file (project_id);
+ CREATE INDEX on project_files (project_id);
  
  
  
