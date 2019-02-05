@@ -1,34 +1,55 @@
 <div>
   <div class="row">
     <div class="col-md-12">
-      <!-- <div>
-        <label>Please Select Report Id:</label>
+      <div class="form-group">
+        <div class="col-md-4">
+        <label>Select projectId:</label>
         <span>
-          <select id="report_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
-            <option value="0" disabled="true">Please Select a Report You Want to Display</option>
+          <select id="projectId_select" class="form-control" (change)="onProjectIdSelect(selectedReportId)">
+            <option value="0" disabled="true">Select a ProjectId</option>
             <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
           </select>
         </span>
-      </div> -->
+      </div>
+      <div class="col-md-4">
+        <!-- <span>
+          <select id="projectId_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
+            <option value="0" disabled="true">Please Select a Report You Want to Display</option>
+            <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
+          </select>
+        </span> -->
+        <label for="">Select Version:</label>
+        <span>
+          <select id="version_select" class="form-control"  (change)="onProjectIdSelect(selectedReportId)">
+            <option value="0" disabled="true">Select version</option>
+            <option *ngFor="let version of reports" [value]="report.projectId">{{report.projectId}}</option>
+          </select>
+        </span>
+      </div>
+      <div class="col-md-4" style="text-align:right;">
+        <span style="display:block;"><br/> </span>
+        <button class="btn btn-primary">SHOW</button>
+      </div>
+      </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div>
-            <div>
+            <!-- <div>
               <span class="heading">Summary</span>
               <p>{{demoProjectJSON.summary}}</p>
               <span class="heading">Status</span>
               <p>{{demoProjectJSON.validationStatus}}</p>
-            </div>
+            </div> -->
             <br />
             <div class="tableBorder reportscroll">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>FileName</th>
-                    <th>FileType</th>
-                    <th>Polarity</th>
-                    <th>Layer Number</th>
-                    <th>Copper Weight(CuOz)</th>
+                    <th>ProjectId</th>
+                    <th>Version</th>
+                    <th>ZipFileName</th>
+                    <th>CustomerId</th>
+                    <th>CustomerEmail</th>
                   </tr>
                 </thead>
                 <tbody>

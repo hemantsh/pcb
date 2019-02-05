@@ -12,8 +12,9 @@ import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
-import com.sc.fe.analyze.to.ProjectFilesDetails;
+//import com.sc.fe.analyze.to.ProjectFilesDetails;
 import java.util.Date;
 import java.util.UUID;
 
@@ -127,28 +128,28 @@ public class ReportUtility {
             
             return dbDetail;
         }
-	public static ProjectFiles convertToDBObject(ProjectFilesDetails projectFileDetails){
-            ProjectFiles projectFilesDbDetails=new ProjectFiles();
-            projectFilesDbDetails.setProjectId(projectFileDetails.getProjectId());
-            projectFilesDbDetails.setVersion(UUIDs.timeBased());
-            projectFilesDbDetails.setName(projectFileDetails.getName());
-            projectFilesDbDetails.setSize(projectFileDetails.getSize());
-            projectFilesDbDetails.setFileDate(new Date());
-            projectFilesDbDetails.setFormat(projectFileDetails.getFormat());
-            projectFilesDbDetails.setStep(projectFileDetails.getStep());
-            projectFilesDbDetails.setContext(projectFileDetails.getContext());
-            projectFilesDbDetails.setPolarity(projectFileDetails.getPolarity());
-            projectFilesDbDetails.setSide(projectFileDetails.getSide());
-            projectFilesDbDetails.setLayerOrder(projectFileDetails.getLayerOrder());
-            projectFilesDbDetails.setStartName(projectFileDetails.getStartName());
-            projectFilesDbDetails.setEndName(projectFileDetails.getEndName());
-            projectFilesDbDetails.setCopperWeight(projectFileDetails.getCopperWeight());
-            projectFilesDbDetails.setLayerName(projectFileDetails.getLayerName());
-            projectFilesDbDetails.setAttributes(projectFileDetails.getAttributes());
-            projectFilesDbDetails.setCreateDate(projectFileDetails.getCreateDate());
-            projectFilesDbDetails.setModifiedDate(projectFileDetails.getModifiedDate());
-            projectFilesDbDetails.setErrors(projectFileDetails.getErrors());
-            return projectFilesDbDetails;
+	public static ProjectFiles convertToDBObject(FileDetails fileDetails){
+            ProjectFiles filesDbDetails=new ProjectFiles();
+            //filesDbDetails.setProjectId(fileDetails.getProjectId());
+            filesDbDetails.setVersion(UUIDs.timeBased());
+            filesDbDetails.setName(fileDetails.getName());
+            filesDbDetails.setSize(fileDetails.getSize());
+            filesDbDetails.setFileDate(new Date());
+            filesDbDetails.setFormat(fileDetails.getFormat());
+            filesDbDetails.setStep(fileDetails.getStep());
+            filesDbDetails.setContext(fileDetails.getContext());
+            filesDbDetails.setPolarity(fileDetails.getPolarity());
+            filesDbDetails.setSide(fileDetails.getSide());
+            filesDbDetails.setLayerOrder(fileDetails.getLayerOrder());
+            filesDbDetails.setStartName(fileDetails.getStartName());
+            filesDbDetails.setEndName(fileDetails.getEndName());
+            filesDbDetails.setCopperWeight(fileDetails.getCopperWeight());
+            filesDbDetails.setLayerName(fileDetails.getLayerName());
+            filesDbDetails.setAttributes(fileDetails.getAttributes());
+            filesDbDetails.setCreateDate(fileDetails.getCreateDate());
+            filesDbDetails.setModifiedDate(fileDetails.getModifiedDate());
+            filesDbDetails.setErrors(fileDetails.getErrors());
+            return filesDbDetails;
         } 
 
 }
