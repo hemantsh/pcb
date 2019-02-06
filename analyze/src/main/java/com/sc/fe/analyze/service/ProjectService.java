@@ -20,43 +20,46 @@ import com.sc.fe.analyze.util.ReportUtility;
  *
  * @author Hemant
  */
-
 @Service
 public class ProjectService {
-    
+
     @Autowired
     private ProjectRepo projectRepo;
-    
-    public List<ProjectDetails> findAll(){
-    	List<ProjectDetails>  retList = new ArrayList<ProjectDetails> ();
-    	List<Project> allRecords = projectRepo.findAll();
-    	allRecords.stream().forEach( row -> {                
-    		ReportUtility.convertToObject(row);              
-    	});      
-    	return retList;
+
+    public List<ProjectDetails> findAll() {        
+        List<Project> allRecords = projectRepo.findAll();
+        return convertList(allRecords);        
     }
-    
-    public void save(Project project){
+
+    private List<ProjectDetails> convertList(List<Project> allRecords) {
+        List<ProjectDetails> retList = new ArrayList<ProjectDetails>();
+        allRecords.stream().forEach(row -> {
+            retList.add(ReportUtility.convertToObject(row));
+        });
+        return retList;
+    }
+
+    public void save(Project project) {
         projectRepo.save(project);
     }
-    
-    public void delete(Project project){
+
+    public void delete(Project project) {
         projectRepo.delete(project);
     }
-    public List<Project> findByCustomerId(String customerId)
-    {
-        return projectRepo.findByCustomerId(customerId);        
+
+    public List<ProjectDetails> findByCustomerId(String customerId) {       
+        return convertList(projectRepo.findByCustomerId(customerId));
     }
-    public List<Project> findByKeyProjectId(String projectId)
-    {
-        return projectRepo.findByKeyProjectId(projectId);
+
+    public List<ProjectDetails> findByKeyProjectId(String projectId) {
+        return convertList(projectRepo.findByKeyProjectId(projectId));
     }
-    public List<Project> findByCustomerEmail(String customerEmail)
-    {
+
+    public List<Project> findByCustomerEmail(String customerEmail) {
         return projectRepo.findByCustomerEmail(customerEmail);
     }
-    public List<Project> findByZipFileName(String zipFileName)
-    {
+
+    public List<Project> findByZipFileName(String zipFileName) {
         return projectRepo.findByZipFileName(zipFileName);
-    }    
+    }
 }
