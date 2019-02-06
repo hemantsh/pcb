@@ -40,7 +40,7 @@ public class ReportController {
         return null;
     }
     
-    @GetMapping("/distinct")
+    @GetMapping("/distinctProjectid")
     public List<String> getDistinctProjectId(){
         return projectService.findDistinctByProjectId();
     }
