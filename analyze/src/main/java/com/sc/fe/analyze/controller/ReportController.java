@@ -39,4 +39,9 @@ public class ReportController {
     public ProjectDetails getProject(@PathVariable("projectId")String projectId,@PathVariable("version") String verison){    	
         return null;
     }
+    
+    @GetMapping("/distinctProjectid")
+    public List<String> getDistinctProjectId(){
+        return projectService.findDistinctByProjectId();
+    }
 }
