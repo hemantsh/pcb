@@ -22,7 +22,10 @@ import com.sc.fe.analyze.to.ProjectDetails;
  */
 public class ReportUtility {
 
-	private ReportUtility() {};
+    private ReportUtility() {
+    }
+
+    ;
 	
     /**
      * This method is convert the report into object.
@@ -30,61 +33,101 @@ public class ReportUtility {
      * @return the report
      */
     public static com.sc.fe.analyze.to.Report convertToObject(Report dbData) {
-		
-		com.sc.fe.analyze.to.Report report = new com.sc.fe.analyze.to.Report();
-		
-		report.setErrors(dbData.getErrors());
-		
-		Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
-		
-		Map<Integer, String> dbMap = dbData.getFileTypeToFileNameMapping();
-		Iterator<Integer> keyIter = dbMap.keySet().iterator();
-		
-		while( keyIter.hasNext()) {
-			Integer iKey = keyIter.next();
-			String key = iKey.toString();
-			String value = dbMap.get(iKey);
-			if( filePurposeToNameMapping.containsKey(key) ) {
-				filePurposeToNameMapping.get(key).add(value);
-			}else {
-				Set<String> set = new HashSet<String>();
-				set.add(value);
-				filePurposeToNameMapping.put(key, set);
-			}
-		}
-		
-		report.setSummary(dbData.getSummary());
-		report.setValidationStatus(dbData.getStatus());
-		
-		CustomerInformation customerInputs = new CustomerInformation();
-		customerInputs.setProjectId(dbData.getProjectId());
-		customerInputs.setCustomerId(dbData.getCustomerId());
-		//customerInputs.setServiceType(MappingUtil.getServiceName(dbData.getServiceTypeId()) );
-		
-		//report.setCustomerInputs(customerInputs );
-		
-		return report;
-	}
-	
+
+        com.sc.fe.analyze.to.Report report = new com.sc.fe.analyze.to.Report();
+
+        report.setErrors(dbData.getErrors());
+
+        Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+
+        Map<Integer, String> dbMap = dbData.getFileTypeToFileNameMapping();
+        Iterator<Integer> keyIter = dbMap.keySet().iterator();
+
+        while (keyIter.hasNext()) {
+            Integer iKey = keyIter.next();
+            String key = iKey.toString();
+            String value = dbMap.get(iKey);
+            if (filePurposeToNameMapping.containsKey(key)) {
+                filePurposeToNameMapping.get(key).add(value);
+            } else {
+                Set<String> set = new HashSet<String>();
+                set.add(value);
+                filePurposeToNameMapping.put(key, set);
+            }
+        }
+
+        report.setSummary(dbData.getSummary());
+        report.setValidationStatus(dbData.getStatus());
+
+        CustomerInformation customerInputs = new CustomerInformation();
+        customerInputs.setProjectId(dbData.getProjectId());
+        customerInputs.setCustomerId(dbData.getCustomerId());
+        //customerInputs.setServiceType(MappingUtil.getServiceName(dbData.getServiceTypeId()) );
+
+        //report.setCustomerInputs(customerInputs );
+        return report;
+    }
+
+    public static ProjectDetails convertToObject(Project project) {
+        ProjectDetails dtl = new ProjectDetails();                
+        dtl.setProjectId(project.getProjectId());
+        dtl.setVersion(project.getVersion().toString());
+        dtl.setCustomerId(project.getCustomerId());
+        dtl.setEmailAddress(project.getCustomerEamil());
+        dtl.setServiceType(project.getServiceType());
+        dtl.setZipFileName(project.getZipFileName());
+        dtl.setZipFileSize(project.getZipFileSize());
+        dtl.setLayers(project.getLayerCount());
+        dtl.setPcbClass(project.getPcbClass());
+        dtl.setBoardType(project.getBoardType());
+        dtl.setItar(Boolean.valueOf(project.getItar()));
+        dtl.setTurnTimeQuantity(project.getTurnTimeQuantity());
+        dtl.setDesignSpecification(project.getDesignSpecification());
+        dtl.setErrors(project.getErrors());                        
+        return dtl;
+    }
+
+    public static FileDetails convertToObject(ProjectFiles projectFiles) {
+        FileDetails dtl = new FileDetails();
+        dtl.setCopperWeight(projectFiles.getCopperWeight());
+        dtl.setType(projectFiles.getType());
+        dtl.setName(projectFiles.getName());
+        dtl.setVersion(projectFiles.getVersion());
+        dtl.setFormat(projectFiles.getFormat());        
+        dtl.setModifiedDate(projectFiles.getModifiedDate());
+        dtl.setCreateDate(projectFiles.getCreateDate());
+        dtl.setSize(projectFiles.getSize());
+        dtl.setStep(projectFiles.getStep());
+        dtl.setContext(projectFiles.getContext());       
+        dtl.setPolarity(projectFiles.getPolarity());
+        dtl.setSide(projectFiles.getSide());
+        dtl.setLayerOrder(projectFiles.getLayerOrder());
+        dtl.setStartName(projectFiles.getStartName());
+        dtl.setEndName(projectFiles.getEndName());
+        dtl.setCopperWeight(projectFiles.getCopperWeight());
+        dtl.setLayerName(projectFiles.getLayerName());
+        return dtl;
+    }
+
     /**
      * This method is convert the AdvancedReport object into database object.
+     *
      * @param report - object of AdvancedReport
      * @return the report
      */
     public static Report convertToDBObject(com.sc.fe.analyze.to.Report report) {
-		
-		Report dbReport = new Report();
-		
+
+        Report dbReport = new Report();
+
 //		CustomerInformation customerInputs = report.getProjectDetail().getCustomerInformation();
 //		dbReport.setCustomerId( customerInputs.getCustomerId() );
 //		dbReport.setProjectId( customerInputs.getProjectId() );
-		//dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
-		
-		dbReport.setErrors(report.getErrors());
-		
-		Map<Integer, String> dbMap = new HashMap<Integer, String> ();
-		//Map<String, Set<String>> sourceMap = report.getFilePurposeToNameMapping();
-		
+        //dbReport.setServiceTypeId(MappingUtil.getServiceId(customerInputs.getServiceType()));
+        dbReport.setErrors(report.getErrors());
+
+        Map<Integer, String> dbMap = new HashMap<Integer, String>();
+        //Map<String, Set<String>> sourceMap = report.getFilePurposeToNameMapping();
+
 //		Iterator<String> keyIter = sourceMap.keySet().iterator();
 //		
 //		while( keyIter.hasNext()) {
@@ -94,34 +137,26 @@ public class ReportUtility {
 //				dbMap.put(MappingUtil.getFileTypeId(key), e );
 //			});
 //		}
-		
-		dbReport.setFileTypeToFileNameMapping(dbMap);
-		
-		//dbReport.setProjectFiles(report.getExctractedFileNames());
-		dbReport.setStatus(report.getValidationStatus());
-		dbReport.setSummary(report.getSummary());
-		dbReport.setVersion(1);
-		
-		return dbReport;
-	}
-    
-    public static ProjectDetails convertToObject(Project project) {
-    	ProjectDetails dtl = new ProjectDetails();
-    	//TODO
-    	return dtl;
+        dbReport.setFileTypeToFileNameMapping(dbMap);
+
+        //dbReport.setProjectFiles(report.getExctractedFileNames());
+        dbReport.setStatus(report.getValidationStatus());
+        dbReport.setSummary(report.getSummary());
+        dbReport.setVersion(1);
+
+        return dbReport;
     }
- 
-    public static Project convertToDBObject(ProjectDetails projectDetails)
-    {
-        Project dbDetail=new Project();
+
+    public static Project convertToDBObject(ProjectDetails projectDetails) {
+        Project dbDetail = new Project();
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
         dbDetail.setCustomerId(projectDetails.getCustomerId());
         dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
         dbDetail.setErrors(projectDetails.getErrors());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setProjectId(projectDetails.getProjectId());
-        dbDetail.setVersion( UUID.fromString( projectDetails.getVersion()) );            
-        
+        dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
+
         dbDetail.setTurnTimeQuantity(projectDetails.getTurnTimeQuantity());
         dbDetail.setServiceType(projectDetails.getServiceType());
         dbDetail.setZipFileName(projectDetails.getZipFileName());
@@ -129,32 +164,33 @@ public class ReportUtility {
         dbDetail.setLayerCount(projectDetails.getLayers());
         dbDetail.setModifiedDate(new Date());
         dbDetail.setCreateDate(new Date());
-        dbDetail.setCustomerName("ABC");                 
-        
+        dbDetail.setCustomerName("ABC");
+
         return dbDetail;
     }
-	public static ProjectFiles convertToDBObject(FileDetails fileDetails){
-            ProjectFiles filesDbDetails=new ProjectFiles();
-            
-            filesDbDetails.setVersion(  fileDetails.getVersion() );
-            filesDbDetails.setName(fileDetails.getName());
-            filesDbDetails.setSize(fileDetails.getSize());
-            filesDbDetails.setFileDate(new Date());
-            filesDbDetails.setFormat(fileDetails.getFormat());
-            filesDbDetails.setStep(fileDetails.getStep());
-            filesDbDetails.setContext(fileDetails.getContext());
-            filesDbDetails.setPolarity(fileDetails.getPolarity());
-            filesDbDetails.setSide(fileDetails.getSide());
-            filesDbDetails.setLayerOrder(fileDetails.getLayerOrder());
-            filesDbDetails.setStartName(fileDetails.getStartName());
-            filesDbDetails.setEndName(fileDetails.getEndName());
-            filesDbDetails.setCopperWeight(fileDetails.getCopperWeight());
-            filesDbDetails.setLayerName(fileDetails.getLayerName());
-            filesDbDetails.setAttributes(fileDetails.getAttributes());
-            filesDbDetails.setCreateDate(new Date());
-            filesDbDetails.setModifiedDate(new Date());
-            filesDbDetails.setErrors(fileDetails.getErrors());
-            return filesDbDetails;
-        } 
+
+    public static ProjectFiles convertToDBObject(FileDetails fileDetails) {
+        ProjectFiles filesDbDetails = new ProjectFiles();
+
+        filesDbDetails.setVersion(fileDetails.getVersion());
+        filesDbDetails.setName(fileDetails.getName());
+        filesDbDetails.setSize(fileDetails.getSize());
+        filesDbDetails.setFileDate(new Date());
+        filesDbDetails.setFormat(fileDetails.getFormat());
+        filesDbDetails.setStep(fileDetails.getStep());
+        filesDbDetails.setContext(fileDetails.getContext());
+        filesDbDetails.setPolarity(fileDetails.getPolarity());
+        filesDbDetails.setSide(fileDetails.getSide());
+        filesDbDetails.setLayerOrder(fileDetails.getLayerOrder());
+        filesDbDetails.setStartName(fileDetails.getStartName());
+        filesDbDetails.setEndName(fileDetails.getEndName());
+        filesDbDetails.setCopperWeight(fileDetails.getCopperWeight());
+        filesDbDetails.setLayerName(fileDetails.getLayerName());
+        filesDbDetails.setAttributes(fileDetails.getAttributes());
+        filesDbDetails.setCreateDate(new Date());
+        filesDbDetails.setModifiedDate(new Date());
+        filesDbDetails.setErrors(fileDetails.getErrors());
+        return filesDbDetails;
+    }
 
 }

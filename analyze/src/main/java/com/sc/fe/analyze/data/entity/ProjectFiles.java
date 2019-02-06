@@ -35,8 +35,74 @@ public class ProjectFiles {
     private String step;
     @Column(value = "context")
     private String context;
-    @Column(value = "polarity")
+    @Column(value = "polarity")    
     private String polarity;
+    @Column(value = "type")    
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getLayer_order() {
+        return layer_order;
+    }
+
+    public void setLayer_order(int layer_order) {
+        this.layer_order = layer_order;
+    }
+
+    public String getStart_name() {
+        return start_name;
+    }
+
+    public void setStart_name(String start_name) {
+        this.start_name = start_name;
+    }
+
+    public String getEnd_name() {
+        return end_name;
+    }
+
+    public void setEnd_name(String end_name) {
+        this.end_name = end_name;
+    }
+
+    public String getCopper_weight() {
+        return copper_weight;
+    }
+
+    public void setCopper_weight(String copper_weight) {
+        this.copper_weight = copper_weight;
+    }
+
+    public String getLayer_name() {
+        return layer_name;
+    }
+
+    public void setLayer_name(String layer_name) {
+        this.layer_name = layer_name;
+    }
+
+    public Date getCreate_date() {
+        return create_date;
+    }
+
+    public void setCreate_date(Date create_date) {
+        this.create_date = create_date;
+    }
+
+    public Date getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(Date modified_date) {
+        this.modified_date = modified_date;
+    }
     @Column(value = "side")
     private String side;
     @Column(value = "layer_order")
