@@ -62,4 +62,8 @@ public class ProjectService {
     public List<ProjectDetails> findByZipFileName(String zipFileName) {
         return convertList(projectRepo.findByZipFileName(zipFileName));
     }
+    
+    public List<String> findDistinctByProjectId(){
+        return projectRepo.findDistinctByProjectId();
+    }
 }

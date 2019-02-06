@@ -18,3 +18,10 @@
 .tableBorder{
     border: 1px solid gray;
 }
+
+.hide{
+    visibility:hidden; 
+}
+.show{
+    visibility: visible;
+}

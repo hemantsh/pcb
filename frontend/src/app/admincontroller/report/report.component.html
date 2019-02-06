@@ -3,43 +3,45 @@
     <div class="col-md-12">
       <div class="form-group">
         <div class="col-md-4">
-        <label>Select projectId:</label>
-        <span>
-          <select id="projectId_select" class="form-control" (change)="onProjectIdSelect(selectedReportId)">
-            <option value="0" disabled="true">Select a ProjectId</option>
-            <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
-          </select>
-        </span>
-      </div>
-      <div class="col-md-4">
-        <!-- <span>
+          <label>Select projectId:</label>
+          <span>
+            <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId" (change)="onProjectIdSelect(selectedProjectId)">
+              <option value="0" disabled="true">Select a ProjectId</option>
+              <option *ngFor="let projectId of ProjectId" [value]="projectId.projectId">{{projectId.projectId}}</option>
+            </select>
+          </span>
+        </div>
+        <div class="col-md-4">
+          <div [ngClass]="[divStyle]">
+            <!-- <span>
           <select id="projectId_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
             <option value="0" disabled="true">Please Select a Report You Want to Display</option>
             <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
           </select>
         </span> -->
-        <label for="">Select Version:</label>
-        <span>
-          <select id="version_select" class="form-control"  (change)="onProjectIdSelect(selectedReportId)">
-            <option value="0" disabled="true">Select version</option>
-            <option *ngFor="let version of reports" [value]="report.projectId">{{report.projectId}}</option>
-          </select>
-        </span>
+            <label for="">Select Version:</label>
+            <span>
+              <select id="version_select" class="form-control" [(ngModel)]="selectedVersionId" (change)="onVersionSelect(selectedVersionId)">
+                <option value="0" disabled="true">Select version</option>
+                <option *ngFor="let version of Version" [value]="version.version">{{version.version}}</option>
+              </select>
+            </span>
+
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align:left;">
+          <span style="display:block;"><br /> </span>
+          <button class="btn btn-primary" [disabled]="btnDisable"(click)="onShow()">SHOW</button>
+        </div>
+
       </div>
-      <div class="col-md-4" style="text-align:right;">
-        <span style="display:block;"><br/> </span>
-        <button class="btn btn-primary">SHOW</button>
-      </div>
-      </div>
-      <div class="row">
+      <div class="row" [ngClass]="[versionStyle]">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div>
             <!-- <div>
-              <span class="heading">Summary</span>
+              <span class="heading">Errors</span>
               <p>{{demoProjectJSON.summary}}</p>
-              <span class="heading">Status</span>
-              <p>{{demoProjectJSON.validationStatus}}</p>
-            </div> -->
+            </div>  -->
             <br />
             <div class="tableBorder reportscroll">
               <table class="table table-striped">
@@ -53,26 +55,27 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let file of demoProjectJSON?.projectDetail?.fileDetails">
+                  <tr *ngFor="let report of reports">
                     <td>
-                      {{file.name}}
+                      {{report.projectId}}
                     </td>
                     <td>
-                        <select id="file_type">
-                          <option value="0">{{file.type}}</option>
-                        </select>
-                      </td>
-                      <td>
-                        <select id="file_polarity">
-                          <option value="0">{{file.polarity}}</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input type="text" value={{file.layerOrder}}/>
-                      </td>
-                      <td>
-                        <!-- Copper Weight will be displayed here -->
-                      </td>
+                      <select id="version">
+                        <option value="0">{{report.version}}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <!-- <select id="ZipFileName">
+                          <option value="0">{{report.zipFileName}}</option>
+                        </select> -->
+                      {{report.zipFileName}}
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="report.customerId" />
+                    </td>
+                    <td>
+                      {{report.emailAddress}}
+                    </td>
                   </tr>
                 </tbody>
               </table>

@@ -27,5 +27,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK>{
     Project findTop1OrderByCustomerId(final String customerId);    
     
     List<Project> findByZipFileName(final String zipFileName);    
+    
+    List<String> findDistinctByProjectId();
 }
     
