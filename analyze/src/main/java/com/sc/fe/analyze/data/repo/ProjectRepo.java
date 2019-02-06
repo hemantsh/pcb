@@ -20,12 +20,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK>{
     
     List<Project> findByKeyProjectId(final String projectId); 
     List<Project> findByCustomerId(final String customerId);    
-    List<Project> findByCustomerEmail(final String customerEmail);
-    List<Project> findTop5OrderByCustomerId(final String customerId);
-    List<Project> findTop5ByCustomerId(final String customerId);
-    Project findTop1ByCustomerIdOrderByCreateDate(final String customerId);
-    Project findTop1OrderByCustomerId(final String customerId);    
-    
+    List<Project> findByCustomerEmail(final String customerEmail);        
     List<Project> findByZipFileName(final String zipFileName);    
 }
     

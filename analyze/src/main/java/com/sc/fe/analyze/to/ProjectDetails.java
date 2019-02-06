@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.Date;
 
 @JsonInclude(Include.NON_EMPTY)
 public class ProjectDetails implements Serializable {
@@ -25,6 +26,24 @@ public class ProjectDetails implements Serializable {
 	private String zipFileName;
 	private String zipFileSize;
 	private int layers;
+        private Date modifiedDate;
+        private Date createDate;
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
     private String pcbClass;
     private String boardType;
     private boolean itar;

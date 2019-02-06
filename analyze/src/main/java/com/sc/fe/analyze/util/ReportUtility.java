@@ -25,9 +25,6 @@ public class ReportUtility {
     private ReportUtility() {
     }
 
-    
-
-
     public static ProjectDetails convertToObject(Project project) {
         ProjectDetails dtl = new ProjectDetails();                
         dtl.setProjectId(project.getProjectId());
@@ -43,7 +40,9 @@ public class ReportUtility {
         dtl.setItar(Boolean.valueOf(project.getItar()));
         dtl.setTurnTimeQuantity(project.getTurnTimeQuantity());
         dtl.setDesignSpecification(project.getDesignSpecification());
-        dtl.setErrors(project.getErrors());                        
+        dtl.setErrors(project.getErrors());
+        dtl.setCreateDate(project.getCreateDate());
+        dtl.setModifiedDate(project.getModifiedDate());
         return dtl;
     }
 

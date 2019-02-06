@@ -78,7 +78,7 @@ CREATE INDEX on project (zipfile_name);
  	project_id text,
  	version timeuuid,
  	name text,
- 	
+ 	type text,
  	size text,
  	file_date timestamp,
  	format text,
