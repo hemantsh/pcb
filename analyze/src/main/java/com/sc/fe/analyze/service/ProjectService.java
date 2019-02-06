@@ -55,11 +55,11 @@ public class ProjectService {
         return convertList(projectRepo.findByKeyProjectId(projectId));
     }
 
-    public List<Project> findByCustomerEmail(String customerEmail) {
-        return projectRepo.findByCustomerEmail(customerEmail);
+    public List<ProjectDetails> findByCustomerEmail(String customerEmail) {
+        return convertList(projectRepo.findByCustomerEmail(customerEmail));
     }
 
-    public List<Project> findByZipFileName(String zipFileName) {
-        return projectRepo.findByZipFileName(zipFileName);
+    public List<ProjectDetails> findByZipFileName(String zipFileName) {
+        return convertList(projectRepo.findByZipFileName(zipFileName));
     }
 }
