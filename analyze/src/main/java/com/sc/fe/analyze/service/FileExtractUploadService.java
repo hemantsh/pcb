@@ -53,10 +53,9 @@ public class FileExtractUploadService {
     @Autowired
     ReportRepo reportRepo;
     @Autowired
-    ProjectRepo projectRepo;
-    
+    ProjectFilesService projectFilesService;
     @Autowired
-    ProjectFilesRepo projectFilesRepo;
+    ProjectService projectService;
 
     /**
      *
@@ -80,7 +79,6 @@ public class FileExtractUploadService {
             CustomerInformation inputs,
             PCBInformation boardInfo) throws Exception {
 
-        
         ProjectDetails projectDetails = new ProjectDetails();
         projectDetails.setProjectId(inputs.getProjectId());
 
@@ -152,33 +150,28 @@ public class FileExtractUploadService {
         return report;
     }
 
-    
     public void save(ProjectDetails projectDetails) {
         // TODO Auto-generated method stub
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
-    	
-    	String version = getVersion(projectDetails);
-    	String projectId = getProjectId(projectDetails);
-    	
-        projectDetails.setProjectId( projectId);
+
+        String version = getVersion(projectDetails);
+        String projectId = getProjectId(projectDetails);
+
+        projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
-        
-        
-        projectDetails.getFileDetails().stream().forEach( fd -> {
-        	
-        	ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
-        	pFiles.setVersion( UUID.fromString(version) );
-        	pFiles.setProjectId(projectId);
-        	
-        	projectFilesRepo.save( pFiles );
+
+        projectDetails.getFileDetails().stream().forEach(fd -> {
+
+            ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
+            pFiles.setVersion(UUID.fromString(version));
+            pFiles.setProjectId(projectId);
+            projectFilesService.save(pFiles);
         });
 
-        //TODO: Save into project and project_file table        
-        projectRepo.insert(ReportUtility.convertToDBObject(projectDetails));
-         
+        //TODO: Save into project and project_file table               
+        projectService.save(ReportUtility.convertToDBObject(projectDetails));
     }
-    
 
     private String getProjectId(ProjectDetails projectDetails) {
         String projectId = null;
@@ -198,9 +191,9 @@ public class FileExtractUploadService {
         }
         if (StringUtils.isEmpty(projectId)) {
             //get it from FEMS API call. Stub the call for now
-            projectId=Long.toHexString(Double.doubleToLongBits(Math.random()));
+            projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
         }
-        
+
         return projectId;
     }
 
@@ -208,12 +201,10 @@ public class FileExtractUploadService {
         String projectId = null;
         if (StringUtils.isEmpty(customerId)) {
             return projectId;
-        }
-        else
-        {
-            List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerId(customerId);
-            if(projDtl != null && projDtl.size() > 0) {
-            	projectId = projDtl.get(0).getProjectId();
+        } else {
+            List<Project> projDtl = projectService.findByCustomerId(customerId);
+            if (projDtl != null && projDtl.size() > 0) {
+                projectId = projDtl.get(0).getProjectId();
             }
         }
         //Get latest record from project table by customerId.
@@ -226,14 +217,13 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(emailId)) {
             return projectId;
         }
-        
+
         //Get latest record from project table by emailId.
-        //If found matching, use the projectId from that record
-        List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerEmail(emailId);
-        
-        if(projDtl != null && projDtl.size() > 0) {
-        	
-        	projectId = projDtl.get(0).getProjectId();
+        //If found matching, use the projectId from that record        
+        List<Project> projDtl = projectService.findByCustomerEmail(emailId);
+        if (projDtl != null && projDtl.size() > 0) {
+
+            projectId = projDtl.get(0).getProjectId();
         }
         return projectId;
     }
@@ -244,10 +234,10 @@ public class FileExtractUploadService {
             return projectId;
         }
         //Get latest record from project table by zipFileName.
-        //If found matching, use the projectId from that record
-        List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByZipFileName( zipFileName);
-        if(projDtl != null && projDtl.size() > 0) {
-        	projectId = projDtl.get(0).getProjectId();
+        //If found matching, use the projectId from that record        
+        List<Project> projDtl = projectService.findByZipFileName(zipFileName);
+        if (projDtl != null && projDtl.size() > 0) {
+            projectId = projDtl.get(0).getProjectId();
         }
         return projectId;
     }
@@ -270,7 +260,6 @@ public class FileExtractUploadService {
         //call validateFiles( ProjectDetails projectDetails ) to get results
     }
 
-    
     /**
      * Extract and save the zip file. No validations.
      *
