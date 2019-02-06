@@ -34,7 +34,8 @@ public class ReportController {
     }
     
     @GetMapping("/project/{projectId}/version/{version} ")
-    public ProjectFiles getProject(@PathVariable("projectId")String projectId,@PathVariable("version") String verison){
+    public ProjectDetails getProject(@PathVariable("projectId")String projectId,@PathVariable("version") String verison){
+    	
         return null;
     }
 }

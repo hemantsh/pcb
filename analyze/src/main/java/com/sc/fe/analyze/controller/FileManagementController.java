@@ -11,22 +11,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
-import com.sc.fe.analyze.to.CustomerInformation;
-import com.sc.fe.analyze.to.PCBInformation;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
-import com.sc.fe.analyze.util.ErrorCodeMap;
-import com.sc.fe.analyze.util.ErrorCodes;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping(path="/fm")
@@ -43,7 +35,7 @@ public class FileManagementController {
 	
 	@PostMapping(path="/validate")
 	@ResponseBody
-	public Map<String,String> validate(@RequestBody ProjectDetails projectDetails) {
+	public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 		
 		Map<String,String> retMap = new HashMap<String,String>();
 		
@@ -55,12 +47,12 @@ public class FileManagementController {
 			});
 		}
 		
-		return retMap;
+		return report.getProjectDetail();
 	}
 	
 	@PostMapping(path="/validateAndSave")
 	@ResponseBody
-	public Map<String,String> validateAndSave(@RequestBody ProjectDetails projectDetails) {
+	public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
 		
 		fileUploadService.save(projectDetails);
 		return validate(projectDetails);

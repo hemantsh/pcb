@@ -17,11 +17,16 @@ import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.ReportServices;
 import com.sc.fe.analyze.service.ServiceFilesServices;
+import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.util.MappingUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -56,6 +61,24 @@ public class AdminController {
     @Autowired
     private ExtensionFileService extnFileService;
     
+    @GetMapping(path="/project/{projectId}/version/{version}")
+	@ResponseBody
+	public ProjectDetails getProjectDetails( @PathParam("projectId") String projectId, @PathParam("version") String version ) {
+		ProjectDetails project = new ProjectDetails();
+		//TODO user service/repo classes to get project and project_file data, 
+		//convert and combine to create ProjectDetails object
+		return project;
+	}
+	
+	@GetMapping(path="/projects")
+	@ResponseBody
+	public List<ProjectDetails> getAllProjects(  ) {
+		List<ProjectDetails> projectList = new ArrayList<ProjectDetails>();
+		//TODO user service/repo classes to get project data. repo.getAll()
+		//Here we will not read project_files table
+		return projectList;
+	}
+	
     //Extension Services
     @ApiOperation("Retrieve all the Extensions from the Database.")
     @GetMapping(path="/extensions")

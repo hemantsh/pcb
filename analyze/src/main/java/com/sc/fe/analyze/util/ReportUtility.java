@@ -1,22 +1,20 @@
 package com.sc.fe.analyze.util;
 
-import com.datastax.driver.core.utils.UUIDs;
+//import com.sc.fe.analyze.to.ProjectFilesDetails;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import com.sc.fe.analyze.data.entity.Report;
-import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.data.entity.Report;
+import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
-//import com.sc.fe.analyze.to.ProjectFilesDetails;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  *
@@ -106,32 +104,39 @@ public class ReportUtility {
 		
 		return dbReport;
 	}
-        public static Project convertToDBObject(ProjectDetails projectDetails)
-        {
-            Project dbDetail=new Project();
-            dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
-            dbDetail.setCustomerId(projectDetails.getCustomerId());
-            dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
-            dbDetail.setErrors(projectDetails.getErrors());
-            dbDetail.setPcbClass(projectDetails.getPcbClass());
-            dbDetail.setProjectId(projectDetails.getProjectId());
-            dbDetail.setVersion(UUIDs.timeBased());            
-            
-            dbDetail.setTurnTimeQuantity(projectDetails.getTurnTimeQuantity());
-            dbDetail.setServiceType(projectDetails.getServiceType());
-            dbDetail.setZipFileName(projectDetails.getZipFileName());
-            dbDetail.setZipFileSize(projectDetails.getZipFileSize());
-            dbDetail.setLayerCount(projectDetails.getLayers());
-            dbDetail.setModifiedDate(new Date());
-            dbDetail.setCreateDate(new Date());
-            dbDetail.setCustomerName("ABC");                 
-            
-            return dbDetail;
-        }
+    
+    public static ProjectDetails convertToObject(Project project) {
+    	ProjectDetails dtl = new ProjectDetails();
+    	//TODO
+    	return dtl;
+    }
+ 
+    public static Project convertToDBObject(ProjectDetails projectDetails)
+    {
+        Project dbDetail=new Project();
+        dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
+        dbDetail.setCustomerId(projectDetails.getCustomerId());
+        dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
+        dbDetail.setErrors(projectDetails.getErrors());
+        dbDetail.setPcbClass(projectDetails.getPcbClass());
+        dbDetail.setProjectId(projectDetails.getProjectId());
+        dbDetail.setVersion( UUID.fromString( projectDetails.getVersion()) );            
+        
+        dbDetail.setTurnTimeQuantity(projectDetails.getTurnTimeQuantity());
+        dbDetail.setServiceType(projectDetails.getServiceType());
+        dbDetail.setZipFileName(projectDetails.getZipFileName());
+        dbDetail.setZipFileSize(projectDetails.getZipFileSize());
+        dbDetail.setLayerCount(projectDetails.getLayers());
+        dbDetail.setModifiedDate(new Date());
+        dbDetail.setCreateDate(new Date());
+        dbDetail.setCustomerName("ABC");                 
+        
+        return dbDetail;
+    }
 	public static ProjectFiles convertToDBObject(FileDetails fileDetails){
             ProjectFiles filesDbDetails=new ProjectFiles();
-            //filesDbDetails.setProjectId(fileDetails.getProjectId());
-            filesDbDetails.setVersion(UUIDs.timeBased());
+            
+            filesDbDetails.setVersion(  fileDetails.getVersion() );
             filesDbDetails.setName(fileDetails.getName());
             filesDbDetails.setSize(fileDetails.getSize());
             filesDbDetails.setFileDate(new Date());
@@ -146,8 +151,8 @@ public class ReportUtility {
             filesDbDetails.setCopperWeight(fileDetails.getCopperWeight());
             filesDbDetails.setLayerName(fileDetails.getLayerName());
             filesDbDetails.setAttributes(fileDetails.getAttributes());
-            filesDbDetails.setCreateDate(fileDetails.getCreateDate());
-            filesDbDetails.setModifiedDate(fileDetails.getModifiedDate());
+            filesDbDetails.setCreateDate(new Date());
+            filesDbDetails.setModifiedDate(new Date());
             filesDbDetails.setErrors(fileDetails.getErrors());
             return filesDbDetails;
         } 

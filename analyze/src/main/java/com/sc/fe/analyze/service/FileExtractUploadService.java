@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -16,13 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.data.entity.Project;
+import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
-import com.sc.fe.analyze.to.Project;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.ErrorCodeMap;
@@ -50,6 +54,9 @@ public class FileExtractUploadService {
     ReportRepo reportRepo;
     @Autowired
     ProjectRepo projectRepo;
+    
+    @Autowired
+    ProjectFilesRepo projectFilesRepo;
 
     /**
      *
@@ -73,11 +80,8 @@ public class FileExtractUploadService {
             CustomerInformation inputs,
             PCBInformation boardInfo) throws Exception {
 
-        Set<String> filesExtracted = extractAndSaveFiles(file, inputs);
-
+        
         ProjectDetails projectDetails = new ProjectDetails();
-        //  projectDetails.setCustomerInformation(inputs);
-        // projectDetails.setBoardInfo(boardInfo);
         projectDetails.setProjectId(inputs.getProjectId());
 
         Report report = validateFiles(projectDetails);
@@ -148,27 +152,31 @@ public class FileExtractUploadService {
         return report;
     }
 
-    public void validateFiles(String projectId) {
-        //TODO: implememt
-        //Get the projectDetails by projectId
-        //call validateFiles( ProjectDetails projectDetails ) to get results
-    }
-
+    
     public void save(ProjectDetails projectDetails) {
         // TODO Auto-generated method stub
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
-        projectDetails.setProjectId(getProjectId(projectDetails));
+    	
+    	String version = getVersion(projectDetails);
+    	String projectId = getProjectId(projectDetails);
+    	
+        projectDetails.setProjectId( projectId);
+        projectDetails.setVersion(version);
+        
+        
+        projectDetails.getFileDetails().stream().forEach( fd -> {
+        	
+        	ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
+        	pFiles.setVersion( UUID.fromString(version) );
+        	pFiles.setProjectId(projectId);
+        	
+        	projectFilesRepo.save( pFiles );
+        });
 
-        //TODO: Save into project and project_file table   
-        Project prjSave = new Project();        
-        prjSave.setProjectDetail(projectDetails);        
-        //projectRepo.insert(ReportUtility.convertToDBObject(projectDetails));
-        //List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerIdOrderByCreateDateDesc("c123");
-        //System.out.println("#####**********@@@@@@@@@@@@@@@@@@@--------"+projDtl.size());
-       //com.sc.fe.analyze.data.entity.Project projDtl=projectRepo.findTop1OrderByCustomerId("c123");
-       com.sc.fe.analyze.data.entity.Project projDtl=projectRepo.findTop1OrderByCustomerId("c123");
-       System.out.println(projDtl.getProjectId()+"---"+projDtl.getVersion());        
+        //TODO: Save into project and project_file table        
+        projectRepo.insert(ReportUtility.convertToDBObject(projectDetails));
+         
     }
     
 
@@ -187,12 +195,12 @@ public class FileExtractUploadService {
             if (StringUtils.isEmpty(projectId)) {
                 projectId = getProjectIdByZipName(projectDetails.getZipFileName());
             }
-        }else {
-            //get it from FEMS API call. Stub the call for now
-               projectId=Long.toHexString(Double.doubleToLongBits(Math.random()));
-            
         }
-
+        if (StringUtils.isEmpty(projectId)) {
+            //get it from FEMS API call. Stub the call for now
+            projectId=Long.toHexString(Double.doubleToLongBits(Math.random()));
+        }
+        
         return projectId;
     }
 
@@ -204,9 +212,10 @@ public class FileExtractUploadService {
         else
         {
             List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerId(customerId);
-            
+            if(projDtl != null && projDtl.size() > 0) {
+            	projectId = projDtl.get(0).getProjectId();
+            }
         }
-        //TODO:
         //Get latest record from project table by customerId.
         //If found matching, use the projectId from that record
         return projectId;
@@ -217,9 +226,15 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(emailId)) {
             return projectId;
         }
-        //TODO
+        
         //Get latest record from project table by emailId.
         //If found matching, use the projectId from that record
+        List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByCustomerEmail(emailId);
+        
+        if(projDtl != null && projDtl.size() > 0) {
+        	
+        	projectId = projDtl.get(0).getProjectId();
+        }
         return projectId;
     }
 
@@ -228,9 +243,12 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(zipFileName)) {
             return projectId;
         }
-        //TODO
         //Get latest record from project table by zipFileName.
         //If found matching, use the projectId from that record
+        List<com.sc.fe.analyze.data.entity.Project> projDtl=projectRepo.findByZipFileName( zipFileName);
+        if(projDtl != null && projDtl.size() > 0) {
+        	projectId = projDtl.get(0).getProjectId();
+        }
         return projectId;
     }
 
@@ -241,11 +259,18 @@ public class FileExtractUploadService {
         if (projectDetails.isAttachReplace()) {
             return projectDetails.getVersion();
         } else {
-            //TODO: get the new version based on timeuuid
+            version = UUIDs.timeBased().toString();
         }
         return version;
     }
 
+    public void validateFiles(String projectId) {
+        //TODO: implememt
+        //Get the projectDetails by projectId
+        //call validateFiles( ProjectDetails projectDetails ) to get results
+    }
+
+    
     /**
      * Extract and save the zip file. No validations.
      *

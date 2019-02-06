@@ -43,7 +43,7 @@ public class Project {
     @Column(value = "design_specification")
     private String designSpecification;
     @Column(value = "zipfile_name")
-    private String zipfileName;
+    private String zipFileName;
     @Column(value = "zipfile_size")
     private String zipfileSize;
     @Column(value = "create_date")
@@ -153,11 +153,11 @@ public class Project {
     }
 
     public String getZipFileName() {
-        return zipfileName;
+        return zipFileName;
     }
 
     public void setZipFileName(String zipFileName) {
-        this.zipfileName = zipFileName;
+        this.zipFileName = zipFileName;
     }
 
     public String getZipFileSize() {
@@ -185,11 +185,11 @@ public class Project {
     }
 
     public String getZipfileName() {
-        return zipfileName;
+        return zipFileName;
     }
 
     public void setZipfileName(String zipfileName) {
-        this.zipfileName = zipfileName;
+        this.zipFileName = zipfileName;
     }
 
     public String getZipfileSize() {

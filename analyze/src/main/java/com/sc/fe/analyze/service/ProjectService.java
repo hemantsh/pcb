@@ -5,11 +5,15 @@
  */
 package com.sc.fe.analyze.service;
 
-import com.sc.fe.analyze.data.entity.Project;
-import com.sc.fe.analyze.data.repo.ProjectRepo;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.sc.fe.analyze.data.entity.Project;
+import com.sc.fe.analyze.data.repo.ProjectRepo;
+import com.sc.fe.analyze.to.ProjectDetails;
 
 /**
  *
@@ -22,8 +26,14 @@ public class ProjectService {
     @Autowired
     private ProjectRepo projectRepo;
     
-    public List<Project> findAll(){
-        return projectRepo.findAll();
+    public List<ProjectDetails> findAll(){
+    	List<ProjectDetails>  retList = new ArrayList<ProjectDetails> ();
+    	List<Project> allRecords = projectRepo.findAll();
+    	
+    	allRecords.stream().forEach( row -> {
+    		//ReportUtility.con
+    	});
+    	return retList;
     }
     
     public void save(Project project){
