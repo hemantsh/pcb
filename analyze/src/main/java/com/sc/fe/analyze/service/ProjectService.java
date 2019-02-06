@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.util.ReportUtility;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 
 @Service
@@ -29,10 +30,9 @@ public class ProjectService {
     public List<ProjectDetails> findAll(){
     	List<ProjectDetails>  retList = new ArrayList<ProjectDetails> ();
     	List<Project> allRecords = projectRepo.findAll();
-    	
-    	allRecords.stream().forEach( row -> {
-    		//ReportUtility.con
-    	});
+    	allRecords.stream().forEach( row -> {                
+    		ReportUtility.convertToObject(row);              
+    	});      
     	return retList;
     }
     
@@ -43,4 +43,20 @@ public class ProjectService {
     public void delete(Project project){
         projectRepo.delete(project);
     }
+    public List<Project> findByCustomerId(String customerId)
+    {
+        return projectRepo.findByCustomerId(customerId);        
+    }
+    public List<Project> findByKeyProjectId(String projectId)
+    {
+        return projectRepo.findByKeyProjectId(projectId);
+    }
+    public List<Project> findByCustomerEmail(String customerEmail)
+    {
+        return projectRepo.findByCustomerEmail(customerEmail);
+    }
+    public List<Project> findByZipFileName(String zipFileName)
+    {
+        return projectRepo.findByZipFileName(zipFileName);
+    }    
 }
