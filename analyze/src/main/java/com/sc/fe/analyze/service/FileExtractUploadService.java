@@ -19,11 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
-import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
-import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
-import com.sc.fe.analyze.data.repo.ProjectRepo;
-import com.sc.fe.analyze.data.repo.ReportRepo;
 import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
@@ -36,6 +32,7 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -49,9 +46,7 @@ public class FileExtractUploadService {
 
     //private S3FileUtility util;
     @Autowired
-    BaseService baseService;
-    @Autowired
-    ReportRepo reportRepo;
+    BaseService baseService;   
     @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
@@ -82,9 +77,7 @@ public class FileExtractUploadService {
         ProjectDetails projectDetails = new ProjectDetails();
         projectDetails.setProjectId(inputs.getProjectId());
 
-        Report report = validateFiles(projectDetails);
-
-        reportRepo.insert(ReportUtility.convertToDBObject(report));
+        Report report = validateFiles(projectDetails);       
 
         logger.debug("****** Done generating report *******");
 
@@ -162,7 +155,6 @@ public class FileExtractUploadService {
         projectDetails.setVersion(version);
 
         projectDetails.getFileDetails().stream().forEach(fd -> {
-
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
             pFiles.setVersion(UUID.fromString(version));
             pFiles.setProjectId(projectId);
@@ -181,7 +173,7 @@ public class FileExtractUploadService {
         }
 
         if (!projectDetails.isNewProject()) {
-            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());
+            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());            
             if (StringUtils.isEmpty(projectId)) {
                 projectId = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
             }
@@ -189,8 +181,7 @@ public class FileExtractUploadService {
                 projectId = getProjectIdByZipName(projectDetails.getZipFileName());
             }
         }
-        if (StringUtils.isEmpty(projectId)) {
-            //get it from FEMS API call. Stub the call for now
+        if (StringUtils.isEmpty(projectId)) {            
             projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
         }
 
@@ -202,13 +193,18 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(customerId)) {
             return projectId;
         } else {
-            List<Project> projDtl = projectService.findByCustomerId(customerId);
-            if (projDtl != null && projDtl.size() > 0) {
-                projectId = projDtl.get(0).getProjectId();
+            List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);            
+            if (projDtl != null && projDtl.size() > 0) {                                    
+                System.out.println("Size is---"+projDtl.size());                
+                ProjectDetails latestRecord = projDtl.stream()
+                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
+                projectId=latestRecord.getProjectId();
+                //To check the latest Record
+//                System.out.println("Date is--"+latestRecord.getCreateDate());
+//                System.out.println("Version is--"+latestRecord.getVersion());               
+               
             }
-        }
-        //Get latest record from project table by customerId.
-        //If found matching, use the projectId from that record
+        }       
         return projectId;
     }
 
@@ -217,13 +213,13 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(emailId)) {
             return projectId;
         }
-
-        //Get latest record from project table by emailId.
-        //If found matching, use the projectId from that record        
-        List<Project> projDtl = projectService.findByCustomerEmail(emailId);
+           
+        List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);        
         if (projDtl != null && projDtl.size() > 0) {
-
-            projectId = projDtl.get(0).getProjectId();
+             ProjectDetails latestRecord = projDtl.stream()
+                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
+            projectId=latestRecord.getProjectId();
+            
         }
         return projectId;
     }
@@ -232,12 +228,12 @@ public class FileExtractUploadService {
         String projectId = null;
         if (StringUtils.isEmpty(zipFileName)) {
             return projectId;
-        }
-        //Get latest record from project table by zipFileName.
-        //If found matching, use the projectId from that record        
-        List<Project> projDtl = projectService.findByZipFileName(zipFileName);
+        }       
+        List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
         if (projDtl != null && projDtl.size() > 0) {
-            projectId = projDtl.get(0).getProjectId();
+            ProjectDetails latestRecord = projDtl.stream()
+                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
+            projectId=latestRecord.getProjectId();            
         }
         return projectId;
     }
