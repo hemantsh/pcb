@@ -57,8 +57,6 @@ public class AdminController {
     @Autowired
     private ServiceFilesServices serviceFileservice;
     @Autowired
-    private ReportServices reportServices;
-    @Autowired
     private ExtensionFileService extnFileService;
     
     @GetMapping(path="/project/{projectId}/version/{version}")
@@ -202,32 +200,5 @@ public class AdminController {
         List<ExtensionFileType> temp=extnFileService.getExtenFileTypeById(extensionId);
         return temp;
     }
-    
-    //Report Services
-    @ApiOperation("Retrieve all the Report from the Database.")
-    @GetMapping(path="/report")
-    public List<Report> getAllReport(){
-        return reportServices.findAll();
-    }
-    @ApiOperation("Generates Report and store into the Database.")
-    @PostMapping(path="/report/create")
-    public void createReport(@ApiParam("Takes JSON of Report Object") @RequestBody Report report){
-       reportServices.save(report);
-    }
-    @ApiOperation("Retrieve the Report by Id from the Database.")
-    @GetMapping(path="/report/{id}")
-    public List<Report> getReportById(@PathVariable("id") String projectId){
-        return reportServices.getReportById(projectId);
-    }
-    @ApiOperation("Updates Report already stored into the Database.")
-    @PostMapping(path="/report/update")
-    public void updateReport(@ApiParam("Takes JSON of Report Object to update") @RequestBody Report report){
-       reportServices.save(report);
-    }
-    @ApiOperation("Retrieve Filetype By fileId from the Database.")
-    @GetMapping(path="/report/getfiletype/{fileId}")
-    @ResponseBody
-    public String getFiletype(@PathVariable("fileId") Integer fileId){
-        return reportServices.getFileType(fileId);
-    }
+
 }
