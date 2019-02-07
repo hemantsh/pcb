@@ -58,6 +58,9 @@ export class FileService {
     }
 
     //Services for Report
+    getUniqueId(){
+        return this.http.get('http://localhost:8080/pcb/report/distinctProjectid');
+    }
     getReport() {
         return this.http.get('http://localhost:8080/pcb/report/projects');
     }

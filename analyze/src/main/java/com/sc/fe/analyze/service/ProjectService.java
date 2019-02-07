@@ -12,9 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sc.fe.analyze.data.entity.Project;
+import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.data.entity.ProjectPK;
+import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.util.ReportUtility;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -25,6 +34,8 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepo projectRepo;
+    @Autowired
+    private ProjectFilesRepo projectFilesRepo;
 
     public List<ProjectDetails> findAll() {        
         List<Project> allRecords = projectRepo.findAll();
@@ -63,7 +74,28 @@ public class ProjectService {
         return convertList(projectRepo.findByZipFileName(zipFileName));
     }
     
-    public List<String> findDistinctByProjectId(){
-        return projectRepo.findDistinctByProjectId();
+    public Set<String> findDistinctByProjectId(){
+         List<Project> project=projectRepo.findAll();
+         Set<String> uniqueProjectId=new HashSet<String>();
+         if(project!=null){
+             uniqueProjectId=project.stream().map(Project::getProjectId).collect(Collectors.toSet());
+         }
+         return uniqueProjectId;
+    }
+    
+    public ProjectDetails getProject(String projectId,String verison){
+        ProjectPK projectPK=new ProjectPK();
+        projectPK.setProjectId(projectId);
+        projectPK.setVersion(UUID.fromString(verison));
+        Optional<Project> findByID=projectRepo.findById(projectPK);
+        
+        ProjectDetails obj= ReportUtility.convertToObject(findByID.get());
+        List<ProjectFiles> fileList=projectFilesRepo.findByKeyProjectIdAndKeyVersion(projectId,UUID.fromString(verison));
+        List<FileDetails> fbList=new ArrayList<FileDetails>();
+        fileList.stream().forEach(row -> {
+            fbList.add(ReportUtility.convertToObject(row));
+        });
+        obj.setFileDetails(fbList);
+        return obj;
     }
 }

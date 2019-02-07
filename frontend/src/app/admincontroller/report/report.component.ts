@@ -31,11 +31,11 @@ export class ReportComponent implements OnInit {
   
   retriveProjectId() {
 
-    this.fileService.getReport()
+    this.fileService.getUniqueId()
       .subscribe(
         (response: Response) =>{
           this.ProjectId=response.json();
-          console.log("Data is fetching...", this.reports);
+          console.log("ProjectId....", this.ProjectId);
         },
         (error) => console.log(error)
       );
@@ -45,7 +45,7 @@ export class ReportComponent implements OnInit {
     .subscribe(
       (response: Response) =>{
         this.Version=response.json();
-        console.log("Data is fetching...", this.reports);
+        console.log("Version is fetching...", this.Version);
       },
       (error) => console.log(error)
     );
