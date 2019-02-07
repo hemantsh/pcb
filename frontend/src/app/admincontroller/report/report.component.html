@@ -7,18 +7,12 @@
           <span>
             <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId" (change)="onProjectIdSelect(selectedProjectId)">
               <option value="0" disabled="true">Select a ProjectId</option>
-              <option *ngFor="let projectId of ProjectId" [value]="projectId.projectId">{{projectId}}</option>
+              <option *ngFor="let projectId of ProjectId" [value]="projectId">{{projectId}}</option>
             </select>
           </span>
         </div>
         <div class="col-md-4">
           <div [ngClass]="[divStyle]">
-            <!-- <span>
-          <select id="projectId_select" class="form-control" [(ngModel)]="selectedReportId" (change)="onProjectIdSelect(selectedReportId)">
-            <option value="0" disabled="true">Please Select a Report You Want to Display</option>
-            <option *ngFor="let report of reports" [value]="report.projectId">{{report.projectId}}</option>
-          </select>
-        </span> -->
             <label for="">Select Version:</label>
             <span>
               <select id="version_select" class="form-control" [(ngModel)]="selectedVersionId" (change)="onVersionSelect(selectedVersionId)">
@@ -31,20 +25,15 @@
         </div>
         <div class="col-md-4" style="text-align:left;">
           <span style="display:block;"><br /> </span>
-          <button class="btn btn-primary" [disabled]="btnDisable"(click)="onShow()">SHOW</button>
+          <button class="btn btn-primary" [disabled]="btnDisable" (click)="onShow()">SHOW</button>
         </div>
 
       </div>
       <div class="row" [ngClass]="[versionStyle]">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div>
-            <!-- <div>
-              <span class="heading">Errors</span>
-              <p>{{demoProjectJSON.summary}}</p>
-            </div>  -->
-            <br />
-            <div class="tableBorder reportscroll">
-              <table class="table table-striped">
+            <div>
+              <table class="table table-striped spacer">
                 <thead>
                   <tr>
                     <th>ProjectId</th>
@@ -55,31 +44,90 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let report of reports">
+                  <tr>
                     <td>
-                      {{report.projectId}}
+                      {{reports.projectId}}
                     </td>
                     <td>
                       <select id="version">
-                        <option value="0">{{report.version}}</option>
+                        <option value="0">{{reports.version}}</option>
                       </select>
                     </td>
                     <td>
-                      <!-- <select id="ZipFileName">
-                          <option value="0">{{report.zipFileName}}</option>
-                        </select> -->
-                      {{report.zipFileName}}
+                      {{reports.zipFileName}}
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="report.customerId" />
+                      <p *ngIf="!reports.edit">
+                        {{reports.customerId}} &nbsp;
+                        <button class="btn btn-default" (click)="editData(reports); reports.edit = !reports.edit"><span class="glyphicon glyphicon-edit"></span>
+                          Edit</button>
+                      </p>
+                      
+                      <p *ngIf="reports.edit">
+                        <input type="text" [(ngModel)]="reports.customerId" class="form-control" />
+                        <button class="btn btn-primary" (click)="updateData(reports); reports.edit = !reports.edit;" [disabled]="!reports.customerId">Update</button>
+                        <button class="btn btn-danger"  (click)="cancelClick(reports)">Cancel</button>
+                      </p>
                     </td>
                     <td>
-                      {{report.emailAddress}}
+                        <p *ngIf="!reports.edit">
+                          {{reports.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default" (click)="editData(reports); reports.edit=!reports.edit"><span class="glyphicon glyphicon-edit"></span>
+                          &nbsp;edit</button>
+                        </p>
+                     
+                        <p *ngIf="reports.edit">
+                            <input type="text" [(ngModel)]="reports.emailAddress" class="form-control" />
+                            <button class="btn btn-primary" (click)="updateData(reports); reports.edit = !reports.edit" [disabled]="!reports.emailAddress">Update</button>
+                            <button class="btn btn-danger" (click)="cancelClick(reports)">Cancel</button>
+                        </p>
+                      
+                      <!-- <input type="text" [(ngModel)]="reports.emailAddress" /> -->
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <h3>ZIP FILE CONTENT DETAILS</h3>
+            <div class="reportscroll" [ngClass]="[versionStyle]">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>CreateDate</th>
+                    <th>ModifiedDate</th>
+                    <th>Format</th>
+                    <th>LayerOrder</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let inner of reports?.fileDetails">
+                    <td>
+                      {{inner.name}}
+                    </td>
+                    <td>
+                      {{inner.createDate}}
+                    </td>
+                    <td>
+                      {{inner.modifiedDate}}
+                    </td>
+                    <td>
+                      {{inner.format}}
+                    </td>
+                    <td>
+                      {{inner.layerOrder}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="reports.errors" class="spacer">
+            <span class="heading">Errors</span>
+            <ul *ngFor="let obj of Object.keys(reports?.errors)">
+              <li>
+                {{reports.errors[obj]}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>

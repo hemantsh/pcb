@@ -1,67 +1,75 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import {config} from './urlpathconfig';
 
 @Injectable()
 export class FileService {
-    constructor(private http: Http) { }
+    constructor(private http: Http) {}
     //File Upload Service
     fileUpload(UploadedForm) {
-        return this.http.post('http://localhost:8080/pcb/api/uploadAndValidate', UploadedForm);
+        return this.http.post(config.urlPath+'api/uploadAndValidate', UploadedForm);
     }
     //Services for Extensions Start
     getExtensions() {
-        return this.http.get('http://localhost:8080/pcb/admin/extensions');
+        return this.http.get(config.urlPath+'admin/extensions');
     }
     updateExtensions(extn) {
-        return this.http.post('http://localhost:8080/pcb/admin/extensions/update', extn);
+        return this.http.post(config.urlPath+'admin/extensions/update', extn);
     }
     //Services for Services Start
     getServices() {
-        return this.http.get('http://localhost:8080/pcb/admin/services');
+        return this.http.get(config.urlPath+'admin/services');
     }
     updateServices(service) {
-        return this.http.post('http://localhost:8080/pcb/admin/services/update', service);
+        return this.http.post(config.urlPath+'admin/services/update', service);
     }
     //Services for Filetypes 
     getFiletypes() {
-        return this.http.get('http://localhost:8080/pcb/admin/filetypes');
+        return this.http.get(config.urlPath+'admin/filetypes');
     }
     updateFiletypes(filetypes) {
-        return this.http.post('http://localhost:8080/pcb/admin/filetypes/update', filetypes);
+        return this.http.post(config.urlPath+'admin/filetypes/update', filetypes);
     }
 
     //Services for ServicesFiles
     getServiceFiles() {
-        return this.http.get('http://localhost:8080/pcb/admin/servicefiles');
+        return this.http.get(config.urlPath+'admin/servicefiles');
     }
     getServiceFilesById(id) {
-        return this.http.get('http://localhost:8080/pcb/admin/servicefiles/retrive/' + id);
+        return this.http.get(config.urlPath+'admin/servicefiles/retrive/' + id);
     }
     saveServiceFiles(temp: any[]) {
-        return this.http.post('http://localhost:8080/pcb/admin/servicefiles/createmulti', temp);
+        return this.http.post(config.urlPath+'admin/servicefiles/createmulti', temp);
     }
     updateServiceFiles(servicefiles) {
-        return this.http.post('http://localhost:8080/pcb/admin/servicefiles/update', servicefiles);
+        return this.http.post(config.urlPath+'admin/servicefiles/update', servicefiles);
     }
     //Services for ExtensionFiles
     getExtnFiles() {
-        return this.http.get('http://localhost:8080/pcb/admin/extensionfiles');
+        return this.http.get(config.urlPath+'admin/extensionfiles');
     }
     updateExtnFiles(exFT) {
-        return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/update', exFT);
+        return this.http.post(config.urlPath+'admin/extensionfiles/update', exFT);
     }
     getExtnFiletypesById(id) {
-        return this.http.get(`http://localhost:8080/pcb/admin/extensionfiles/retrive/${id}`)
+        return this.http.get(config.urlPath+`admin/extensionfiles/retrive/${id}`)
     }
     saveExtensionFile(temp: any[]) {
-        return this.http.post('http://localhost:8080/pcb/admin/extensionfiles/createmulti', temp);
+        return this.http.post(config.urlPath+'admin/extensionfiles/createmulti', temp);
     }
 
     //Services for Report
     getUniqueId(){
-        return this.http.get('http://localhost:8080/pcb/report/distinctProjectid');
+        return this.http.get(config.urlPath+'report/distinctProjectid');
     }
     getReport() {
-        return this.http.get('http://localhost:8080/pcb/report/projects');
+        return this.http.get(config.urlPath+'report/projects');
+    }
+    getReportByIdAndVersion(projectId,version){
+        return this.http.get(config.urlPath+`report/project/${projectId}/version/${version}`);
+    }
+
+    testApi(input){
+        return this.http.post(config.urlPath +'fm/validateAndSave',input);
     }
 }

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col md 12">
+      <div class="text-center">
+        <p>Enter JSON Below Here:</p>
+        <textarea placeholder="Enter your JSON Object Here" cols="180" rows="20" [(ngModel)]="inputJSON"></textarea>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary btn-lg" (click)="onSend()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
