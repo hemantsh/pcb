@@ -17,6 +17,7 @@ import { ReportComponent } from './admincontroller/report/report.component';
 import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
 import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
 import {CanServiceFilesDeactivateGuard} from './admincontroller/servicefiles/candeactivate-servicefilesguard.service';
+import { InputJSONComponent } from './input-json/input-json.component';
 
 const appRoutes: Routes = [
   { path: '', component: CustomerinputsComponent ,
@@ -34,6 +35,9 @@ const appRoutes: Routes = [
       {path:"extensionfiles",component:ExtenfilesComponent,canDeactivate:[CanDeactivateGuard]},
       {path:"report",component:ReportComponent}
     ]
+  },
+  {
+    path:'inputjson', component:InputJSONComponent
   }
 ]
 @NgModule({
@@ -46,7 +50,8 @@ const appRoutes: Routes = [
     ServicefilesComponent,
     FiletypesComponent,
     ReportComponent,
-    ExtenfilesComponent
+    ExtenfilesComponent,
+    InputJSONComponent
   ],
   imports: [
     BrowserModule,
