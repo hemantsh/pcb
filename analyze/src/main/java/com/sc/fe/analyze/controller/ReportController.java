@@ -11,11 +11,13 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.ReportUtility;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,13 +37,14 @@ public class ReportController {
        return projectService.findAll();       
     }
     
-    @GetMapping("/project/{projectId}/version/{version} ")
+    @GetMapping("/project/{projectId}/version/{version}")
     public ProjectDetails getProject(@PathVariable("projectId")String projectId,@PathVariable("version") String verison){    	
-        return null;
+        return projectService.getProject(projectId, verison);
     }
     
     @GetMapping("/distinctProjectid")
-    public List<String> getDistinctProjectId(){
+    @ResponseBody
+    public Set<String> getDistinctProjectId(){
         return projectService.findDistinctByProjectId();
     }
 }

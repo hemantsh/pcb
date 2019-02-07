@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sc.fe.analyze.data.entity.ProjectFilesPK;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -20,4 +21,5 @@ import java.util.List;
 public interface ProjectFilesRepo extends CassandraRepository< ProjectFiles, ProjectFilesPK> {
 
     List<ProjectFiles> findByKeyProjectId(final String projectId);
+    List<ProjectFiles> findByKeyProjectIdAndKeyVersion(final String projectId,final UUID version);
 }

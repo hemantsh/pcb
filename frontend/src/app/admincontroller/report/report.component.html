@@ -7,7 +7,7 @@
           <span>
             <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId" (change)="onProjectIdSelect(selectedProjectId)">
               <option value="0" disabled="true">Select a ProjectId</option>
-              <option *ngFor="let projectId of ProjectId" [value]="projectId.projectId">{{projectId.projectId}}</option>
+              <option *ngFor="let projectId of ProjectId" [value]="projectId.projectId">{{projectId}}</option>
             </select>
           </span>
         </div>

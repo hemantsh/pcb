@@ -23,6 +23,5 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK>{
     List<Project> findByCustomerEmail(final String customerEmail);        
     List<Project> findByZipFileName(final String zipFileName);    
     
-    List<String> findDistinctByProjectId();
 }
     
