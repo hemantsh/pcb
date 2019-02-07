@@ -46,7 +46,7 @@ public class FileExtractUploadService {
 
     //private S3FileUtility util;
     @Autowired
-    BaseService baseService;   
+    BaseService baseService;
     @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
@@ -77,7 +77,7 @@ public class FileExtractUploadService {
         ProjectDetails projectDetails = new ProjectDetails();
         projectDetails.setProjectId(inputs.getProjectId());
 
-        Report report = validateFiles(projectDetails);       
+        Report report = validateFiles(projectDetails);
 
         logger.debug("****** Done generating report *******");
 
@@ -173,7 +173,7 @@ public class FileExtractUploadService {
         }
 
         if (!projectDetails.isNewProject()) {
-            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());            
+            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());
             if (StringUtils.isEmpty(projectId)) {
                 projectId = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
             }
@@ -181,10 +181,19 @@ public class FileExtractUploadService {
                 projectId = getProjectIdByZipName(projectDetails.getZipFileName());
             }
         }
-        if (StringUtils.isEmpty(projectId)) {            
+        if (StringUtils.isEmpty(projectId)) {
             projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
         }
+        return projectId;
+    }
 
+    private String getLatestRecord(List<ProjectDetails> projDtl) {
+        String projectId = null;
+        if (projDtl != null && projDtl.size() > 0) {
+            ProjectDetails latestRecord = projDtl.stream()
+                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);
+            projectId = latestRecord.getProjectId();
+        }
         return projectId;
     }
 
@@ -193,18 +202,9 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(customerId)) {
             return projectId;
         } else {
-            List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);            
-            if (projDtl != null && projDtl.size() > 0) {                                    
-                System.out.println("Size is---"+projDtl.size());                
-                ProjectDetails latestRecord = projDtl.stream()
-                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
-                projectId=latestRecord.getProjectId();
-                //To check the latest Record
-//                System.out.println("Date is--"+latestRecord.getCreateDate());
-//                System.out.println("Version is--"+latestRecord.getVersion());               
-               
-            }
-        }       
+            List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);
+            projectId = getLatestRecord(projDtl);
+        }
         return projectId;
     }
 
@@ -213,14 +213,8 @@ public class FileExtractUploadService {
         if (StringUtils.isEmpty(emailId)) {
             return projectId;
         }
-           
-        List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);        
-        if (projDtl != null && projDtl.size() > 0) {
-             ProjectDetails latestRecord = projDtl.stream()
-                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
-            projectId=latestRecord.getProjectId();
-            
-        }
+        List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
+        projectId = getLatestRecord(projDtl);
         return projectId;
     }
 
@@ -228,20 +222,14 @@ public class FileExtractUploadService {
         String projectId = null;
         if (StringUtils.isEmpty(zipFileName)) {
             return projectId;
-        }       
-        List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
-        if (projDtl != null && projDtl.size() > 0) {
-            ProjectDetails latestRecord = projDtl.stream()
-                    .max((a1,a2)->a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);             
-            projectId=latestRecord.getProjectId();            
         }
+        List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
+        projectId = getLatestRecord(projDtl);
         return projectId;
     }
 
     private String getVersion(ProjectDetails projectDetails) {
-
         String version = null;
-
         if (projectDetails.isAttachReplace()) {
             return projectDetails.getVersion();
         } else {
