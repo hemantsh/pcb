@@ -6,7 +6,13 @@
 package com.sc.fe.analyze.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +25,6 @@ import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -74,13 +75,34 @@ public class ProjectService {
         return convertList(projectRepo.findByZipFileName(zipFileName));
     }
     
-    public Set<String> findDistinctByProjectId(){
+    public Set<String> findDistinctByProjectId() {
+    	return null;
+    }
+    
+    public Map<String, Set<String>> getProjectVersionMap() {
+    	//Key = projectID
+    	//Value - set of versions for the projectId
          List<Project> project=projectRepo.findAll();
-         Set<String> uniqueProjectId=new HashSet<String>();
+         
+         Map<String, Set<String>> projVersionMap =new HashMap<String, Set<String>>();
          if(project!=null){
-             uniqueProjectId=project.stream().map(Project::getProjectId).collect(Collectors.toSet());
+             project.stream().forEach( proj -> {
+            	 
+            	 String key = proj.getProjectId();
+            	 String version = proj.getVersion().toString();
+            	 
+            	 if(projVersionMap.containsKey(key) ) {
+            		 
+            		 projVersionMap.get(key).add(version);
+            		 
+            	 }else {
+            		 Set<String> vSet = new HashSet<String>();
+            		 vSet.add(version);
+            		 projVersionMap.put(key,vSet);
+            	 }
+             });
          }
-         return uniqueProjectId;
+         return projVersionMap;
     }
     
     public ProjectDetails getProject(String projectId,String verison){
