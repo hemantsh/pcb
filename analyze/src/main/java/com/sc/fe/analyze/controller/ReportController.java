@@ -11,6 +11,7 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.ReportUtility;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +45,7 @@ public class ReportController {
     
     @GetMapping("/distinctProjectid")
     @ResponseBody
-    public Set<String> getDistinctProjectId(){
-        return projectService.findDistinctByProjectId();
+    public Map<String, Set<String>> getDistinctProjectId(){
+        return projectService.getProjectVersionMap();
     }
 }
