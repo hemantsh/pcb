@@ -31,7 +31,9 @@ import com.sc.fe.analyze.util.FileUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
+import com.sc.fe.analyze.util.ReportCompareUtility;
 import com.sc.fe.analyze.util.ReportUtility;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -130,7 +132,6 @@ public class FileExtractUploadService {
                 missingTypes.removeAll(availFileTypes);
             }
         }
-
         if (missingTypes.size() > 0) {
             report.setValidationStatus("We found some missing information. ");
             missingTypes.stream().forEach(type -> {
@@ -161,8 +162,23 @@ public class FileExtractUploadService {
             projectFilesService.save(pFiles);
         });
 
+        //Retrieve latest Record of similar project Id
+        List<ProjectDetails> projDtls = projectService.findByKeyProjectId(projectId);
+        ProjectDetails latestprojDtl = null;
+        if (!projDtls.isEmpty()) {
+            latestprojDtl = getLatestRecord(projDtls);
+        }
+
         //TODO: Save into project and project_file table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
+
+        //compare the ProjectDetails        
+        if (latestprojDtl != null) {
+            //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
+            latestprojDtl = projectService.getProject(latestprojDtl.getProjectId(), latestprojDtl.getVersion());
+            projectDetails = projectService.getProject(projectId, version);
+            Map<String, String> compare = ReportCompareUtility.compare(projectDetails, latestprojDtl);
+        }
     }
 
     private String getProjectId(ProjectDetails projectDetails) {
@@ -187,14 +203,13 @@ public class FileExtractUploadService {
         return projectId;
     }
 
-    private String getLatestRecord(List<ProjectDetails> projDtl) {
-        String projectId = null;
+    private ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
+        ProjectDetails latestRecord = null;
         if (projDtl != null && projDtl.size() > 0) {
-            ProjectDetails latestRecord = projDtl.stream()
+            latestRecord = projDtl.stream()
                     .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);
-            projectId = latestRecord.getProjectId();
         }
-        return projectId;
+        return latestRecord;
     }
 
     private String getProjectIdByCustomerId(String customerId) {
@@ -203,7 +218,10 @@ public class FileExtractUploadService {
             return projectId;
         } else {
             List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);
-            projectId = getLatestRecord(projDtl);
+            ProjectDetails latestRecord = getLatestRecord(projDtl);
+            if (latestRecord != null) {
+                projectId = latestRecord.getProjectId();
+            }
         }
         return projectId;
     }
@@ -212,9 +230,13 @@ public class FileExtractUploadService {
         String projectId = null;
         if (StringUtils.isEmpty(emailId)) {
             return projectId;
+        } else {
+            List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
+            ProjectDetails latestRecord = getLatestRecord(projDtl);
+            if (latestRecord != null) {
+                projectId = latestRecord.getProjectId();
+            }
         }
-        List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
-        projectId = getLatestRecord(projDtl);
         return projectId;
     }
 
@@ -222,9 +244,14 @@ public class FileExtractUploadService {
         String projectId = null;
         if (StringUtils.isEmpty(zipFileName)) {
             return projectId;
+        } else {
+            List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
+            ProjectDetails latestRecord = getLatestRecord(projDtl);
+            if (latestRecord != null) {
+                projectId = latestRecord.getProjectId();
+            }
         }
-        List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
-        projectId = getLatestRecord(projDtl);
+
         return projectId;
     }
 
