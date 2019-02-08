@@ -5,8 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sc.fe.analyze.to.AdvancedReport;
-import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.ProjectDetails;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -65,24 +68,38 @@ public class ReportCompareUtility {
                     }
                 });
             });
-
-            //OLD CODE
-//            Set<String> fileNameSet = newReport.getAllFileNames();
-//            fileNameSet.addAll(oldReport.getAllFileNames());
-//            fileNameSet.stream().forEach(fileName -> {               
-//                FileDetails newFD = newReport.getFileDetails(fileName);
-//                FileDetails oldFD = oldReport.getFileDetails(fileName);
-//
-//                if (newFD == null && oldFD != null) {
-//                    differences.put("File Removed", fileName);
-//                }
-//                if (newFD != null && oldFD == null) {
-//                    differences.put("File Added", fileName);
-//                }
-//
-//                differences.putAll(FileDetailCompareUtility.compare(newFD, oldFD));
-//            });
         }
         return differences;
+    }
+
+    //compare every attribute of ProjectDetails and FileDetails object
+    public static Map<String, String> compare(ProjectDetails newRecord, ProjectDetails oldRecord) {
+        Map<String, String> regularDifferences = new HashMap<String, String>();
+        Map<String, String> validationDifferences = new HashMap<String, String>();
+        if (oldRecord == null || newRecord == null) {
+            return null;
+        }
+        try {
+            regularDifferences.putAll(FileDetailCompareUtility.compareObject(newRecord, oldRecord));
+            //Comparing the Validation errors with previous one  
+            validationDifferences.putAll(FileDetailCompareUtility.compareObject(newRecord.getErrors(), oldRecord.getErrors()));
+            validationDifferences.put("Errors", validationDifferences.remove("tail"));
+
+            newRecord.getFileDetails().stream().forEach(nnewFD -> {
+                oldRecord.getFileDetails().stream().forEach(ooldFD -> {
+                    try {
+                        regularDifferences.putAll(FileDetailCompareUtility.compareObject(nnewFD, ooldFD));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return regularDifferences;
     }
 }
