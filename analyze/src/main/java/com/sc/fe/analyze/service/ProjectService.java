@@ -51,7 +51,11 @@ public class ProjectService {
         return retList;
     }
 
-    public void save(Project project) {
+//    public void save(ProjectDetails projectDetails) {
+//        Project allRecords =  ReportUtility.convertToDBObject(projectDetails);
+//        projectRepo.save(allRecords);
+//    }
+    public void save(Project project){
         projectRepo.save(project);
     }
 
@@ -73,10 +77,6 @@ public class ProjectService {
 
     public List<ProjectDetails> findByZipFileName(String zipFileName) {
         return convertList(projectRepo.findByZipFileName(zipFileName));
-    }
-    
-    public Set<String> findDistinctByProjectId() {
-    	return null;
     }
     
     public Map<String, Set<String>> getProjectVersionMap() {
@@ -119,5 +119,11 @@ public class ProjectService {
         });
         obj.setFileDetails(fbList);
         return obj;
+    }
+    
+    public void setProject(String projectId,String version){
+        /**
+         * TODO
+         */
     }
 }

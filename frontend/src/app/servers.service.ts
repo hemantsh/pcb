@@ -62,14 +62,12 @@ export class FileService {
     getUniqueId(){
         return this.http.get(config.urlPath+'report/distinctProjectid');
     }
-    getReport() {
-        return this.http.get(config.urlPath+'report/projects');
-    }
+    
     getReportByIdAndVersion(projectId,version){
         return this.http.get(config.urlPath+`report/project/${projectId}/version/${version}`);
     }
 
-    testApi(input){
+    saveFileManagementReport(input){
         return this.http.post(config.urlPath +'fm/validateAndSave',input);
     }
 }

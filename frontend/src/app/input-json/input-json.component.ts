@@ -15,8 +15,8 @@ export class InputJSONComponent implements OnInit {
   }
 
   onSend(){
-    //console.log(JSON.parse(this.inputJSON));
-    this.fileService.testApi(this.inputJSON)
+    console.log(JSON.parse(this.inputJSON));
+    this.fileService.saveFileManagementReport(JSON.parse(this.inputJSON))
     .subscribe(
       (response)=>{
         console.log(response);

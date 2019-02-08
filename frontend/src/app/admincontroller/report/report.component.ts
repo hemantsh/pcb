@@ -1,93 +1,96 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
- import {Response} from '@angular/http';
+import { Response } from '@angular/http';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit {
-  reports={};
-  fileType=[];
+  report : any;
+  fileType = [];
 
-  ProjectId=[];
-  Version=[];
-  selectedProjectId=0;
-  selectedReport=[];
-  selectedVersionId=0;
-  selectedVersion=[];
-  
-  divStyle='hide';
-  versionStyle='hide';
-  btnDisable=true;
+  projectIds = [];
+  version = [];
+  selectedProjectId = 0;
+  selectedReport = [];
+  selectedVersionId = 0;
+  //selectedVersion=[];
+
+  divStyle = 'hide';
+  versionStyle = 'hide';
+  btnDisable = true;
   Object = Object;
-  constructor(private fileService:FileService) { }
+
+  constructor(private fileService: FileService) { }
 
   ngOnInit() {
     this.retriveProjectId();
-    this.retriveVersion();
   }
-  
+
   retriveProjectId() {
 
     this.fileService.getUniqueId()
       .subscribe(
-        (response: Response) =>{
-          this.ProjectId=response.json();
-          console.log("ProjectId....", this.ProjectId);
+        (response: Response) => {
+          this.projectIds = response.json();
+          console.log("ProjectId....", this.projectIds);
         },
         (error) => console.log(error)
       );
   }
-  retriveVersion(){
-    this.fileService.getReport()
-    .subscribe(
-      (response: Response) =>{
-        this.Version=response.json();
-        console.log("Version is fetching...", this.Version);
-      },
-      (error) => console.log(error)
-    );
 
-  }
   onShow() {
-    this.fileService.getReportByIdAndVersion(this.selectedProjectId,this.selectedVersionId)
+    this.fileService.getReportByIdAndVersion(this.selectedProjectId, this.selectedVersionId)
       .subscribe(
         (response: Response) => {
-          this.reports = response.json();
-          this.versionStyle='show';
-          console.log("Report is fetching...", this.reports);
+          this.report = response.json();
+          this.versionStyle = 'show';
+          console.log("Report is fetching...", this.report);
         },
         (error) => console.log(error)
       );
   }
-  
-onVersionSelect(selectedVersionId){
-  this.btnDisable=false;
-  this.selectedVersionId=selectedVersionId;
-  console.log(this.selectedVersionId);
-}
-  onProjectIdSelect(selectedProjectId){
-    this.divStyle='show';
-    this.selectedProjectId=selectedProjectId;
+
+  onVersionSelect(selectedVersionId) {
+    this.btnDisable = false;
+    this.selectedVersionId = selectedVersionId;
+    console.log(this.selectedVersionId);
+  }
+  onProjectIdSelect(selectedProjectId) {
+    this.divStyle = 'show';
+    this.selectedProjectId = selectedProjectId;
     console.log(this.selectedProjectId);
   }
 
-  updateData(data){
-    console.log(data);
-  }
-  editData(data) {
-    if (data.edit || data.add ) {
-      console.log(data.edit);
-      data.edit=true;
+  updateData(data) {
+    // this.fileService.saveFileManagementReport(data)
+    // .subscribe(
+    //   (response: Response) => {
+    //     this.report = response.json();
+    //     this.versionStyle='show';
+    //     console.log("Report is fetching...", this.report);
+    //   },
+    //   (error) => console.log(error)
+    // );
+    if (this.report.customerIdEdit) {
+      delete this.report.customerIdEdit;
+      delete this.report.originalCustId;
+    }  
+      console.log("Updated Report", this.report);
+    if(this.report.emailEdit){
+      delete this.report.emailEdit;
+      delete this.report.originalEmail;
     }
   }
-  cancelClick(extn) {
-    if (extn.add) {
-      this.reports;
-    } else {
-      extn.edit = false;
-      extn.name = extn.originalData
-    }
+
+  cancelCustId() {
+      this.report.customerId = this.report.originalCustId;
+      this.report.customerIdEdit = false;
+  }
+  
+  cancelEmail(data) {
+      data.emailAddress = data.originalEmail;
+      data.emailEdit = false;
   }
 }

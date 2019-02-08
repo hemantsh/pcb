@@ -53,8 +53,6 @@ export class ServicesComponent implements OnInit {
       extn.edit = false;
       extn.name = extn.originalData
     }
-
-
   }
 
 }

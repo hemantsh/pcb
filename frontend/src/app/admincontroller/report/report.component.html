@@ -7,7 +7,7 @@
           <span>
             <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId" (change)="onProjectIdSelect(selectedProjectId)">
               <option value="0" disabled="true">Select a ProjectId</option>
-              <option *ngFor="let projectId of ProjectId" [value]="projectId">{{projectId}}</option>
+              <option *ngFor="let projectId of Object.keys(projectIds)" [value]="projectId">{{projectId}}</option>
             </select>
           </span>
         </div>
@@ -17,7 +17,8 @@
             <span>
               <select id="version_select" class="form-control" [(ngModel)]="selectedVersionId" (change)="onVersionSelect(selectedVersionId)">
                 <option value="0" disabled="true">Select version</option>
-                <option *ngFor="let version of Version" [value]="version.version">{{version.version}}</option>
+                <option *ngFor="let version of projectIds[selectedProjectId]" [value]="version"> {{version}}
+                </option>
               </select>
             </span>
 
@@ -29,7 +30,7 @@
         </div>
 
       </div>
-      <div class="row" [ngClass]="[versionStyle]">
+      <div class="row" [ngClass]="[versionStyle]" *ngIf="report">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div>
             <div>
@@ -46,42 +47,42 @@
                 <tbody>
                   <tr>
                     <td>
-                      {{reports.projectId}}
+                      {{report.projectId}}
                     </td>
                     <td>
                       <select id="version">
-                        <option value="0">{{reports.version}}</option>
+                        <option value="0">{{report.version}}</option>
                       </select>
                     </td>
                     <td>
-                      {{reports.zipFileName}}
+                      {{report.zipFileName}}
                     </td>
                     <td>
-                      <p *ngIf="!reports.edit">
-                        {{reports.customerId}} &nbsp;
-                        <button class="btn btn-default" (click)="editData(reports); reports.edit = !reports.edit"><span class="glyphicon glyphicon-edit"></span>
+                      <p *ngIf="!report?.customerIdEdit">
+                        {{report.customerId}} &nbsp;
+                        <button class="btn btn-default" (click)="report.customerIdEdit = !report.customerIdEdit; report.originalCustId = report.customerId"><span
+                            class="glyphicon glyphicon-edit"></span>
                           Edit</button>
                       </p>
-                      
-                      <p *ngIf="reports.edit">
-                        <input type="text" [(ngModel)]="reports.customerId" class="form-control" />
-                        <button class="btn btn-primary" (click)="updateData(reports); reports.edit = !reports.edit;" [disabled]="!reports.customerId">Update</button>
-                        <button class="btn btn-danger"  (click)="cancelClick(reports)">Cancel</button>
+
+                      <p *ngIf="report?.customerIdEdit">
+                        <input type="text" [(ngModel)]="report.customerId" class="form-control" />
+                        <button class="btn btn-primary" (click)="updateData(report);" [disabled]="!report.customerId">Update</button>
+                        <button class="btn btn-danger" (click)="cancelCustId(report)">Cancel</button>
                       </p>
                     </td>
                     <td>
-                        <p *ngIf="!reports.edit">
-                          {{reports.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default" (click)="editData(reports); reports.edit=!reports.edit"><span class="glyphicon glyphicon-edit"></span>
-                          &nbsp;edit</button>
-                        </p>
-                     
-                        <p *ngIf="reports.edit">
-                            <input type="text" [(ngModel)]="reports.emailAddress" class="form-control" />
-                            <button class="btn btn-primary" (click)="updateData(reports); reports.edit = !reports.edit" [disabled]="!reports.emailAddress">Update</button>
-                            <button class="btn btn-danger" (click)="cancelClick(reports)">Cancel</button>
-                        </p>
-                      
-                      <!-- <input type="text" [(ngModel)]="reports.emailAddress" /> -->
+                      <p *ngIf="!report?.emailEdit">
+                        {{report.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default" (click)="report.emailEdit=!report.emailEdit; report.originalEmail=report.emailAddress;"><span
+                            class="glyphicon glyphicon-edit"></span>
+                          &nbsp;Edit</button>
+                      </p>
+
+                      <p *ngIf="report?.emailEdit">
+                        <input type="text" [(ngModel)]="report.emailAddress" class="form-control" />
+                        <button class="btn btn-primary" (click)="updateData(report);" [disabled]="!report.emailAddress">Update</button>
+                        <button class="btn btn-danger" (click)="cancelEmail(report)">Cancel</button>
+                      </p>
                     </td>
                   </tr>
                 </tbody>
@@ -92,40 +93,40 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>CreateDate</th>
-                    <th>ModifiedDate</th>
-                    <th>Format</th>
+                    <th>FileName</th>
+                    <th>FileType</th>
+                    <th>DataPolarity</th>
                     <th>LayerOrder</th>
+                    <th>CopperWeight(CuOz)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let inner of reports?.fileDetails">
+                  <tr *ngFor="let inner of report?.fileDetails">
                     <td>
                       {{inner.name}}
                     </td>
                     <td>
-                      {{inner.createDate}}
+                      {{inner.type}}
                     </td>
                     <td>
-                      {{inner.modifiedDate}}
-                    </td>
-                    <td>
-                      {{inner.format}}
+                      {{inner.polarity}}
                     </td>
                     <td>
                       {{inner.layerOrder}}
+                    </td>
+                    <td>
+                      {{inner.copperWeight}}
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <div *ngIf="reports.errors" class="spacer">
+          <div *ngIf="report && report.errors" class="spacer">
             <span class="heading">Errors</span>
-            <ul *ngFor="let obj of Object.keys(reports?.errors)">
+            <ul *ngFor="let obj of Object.keys(report?.errors)">
               <li>
-                {{reports.errors[obj]}}
+                {{report.errors[obj]}}
               </li>
             </ul>
           </div>
