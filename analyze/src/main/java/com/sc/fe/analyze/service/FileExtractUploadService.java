@@ -64,30 +64,7 @@ public class FileExtractUploadService {
         this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
         //this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
-
-    /**
-     * Upload, extract and validates files
-     *
-     * @param file - the file to be uploaded
-     * @param inputs - the inputs of CustomerInputs
-     * @return Report - report with validation status
-     */
-    public Report uploadAndExtractFile(MultipartFile file,
-            CustomerInformation inputs,
-            PCBInformation boardInfo) throws Exception {
-
-        ProjectDetails projectDetails = new ProjectDetails();
-        projectDetails.setProjectId(inputs.getProjectId());
-
-        Report report = validateFiles(projectDetails);
-
-        logger.debug("****** Done generating report *******");
-
-        //To delete the folder 
-        Path folder = Paths.get(util.getUploadDir() + File.separator + projectDetails.getProjectId()).toAbsolutePath().normalize();
-        FileUtil.deleteFolder(folder.toFile());
-        return report;
-    }
+    
 
     /**
      * Validates the project files and send a report.
@@ -170,7 +147,7 @@ public class FileExtractUploadService {
 	 * @return
 	 */
 	private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-		//Required files
+		//Required files as per business rules
 		List<String> requiredFilesTypes = baseService.getServiceFiles(
                 MappingUtil.getServiceId( projectDetails.getServiceType() )
         );
@@ -181,8 +158,8 @@ public class FileExtractUploadService {
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
         
-        //Find missing files
-        //Remove all available types from required, we get the missing
+        //Find missing files types
+        //Remove all available types from required, we get the missing types
         requiredFilesTypes.removeAll(availFileTypes);
 
 		return requiredFilesTypes;
@@ -192,11 +169,8 @@ public class FileExtractUploadService {
      * @param projectDetails
      */
     public void save ( ProjectDetails projectDetails) {
-        // TODO Auto-generated method stub
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
-
-        
         String projectId = getProjectId(projectDetails);
         String version = getVersion(projectDetails);
 
@@ -213,7 +187,6 @@ public class FileExtractUploadService {
         
         //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-
         
     }
 
@@ -223,21 +196,26 @@ public class FileExtractUploadService {
      */
     private String getProjectId(ProjectDetails projectDetails) {
         String projectId = null;
-
+        //If exists in parameter object, return that
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
         }
-
+        //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
+        	//Get by customerID - Best chance to find match with this
             projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());
             if (StringUtils.isEmpty(projectId)) {
+            	//Get by customerEmal - next best chance to find match with this
                 projectId = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
             }
             if (StringUtils.isEmpty(projectId)) {
+            	//Get by zipFileName - possible chance to find match with this
                 projectId = getProjectIdByZipName(projectDetails.getZipFileName());
             }
         }
+        //Still empty or a new project, CALL FEMS API to get it
         if (StringUtils.isEmpty(projectId)) {
+        	//TODO: when FEMS ready, we need to call API
             projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
         }
         return projectId;
@@ -248,6 +226,11 @@ public class FileExtractUploadService {
         return getLatestRecord( projectService.findByKeyProjectId( projectId ) );
     }
     
+    /**
+     * Get the latest record from the list. Based on created date of the record.
+     * @param projDtl
+     * @return Null if not found. Else return the match
+     */
     private ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
         ProjectDetails latestRecord = null;
         if (projDtl != null && projDtl.size() > 0) {
@@ -258,18 +241,20 @@ public class FileExtractUploadService {
     }
     
     /**
+     * Get the previous record for the given project. Based on created date
      * @param projDtl
-     * @return
+     * @return Null if not found. Else return the match
      */
     private ProjectDetails getPreviousRecord(ProjectDetails projDtl) {
         ProjectDetails prevRecord = null;
         
         List<ProjectDetails> allRecords = projectService.findByKeyProjectId( projDtl.getProjectId() ) ;
         if( allRecords != null) {
-        	
+        	// first remove the current record by removing same version record.
+        	// From the remaining, we will find the latest by created date
         	prevRecord = allRecords.stream()
 	        	.filter( p -> ! p.getVersion().equals(projDtl.getVersion() ))
-	        	.max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse( null);
+	        	.max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse( null );
         	
         }
         
@@ -278,8 +263,9 @@ public class FileExtractUploadService {
     
 
     /**
+     * Find the project by customerID
      * @param customerId
-     * @return
+     * @return projectID of matching record
      */
     private String getProjectIdByCustomerId(String customerId) {
         String projectId = null;
@@ -295,6 +281,11 @@ public class FileExtractUploadService {
         return projectId;
     }
 
+    /**
+     * Find the project by customerEmail
+     * @param emailId
+     * @return projectID of matching record
+     */
     private String getProjectIdByCustomerEmail(String emailId) {
         String projectId = null;
         if (StringUtils.isEmpty(emailId)) {
@@ -309,6 +300,11 @@ public class FileExtractUploadService {
         return projectId;
     }
 
+    /**
+     * Find the project by zipFileName
+     * @param zipFileName
+     * @return projectID of matching record
+     */
     private String getProjectIdByZipName(String zipFileName) {
         String projectId = null;
         if (StringUtils.isEmpty(zipFileName)) {
@@ -324,6 +320,11 @@ public class FileExtractUploadService {
         return projectId;
     }
 
+    /**
+     * Find the version for the given project.
+     * @param projectDetails
+     * @return Create new if doesn't exist in given project
+     */
     private String getVersion(ProjectDetails projectDetails) {
         String version = null;
         if (projectDetails.isAttachReplace()) {
@@ -363,6 +364,30 @@ public class FileExtractUploadService {
     }
     
 //=========================================
+    /**
+     * Upload, extract and validates files
+     *
+     * @param file - the file to be uploaded
+     * @param inputs - the inputs of CustomerInputs
+     * @return Report - report with validation status
+     */
+    public Report uploadAndExtractFile(MultipartFile file,
+            CustomerInformation inputs,
+            PCBInformation boardInfo) throws Exception {
+
+        ProjectDetails projectDetails = new ProjectDetails();
+        projectDetails.setProjectId(inputs.getProjectId());
+
+        Report report = validateFiles(projectDetails);
+
+        logger.debug("****** Done generating report *******");
+
+        //To delete the folder 
+        Path folder = Paths.get(util.getUploadDir() + File.separator + projectDetails.getProjectId()).toAbsolutePath().normalize();
+        FileUtil.deleteFolder(folder.toFile());
+        return report;
+    }
+    
     /**
      * Performs all possible Gerber file processing.
      *

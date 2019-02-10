@@ -21,11 +21,12 @@ public class CompareUtility {
     
     private static Set<String> DO_NOT_COMPARE = initDoNotCompare();
   
+    //Field names that will not be compared
     private static Set<String> initDoNotCompare() {
-		// TODO Auto-generated method stub
-    	Set<String> set = new HashSet<String>();
-    	set.add("version");
-    	set.add("serialVersionUID");
+		Set<String> set = new HashSet<String>();
+    	set.add("version"); set.add("serialVersionUID");
+    	set.add("modifiedDate");  set.add("valid"); set.add("createDate");
+    	set.add("newProject"); set.add("attachReplace");
 		return set;
 	}
     
@@ -45,8 +46,8 @@ public class CompareUtility {
         try {
         	differences.putAll( compareObject(newRecord, oldRecord));
         	
-        	//differences.putAll(FileDetailCompareUtility.compareMaps(newRecord.getTurnTimeQuantity(), oldRecord.getTurnTimeQuantity ()));
-            //Comparing the Validation errors with previous one  
+        	differences.putAll(compareObjectMaps(newRecord.getTurnTimeQuantity(), oldRecord.getTurnTimeQuantity ()));
+            //Comparing the Validation errors with previous validation errors
         	differences.putAll( compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
             //validationDifferences.put("Errors", validationDifferences.remove("tail"));
         	
@@ -72,23 +73,35 @@ public class CompareUtility {
     */
     public static Map<String, String> compareObject(Object newFD, Object oldFD) throws IllegalArgumentException, IllegalAccessException {
         
-        //Field name - newValue, oldValue
+        //Map: Field name - newValue ~ oldValue
         Map<String, String> differences = new HashMap<String, String>();
         if (newFD == null || oldFD == null) {
             return differences;
         }
         for (Field field : newFD.getClass().getDeclaredFields()) {
+        	//Do not compare collections and specific fields
             if (isCollection(field) || DO_NOT_COMPARE.contains( field.getName() ) ) {
                 continue;
             }
             // You might want to set modifier to public first (if it is not public yet)
             field.setAccessible(true);
-            Object value1 = field.get(newFD);
-            Object value2 = field.get(oldFD);
-            if (value1 != null && value2 != null) {
-                if (!Objects.equals(value1, value2)) {
-                    differences.put(field.getName(), value1 + DELIMITER + value2);
+            
+            
+            Object newVal = field.get(newFD);
+            Object oldVal = field.get(oldFD);
+            //If both set has value
+            if (newVal != null && oldVal != null) {
+                if (!Objects.equals(newVal, oldVal)) {
+                    differences.put(field.getName(), newVal + DELIMITER + oldVal);
                 }
+            }
+            //Only old set has value
+            if( newVal == null && oldVal != null ) {
+            	differences.put(field.getName(), "REMOVED" + DELIMITER + oldVal);
+            }
+            //Only new set has value
+            if( newVal != null && oldVal == null ) {
+            	differences.put(field.getName(), newVal + DELIMITER + "ADDED");
             }
         }
         return differences;
@@ -112,7 +125,7 @@ public class CompareUtility {
     	if(oldProject != null && oldProject.getAllFileNames() != null) {
     		oldFileNameSet = oldProject.getAllFileNames();
     	}
-    	//Collect all filenames
+    	//Collect all filenames in set for uniqueness
     	combinedKeys.addAll(newFileNameSet);
     	combinedKeys.addAll(oldFileNameSet);
     	
@@ -153,7 +166,7 @@ public class CompareUtility {
         }
         //First compare as simple object
         differences.putAll( compareObject( newFD, oldFD) );
-        //Now compare attributes for FileDetail 
+        //Now compare collection attributes for FileDetails 
 		differences.putAll( compareMaps(newFD.getAttributes(), oldFD.getAttributes()) );
 		newFD.setErrors(differences);
         return differences;
@@ -167,7 +180,7 @@ public class CompareUtility {
     public static Map<String, String> compareMaps( Map<String, String> newMap, Map<String, String> oldMap) {
     	Map<String, String> differences = new HashMap<String, String>();
  
-    	
+    	//Get all keys from both sets
     	Set<String> combinedKeys = new HashSet<String>();
     	if( newMap != null ) {
     		combinedKeys.addAll(newMap.keySet());
@@ -175,7 +188,7 @@ public class CompareUtility {
     	if( oldMap != null ) {
     		combinedKeys.addAll(oldMap.keySet());
     	}
-        
+        //For each key, compare old and new
         combinedKeys.stream().forEach( key -> {
         	String oldValue = "NA";
         	String newValue = "NA";
@@ -193,7 +206,48 @@ public class CompareUtility {
         
     	return differences;
     }
+    
+    /**
+     * @param newMap
+     * @param oldMap
+     * @return
+     */
+    public static Map<String, String> compareObjectMaps( Map newMap, Map oldMap) {
+    	Map<String, String> differences = new HashMap<String, String>();
+ 
+    	//Get all keys from both sets
+    	Set<Object> combinedKeys = new HashSet<Object>();
+    	if( newMap != null ) {
+    		combinedKeys.addAll(newMap.keySet());
+    	}
+    	if( oldMap != null ) {
+    		combinedKeys.addAll(oldMap.keySet());
+    	}
+        //For each key, compare old and new
+        combinedKeys.stream().forEach( key -> {
+        	Object oldValue = "NA";
+        	Object newValue = "NA";
+        	if( oldMap != null && oldMap.get(key) != null) {
+        		oldValue = oldMap.get(key);
+        	}
+        	if( newMap != null && newMap.get(key) != null) {
+        		newValue = newMap.get(key);
+        	}
+        	
+            if (!Objects.equals(oldValue, newValue)) {
+                differences.put(String.valueOf(key) , newValue + DELIMITER + oldValue);
+            }
+        });
+        
+    	return differences;
+    }
+    
 
+    /**
+     * Check if given field is a collection type of not
+     * @param field
+     * @return
+     */
     private static boolean isCollection(Field field) {
         // TODO Auto-generated method stub
         boolean retVal = false;

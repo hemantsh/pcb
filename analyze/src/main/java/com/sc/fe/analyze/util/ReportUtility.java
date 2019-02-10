@@ -2,17 +2,10 @@ package com.sc.fe.analyze.util;
 
 //import com.sc.fe.analyze.to.ProjectFilesDetails;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
-import com.sc.fe.analyze.data.entity.Report;
-import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 
@@ -26,6 +19,7 @@ public class ReportUtility {
     }
 
     public static ProjectDetails convertToObject(Project project) {
+    	//TODO check all attributes are set
         ProjectDetails dtl = new ProjectDetails();                
         dtl.setProjectId(project.getProjectId());
         dtl.setVersion(project.getVersion().toString());
@@ -47,6 +41,7 @@ public class ReportUtility {
     }
 
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
+    	//TODO check all attributes are set
         FileDetails dtl = new FileDetails();
         dtl.setCopperWeight(projectFiles.getCopperWeight());
         dtl.setType(projectFiles.getType());
@@ -69,8 +64,10 @@ public class ReportUtility {
     }
 
     public static Project convertToDBObject(ProjectDetails projectDetails) {
+    	//TODO check all attributes are set
         Project dbDetail = new Project();
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
+        dbDetail.setBoardType( projectDetails.getBoardType());
         dbDetail.setCustomerId(projectDetails.getCustomerId());
         dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
         dbDetail.setErrors(projectDetails.getErrors());
@@ -91,11 +88,13 @@ public class ReportUtility {
     }
 
     public static ProjectFiles convertToDBObject(FileDetails fileDetails) {
+    	//TODO check all attributes are set
         ProjectFiles filesDbDetails = new ProjectFiles();
 
         filesDbDetails.setVersion(fileDetails.getVersion());
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getSize());
+        filesDbDetails.setType( fileDetails.getType());
         filesDbDetails.setFileDate(new Date());
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
