@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModel;
  */
 @ApiModel(value="Layers Information",description="Table Structure of Layers Information")
 public class LayersInformation{
-
+	//TODO: remove this class
     public Integer layerSequence;    
     public String fileNamee;
     public String polarityy;

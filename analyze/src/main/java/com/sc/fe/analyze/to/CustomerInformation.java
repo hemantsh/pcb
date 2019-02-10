@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @JsonInclude(Include.NON_EMPTY)
 public class CustomerInformation implements Serializable {
-	
+	//TODO: remove this class
 	private static final long serialVersionUID = 1388568635843885556L;
 	
     /**

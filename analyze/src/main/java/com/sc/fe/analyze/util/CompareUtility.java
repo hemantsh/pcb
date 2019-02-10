@@ -18,7 +18,17 @@ import com.sc.fe.analyze.to.ProjectDetails;
 public class CompareUtility {
 
     private static final String DELIMITER = "~";
+    
+    private static Set<String> DO_NOT_COMPARE = initDoNotCompare();
   
+    private static Set<String> initDoNotCompare() {
+		// TODO Auto-generated method stub
+    	Set<String> set = new HashSet<String>();
+    	set.add("version");
+    	set.add("serialVersionUID");
+		return set;
+	}
+    
     /**
      * @param newRecord
      * @param oldRecord
@@ -52,7 +62,9 @@ public class CompareUtility {
         return differences;
     }
     
-    /**
+    
+
+	/**
      * This method is compare the new Object from the old Object details.
      * @param newFD - the new object details to set
      * @param oldFD - the old object details to set
@@ -66,7 +78,7 @@ public class CompareUtility {
             return differences;
         }
         for (Field field : newFD.getClass().getDeclaredFields()) {
-            if (isCollection(field) ) {
+            if (isCollection(field) || DO_NOT_COMPARE.contains( field.getName() ) ) {
                 continue;
             }
             // You might want to set modifier to public first (if it is not public yet)

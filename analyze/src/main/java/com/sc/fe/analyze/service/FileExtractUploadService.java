@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,13 +27,13 @@ import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.PCBInformation;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
+import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.FileUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
-import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ReportUtility;
 
 /**
@@ -254,7 +252,7 @@ public class FileExtractUploadService {
         ProjectDetails latestRecord = null;
         if (projDtl != null && projDtl.size() > 0) {
             latestRecord = projDtl.stream()
-                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);
+                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse( null );
         }
         return latestRecord;
     }
@@ -271,7 +269,7 @@ public class FileExtractUploadService {
         	
         	prevRecord = allRecords.stream()
 	        	.filter( p -> ! p.getVersion().equals(projDtl.getVersion() ))
-	        	.max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);
+	        	.max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse( null);
         	
         }
         
