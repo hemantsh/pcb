@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.Date;
@@ -22,28 +24,14 @@ public class ProjectDetails implements Serializable {
 	private String projectId;
 	private String version;
 	
+	private boolean attachReplace;
+	private boolean newProject;
 	private String serviceType;
 	private String zipFileName;
 	private String zipFileSize;
 	private int layers;
-        private Date modifiedDate;
-        private Date createDate;
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+    private Date modifiedDate;
+    private Date createDate;
     private String pcbClass;
     private String boardType;
     private boolean itar;
@@ -60,8 +48,21 @@ public class ProjectDetails implements Serializable {
 	 */
 	private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 	
-	private boolean attachReplace;
-	private boolean newProject;
+	public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 	
 	public String getProjectId() {
 		return projectId;
@@ -83,6 +84,29 @@ public class ProjectDetails implements Serializable {
 			fileDetails = new ArrayList<FileDetails>();
 		}
 		fileDetails.add(fileDetail);
+	}
+	
+	@JsonIgnore
+	public Set<String> getAllFileNames() {
+		if(fileDetails == null) {
+			return null;
+		}
+		return fileDetails.stream()
+				.map(FileDetails::getName)
+				.collect(Collectors.toCollection(TreeSet::new));
+	}
+	
+	public FileDetails getFileDetails(String fileName) {
+		FileDetails retVal = null;
+		
+		List<FileDetails> shortList = fileDetails.stream()
+				.filter(  fd -> fileName.equalsIgnoreCase(fd.getName()) )
+				.collect(Collectors.toList());
+		
+		if(shortList != null && shortList.size() > 0) {
+			retVal = shortList.get(0);
+		}
+		return retVal;
 	}
 	
 	public Set<String> getFileNames() {

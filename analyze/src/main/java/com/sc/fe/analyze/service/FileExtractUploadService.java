@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,10 +35,8 @@ import com.sc.fe.analyze.util.FileUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
-import com.sc.fe.analyze.util.ReportCompareUtility;
+import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  *
@@ -107,80 +109,120 @@ public class FileExtractUploadService {
                 fileDetails.add(fd);
             });
         }
-        /// REPORT
+        // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
-
-        List<String> requiredFilesTypes = baseService.getServiceFiles(
-                MappingUtil.getServiceId(
-                        projectDetails.getServiceType()
-                )
-        );
-
-        List<String> availFileTypes = projectDetails.getFileDetails().stream()
-                .filter(fd -> fd.getType() != null)
-                .map(FileDetails::getType)
-                .collect(Collectors.toList());
-
-        List<String> missingTypes = new ArrayList<String>();
-
-        if (availFileTypes != null) {
-
-            if (!availFileTypes.containsAll(requiredFilesTypes)) {
-                missingTypes.addAll(requiredFilesTypes);
-                missingTypes.removeAll(availFileTypes);
-            }
-        }
+        
+        //GoldenCheck
+        List<String> missingTypes = validateGoldenCheckRules(projectDetails);
+        
         if (missingTypes.size() > 0) {
             report.setValidationStatus("We found some missing information. ");
             missingTypes.stream().forEach(type -> {
                 report.addError(type);
-                report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));     
             });
+            
         } else {
             report.setValidationStatus("Matched with all required file types. All information collected.");
         }
+        //Set errors
+        Map<String,String> errMap = new HashMap<String,String>();
+        if( report != null && report.getErrorCodes() != null) {
+			
+			report.getErrorCodes().stream().forEach( err -> {
+				errMap.put( err.toString(), err.getErrorMessage());
+			});
+		}
+        projectDetails.setErrors(errMap);
+        
+        //compare the last ProjectDetails 
+        Map<String,String> compareMap =  compareWithLastProjectData(projectDetails) ;
+        //Save
+        projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        
+        projectDetails.getErrors().putAll( compareMap );
         return report;
     }
+    
+    /**
+     * @param projectDetails
+     * @return
+     */
+    private Map<String, String> compareWithLastProjectData(ProjectDetails projectDetails) {
+    	
+    	Map<String, String> retErrors = new HashMap<String, String>();
+    	
+    	//Retrieve latest Record of similar project Id
+        ProjectDetails prevprojDtl = getPreviousRecord( projectDetails );
+        
+        if (prevprojDtl != null) {
+            //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
+        	prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
+            
+            retErrors = CompareUtility.fullCompare(projectDetails, prevprojDtl);
+        }
+        
+    	return retErrors;
+    }
 
-    public void save(ProjectDetails projectDetails) {
+	/**
+	 * @param projectDetails
+	 * @return
+	 */
+	private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
+		//Required files
+		List<String> requiredFilesTypes = baseService.getServiceFiles(
+                MappingUtil.getServiceId( projectDetails.getServiceType() )
+        );
+
+		//Files provided by customer
+        List<String> availFileTypes = projectDetails.getFileDetails().stream()
+                .filter(fd -> fd.getType() != null)
+                .map(FileDetails::getType)
+                .collect(Collectors.toList());
+        
+        //Find missing files
+        //Remove all available types from required, we get the missing
+        requiredFilesTypes.removeAll(availFileTypes);
+
+		return requiredFilesTypes;
+	}
+
+    /**
+     * @param projectDetails
+     */
+    public void save ( ProjectDetails projectDetails) {
         // TODO Auto-generated method stub
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
 
-        String version = getVersion(projectDetails);
+        
         String projectId = getProjectId(projectDetails);
+        String version = getVersion(projectDetails);
 
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
-
+        
+        //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
             pFiles.setVersion(UUID.fromString(version));
             pFiles.setProjectId(projectId);
             projectFilesService.save(pFiles);
         });
-
-        //Retrieve latest Record of similar project Id
-        List<ProjectDetails> projDtls = projectService.findByKeyProjectId(projectId);
-        ProjectDetails latestprojDtl = null;
-        if (!projDtls.isEmpty()) {
-            latestprojDtl = getLatestRecord(projDtls);
-        }
-
-        //TODO: Save into project and project_file table               
+        
+        //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
-        //compare the ProjectDetails        
-        if (latestprojDtl != null) {
-            //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
-            latestprojDtl = projectService.getProject(latestprojDtl.getProjectId(), latestprojDtl.getVersion());
-            projectDetails = projectService.getProject(projectId, version);
-            Map<String, String> compare = ReportCompareUtility.compare(projectDetails, latestprojDtl);
-        }
+        
     }
 
+    /**
+     * @param projectDetails
+     * @return
+     */
     private String getProjectId(ProjectDetails projectDetails) {
         String projectId = null;
 
@@ -203,6 +245,11 @@ public class FileExtractUploadService {
         return projectId;
     }
 
+    private ProjectDetails getLatestRecord(String projectId) {
+        
+        return getLatestRecord( projectService.findByKeyProjectId( projectId ) );
+    }
+    
     private ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
         ProjectDetails latestRecord = null;
         if (projDtl != null && projDtl.size() > 0) {
@@ -211,7 +258,31 @@ public class FileExtractUploadService {
         }
         return latestRecord;
     }
+    
+    /**
+     * @param projDtl
+     * @return
+     */
+    private ProjectDetails getPreviousRecord(ProjectDetails projDtl) {
+        ProjectDetails prevRecord = null;
+        
+        List<ProjectDetails> allRecords = projectService.findByKeyProjectId( projDtl.getProjectId() ) ;
+        if( allRecords != null) {
+        	
+        	prevRecord = allRecords.stream()
+	        	.filter( p -> ! p.getVersion().equals(projDtl.getVersion() ))
+	        	.max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElseThrow(NoSuchElementException::new);
+        	
+        }
+        
+        return prevRecord;
+    }
+    
 
+    /**
+     * @param customerId
+     * @return
+     */
     private String getProjectIdByCustomerId(String customerId) {
         String projectId = null;
         if (StringUtils.isEmpty(customerId)) {
@@ -292,7 +363,8 @@ public class FileExtractUploadService {
         // end S3
         return util.listFiles(inputs.getProjectId());
     }
-
+    
+//=========================================
     /**
      * Performs all possible Gerber file processing.
      *

@@ -1,7 +1,6 @@
 package com.sc.fe.analyze.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
+import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 
@@ -37,23 +37,20 @@ public class FileManagementController {
 	@ResponseBody
 	public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 		
-		Map<String,String> retMap = new HashMap<String,String>();
-		
 		Report report = fileUploadService.validateFiles(projectDetails);
-		if( report != null && report.getErrorCodes() != null) {
-			
-			report.getErrorCodes().stream().forEach( err -> {
-				retMap.put( err.toString(), err.getErrorMessage());
-			});
+		ProjectDetails retVal = new ProjectDetails();
+		if(report != null) {
+			retVal = report.getProjectDetail();
+			retVal.setFileDetails( new ArrayList<FileDetails>());
 		}
-		
-		return report.getProjectDetail();
+		return retVal;
 	}
 	
 	@PostMapping(path="/validateAndSave")
 	@ResponseBody
 	public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
 		
+		//ProjectDetails validationResult = validate(projectDetails);
 		fileUploadService.save(projectDetails);
 		return validate(projectDetails);
 	}

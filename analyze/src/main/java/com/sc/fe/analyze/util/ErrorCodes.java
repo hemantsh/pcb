@@ -2,16 +2,16 @@ package com.sc.fe.analyze.util;
 
 public enum ErrorCodes {
 // 
-	FM0000 ("Unknown error"),
-	FM0001 ("Drill file missing"),
-	FM0002 ("Signal file missing"),
-	FM0003 ("power_ground file missing"),
-	FM0004 ("solder_mask file missing"),
-	FM0005 ("silk_screen file missing"),
-	FM0006 ("solder_paste file missing"),
-	FM0007 ("Document file missing"),
-	FM0008 ("Component file missing"),
-	FM0009 ("Rout file missing");
+	V0000 ("Unknown error"),
+	V0001 ("Drill file missing"),
+	V0002 ("Signal file missing"),
+	V0003 ("power_ground file missing"),
+	V0004 ("solder_mask file missing"),
+	V0005 ("silk_screen file missing"),
+	V0006 ("solder_paste file missing"),
+	V0007 ("Document file missing"),
+	V0008 ("Component file missing"),
+	V0009 ("Rout file missing");
 	
 	private ErrorCodes(String errorMessage) {
 		this.errorMessage = errorMessage;

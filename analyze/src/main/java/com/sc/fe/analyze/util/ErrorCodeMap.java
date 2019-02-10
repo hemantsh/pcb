@@ -11,15 +11,15 @@ public class ErrorCodeMap {
 		// TODO Auto-generated method stub
 
 		Map<String, ErrorCodes> temp = new HashMap<String, ErrorCodes>();
-		temp.put("drill", ErrorCodes.FM0001);
-		temp.put("signal", ErrorCodes.FM0002);
-		temp.put("power_ground", ErrorCodes.FM0003);
-		temp.put("solder_mask", ErrorCodes.FM0004);
-		temp.put("silk_screen", ErrorCodes.FM0005);
-		temp.put("solder_paste", ErrorCodes.FM0006);
-		temp.put("document", ErrorCodes.FM0007);
-		temp.put("domponent", ErrorCodes.FM0008);
-		temp.put("Rout", ErrorCodes.FM0009);
+		temp.put("drill", ErrorCodes.V0001);
+		temp.put("signal", ErrorCodes.V0002);
+		temp.put("power_ground", ErrorCodes.V0003);
+		temp.put("solder_mask", ErrorCodes.V0004);
+		temp.put("silk_screen", ErrorCodes.V0005);
+		temp.put("solder_paste", ErrorCodes.V0006);
+		temp.put("document", ErrorCodes.V0007);
+		temp.put("domponent", ErrorCodes.V0008);
+		temp.put("rout", ErrorCodes.V0009);
 		
 		return temp;
 	}
@@ -27,7 +27,7 @@ public class ErrorCodeMap {
 	public static ErrorCodes getCodeForFileType( String fileType) {
 		ErrorCodes code = errorMap.get(fileType);
 		if( code == null) {
-			code = ErrorCodes.FM0000;
+			code = ErrorCodes.V0000;
 		}
 		return code;
 	}
