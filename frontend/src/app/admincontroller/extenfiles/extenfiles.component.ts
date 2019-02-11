@@ -95,13 +95,15 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
 
   onExtensionSelect(id) {
     console.log("selected extension id", id);
+    console.log("Selected Filetype is :"+this.selectedFileTypeId)
     if (this.extensionsArr && this.extensionsArr.findIndex(ext => ext.extensionId == id) > -1) {
       this.selectedExtensionId = 0;
       alert("This Extension already exists! Please choose another Extension");
     } else if (this.selectedFileTypeId > 0) {
       let selectedExtension = this.extensionsList.filter(ext => ext.id == id)[0];
       let selectedFileType = this.filtypeList.filter(file => file.id == this.selectedFileTypeId)[0];
-      this.extensionsArr.push({ key: { extensionId: selectedExtension.id, filetypeId: selectedFileType.filetypeId }, extension: selectedExtension.name, extensionId: selectedExtension.id, file: selectedFileType.file, filetypeId: selectedFileType.filetypeId })
+      this.extensionsArr.push({ key: { extensionId: selectedExtension.id, filetypeId: selectedFileType.id }, extension: selectedExtension.name, extensionId: selectedExtension.id, file: selectedFileType.type, filetypeId: selectedFileType.id })
+      console.log("testing :"+JSON.stringify(this.extensionsArr));
     }
     this.changesSaved=false;
   }
@@ -115,6 +117,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   }
 
   onSaveClick() {
+    console.log("this.extensionsArr", this.extensionsArr);
     this.fileService.saveExtensionFile(this.extensionsArr)
       .subscribe(
         (response: Response) => {

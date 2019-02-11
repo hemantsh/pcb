@@ -119,11 +119,5 @@ public class ProjectService {
         });
         obj.setFileDetails(fbList);
         return obj;
-    }
-    
-    public void setProject(String projectId,String version){
-        /**
-         * TODO
-         */
-    }
+    }   
 }

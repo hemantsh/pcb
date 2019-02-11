@@ -64,20 +64,20 @@ export class ReportComponent implements OnInit {
   }
 
   updateData(data) {
-    // this.fileService.saveFileManagementReport(data)
-    // .subscribe(
-    //   (response: Response) => {
-    //     this.report = response.json();
-    //     this.versionStyle='show';
-    //     console.log("Report is fetching...", this.report);
-    //   },
-    //   (error) => console.log(error)
-    // );
+    data.attachReplace=true;
+    this.fileService.saveFileManagementReport(data)
+    .subscribe(
+      (response: Response) => {
+        console.log("data is", data);
+        this.versionStyle='show';
+        console.log("Report is fetching...", response);
+      },
+      (error) => console.log(error)
+    );
     if (this.report.customerIdEdit) {
       delete this.report.customerIdEdit;
       delete this.report.originalCustId;
     }  
-      console.log("Updated Report", this.report);
     if(this.report.emailEdit){
       delete this.report.emailEdit;
       delete this.report.originalEmail;

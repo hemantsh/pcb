@@ -10,7 +10,7 @@ import { FileService } from '../servers.service';
 export class CustomerinputsComponent implements OnInit {
   uploadForm: FormGroup;
   changeFile: any;
-  responeGlobal = [];
+  responeGlobal: Array<any>;
 
   divStyle='hide';
   hideStyle='show';

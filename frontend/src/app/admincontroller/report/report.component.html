@@ -30,11 +30,14 @@
         </div>
 
       </div>
-      <div class="row" [ngClass]="[versionStyle]" *ngIf="report">
+      <div class="row" *ngIf="report">
         <div class="col-xs-12 col-sm-12 col-md-12">
+          <div class="spacer">
+            <h3>Creation Date of Project:</h3> <span>{{report.createDate}}</span>
+          </div>
           <div>
-            <div>
-              <table class="table table-striped spacer">
+            <div class="spacer table-height">
+              <table class="table table-striped ">
                 <thead>
                   <tr>
                     <th>ProjectId</th>
@@ -132,6 +135,5 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
