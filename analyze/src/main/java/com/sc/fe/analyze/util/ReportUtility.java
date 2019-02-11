@@ -18,36 +18,35 @@ public class ReportUtility {
     private ReportUtility() {
     }
 
-    public static ProjectDetails convertToObject(Project project) {
-    	//TODO check all attributes are set
+    public static ProjectDetails convertToObject(Project project) {    	
         ProjectDetails dtl = new ProjectDetails();                
         dtl.setProjectId(project.getProjectId());
-        dtl.setVersion(project.getVersion().toString());
+        dtl.setVersion(project.getVersion().toString());        
         dtl.setCustomerId(project.getCustomerId());
         dtl.setEmailAddress(project.getCustomerEamil());
         dtl.setServiceType(project.getServiceType());
-        dtl.setZipFileName(project.getZipFileName());
-        dtl.setZipFileSize(project.getZipFileSize());
+        dtl.setZipFileName(project.getZipfileName());
+        dtl.setZipFileSize(project.getZipfileSize());
         dtl.setLayers(project.getLayerCount());
         dtl.setPcbClass(project.getPcbClass());
         dtl.setBoardType(project.getBoardType());
         dtl.setItar(Boolean.valueOf(project.getItar()));
-        dtl.setTurnTimeQuantity(project.getTurnTimeQuantity());
+        dtl.setTurnTimeQuantity(project.getTurntimeQuantity());
         dtl.setDesignSpecification(project.getDesignSpecification());
         dtl.setErrors(project.getErrors());
         dtl.setCreateDate(project.getCreateDate());
         dtl.setModifiedDate(project.getModifiedDate());
+       
         return dtl;
     }
 
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
-    	//TODO check all attributes are set
-        FileDetails dtl = new FileDetails();
-        dtl.setCopperWeight(projectFiles.getCopperWeight());
-        dtl.setType(projectFiles.getType());
+    	FileDetails dtl = new FileDetails();
         dtl.setName(projectFiles.getName());
-        dtl.setVersion(projectFiles.getVersion());
-        dtl.setFormat(projectFiles.getFormat());        
+        dtl.setVersion(projectFiles.getVersion());        
+        dtl.setFormat(projectFiles.getFormat());                
+        dtl.setCopperWeight(projectFiles.getCopperWeight());
+        dtl.setType(projectFiles.getType());        
         dtl.setModifiedDate(projectFiles.getModifiedDate());
         dtl.setCreateDate(projectFiles.getCreateDate());
         dtl.setSize(projectFiles.getSize());
@@ -57,9 +56,10 @@ public class ReportUtility {
         dtl.setSide(projectFiles.getSide());
         dtl.setLayerOrder(projectFiles.getLayerOrder());
         dtl.setStartName(projectFiles.getStartName());
-        dtl.setEndName(projectFiles.getEndName());
-        dtl.setCopperWeight(projectFiles.getCopperWeight());
+        dtl.setEndName(projectFiles.getEndName());        
         dtl.setLayerName(projectFiles.getLayerName());
+        dtl.setAttributes(projectFiles.getAttributes());
+        dtl.setErrors(projectFiles.getErrors());
         return dtl;
     }
 
@@ -74,23 +74,22 @@ public class ReportUtility {
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setProjectId(projectDetails.getProjectId());
         dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
-
-        dbDetail.setTurnTimeQuantity(projectDetails.getTurnTimeQuantity());
+        dbDetail.setTurntimeQuantity(projectDetails.getTurnTimeQuantity());
         dbDetail.setServiceType(projectDetails.getServiceType());
-        dbDetail.setZipFileName(projectDetails.getZipFileName());
-        dbDetail.setZipFileSize(projectDetails.getZipFileSize());
+        dbDetail.setZipfileName(projectDetails.getZipFileName());
+        dbDetail.setZipfileSize(projectDetails.getZipFileSize());
         dbDetail.setLayerCount(projectDetails.getLayers());
         dbDetail.setModifiedDate(new Date());
         dbDetail.setCreateDate(new Date());
         dbDetail.setCustomerName("ABC");
-
+        dbDetail.setItar(String.valueOf(projectDetails.getItar()));
+        dbDetail.setPcbClass(projectDetails.getPcbClass());           
         return dbDetail;
     }
 
     public static ProjectFiles convertToDBObject(FileDetails fileDetails) {
     	//TODO check all attributes are set
         ProjectFiles filesDbDetails = new ProjectFiles();
-
         filesDbDetails.setVersion(fileDetails.getVersion());
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getSize());
@@ -109,8 +108,7 @@ public class ReportUtility {
         filesDbDetails.setAttributes(fileDetails.getAttributes());
         filesDbDetails.setCreateDate(new Date());
         filesDbDetails.setModifiedDate(new Date());
-        filesDbDetails.setErrors(fileDetails.getErrors());
+        filesDbDetails.setErrors(fileDetails.getErrors());              
         return filesDbDetails;
     }
-
 }
