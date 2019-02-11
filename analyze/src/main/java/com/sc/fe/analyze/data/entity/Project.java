@@ -126,22 +126,13 @@ public class Project {
 
     public void setPcbClass(String pcbClass) {
         this.pcbClass = pcbClass;
-    }
-
-    public void getBoardType(String boardType) {
-        this.boardType = boardType;
-    }
+    }  
 
     public String getItar() {
         return itar;
-    }
-
-    public Map<Integer, Integer> getTurnTimeQuantity() {
-        return turntimeQuantity;
-    }
-
-    public void setTurnTimeQuantity(Map<Integer, Integer> turnTimeQuantity) {
-        this.turntimeQuantity = turnTimeQuantity;
+    }  
+    public void setItar(String itar){
+        this.itar=itar;
     }
 
     public String getDesignSpecification() {
@@ -150,23 +141,7 @@ public class Project {
 
     public void setDesignSpecification(String desingSpec) {
         this.designSpecification = desingSpec;
-    }
-
-    public String getZipFileName() {
-        return zipFileName;
-    }
-
-    public void setZipFileName(String zipFileName) {
-        this.zipFileName = zipFileName;
-    }
-
-    public String getZipFileSize() {
-        return zipfileSize;
-    }
-
-    public void setZipFileSize(String zipFileSize) {
-        this.zipfileSize = zipFileSize;
-    }
+    }      
 
     public String getBoardType() {
         return boardType;

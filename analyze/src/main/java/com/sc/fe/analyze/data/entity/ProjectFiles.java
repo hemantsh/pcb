@@ -38,91 +38,82 @@ public class ProjectFiles {
     @Column(value = "polarity")    
     private String polarity;
     @Column(value = "type")    
-    private String type;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getLayer_order() {
-        return layer_order;
-    }
-
-    public void setLayer_order(int layer_order) {
-        this.layer_order = layer_order;
-    }
-
-    public String getStart_name() {
-        return start_name;
-    }
-
-    public void setStart_name(String start_name) {
-        this.start_name = start_name;
-    }
-
-    public String getEnd_name() {
-        return end_name;
-    }
-
-    public void setEnd_name(String end_name) {
-        this.end_name = end_name;
-    }
-
-    public String getCopper_weight() {
-        return copper_weight;
-    }
-
-    public void setCopper_weight(String copper_weight) {
-        this.copper_weight = copper_weight;
-    }
-
-    public String getLayer_name() {
-        return layer_name;
-    }
-
-    public void setLayer_name(String layer_name) {
-        this.layer_name = layer_name;
-    }
-
-    public Date getCreate_date() {
-        return create_date;
-    }
-
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
-    }
-
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
+    private String type;  
     @Column(value = "side")
     private String side;
     @Column(value = "layer_order")
-    private int layer_order;
+    private int layerOrder;    
     @Column(value = "start_name")
-    private String start_name;
+    private String startName;
     @Column(value = "end_name")
-    private String end_name;
+    private String endName;
     @Column(value = "copper_weight")
-    private String copper_weight;
+    private String copperWeight;
     @Column(value = "layer_name")
-    private String layer_name;
+    private String layerName;
     @Column(value = "attributes")
     private Map<String, String> attributes;
     @Column(value = "create_date")
-    private Date create_date;
+    private Date createDate;
     @Column(value = "modified_date")
-    private Date modified_date;
+    private Date modifiedDate;
     @Column(value = "errors")
     private Map<String, String> errors;
+
+    public String getStartName() {
+        return startName;
+    }
+
+    public void setStartName(String startName) {
+        this.startName = startName;
+    }
+    public int getLayerOrder() {
+        return layerOrder;
+    }
+
+    public void setLayerOrder(int layerOrder) {
+        this.layerOrder = layerOrder;
+    }
+    public String getEndName() {
+        return endName;
+    }
+
+    public void setEndName(String endName) {
+        this.endName = endName;
+    }
+    
+    
+    public String getLayerName() {
+        return layerName;
+    }
+    public void setLayerName(String layerName) {
+        this.layerName = layerName;
+    }
+
+    public String getCopperWeight() {
+        return copperWeight;
+    }
+
+    public void setCopperWeight(String copperWeight) {
+        this.copperWeight = copperWeight;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+    
 
     public String getProjectId() {
         return getKey().getProjectId();
@@ -139,7 +130,13 @@ public class ProjectFiles {
     public void setVersion(UUID version) {
         this.getKey().setVersion(version);
     }
+      public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
     public String getName() {
         return getKey().getName();
     }
@@ -215,46 +212,7 @@ public class ProjectFiles {
         return side;
     }
 
-    public void setLayerOrder(int layerOrder) {
-        this.layer_order = layerOrder;
-    }
-
-    public int getLayerOrder() {
-        return layer_order;
-    }
-
-    public void setStartName(String startName) {
-        this.start_name = startName;
-    }
-
-    public String getStartName() {
-        return start_name;
-    }
-
-    public void setEndName(String endName) {
-        this.end_name = endName;
-    }
-
-    public String getEndName() {
-        return end_name;
-    }
-
-    public void setCopperWeight(String copperWeight) {
-        this.copper_weight = copperWeight;
-    }
-
-    public String getCopperWeight() {
-        return copper_weight;
-    }
-
-    public void setLayerName(String layerName) {
-        this.layer_name = layerName;
-    }
-
-    public String getLayerName() {
-        return layer_name;
-    }
-
+   
     public Map<String, String> getAttributes() {
         return attributes;
     }
@@ -263,22 +221,7 @@ public class ProjectFiles {
         this.attributes = attributes;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.create_date = createDate;
-    }
-
-    public Date getCreateDate() {
-        return create_date;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modified_date = modifiedDate;
-    }
-
-    public Date getModifiedDate() {
-        return modified_date;
-    }
-
+    
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }

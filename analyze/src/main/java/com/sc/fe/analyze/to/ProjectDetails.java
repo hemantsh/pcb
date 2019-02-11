@@ -232,6 +232,9 @@ public class ProjectDetails implements Serializable {
 	public void setItar(boolean itar) {
 		this.itar = itar;
 	}
+        public boolean getItar() {
+		return itar;
+	}
 	/**
 	 * @return the turnTimeQuantityList
 	 */
