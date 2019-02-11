@@ -20,11 +20,11 @@ import {CanServiceFilesDeactivateGuard} from './admincontroller/servicefiles/can
 import { InputJSONComponent } from './input-json/input-json.component';
 
 const appRoutes: Routes = [
-  { path: '', component: CustomerinputsComponent ,
-  children:[
-    {path:"customerInputs",component:CustomerinputsComponent}
-  ]
-},
+//   { path: '', component: CustomerinputsComponent ,
+//   children:[
+//     {path:"customerInputs",component:CustomerinputsComponent}
+//   ]
+// },
   {
     path: 'adminController', component: AdmincontrollerComponent,
     children:[
@@ -37,7 +37,10 @@ const appRoutes: Routes = [
     ]
   },
   {
-    path:'inputjson', component:InputJSONComponent
+    path:'', component:InputJSONComponent,
+    children:[
+      {path:'inputjson',component:InputJSONComponent}
+    ]
   }
 ]
 @NgModule({
