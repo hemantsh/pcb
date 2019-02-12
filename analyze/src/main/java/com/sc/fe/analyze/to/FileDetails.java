@@ -30,8 +30,9 @@ public class FileDetails implements Serializable {
     private boolean valid;
     private Date modifiedDate;
     private Date createDate;
+    private Date fileDate;    
     private String size;
-
+    
     private String step;
     private String context;
     private String type;
@@ -60,7 +61,13 @@ public class FileDetails implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    public Date getFileDate() {
+            return fileDate;
+        }
 
+    public void setFileDate(Date fileDate) {
+        this.fileDate = fileDate;
+    }
     /**
      * @return the valid
      */
