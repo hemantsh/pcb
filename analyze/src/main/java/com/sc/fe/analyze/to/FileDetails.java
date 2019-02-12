@@ -1,5 +1,7 @@
 package com.sc.fe.analyze.to;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.UUID;
  * @author Hemant
  */
 @ApiModel(value = "ExtensionFileType", description = "Table Structure of FileDetails")
+@JsonInclude(Include.NON_EMPTY)
 public class FileDetails implements Serializable {
 
     /**

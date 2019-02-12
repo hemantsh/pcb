@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -157,19 +158,26 @@ public class CompareUtility {
      */
     public static Map<String, String> compare(FileDetails newFD, FileDetails oldFD) throws IllegalArgumentException, IllegalAccessException {
     	Map<String, String> differences = new HashMap<String, String>();
-    	
+    	Map<String, String> returnMap = new HashMap<String, String>();
         if (newFD == null) {
         	newFD = new FileDetails();
         }
         if ( oldFD == null) {
         	oldFD = new FileDetails();
         }
+        
         //First compare as simple object
         differences.putAll( compareObject( newFD, oldFD) );
         //Now compare collection attributes for FileDetails 
-		differences.putAll( compareMaps(newFD.getAttributes(), oldFD.getAttributes()) );
-		newFD.setErrors(differences);
-        return differences;
+	differences.putAll( compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
+        String fileName=StringUtils.isEmpty(newFD.getName())?oldFD.getName():newFD.getName();                  
+                
+        differences.keySet().stream().forEach(key->
+        {
+            returnMap.put(fileName.toUpperCase()+"."+key,differences.get(key));
+        });                
+	newFD.setErrors(differences);                
+        return returnMap;
     }
     
     /**
