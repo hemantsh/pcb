@@ -80,7 +80,11 @@ public class ReportUtility {
         dbDetail.setZipfileSize(projectDetails.getZipFileSize());
         dbDetail.setLayerCount(projectDetails.getLayers());
         dbDetail.setModifiedDate(new Date());
-        dbDetail.setCreateDate(new Date());
+        if(projectDetails.isNewProject()){
+            dbDetail.setCreateDate(new Date());
+        }else{
+            dbDetail.setCreateDate(projectDetails.getCreateDate());
+        }
         dbDetail.setCustomerName("ABC");
         dbDetail.setItar(String.valueOf(projectDetails.getItar()));
         dbDetail.setPcbClass(projectDetails.getPcbClass());           
@@ -94,7 +98,7 @@ public class ReportUtility {
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getSize());
         filesDbDetails.setType( fileDetails.getType());
-        filesDbDetails.setFileDate(new Date());
+        //TODO filesDbDetails.setFileDate(new Date()); 
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
         filesDbDetails.setContext(fileDetails.getContext());
@@ -106,7 +110,12 @@ public class ReportUtility {
         filesDbDetails.setCopperWeight(fileDetails.getCopperWeight());
         filesDbDetails.setLayerName(fileDetails.getLayerName());
         filesDbDetails.setAttributes(fileDetails.getAttributes());
-        filesDbDetails.setCreateDate(new Date());
+        if(fileDetails.getCreateDate()== null){
+            filesDbDetails.setCreateDate(new Date());
+        }
+        else{
+            filesDbDetails.setCreateDate(fileDetails.getCreateDate());
+        }
         filesDbDetails.setModifiedDate(new Date());
         filesDbDetails.setErrors(fileDetails.getErrors());              
         return filesDbDetails;
