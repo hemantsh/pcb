@@ -8,66 +8,88 @@ import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
-@ApiModel(value="ServiceFiles",description="Combined Primary Key Structure of ServiceFiles")
+@ApiModel(value = "ServiceFiles", description = "Combined Primary Key Structure of ServiceFiles")
 @PrimaryKeyClass
-public class ServiceFilesPK implements Serializable  {
+public class ServiceFilesPK implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7133581623671470779L;
-	
-	@PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name="service_id")
-        @ApiModelProperty("First Primary Key")
-	private int serviceId;
-	@PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name="filetype_id")
-        @ApiModelProperty("Second Primary Key")
-        private int filetypeId;
-	
-	@Override
+    /**
+     *
+     */
+    private static final long serialVersionUID = 7133581623671470779L;
+
+    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "service_id")
+    @ApiModelProperty("First Primary Key")
+    private int serviceId;
+    @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "filetype_id")
+    @ApiModelProperty("Second Primary Key")
+    private int filetypeId;
+
+    @Override
     public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + Integer.valueOf(serviceId).hashCode();
-      result = prime * result + Integer.valueOf(filetypeId).hashCode();
-      return result;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Integer.valueOf(serviceId).hashCode();
+        result = prime * result + Integer.valueOf(filetypeId).hashCode();
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
-        return true;
-      if (obj == null)
-        return false;
-      if (getClass() != obj.getClass())
-        return false;
-      
-      ServiceFilesPK other = (ServiceFilesPK) obj;
-      if(other.filetypeId != filetypeId) {
-    	  return false;
-      }
-      if(other.serviceId != serviceId) {
-    	  return false;
-      }
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
 
-      return true;
+        ServiceFilesPK other = (ServiceFilesPK) obj;
+        if (other.filetypeId != filetypeId) {
+            return false;
+        }
+        if (other.serviceId != serviceId) {
+            return false;
+        }
+
+        return true;
     }
 
-	public int getServiceId() {
-		return serviceId;
-	}
+    /**
+     * Gets the serviceId.
+     *
+     * @return
+     */
+    public int getServiceId() {
+        return serviceId;
+    }
 
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
-	}
+    /**
+     * Sets the serviceId into the variable serviceId.
+     *
+     * @param serviceId takes serviceId and sets it
+     */
+    public void setServiceId(int serviceId) {
+        this.serviceId = serviceId;
+    }
 
-	public int getFiletypeId() {
-		return filetypeId;
-	}
+    /**
+     * Gets the FiletypeId.
+     *
+     * @return
+     */
+    public int getFiletypeId() {
+        return filetypeId;
+    }
 
-	public void setFiletypeId(int filetypeId) {
-		this.filetypeId = filetypeId;
-	}
-    
-	
+    /**
+     * Sets the fileTypeId into the variable filetypeId
+     *
+     * @param filetypeId takes filetypeId and sets it
+     */
+    public void setFiletypeId(int filetypeId) {
+        this.filetypeId = filetypeId;
+    }
+
 }

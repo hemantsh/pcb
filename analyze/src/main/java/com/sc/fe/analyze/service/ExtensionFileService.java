@@ -21,25 +21,27 @@ import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
  */
 @Service
 public class ExtensionFileService {
+
     @Autowired
     private ExtensionFileRepo extensionFileRepo;
     @Autowired
     private CachingService cacheService;
-    
+
     /**
      * This method find the extension_file
+     *
      * @return all the extension_file which found in the database
      */
-    @Cacheable(value="ExtnFileTypes")
-    public List<ExtensionFileType> findAll(){
+    @Cacheable(value = "ExtnFileTypes")
+    public List<ExtensionFileType> findAll() {
         return extensionFileRepo.findAll();
     }
-    
+
     /**
      *
      * @param exFT - the extension_file to store in a database
      */
-    public void save(ExtensionFileType exFT){
+    public void save(ExtensionFileType exFT) {
         extensionFileRepo.save(exFT);
         cacheService.evictAllCacheValues("ExtnFileTypes");
     }
@@ -48,21 +50,21 @@ public class ExtensionFileService {
      *
      * @param exFT - the list of extension_file to store in a database
      */
-    public void saveAll(List<ExtensionFileType> exFT){
+    public void saveAll(List<ExtensionFileType> exFT) {
         extensionFileRepo.saveAll(exFT);
         cacheService.evictAllCacheValues("ExtnFileTypes");
     }
-    
+
     /**
      *
      * @param id - the specific extension_file to find from database by id
      * @return the list of extension_file
      */
-    public List<ExtensionFileType> getExtenFileTypeById(Integer id){
-    	
+    public List<ExtensionFileType> getExtenFileTypeById(Integer id) {
+
 //    	List<ExtensionFileType> retList = findAll();
 //    	return retList.stream().filter( e -> e.getFiletypeId() == id ).collect(Collectors.toList());
-    	return extensionFileRepo.findByKeyFiletypeId(id);
+        return extensionFileRepo.findByKeyFiletypeId(id);
     }
-    
+
 }

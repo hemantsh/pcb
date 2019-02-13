@@ -8,9 +8,14 @@ import org.springframework.stereotype.Repository;
 import com.sc.fe.analyze.data.entity.ServiceFiles;
 import com.sc.fe.analyze.data.entity.ServiceFilesPK;
 
-
 @Repository
-public interface ServiceFilesRepo extends CassandraRepository<ServiceFiles, ServiceFilesPK>{
+public interface ServiceFilesRepo extends CassandraRepository<ServiceFiles, ServiceFilesPK> {
 
-	List<ServiceFiles> findByKeyServiceId(final int serviceId);
+    /**
+     * Extracts data by serviceId from the database.
+     *
+     * @param serviceId takes serviceId
+     * @return
+     */
+    List<ServiceFiles> findByKeyServiceId(final int serviceId);
 }

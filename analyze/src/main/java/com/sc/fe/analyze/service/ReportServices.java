@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author Hemant
@@ -19,29 +20,32 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ReportServices {
+
     @Autowired
     private ReportRepo reportRepo;
-   
+
     /**
      * This method find the report
+     *
      * @return all the reports which found in the database
      */
-    public List<Report> findAll(){
+    public List<Report> findAll() {
         return reportRepo.findAll();
     }
-    
+
     /**
      *
      * @param report - the report to store in a database
      */
-    public void save(Report report){
+    public void save(Report report) {
         reportRepo.save(report);
     }
-    public List<Report> getReportById(String projectId){
+
+    public List<Report> getReportById(String projectId) {
         return reportRepo.findByKeyProjectId(projectId);
     }
-    
-    public String getFileType(Integer id){
+
+    public String getFileType(Integer id) {
         return MappingUtil.getFileType(id);
     }
 }

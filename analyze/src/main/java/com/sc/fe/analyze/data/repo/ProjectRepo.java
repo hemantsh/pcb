@@ -16,12 +16,38 @@ import org.springframework.stereotype.Repository;
  * @author Hemant
  */
 @Repository
-public interface ProjectRepo extends CassandraRepository<Project, ProjectPK>{
-    
-    List<Project> findByKeyProjectId(final String projectId); 
-    List<Project> findByCustomerId(final String customerId);    
-    List<Project> findByCustomerEmail(final String customerEmail);        
-    List<Project> findByZipFileName(final String zipFileName);    
-    
+public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
+
+    /**
+     * Extracts data by the projectId from the database.
+     *
+     * @param projectId takes projectId
+     * @return
+     */
+    List<Project> findByKeyProjectId(final String projectId);
+
+    /**
+     * Extracts data by customerId from database.
+     *
+     * @param customerId takes customerid
+     * @return
+     */
+    List<Project> findByCustomerId(final String customerId);
+
+    /**
+     * Extracts data by the CustomerEmail from database.
+     *
+     * @param customerEmail takes customerEmail
+     * @return
+     */
+    List<Project> findByCustomerEmail(final String customerEmail);
+
+    /**
+     * Extracts data by zipfileName from database.
+     *
+     * @param zipFileName takes zipfileName
+     * @return
+     */
+    List<Project> findByZipFileName(final String zipFileName);
+
 }
-    

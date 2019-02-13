@@ -27,18 +27,38 @@ public class ProjectPK implements Serializable {
     @ApiModelProperty("Second Primary Key")
     private UUID version;
 
+    /**
+     * Gets the version.
+     *
+     * @return
+     */
     public UUID getVersion() {
         return version;
     }
 
+    /**
+     * Sets the version into the variable version.
+     *
+     * @param version takes version and sets it
+     */
     public void setVersion(UUID version) {
         this.version = version;
     }
 
+    /**
+     * Gets the ProjectId
+     *
+     * @return
+     */
     public String getProjectId() {
         return projectId;
     }
 
+    /**
+     * Sets the ProjectId into the variable projectId.
+     *
+     * @param projectId takes projectId and sets it
+     */
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }

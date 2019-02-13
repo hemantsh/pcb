@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.sc.fe.analyze.data.entity.FileTypes;
 
 @Repository
-public interface FileTypesRepo  extends CassandraRepository<FileTypes, Integer>{
+public interface FileTypesRepo extends CassandraRepository<FileTypes, Integer> {
 
 }

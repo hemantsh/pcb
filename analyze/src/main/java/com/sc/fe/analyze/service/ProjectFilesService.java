@@ -24,11 +24,23 @@ public class ProjectFilesService {
     @Autowired
     private ProjectFilesRepo projectFilesRepo;
 
+    /**
+     * Displays all the records in the ProjectFiles tables and returns data of
+     * fileDetails Type.
+     *
+     * @return
+     */
     public List<FileDetails> findAll() {
         List<ProjectFiles> allRecords = projectFilesRepo.findAll();
         return convertList(allRecords);
     }
 
+    /**
+     * Converts the ProjectFiles data into FileDetails
+     *
+     * @param allRecords takes List of ProjectFiles records
+     * @return
+     */
     private List<FileDetails> convertList(List<ProjectFiles> allRecords) {
         List<FileDetails> retList = new ArrayList<FileDetails>();
         allRecords.stream().forEach(row -> {
@@ -37,14 +49,30 @@ public class ProjectFilesService {
         return retList;
     }
 
+    /**
+     * Saves ProjectFiles data in database.
+     *
+     * @param project_files has projectFiles that needs to saved into database.
+     */
     public void save(ProjectFiles project_files) {
         projectFilesRepo.save(project_files);
     }
 
+    /**
+     * Deletes the Records from the Database.
+     *
+     * @param project_files has values that needs to delete from the database.
+     */
     public void delete(ProjectFiles project_files) {
         projectFilesRepo.delete(project_files);
     }
 
+    /**
+     * Gets Unique ProjectId with multiple versions.
+     *
+     * @param projectId takes projectId
+     * @return
+     */
     public List<FileDetails> getProjectById(String projectId) {
         return convertList(projectFilesRepo.findByKeyProjectId(projectId));
     }
