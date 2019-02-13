@@ -113,9 +113,9 @@ public class FileExtractUploadService {
 
         //compare the last ProjectDetails 
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
-        projectDetails.getErrors().putAll(compareMap);
         //Save
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        projectDetails.getErrors().putAll(compareMap);
         return report;
     }
 
