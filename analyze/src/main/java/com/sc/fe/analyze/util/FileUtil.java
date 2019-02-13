@@ -11,13 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.sc.fe.analyze.FileStorageProperties;
 
 import exception.FileStorageException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
+/**
+ *
+ * @author Hemant
+ */
 public class FileUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
@@ -25,11 +28,10 @@ public class FileUtil {
     /**
      * Save the file based on projectID
      *
-     * @param projectId - Normally each project create a sub folder in upload
+     * @param projectId Normally each project create a sub folder in upload
      * directory
-     * @param file - the file to be uploaded
-     * @param fileStorageProperties - property file containing file upload
-     * options
+     * @param file the file to be uploaded
+     * @param fileStorageProperties property file containing file upload options
      * @return location of the file
      */
     public static String saveUploadedZipFile(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
@@ -56,11 +58,10 @@ public class FileUtil {
     /**
      * Save and extract the zip file locally, under the project sub-folder
      *
-     * @param projectId - Normally each project create a sub folder in upload
+     * @param projectId Normally each project create a sub folder in upload
      * directory
-     * @param file - the file to be uploaded
-     * @param fileStorageProperties - property file containing file upload
-     * options
+     * @param file the file to be uploaded
+     * @param fileStorageProperties property file containing file upload options
      */
     public static void saveAndExtractZip(String projectId, MultipartFile file, FileStorageProperties fileStorageProperties) throws IOException {
         Path folder = Paths.get(fileStorageProperties.getUploadDir() + File.separator + projectId + File.separator).toAbsolutePath().normalize();
@@ -93,7 +94,7 @@ public class FileUtil {
     /**
      * Delete the folder recursively. If files are there they will be deleted
      *
-     * @param file - the name of the folder which will be deleted
+     * @param file the name of the folder which will be deleted
      */
     public static void deleteFolder(File file) {
         if (file.isDirectory()) {
@@ -111,18 +112,4 @@ public class FileUtil {
             file.delete();
         }
     }
-    //      public static void deleteFolder(Path folder) {
-//        File[] files = folder.toFile().listFiles();
-//        for (int i = 0; i < files.length; i++) {
-//            if (files[i].isFile()) {
-//                files[i].delete();
-//            } else if (files[i].isDirectory()) {
-//                Path innerFolder = files[i].toPath();
-//                deleteFolder(innerFolder);
-//                if (files[i].list().length == 0) {
-//                    files[i].delete();
-//                }
-//            }
-//        }
-//    }
 }

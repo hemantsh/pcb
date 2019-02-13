@@ -15,206 +15,259 @@ import io.swagger.annotations.ApiModel;
 
 /**
  * @author Hemant
- *
  */
-
 @JsonInclude(Include.NON_EMPTY)
-@ApiModel(value="AdvanceReport",description="Table Structure of AdvanceReport")
+@ApiModel(value = "AdvanceReport", description = "Table Structure of AdvanceReport")
 
 public class AdvancedReport implements Serializable {
-	
-	private static final long serialVersionUID = -3742223075854910617L;
-	
-	private String projectId;
-	
-	private String RNumber;
-	
-	private CustomerInformation customerInformation;
-	
-	private PCBInformation boardInfo;
-	/**
-	 * Details about the files we found while processing
-	 */
-	private List<FileDetails> fileDetails;
-	
-	/**
-	 * Summary of the report
-	 */
-	private String summary;
-	/**
-	 * Validation status after running validations
-	 */
-	private String validationStatus;
-	/**
-	 * All errors we found in the files
-	 */
-	private Set<String> errors;
-	
-	/**
-	 * Files found in the zip file 
-	 */
-	private Set<String> exctractedFileNames;
-	
-	
+
+    private static final long serialVersionUID = -3742223075854910617L;
+
+    private String projectId;
+    private String RNumber;
+    private CustomerInformation customerInformation;
+    private PCBInformation boardInfo;
+    /**
+     * Details about the files we found while processing
+     */
+    private List<FileDetails> fileDetails;
 
     /**
+     * Summary of the report
+     */
+    private String summary;
+    /**
+     * Validation status after running validations
+     */
+    private String validationStatus;
+    /**
+     * All errors found in the files
+     */
+    private Set<String> errors;
+    /**
+     * Files found in the zip file
+     */
+    private Set<String> exctractedFileNames;
+
+    /**
+     * Add the fileDetails in the fileDetails instance variable
      *
-     * @param fileDetail - add the fileDetail in fileDetails instance variable
+     * @param fileDetail Set the fileDetails
      */
     public void addFileDetail(FileDetails fileDetail) {
-		if(fileDetails == null) {
-			fileDetails = new ArrayList<FileDetails>();
-		}
-		fileDetails.add(fileDetail);
-	}
+        if (fileDetails == null) {
+            fileDetails = new ArrayList<FileDetails>();
+        }
+        fileDetails.add(fileDetail);
+    }
 
     /**
+     * It retrieves the fileDetails from the database of the file
      *
-     * @param fileName - retrieve  fileDetails from specific fileName 
-     * @return fileDetails of fileName from the database
+     * @param fileName the name of the file
+     * @return the fileDetails of the file from the database
      */
     public FileDetails getFileDetails(String fileName) {
-		FileDetails retVal = null;
-		
-		List<FileDetails> shortList = fileDetails.stream()
-				.filter(  fd -> fileName.equalsIgnoreCase(fd.getName()) )
-				.collect(Collectors.toList());
-		
-		if(shortList != null && shortList.size() > 0) {
-			retVal = shortList.get(0);
-		}
-		return retVal;
-	}
-	
+        FileDetails retVal = null;
+
+        List<FileDetails> shortList = fileDetails.stream()
+                .filter(fd -> fileName.equalsIgnoreCase(fd.getName()))
+                .collect(Collectors.toList());
+
+        if (shortList != null && shortList.size() > 0) {
+            retVal = shortList.get(0);
+        }
+        return retVal;
+    }
+
     /**
+     * It gets all the fileNames which stored in the database
      *
-     * @return set of all fileNames which stored in the database
+     * @return the set of all fileNames
      */
     @JsonIgnore
-	public Set<String> getAllFileNames() {
-		if(fileDetails == null) {
-			return null;
-		}
-		return fileDetails.stream()
-				.map(FileDetails::getName)
-				.collect(Collectors.toCollection(TreeSet::new));
-	}
+    public Set<String> getAllFileNames() {
+        if (fileDetails == null) {
+            return null;
+        }
+        return fileDetails.stream()
+                .map(FileDetails::getName)
+                .collect(Collectors.toCollection(TreeSet::new));
+    }
 
     /**
      *
-     * @return errors from the database
+     * @return the set of errors
      */
     public Set<String> getErrors() {
-		return errors;
-	}
+        return errors;
+    }
 
     /**
+     * Sets the errors in the database found in the file
      *
-     * @param errors - set error in the database
+     * @param errors set of errors
      */
     public void setErrors(Set<String> errors) {
-		this.errors = errors;
-	}
+        this.errors = errors;
+    }
 
     /**
+     * Add the error in the database of the file
      *
-     * @param error - add error in the database
+     * @param error error found in the file
      */
     public void addError(String error) {
-		if(errors == null) {
-			errors = new HashSet<String>();
-		}
-		errors.add(error);
-	}
-	
-	
+        if (errors == null) {
+            errors = new HashSet<String>();
+        }
+        errors.add(error);
+    }
+
     /**
+     * Gets the summary of the report
      *
      * @return summary from the database
      */
     public String getSummary() {
-		return summary;
-	}
+        return summary;
+    }
 
     /**
+     * Sets the summary of the report into the summary instance variable
      *
-     * @param summary - set summary in the database
+     * @param summary summary of the report
      */
     public void setSummary(String summary) {
-		this.summary = summary;
-	}
+        this.summary = summary;
+    }
 
     /**
      *
-     * @return validationStatus from the database
+     * @return the validationStatus from the database
      */
     public String getValidationStatus() {
-		return validationStatus;
-	}
+        return validationStatus;
+    }
 
     /**
+     * Sets the validationStatus after running the validations
      *
-     * @param validationStatus - set validationStatus in the database
+     * @param validationStatus validationStatus after run the Validations
      */
     public void setValidationStatus(String validationStatus) {
-		this.validationStatus = validationStatus;
-	}
-
+        this.validationStatus = validationStatus;
+    }
 
     /**
+     * Gets the set of FileNames from the database
      *
-     * @return exctractedFileNames from the database
+     * @return the set of FileNames from the database
      */
     public Set<String> getExctractedFileNames() {
-		return exctractedFileNames;
-	}
+        return exctractedFileNames;
+    }
 
     /**
+     * It sets all the fileNames in the database
      *
-     * @param exctractedFileNames - set exctractedFileNames in the database
+     * @param exctractedFileNames set of exctractedFileNames when unzip the zip
+     * file
      */
     public void setExctractedFileNames(Set<String> exctractedFileNames) {
-		this.exctractedFileNames = exctractedFileNames;
-	}
+        this.exctractedFileNames = exctractedFileNames;
+    }
 
-	public PCBInformation getBoardInfo() {
-		return boardInfo;
-	}
+    /**
+     * Gets the Board Information
+     *
+     * @return the board Information
+     */
+    public PCBInformation getBoardInfo() {
+        return boardInfo;
+    }
 
-	public void setBoardInfo(PCBInformation boardInfo) {
-		this.boardInfo = boardInfo;
-	}
+    /**
+     * Sets the Board Information of the PCB
+     *
+     * @param boardInfo set the board Information
+     */
+    public void setBoardInfo(PCBInformation boardInfo) {
+        this.boardInfo = boardInfo;
+    }
 
-	public String getProjectId() {
-		return projectId;
-	}
+    /**
+     * Gets the Project Id
+     *
+     * @return the project Id
+     */
+    public String getProjectId() {
+        return projectId;
+    }
 
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
+    /**
+     * Sets the projectId into the projectId instance variable
+     *
+     * @param projectId projectId of the Report
+     */
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
-	public String getRNumber() {
-		return RNumber;
-	}
+    /**
+     * Gets the RNumber from the RNumber instance variable
+     *
+     * @return the RNumber
+     */
+    public String getRNumber() {
+        return RNumber;
+    }
 
-	public void setRNumber(String rNumber) {
-		RNumber = rNumber;
-	}
+    /**
+     * Sets the RNumber into the RNumber instance variable
+     *
+     * @param rNumber set the rNumber
+     */
+    public void setRNumber(String rNumber) {
+        RNumber = rNumber;
+    }
 
-	public CustomerInformation getCustomerInformation() {
-		return customerInformation;
-	}
+    /**
+     * Gets the customerInformation from the customerInformation instance
+     * variable
+     *
+     * @return the CustomerInformation
+     */
+    public CustomerInformation getCustomerInformation() {
+        return customerInformation;
+    }
 
-	public void setCustomerInformation(CustomerInformation customerInformation) {
-		this.customerInformation = customerInformation;
-	}
+    /**
+     * sets the CustomerInformation into the customerInformation instance
+     * variable
+     *
+     * @param customerInformation sets the customerInformation
+     */
+    public void setCustomerInformation(CustomerInformation customerInformation) {
+        this.customerInformation = customerInformation;
+    }
 
-	public List<FileDetails> getFileDetails() {
-		return fileDetails;
-	}
+    /**
+     * Gets the fileDetails from the fileDetails instance variable
+     *
+     * @return the list of fileDetails
+     */
+    public List<FileDetails> getFileDetails() {
+        return fileDetails;
+    }
 
-	public void setFileDetails(List<FileDetails> fileDetails) {
-		this.fileDetails = fileDetails;
-	}
+    /**
+     * Sets the fileDetails into the fileDetails instance variable
+     *
+     * @param fileDetails the list of fileDetails
+     */
+    public void setFileDetails(List<FileDetails> fileDetails) {
+        this.fileDetails = fileDetails;
+    }
 
 }

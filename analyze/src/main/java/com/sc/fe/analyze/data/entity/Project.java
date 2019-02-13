@@ -7,7 +7,6 @@ package com.sc.fe.analyze.data.entity;
 
 import io.swagger.annotations.ApiModel;
 import java.util.Date;
-
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,6 +52,11 @@ public class Project {
     @Column(value = "errors")
     private Map<String, String> errors;
 
+    /**
+     * Gets the Key, if null then Initializes the ProjectPrimaryKey.
+     *
+     * @return
+     */
     public ProjectPK getKey() {
         if (key == null) {
             key = new ProjectPK();
@@ -60,141 +64,317 @@ public class Project {
         return key;
     }
 
+    /**
+     * Sets the Primary Key.
+     *
+     * @param key sets the key.
+     */
     public void setKey(ProjectPK key) {
         this.key = key;
     }
 
+    /**
+     * Gets the ProjectId.
+     *
+     * @return
+     */
     public String getProjectId() {
         return getKey().getProjectId();
     }
 
+    /**
+     * Sets the Composite PrimaryKey ProjectId.
+     *
+     * @param projectId sets the projectId.
+     */
     public void setProjectId(String projectId) {
         this.getKey().setProjectId(projectId);;
     }
 
+    /**
+     * Gets the Composite PrimaryKey version.
+     *
+     * @return
+     */
     public UUID getVersion() {
         return getKey().getVersion();
     }
 
+    /**
+     * Sets the Composite PrimaryKey version.
+     *
+     * @param version sets the version.
+     */
     public void setVersion(UUID version) {
         this.getKey().setVersion(version);
     }
 
+    /**
+     * Gets the CustomerName.
+     *
+     * @return
+     */
     public String getCustomerName() {
         return customerName;
     }
 
+    /**
+     * Sets the CustomerName into the CustomerName variable.
+     *
+     * @param customerName sets the customerName.
+     */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
+    /**
+     * Gets the CustomerId.
+     *
+     * @return
+     */
     public String getCustomerId() {
         return customerId;
     }
 
+    /**
+     * Sets the CustomerId into the customerId variable.
+     *
+     * @param customerId sets the customerId.
+     */
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public String getCustomerEamil() {
+    /**
+     * Gets the CustomerEmail.
+     *
+     * @return
+     */
+    public String getCustomerEmail() {
         return customerEmail;
     }
 
+    /**
+     * Sets the CustomerEmail into the customerEmail.
+     *
+     * @param customerEmail sets the customerEmail.
+     */
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
 
+    /**
+     * Gets the ServiceType
+     *
+     * @return
+     */
     public String getServiceType() {
         return serviceType;
     }
 
+    /**
+     * Sets the serviceType into the serviceType variable.
+     *
+     * @param servicetype sets the serviceType.
+     */
     public void setServiceType(String servicetype) {
         this.serviceType = servicetype;
     }
 
+    /**
+     * Gets the LayerCount.
+     *
+     * @return
+     */
     public int getLayerCount() {
         return layerCount;
     }
 
+    /**
+     * Sets the LayerCount into the layerCount.
+     *
+     * @param layerCount sets the layerCount.
+     */
     public void setLayerCount(int layerCount) {
         this.layerCount = layerCount;
     }
 
+    /**
+     * Gets the PCBClass.
+     *
+     * @return
+     */
     public String getPcbClass() {
         return pcbClass;
     }
 
+    /**
+     * Sets the PCBClass into pcbClass variable.
+     *
+     * @param pcbClass sets the pcbClass.
+     */
     public void setPcbClass(String pcbClass) {
         this.pcbClass = pcbClass;
-    }  
-
-    public String getItar() {
-        return itar;
-    }  
-    public void setItar(String itar){
-        this.itar=itar;
     }
 
+    /**
+     * Gets the Itar.
+     *
+     * @return
+     */
+    public String getItar() {
+        return itar;
+    }
+
+    /**
+     * Sets the Itar into the itar variable.
+     *
+     * @param itar sets the itar.
+     */
+    public void setItar(String itar) {
+        this.itar = itar;
+    }
+
+    /**
+     * Gets the DesignSpecification.
+     *
+     * @return
+     */
     public String getDesignSpecification() {
         return designSpecification;
     }
 
+    /**
+     * Sets the DesginSpecification into the designSpecification Variable.
+     *
+     * @param desingSpec sets the designSpecification.
+     */
     public void setDesignSpecification(String desingSpec) {
         this.designSpecification = desingSpec;
-    }      
+    }
 
+    /**
+     * Gets the BoardType.
+     *
+     * @return
+     */
     public String getBoardType() {
         return boardType;
     }
 
+    /**
+     * Sets the BoardType into boardType variable.
+     *
+     * @param boardType
+     */
     public void setBoardType(String boardType) {
         this.boardType = boardType;
     }
 
+    /**
+     * Gets the TurnTimeQuantity.
+     *
+     * @return
+     */
     public Map<Integer, Integer> getTurntimeQuantity() {
         return turntimeQuantity;
     }
 
+    /**
+     * Sets the TurnTimeQuanity into the turntimeQuanity variable.
+     *
+     * @param turntimeQuantity sets the turntimeQuantity
+     */
     public void setTurntimeQuantity(Map<Integer, Integer> turntimeQuantity) {
         this.turntimeQuantity = turntimeQuantity;
     }
 
+    /**
+     * Gets the ZipFileName.
+     *
+     * @return
+     */
     public String getZipfileName() {
         return zipFileName;
     }
 
+    /**
+     * Sets the ZipfileName into the zipFileName variable.
+     *
+     * @param zipfileName
+     */
     public void setZipfileName(String zipfileName) {
         this.zipFileName = zipfileName;
     }
 
+    /**
+     * Gets the ZipFileSize.
+     *
+     * @return
+     */
     public String getZipfileSize() {
         return zipfileSize;
     }
 
+    /**
+     * Sets the ZipFileSize into the zipfileSize variable.
+     *
+     * @param zipfileSize
+     */
     public void setZipfileSize(String zipfileSize) {
         this.zipfileSize = zipfileSize;
     }
 
+    /**
+     * Gets the CreateDate.
+     *
+     * @return
+     */
     public Date getCreateDate() {
         return createDate;
     }
 
+    /**
+     * Sets the CreateDate into the createDate variable.
+     *
+     * @param createDate
+     */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
+    /**
+     * Gets the Modified Date.
+     *
+     * @return
+     */
     public Date getModifiedDate() {
         return modifiedDate;
     }
 
+    /**
+     * Sets the Modified Date into the modifiedDate variable.
+     *
+     * @param modifiedDate
+     */
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
+    /**
+     * Gets the Errors.
+     *
+     * @return
+     */
     public Map<String, String> getErrors() {
         return errors;
     }
 
+    /**
+     * Sets the Errors into the errors variable.
+     *
+     * @param error
+     */
     public void setErrors(Map<String, String> error) {
         this.errors = error;
     }

@@ -1,7 +1,6 @@
 package com.sc.fe.analyze.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,20 +16,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
-import com.sc.fe.analyze.to.CustomerInformation;
 import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.PCBInformation;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.FileStoreUtil;
-import com.sc.fe.analyze.util.FileUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
@@ -56,8 +51,7 @@ public class FileExtractUploadService {
 
     /**
      *
-     * @param fileStorageProperties - property file containing file upload
-     * options
+     * @param fileStorageProperties property file containing file upload options
      */
     @Autowired
     public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
@@ -68,8 +62,8 @@ public class FileExtractUploadService {
     /**
      * Validates the project files and send a report.
      *
-     * @param projectDetails
-     * @return
+     * @param projectDetails Details of the project
+     * @return the report
      */
     public Report validateFiles(ProjectDetails projectDetails) {
 
@@ -120,8 +114,12 @@ public class FileExtractUploadService {
     }
 
     /**
-     * @param projectDetails
-     * @return
+     * This method compares the projectDetails object from the last
+     * projectDetails object from the database
+     *
+     * @param projectDetails Details of the project
+     * @return the differences after comparing the latest project record from
+     * the last project record
      */
     private Map<String, String> compareWithLastProjectData(ProjectDetails projectDetails) {
 
@@ -141,8 +139,8 @@ public class FileExtractUploadService {
     }
 
     /**
-     * @param projectDetails
-     * @return
+     * @param projectDetails Details of the project
+     * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
         //Required files as per business rules
@@ -164,7 +162,9 @@ public class FileExtractUploadService {
     }
 
     /**
-     * @param projectDetails
+     * This method save the details of the projectDetails into the database
+     *
+     * @param projectDetails Details of the project
      */
     public void save(ProjectDetails projectDetails) {
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
@@ -189,8 +189,11 @@ public class FileExtractUploadService {
     }
 
     /**
-     * @param projectDetails
-     * @return
+     * This method retrieves the projectId of that record from the database
+     * while matching the record with customerId or emailAddress or zipFileName
+     *
+     * @param projectDetails Details of the project
+     * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
         String projectId = null;
@@ -219,6 +222,13 @@ public class FileExtractUploadService {
         return projectId;
     }
 
+    /**
+     * This method retrieves the whole record of that projectId from the
+     * database
+     *
+     * @param projectId the projectId of the record
+     * @return the projectDetails of matching projectId
+     */
     private ProjectDetails getLatestRecord(String projectId) {
 
         return getLatestRecord(projectService.findByKeyProjectId(projectId));
@@ -227,7 +237,7 @@ public class FileExtractUploadService {
     /**
      * Get the latest record from the list. Based on created date of the record.
      *
-     * @param projDtl
+     * @param projDtl Details of the project
      * @return Null if not found. Else return the match
      */
     private ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
@@ -242,7 +252,7 @@ public class FileExtractUploadService {
     /**
      * Get the previous record for the given project. Based on created date
      *
-     * @param projDtl
+     * @param projDtl Details of the project
      * @return Null if not found. Else return the match
      */
     private ProjectDetails getPreviousRecord(ProjectDetails projDtl) {
@@ -264,7 +274,7 @@ public class FileExtractUploadService {
     /**
      * Find the project by customerID
      *
-     * @param customerId
+     * @param customerId the customerId of the customer
      * @return projectID of matching record
      */
     private String getProjectIdByCustomerId(String customerId) {
@@ -284,7 +294,7 @@ public class FileExtractUploadService {
     /**
      * Find the project by customerEmail
      *
-     * @param emailId
+     * @param emailId the email of the customer
      * @return projectID of matching record
      */
     private String getProjectIdByCustomerEmail(String emailId) {
@@ -352,20 +362,18 @@ public class FileExtractUploadService {
      * @return
      * @throws IOException
      */
-    public Set<String> extractAndSaveFiles(MultipartFile file, CustomerInformation inputs) throws IOException {
-        // Local file based
-        String fileName = util.storeFile(inputs.getProjectId(), file);
-        util.extractFiles(inputs.getProjectId(), fileName);
-        //Path folder = Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() + File.separator).toAbsolutePath().normalize();
-        // END local	
-
-        //S3 Based
-        //util.storeFile(inputs.getProjectId(), file);
-        //report.setExctractedFileNames( util.listObjects(inputs.getProjectId()) );
-        // end S3
-        return util.listFiles(inputs.getProjectId());
-    }
-
+    /**
+     * public Set<String> extractAndSaveFiles(MultipartFile file,
+     * CustomerInformation inputs) throws IOException { // Local file based
+     * String fileName = util.storeFile(inputs.getProjectId(), file);
+     * util.extractFiles(inputs.getProjectId(), fileName); //Path folder =
+     * Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() +
+     * File.separator).toAbsolutePath().normalize(); // END local	     *
+     * //S3 Based //util.storeFile(inputs.getProjectId(), file);
+     * //report.setExctractedFileNames( util.listObjects(inputs.getProjectId())
+     * ); // end S3 return util.listFiles(inputs.getProjectId());
+    }*
+     */
     /**
      * Upload, extract and validates files
      *
@@ -373,23 +381,23 @@ public class FileExtractUploadService {
      * @param inputs - the inputs of CustomerInputs
      * @return Report - report with validation status
      */
-    public Report uploadAndExtractFile(MultipartFile file,
-            CustomerInformation inputs,
-            PCBInformation boardInfo) throws Exception {
-
-        ProjectDetails projectDetails = new ProjectDetails();
-        projectDetails.setProjectId(inputs.getProjectId());
-
-        Report report = validateFiles(projectDetails);
-
-        logger.debug("****** Done generating report *******");
-
-        //To delete the folder 
-        Path folder = Paths.get(util.getUploadDir() + File.separator + projectDetails.getProjectId()).toAbsolutePath().normalize();
-        FileUtil.deleteFolder(folder.toFile());
-        return report;
-    }
-
+    /**
+     * public Report uploadAndExtractFile(MultipartFile file,
+     * CustomerInformation inputs, PCBInformation boardInfo) throws Exception {
+     *
+     * ProjectDetails projectDetails = new ProjectDetails();
+     * projectDetails.setProjectId(inputs.getProjectId());
+     *
+     * Report report = validateFiles(projectDetails);
+     *
+     * logger.debug("****** Done generating report *******");
+     *
+     * //To delete the folder Path folder = Paths.get(util.getUploadDir() +
+     * File.separator +
+     * projectDetails.getProjectId()).toAbsolutePath().normalize();
+     * FileUtil.deleteFolder(folder.toFile()); return report;
+    }*
+     */
     /**
      * Performs all possible Gerber file processing.
      *
