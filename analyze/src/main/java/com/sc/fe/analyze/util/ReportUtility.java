@@ -80,10 +80,10 @@ public class ReportUtility {
         dbDetail.setZipfileSize(projectDetails.getZipFileSize());
         dbDetail.setLayerCount(projectDetails.getLayers());
         dbDetail.setModifiedDate(new Date());
-        if(projectDetails.isNewProject()){
-            dbDetail.setCreateDate(new Date());
+        if(projectDetails.getCreateDate()==null){
+            dbDetail.setCreateDate(new Date());            
         }else{
-            dbDetail.setCreateDate(projectDetails.getCreateDate());
+            dbDetail.setCreateDate(projectDetails.getCreateDate());            
         }
         dbDetail.setCustomerName("ABC");
         dbDetail.setItar(String.valueOf(projectDetails.getItar()));
@@ -98,7 +98,12 @@ public class ReportUtility {
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getSize());
         filesDbDetails.setType( fileDetails.getType());
-        //TODO filesDbDetails.setFileDate(new Date()); 
+        if(fileDetails.getFileDate()==null){
+            filesDbDetails.setFileDate(new Date());            
+        }
+        else{
+            filesDbDetails.setFileDate(fileDetails.getFileDate()); 
+        }  
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
         filesDbDetails.setContext(fileDetails.getContext());
