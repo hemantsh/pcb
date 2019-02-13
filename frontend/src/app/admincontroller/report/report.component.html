@@ -127,9 +127,9 @@
           </div>
           <div *ngIf="report && report.errors" class="spacer">
             <span class="heading">Errors</span>
-            <ul *ngFor="let obj of Object.keys(report?.errors)">
-              <li>
-                {{report.errors[obj]}}
+            <ul >
+              <li *ngFor="let obj of Object.keys(report?.errors)">
+               <b> {{obj}} :- </b>{{report?.errors[obj]}}
               </li>
             </ul>
           </div>

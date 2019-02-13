@@ -18,6 +18,7 @@ import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.com
 import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
 import {CanServiceFilesDeactivateGuard} from './admincontroller/servicefiles/candeactivate-servicefilesguard.service';
 import { InputJSONComponent } from './input-json/input-json.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
 //   { path: '', component: CustomerinputsComponent ,
@@ -41,7 +42,9 @@ const appRoutes: Routes = [
     children:[
       {path:'inputjson',component:InputJSONComponent}
     ]
-  }
+  },
+  {path:'page-not-found',component:PageNotFoundComponent},
+  {path:'**',redirectTo:'page-not-found'}
 ]
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ const appRoutes: Routes = [
     FiletypesComponent,
     ReportComponent,
     ExtenfilesComponent,
-    InputJSONComponent
+    InputJSONComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
