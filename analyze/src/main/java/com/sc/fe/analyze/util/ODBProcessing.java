@@ -5,7 +5,6 @@
  */
 package com.sc.fe.analyze.util;
 
-import com.sc.fe.analyze.to.CustomerInformation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,9 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.LayersInformation;
 
 /**
  *
@@ -28,7 +25,7 @@ public class ODBProcessing {
     /**
      * This method read and processes the ODB file.
      *
-     * @param file - the path of folder where matrix file exists
+     * @param file the path of folder where matrix file exists
      * @return the list of fileDetails
      */
     public static List<FileDetails> processODB(Path file) {
@@ -60,9 +57,6 @@ public class ODBProcessing {
                 if (line.startsWith("LAYER")) {
                     while ((line = br.readLine()) != null) {
                         if (line.endsWith("}")) {
-                            //Print layer Information of file
-//                            results.keySet().forEach((p)->
-//                                System.out.println(p+ " = "+results.get(p)));
                             break;
                         }
                         //Set the attribute values in HashMap
@@ -80,23 +74,6 @@ public class ODBProcessing {
                         fd.setType(results.get("TYPE"));
 
                         fileDetlList.add(fd);
-                        //processAttribute(folder, results.get("NAME"), folderName);
-//                        if (fd != null) {
-//
-//                            fileDetlList.add(fd);
-//
-//                            if (fd.getAttributes() == null || fd.getAttributes().isEmpty()) {
-//                                counter = counter - 1;
-//                            } else {
-//                                layerInfo = new LayersInformation(results.get("ROW"),
-//                                        results.get("CONTEXT"), results.get("TYPE"),
-//                                        results.get("NAME"), results.get("POLARITY"),
-//                                        results.get("START_NAME"), results.get("END_NAME"),
-//                                        results.get("OLD_NAME"));
-//
-//                                //fd.setLayerInfo(layerInfo);
-//                            }
-//                        }                        
                     }
                 }
             }
@@ -107,6 +84,14 @@ public class ODBProcessing {
         return fileDetlList;
     }
 
+    /**
+     * It process the attributes of the attr file in the layerFolderName
+     *
+     * @param folder the name of the folder
+     * @param layerFolderName the name of the layer Folder
+     * @param topFolder the top most folder name
+     * @return
+     */
     private static FileDetails processAttribute(Path folder, String layerFolderName, String topFolder) {
         HashMap<String, String> fileAttributes = new HashMap<>();
         FileDetails fileDetail = new FileDetails(); //RETURN this
@@ -125,7 +110,6 @@ public class ODBProcessing {
                     String[] splitValue = st.replaceFirst(".", "").split("=", 2);
                     fileAttributes.put(splitValue[0], splitValue[1]);
                 }
-                //System.out.println("Values of attrList file - "+returnMap + "\n");
                 //stored the information in FileDetails attribute object
                 fileDetail.setAttributes(fileAttributes);
                 fileDetail.setName(file.getName());

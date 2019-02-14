@@ -3,7 +3,6 @@ package com.sc.fe.analyze.to;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sc.fe.analyze.util.ErrorCodes;
@@ -40,15 +39,9 @@ public class Report implements Serializable {
      * All errors we found in the files
      */
     private Set<String> errors;
-    
-    private Set<ErrorCodes> errorCodes;
-    
-    /**
-     * Files found in the zip file
-     */
-    //private Set<String> exctractedFileNames;
 
-    
+    private Set<ErrorCodes> errorCodes;
+
     /**
      * @return the summary
      */
@@ -103,44 +96,42 @@ public class Report implements Serializable {
     }
 
     /**
-     * @return the exctractedFileNames
+     *
+     * @return the project Details of the project
      */
-//    public Set<String> getExctractedFileNames() {
-//        return exctractedFileNames;
-//    }
-//
-//    /**
-//     * @param exctractedFileNames - the exctractedFileNames to set
-//     */
-//    public void setExctractedFileNames(Set<String> exctractedFileNames) {
-//        this.exctractedFileNames = exctractedFileNames;
-//    }
+    public ProjectDetails getProjectDetail() {
+        return projectDetail;
+    }
 
-	public ProjectDetails getProjectDetail() {
-		return projectDetail;
-	}
+    /**
+     *
+     * @param projectDetail the project Detail to set
+     */
+    public void setProjectDetail(ProjectDetails projectDetail) {
+        this.projectDetail = projectDetail;
+    }
 
-	public void setProjectDetail(ProjectDetails projectDetail) {
-		this.projectDetail = projectDetail;
-	}
+    /**
+     * @return the errorCodes
+     */
+    public Set<ErrorCodes> getErrorCodes() {
+        return errorCodes;
+    }
 
-	/**
-	 * @return the errorCodes
-	 */
-	public Set<ErrorCodes> getErrorCodes() {
-		return errorCodes;
-	}
+    /**
+     * @param errorCodes the errorCodes to set
+     */
+    public void setErrorCodes(Set<ErrorCodes> errorCodes) {
+        this.errorCodes = errorCodes;
+    }
 
-	/**
-	 * @param errorCodes the errorCodes to set
-	 */
-	public void setErrorCodes(Set<ErrorCodes> errorCodes) {
-		this.errorCodes = errorCodes;
-	}
-
-	public void addErrorCode(ErrorCodes code) {
+    /**
+     *
+     * @param code the error code to add
+     */
+    public void addErrorCode(ErrorCodes code) {
         if (errorCodes == null) {
-        	errorCodes = new HashSet<ErrorCodes>();
+            errorCodes = new HashSet<ErrorCodes>();
         }
         errorCodes.add(code);
     }
