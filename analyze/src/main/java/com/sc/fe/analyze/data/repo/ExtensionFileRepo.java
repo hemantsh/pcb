@@ -9,7 +9,21 @@ import com.sc.fe.analyze.data.entity.ExtensionFilePK;
 import com.sc.fe.analyze.data.entity.ExtensionFileType;
 
 @Repository
-public interface ExtensionFileRepo extends CassandraRepository <ExtensionFileType, ExtensionFilePK > {
-	List<ExtensionFileType> findByKeyExtensionId(final int extensionId);
-        List<ExtensionFileType> findByKeyFiletypeId(final int filetypeId);
+public interface ExtensionFileRepo extends CassandraRepository<ExtensionFileType, ExtensionFilePK> {
+
+    /**
+     * Used to Extract the data by the extensionId from the database.
+     *
+     * @param extensionId takes extensionId which can be passed to database.
+     * @return
+     */
+    List<ExtensionFileType> findByKeyExtensionId(final int extensionId);
+
+    /**
+     * Used to Extract the data by the filetypeId from the database.
+     *
+     * @param filetypeId take filetypeId which can be passed to database.
+     * @return
+     */
+    List<ExtensionFileType> findByKeyFiletypeId(final int filetypeId);
 }

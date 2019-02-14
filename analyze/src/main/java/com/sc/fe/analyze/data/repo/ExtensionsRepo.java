@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.sc.fe.analyze.data.entity.Extensions;
 
 @Repository
-public interface ExtensionsRepo extends CassandraRepository<Extensions, Integer>{
+public interface ExtensionsRepo extends CassandraRepository<Extensions, Integer> {
 
 }

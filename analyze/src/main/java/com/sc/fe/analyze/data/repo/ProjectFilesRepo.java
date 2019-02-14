@@ -20,6 +20,20 @@ import java.util.UUID;
 @Repository
 public interface ProjectFilesRepo extends CassandraRepository< ProjectFiles, ProjectFilesPK> {
 
+    /**
+     * Used to extract data by projectId
+     *
+     * @param projectId takes projectId
+     * @return
+     */
     List<ProjectFiles> findByKeyProjectId(final String projectId);
-    List<ProjectFiles> findByKeyProjectIdAndKeyVersion(final String projectId,final UUID version);
+
+    /**
+     * Used to find data by combined primaryKey ProjectId and Version.
+     *
+     * @param projectId takes projectId
+     * @param version takes version
+     * @return
+     */
+    List<ProjectFiles> findByKeyProjectIdAndKeyVersion(final String projectId, final UUID version);
 }

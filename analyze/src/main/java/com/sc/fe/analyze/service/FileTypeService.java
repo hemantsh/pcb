@@ -5,7 +5,6 @@
  */
 package com.sc.fe.analyze.service;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,35 +23,37 @@ import com.sc.fe.analyze.data.repo.FileTypesRepo;
 @Service
 @Transactional
 public class FileTypeService {
+
     @Autowired
     private FileTypesRepo fileTypesRepo;
     @Autowired
     private CachingService cacheService;
-    
+
     /**
      * This method find the file type services
-     * @return all the file type services which found in the database 
+     *
+     * @return all the file type services which found in the database
      */
-    @Cacheable(value="FileTypes")
+    @Cacheable(value = "FileTypes")
     public List<FileTypes> findAll() {
-        return fileTypesRepo.findAll(); 
+        return fileTypesRepo.findAll();
     }
-    
+
     /**
      *
      * @param ft - the fileType to save in a database
      */
     public void save(FileTypes ft) {
-    	fileTypesRepo.save(ft);
-    	cacheService.evictAllCacheValues("FileTypes");
+        fileTypesRepo.save(ft);
+        cacheService.evictAllCacheValues("FileTypes");
     }
-    
+
     /**
      *
      * @param id - the specific FileType service to find from database by id
-     * @return the fileType 
+     * @return the fileType
      */
     public FileTypes getTypeById(Integer id) {
-    	return fileTypesRepo.findById(id).get();
+        return fileTypesRepo.findById(id).get();
     }
 }

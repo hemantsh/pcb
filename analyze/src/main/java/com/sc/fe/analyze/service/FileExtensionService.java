@@ -30,14 +30,15 @@ public class FileExtensionService {
 
     @Autowired
     private CachingService cacheService;
-    
+
     /**
      * This method find the extensions
+     *
      * @return all the extensions which found in the database
      */
-    @Cacheable(value="Extensions")
-    public List<Extensions> findAll(){
-    	return extensionRepo.findAll();
+    @Cacheable(value = "Extensions")
+    public List<Extensions> findAll() {
+        return extensionRepo.findAll();
     }
 
     /**
@@ -52,9 +53,8 @@ public class FileExtensionService {
 //    public void delete(Extensions extn){
 //    extensionRepo.delete(extn);
 //    }
-
     /**
-     * 
+     *
      * @param id - the specific extension to find from database by id
      * @return the extension
      */
