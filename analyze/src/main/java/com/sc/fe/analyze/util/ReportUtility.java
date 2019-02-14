@@ -2,6 +2,7 @@ package com.sc.fe.analyze.util;
 
 import java.util.Date;
 import java.util.UUID;
+
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.to.FileDetails;
@@ -104,7 +105,7 @@ public class ReportUtility {
         } else {
             dbDetail.setCreateDate(projectDetails.getCreateDate());
         }
-        dbDetail.setCustomerName("ABC");
+        
         dbDetail.setItar(String.valueOf(projectDetails.getItar()));
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         return dbDetail;

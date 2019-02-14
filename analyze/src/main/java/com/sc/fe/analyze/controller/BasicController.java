@@ -14,7 +14,7 @@ import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.BaseService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping(path="/api")
 public class BasicController {
 

@@ -1,8 +1,10 @@
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import io.swagger.annotations.ApiModel;
 
 /**

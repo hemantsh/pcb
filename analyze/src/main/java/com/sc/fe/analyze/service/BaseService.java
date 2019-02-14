@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.sc.fe.analyze.data.entity.ExtensionFileType;
@@ -21,7 +20,6 @@ import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 import com.sc.fe.analyze.data.repo.FileTypesRepo;
 import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
-
 import com.sc.fe.analyze.util.MappingUtil;
 
 /**

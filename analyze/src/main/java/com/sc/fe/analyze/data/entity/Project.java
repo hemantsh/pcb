@@ -5,7 +5,6 @@
  */
 package com.sc.fe.analyze.data.entity;
 
-import io.swagger.annotations.ApiModel;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +12,8 @@ import java.util.UUID;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+
+import io.swagger.annotations.ApiModel;
 
 @ApiModel(value = "Report", description = "Table Structure Report")
 @Table(value = "project")

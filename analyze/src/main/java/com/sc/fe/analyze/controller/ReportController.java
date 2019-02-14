@@ -5,14 +5,10 @@
  */
 package com.sc.fe.analyze.controller;
 
-import com.sc.fe.analyze.data.entity.Project;
-import com.sc.fe.analyze.service.ProjectService;
-import com.sc.fe.analyze.to.ProjectDetails;
-import com.sc.fe.analyze.to.Report;
-import com.sc.fe.analyze.util.ReportUtility;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sc.fe.analyze.service.ProjectService;
+import com.sc.fe.analyze.to.ProjectDetails;
+
 /**
  *
  * @author pc
  */
 @RestController
 @RequestMapping(path="/report")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 
 public class ReportController {
     @Autowired

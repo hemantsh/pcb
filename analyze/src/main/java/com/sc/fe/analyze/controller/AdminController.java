@@ -5,24 +5,6 @@
  */
 package com.sc.fe.analyze.controller;
 
-import com.sc.fe.analyze.data.entity.ExtensionFileType;
-import com.sc.fe.analyze.data.entity.Extensions;
-import com.sc.fe.analyze.data.entity.FileTypes;
-import com.sc.fe.analyze.data.entity.Report;
-import com.sc.fe.analyze.data.entity.ServiceFiles;
-import com.sc.fe.analyze.data.entity.Services;
-import com.sc.fe.analyze.service.ExtensionFileService;
-import com.sc.fe.analyze.service.FileExtensionService;
-import com.sc.fe.analyze.service.FileServices;
-import com.sc.fe.analyze.service.FileTypeService;
-import com.sc.fe.analyze.service.ReportServices;
-import com.sc.fe.analyze.service.ServiceFilesServices;
-import com.sc.fe.analyze.to.ProjectDetails;
-import com.sc.fe.analyze.util.MappingUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +21,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sc.fe.analyze.data.entity.ExtensionFileType;
+import com.sc.fe.analyze.data.entity.Extensions;
+import com.sc.fe.analyze.data.entity.FileTypes;
+import com.sc.fe.analyze.data.entity.ServiceFiles;
+import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.service.ExtensionFileService;
+import com.sc.fe.analyze.service.FileExtensionService;
+import com.sc.fe.analyze.service.FileServices;
+import com.sc.fe.analyze.service.FileTypeService;
+import com.sc.fe.analyze.service.ServiceFilesServices;
+import com.sc.fe.analyze.to.ProjectDetails;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  *
  * @author pc
  */
 @RestController
 @RequestMapping(path="/admin")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Api(value="AdministrationController",produces=MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
     @Autowired

@@ -5,17 +5,17 @@
  */
 package com.sc.fe.analyze.service;
 
-import org.springframework.stereotype.*;
-//import com.sc.fe.analyze.service.*;
-//import com.sc.fe.analyze.util.*;
-import com.sc.fe.analyze.data.entity.*;
-import com.sc.fe.analyze.data.repo.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+//import com.sc.fe.analyze.service.*;
+//import com.sc.fe.analyze.util.*;
+import com.sc.fe.analyze.data.entity.Extensions;
+import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 
 /**
  *

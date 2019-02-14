@@ -3,6 +3,7 @@ package com.sc.fe.analyze.to;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sc.fe.analyze.util.ErrorCodes;

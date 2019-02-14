@@ -5,13 +5,15 @@
  */
 package com.sc.fe.analyze.service;
 
-import com.sc.fe.analyze.data.repo.ReportRepo;
-import com.sc.fe.analyze.data.entity.Report;
-import com.sc.fe.analyze.util.MappingUtil;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sc.fe.analyze.data.entity.Report;
+import com.sc.fe.analyze.data.repo.ReportRepo;
+import com.sc.fe.analyze.util.MappingUtil;
 
 /**
  *

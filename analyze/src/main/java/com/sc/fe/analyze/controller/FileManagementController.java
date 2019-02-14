@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping(path="/fm")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Api(value="FileManagementController",produces=MediaType.APPLICATION_JSON_VALUE)
 
 public class FileManagementController {

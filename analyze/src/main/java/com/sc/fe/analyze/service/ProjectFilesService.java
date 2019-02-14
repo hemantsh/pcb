@@ -5,14 +5,16 @@
  */
 package com.sc.fe.analyze.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
