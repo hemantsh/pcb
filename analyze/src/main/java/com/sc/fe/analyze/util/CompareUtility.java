@@ -1,9 +1,11 @@
 package com.sc.fe.analyze.util;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +21,8 @@ import com.sc.fe.analyze.to.ProjectDetails;
  */
 public class CompareUtility {
 
-    private static final String DELIMITER = "~";
+    private static final String NA = "NA";
+	private static final String DELIMITER = "~";
     private static Set<String> DO_NOT_COMPARE = initDoNotCompare();
 
     //Field names that will not be compared
@@ -212,8 +215,8 @@ public class CompareUtility {
         }
         //For each key, compare old and new
         combinedKeys.stream().forEach(key -> {
-            String oldValue = "NA";
-            String newValue = "NA";
+            String oldValue = NA;
+            String newValue = NA;
             if (oldMap != null && oldMap.get(key) != null) {
                 oldValue = oldMap.get(key);
             }
@@ -250,8 +253,8 @@ public class CompareUtility {
         }
         //For each key, compare old and new
         combinedKeys.stream().forEach(key -> {
-            Object oldValue = "NA";
-            Object newValue = "NA";
+            Object oldValue = NA;
+            Object newValue = NA;
             if (oldMap != null && oldMap.get(key) != null) {
                 oldValue = oldMap.get(key);
             }
@@ -265,6 +268,36 @@ public class CompareUtility {
         });
 
         return differences;
+    }
+    
+    public static Set<String> formatedError( Map<String, String> errors) {
+    	Set<String> formatedErrorSet = new HashSet<String>();
+    	if(errors != null && errors.size() > 0) {
+    		
+    		errors.keySet().stream().forEach( errorKey -> {
+    			
+    			String[] values = errors.get(errorKey).split(DELIMITER);
+    			if( values.length == 2 ) {
+	    			StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
+	    			if( NA.equals(values[0]) ) {
+	    				message.append("Current set does not have value. ");
+	    			}else {
+	    				message.append("Current set value '" + values[0] + "'. ");
+	    			}
+	    			
+	    			if( NA.equals(values[1]) ) {
+	    				message.append("Last set did not have value. ");
+	    			}else {
+	    				message.append("Old set value '" + values[1] + "'.");
+	    			}
+	    			
+	    			formatedErrorSet.add(message.toString());
+    			}
+    			
+    		});
+    	}
+    	
+    	return formatedErrorSet;
     }
 
     /**

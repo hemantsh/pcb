@@ -37,6 +37,7 @@ public class ProjectDetails implements Serializable {
     private String emailAddress;
 
     private Map<String, String> errors; //Errors in (key:value) form
+    private Set<String> compareResults;
 
     /**
      * Details about the files we found while processing
@@ -399,4 +400,18 @@ public class ProjectDetails implements Serializable {
     public void setNewProject(boolean newProject) {
         this.newProject = newProject;
     }
+
+	/**
+	 * @return the compareResults
+	 */
+	public Set<String> getCompareResults() {
+		return compareResults;
+	}
+
+	/**
+	 * @param compareResults the compareResults to set
+	 */
+	public void setCompareResults(Set<String> compareResults) {
+		this.compareResults = compareResults;
+	}
 }

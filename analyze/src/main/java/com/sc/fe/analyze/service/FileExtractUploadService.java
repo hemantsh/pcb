@@ -105,11 +105,18 @@ public class FileExtractUploadService {
         }
         projectDetails.setErrors(errMap);
 
-        //compare the last ProjectDetails 
-        Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
         //Save
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-        projectDetails.getErrors().putAll(compareMap);
+        
+        //compare the last ProjectDetails 
+        Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
+        
+        //TODO: save the compare results in another table
+        //Only store comparison of latest set. table key = ProjectId. 
+        //Also need to store the value of last version which was compared as non key column
+        //Errors will be formated text. Add these to report.error field
+        projectDetails.setCompareResults( CompareUtility.formatedError( compareMap ) );
+        
         return report;
     }
 
