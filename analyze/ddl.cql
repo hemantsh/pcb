@@ -73,8 +73,7 @@ CREATE INDEX on project (customer_id);
 CREATE INDEX on project (customer_email);
 CREATE INDEX on project (zipfile_name);
 
- CREATE TABLE project_files (
- 	
+ CREATE TABLE project_files ( 	
  	project_id text,
  	version timeuuid,
  	name text,
@@ -101,6 +100,12 @@ CREATE INDEX on project (zipfile_name);
  
  CREATE INDEX on project_files (project_id);
  
+CREATE TABLE difference_report(
+        project_id text,
+        version timeuuid,
+        differences set<text>,
+        PRIMARY KEY(project_id)
+);
  
  
  

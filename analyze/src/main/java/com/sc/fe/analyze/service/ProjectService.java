@@ -5,6 +5,7 @@
  */
 package com.sc.fe.analyze.service;
 
+import com.sc.fe.analyze.data.entity.DifferenceReport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.entity.ProjectPK;
+import com.sc.fe.analyze.data.repo.DifferenceReportRepo;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.to.FileDetails;
@@ -37,6 +39,8 @@ public class ProjectService {
     private ProjectRepo projectRepo;
     @Autowired
     private ProjectFilesRepo projectFilesRepo;
+    @Autowired
+    private DifferenceReportRepo diffReportRepo;
 
     /**
      * Displays all the data of Project Table and returns data of ProjectDetails
@@ -63,10 +67,6 @@ public class ProjectService {
         return retList;
     }
 
-//    public void save(ProjectDetails projectDetails) {
-//        Project allRecords =  ReportUtility.convertToDBObject(projectDetails);
-//        projectRepo.save(allRecords);
-//    }
     /**
      * Saves Project Data into database.
      *
@@ -74,6 +74,16 @@ public class ProjectService {
      */
     public void save(Project project) {
         projectRepo.save(project);
+    }
+
+    /**
+     * Saves DifferenceReport Data into the database.
+     *
+     * @param diffReport has differnceReport records that is stored into the
+     * database
+     */
+    public void save(DifferenceReport diffReport) {
+        diffReportRepo.save(diffReport);
     }
 
     /**

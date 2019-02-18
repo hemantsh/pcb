@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.data.entity.DifferenceReport;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
@@ -30,6 +31,7 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
+import static java.lang.System.exit;
 
 /**
  *
@@ -40,6 +42,7 @@ public class FileExtractUploadService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
     private FileStoreUtil util;
+    private String prevProjVersion;
 
     //private S3FileUtility util;
     @Autowired
@@ -84,17 +87,16 @@ public class FileExtractUploadService {
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
-
         if (missingTypes.size() > 0) {
             report.setValidationStatus("We found some missing information. ");
             missingTypes.stream().forEach(type -> {
                 report.addError(type);
                 report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
             });
-
         } else {
             report.setValidationStatus("Matched with all required file types. All information collected.");
         }
+
         //Set errors
         Map<String, String> errMap = new HashMap<String, String>();
         if (report != null && report.getErrorCodes() != null) {
@@ -107,16 +109,24 @@ public class FileExtractUploadService {
 
         //Save
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-        
+
         //compare the last ProjectDetails 
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
-        
+
         //TODO: save the compare results in another table
         //Only store comparison of latest set. table key = ProjectId. 
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
-        projectDetails.setCompareResults( CompareUtility.formatedError( compareMap ) );
-        
+        projectDetails.setCompareResults(CompareUtility.formatedError(compareMap));
+
+        //Save the comparison Details
+        if (!projectDetails.getCompareResults().isEmpty()) {
+            DifferenceReport diffReport = new DifferenceReport();
+            diffReport.setProjectId(projectDetails.getProjectId());
+            diffReport.setVersion(UUID.fromString(this.prevProjVersion));
+            diffReport.setDifferences(projectDetails.getCompareResults());
+            projectService.save(diffReport);
+        }
         return report;
     }
 
@@ -138,10 +148,9 @@ public class FileExtractUploadService {
         if (prevprojDtl != null) {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
-
+            this.prevProjVersion = prevprojDtl.getVersion();
             retErrors = CompareUtility.fullCompare(projectDetails, prevprojDtl);
         }
-
         return retErrors;
     }
 
@@ -150,7 +159,8 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        //Required files as per business rules
+        //Required files as per business rules        
+
         List<String> requiredFilesTypes = baseService.getServiceFiles(
                 MappingUtil.getServiceId(projectDetails.getServiceType())
         );
@@ -164,7 +174,6 @@ public class FileExtractUploadService {
         //Find missing files types
         //Remove all available types from required, we get the missing types
         requiredFilesTypes.removeAll(availFileTypes);
-
         return requiredFilesTypes;
     }
 
@@ -237,7 +246,6 @@ public class FileExtractUploadService {
      * @return the projectDetails of matching projectId
      */
     private ProjectDetails getLatestRecord(String projectId) {
-
         return getLatestRecord(projectService.findByKeyProjectId(projectId));
     }
 
@@ -335,7 +343,6 @@ public class FileExtractUploadService {
                 projectId = latestRecord.getProjectId();
             }
         }
-
         return projectId;
     }
 
@@ -375,11 +382,11 @@ public class FileExtractUploadService {
      * String fileName = util.storeFile(inputs.getProjectId(), file);
      * util.extractFiles(inputs.getProjectId(), fileName); //Path folder =
      * Paths.get(util.getUploadDir() + File.separator + inputs.getProjectId() +
-     * File.separator).toAbsolutePath().normalize(); // END local	     *
-     * //S3 Based //util.storeFile(inputs.getProjectId(), file);
+     * File.separator).toAbsolutePath().normalize(); // END local	* //S3 Based
+     * //util.storeFile(inputs.getProjectId(), file);
      * //report.setExctractedFileNames( util.listObjects(inputs.getProjectId())
-     * ); // end S3 return util.listFiles(inputs.getProjectId());
-    }*
+     * ); 
+     * // end S3 return util.listFiles(inputs.getProjectId()); }*
      */
     /**
      * Upload, extract and validates files
@@ -402,8 +409,7 @@ public class FileExtractUploadService {
      * //To delete the folder Path folder = Paths.get(util.getUploadDir() +
      * File.separator +
      * projectDetails.getProjectId()).toAbsolutePath().normalize();
-     * FileUtil.deleteFolder(folder.toFile()); return report;
-    }*
+     * FileUtil.deleteFolder(folder.toFile()); return report; }*
      */
     /**
      * Performs all possible Gerber file processing.
