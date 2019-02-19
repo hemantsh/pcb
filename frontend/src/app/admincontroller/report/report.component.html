@@ -5,7 +5,8 @@
         <div class="col-md-4">
           <label>Select projectId:</label>
           <span>
-            <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId" (change)="onProjectIdSelect(selectedProjectId)">
+            <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId"
+              (change)="onProjectIdSelect(selectedProjectId)">
               <option value="0" disabled="true">Select a ProjectId</option>
               <option *ngFor="let projectId of Object.keys(projectIds)" [value]="projectId">{{projectId}}</option>
             </select>
@@ -15,7 +16,8 @@
           <div [ngClass]="[divStyle]">
             <label for="">Select Version:</label>
             <span>
-              <select id="version_select" class="form-control" [(ngModel)]="selectedVersionId" (change)="onVersionSelect(selectedVersionId)">
+              <select id="version_select" class="form-control" [(ngModel)]="selectedVersionId"
+                (change)="onVersionSelect(selectedVersionId)">
                 <option value="0" disabled="true">Select version</option>
                 <option *ngFor="let version of projectIds[selectedProjectId]" [value]="version"> {{version}}
                 </option>
@@ -63,27 +65,31 @@
                     <td>
                       <p *ngIf="!report?.customerIdEdit">
                         {{report.customerId}} &nbsp;
-                        <button class="btn btn-default" (click)="report.customerIdEdit = !report.customerIdEdit; report.originalCustId = report.customerId"><span
+                        <button class="btn btn-default"
+                          (click)="report.customerIdEdit = !report.customerIdEdit; report.originalCustId = report.customerId"><span
                             class="glyphicon glyphicon-edit"></span>
                           Edit</button>
                       </p>
 
                       <p *ngIf="report?.customerIdEdit">
                         <input type="text" [(ngModel)]="report.customerId" class="form-control" />
-                        <button class="btn btn-primary" (click)="updateData(report);" [disabled]="!report.customerId">Update</button>
+                        <button class="btn btn-primary" (click)="updateData(report);"
+                          [disabled]="!report.customerId">Update</button>
                         <button class="btn btn-danger" (click)="cancelCustId(report)">Cancel</button>
                       </p>
                     </td>
                     <td>
                       <p *ngIf="!report?.emailEdit">
-                        {{report.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default" (click)="report.emailEdit=!report.emailEdit; report.originalEmail=report.emailAddress;"><span
+                        {{report.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default"
+                          (click)="report.emailEdit=!report.emailEdit; report.originalEmail=report.emailAddress;"><span
                             class="glyphicon glyphicon-edit"></span>
                           &nbsp;Edit</button>
                       </p>
 
                       <p *ngIf="report?.emailEdit">
                         <input type="text" [(ngModel)]="report.emailAddress" class="form-control" />
-                        <button class="btn btn-primary" (click)="updateData(report);" [disabled]="!report.emailAddress">Update</button>
+                        <button class="btn btn-primary" (click)="updateData(report);"
+                          [disabled]="!report.emailAddress">Update</button>
                         <button class="btn btn-danger" (click)="cancelEmail(report)">Cancel</button>
                       </p>
                     </td>
@@ -127,17 +133,17 @@
           </div>
           <div *ngIf="report && report.errors" class="spacer">
             <span class="heading">Errors</span>
-            <ul >
+            <ul>
               <li *ngFor="let obj of Object.keys(report?.errors)">
-               <b> {{obj}} :- </b>{{report?.errors[obj]}}
+                <b> {{obj}} :- </b>{{report?.errors[obj]}}
               </li>
             </ul>
           </div>
-          <div *ngIf="report && report.compareResults" class="spacer">
-            <span class="heading">CompareResults</span>
-            <ul >
-              <li *ngFor="let obj of Object.keys(report?.compareResults)">
-               <!--<b> {{obj}} :- </b>-->{{report?.compareResults[obj]}}
+          <div *ngIf="differences" class="spacer">
+            <span class="heading">CompareResults</span><br/>
+            <ul>
+              <li *ngFor="let obj of differences">
+                {{obj}}
               </li>
             </ul>
           </div>
