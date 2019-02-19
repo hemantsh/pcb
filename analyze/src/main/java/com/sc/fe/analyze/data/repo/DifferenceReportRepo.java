@@ -6,10 +6,6 @@
 package com.sc.fe.analyze.data.repo;
 
 import com.sc.fe.analyze.data.entity.DifferenceReport;
-import com.sc.fe.analyze.data.entity.DifferenceReportPK;
-import com.sc.fe.analyze.to.ProjectDetails;
-
-import java.util.List;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +14,5 @@ import org.springframework.stereotype.Repository;
  * @author Hemant
  */
 @Repository
-public interface DifferenceReportRepo extends CassandraRepository<DifferenceReport, DifferenceReportPK> {
-
-    List<ProjectDetails> findByKeyProjectId(final String projectId);
+public interface DifferenceReportRepo extends CassandraRepository<DifferenceReport,String> {    
 }
