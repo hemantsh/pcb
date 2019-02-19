@@ -70,4 +70,8 @@ export class FileService {
     saveFileManagementReport(input){
         return this.http.post(config.urlPath +'fm/validateAndSave',input);
     }
+
+    getDifferences(projectId){
+        return this.http.get(config.urlPath + `report/project/${projectId}/differences`);
+    }
 }
