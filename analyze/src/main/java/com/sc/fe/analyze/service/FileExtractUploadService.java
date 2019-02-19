@@ -31,7 +31,8 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
-import static java.lang.System.exit;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -80,6 +81,7 @@ public class FileExtractUploadService {
                 fileDetails.add(fd);
             });
         }
+
         // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
@@ -88,6 +90,7 @@ public class FileExtractUploadService {
             projectDetails.getErrors().put("V1000", "Invalid Service Type !!");
             return report;
         }
+
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         if (missingTypes != null) {
@@ -117,11 +120,6 @@ public class FileExtractUploadService {
 
         //compare the last ProjectDetails 
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
-
-        //TODO: save the compare results in another table
-        //Only store comparison of latest set. table key = ProjectId. 
-        //Also need to store the value of last version which was compared as non key column
-        //Errors will be formated text. Add these to report.error field
         projectDetails.setCompareResults(CompareUtility.formatedError(compareMap));
 
         //Save the comparison Details
@@ -198,6 +196,12 @@ public class FileExtractUploadService {
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
+        List<FileDetails> processFileDetails = new ArrayList<FileDetails>(Arrays.asList(new FileDetails[projectDetails.getFileDetails().size()]));
+        Collections.copy(processFileDetails, projectDetails.getFileDetails());
+        
+        //Call processGerber() method 
+        processGerber(processFileDetails);
+        
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
@@ -208,7 +212,6 @@ public class FileExtractUploadService {
 
         //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-
     }
 
     /**
@@ -432,7 +435,7 @@ public class FileExtractUploadService {
                 //.filter( fd -> "gerber".equalsIgnoreCase( fd.getFormat()) ) //TODO: add later
                 .forEach(fileDtl -> {
                     //Apply rules by name pattern
-                    GerberFileProcessingUtil.parseFileName(fileDtl);
+                    GerberFileProcessingUtil.parseFileName(fileDtl);                    
                 });
     }
 
