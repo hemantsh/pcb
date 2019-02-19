@@ -133,6 +133,14 @@
               </li>
             </ul>
           </div>
+          <div *ngIf="report && report.compareResults" class="spacer">
+            <span class="heading">CompareResults</span>
+            <ul >
+              <li *ngFor="let obj of Object.keys(report?.compareResults)">
+               <!--<b> {{obj}} :- </b>-->{{report?.compareResults[obj]}}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

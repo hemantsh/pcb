@@ -34,7 +34,7 @@ export class ReportComponent implements OnInit {
       .subscribe(
         (response: Response) => {
           this.projectIds = response.json();
-          console.log("ProjectId....", this.projectIds);
+          console.log("ProjectId with multiple verisons", this.projectIds);
         },
         (error) => console.log(error)
       );
