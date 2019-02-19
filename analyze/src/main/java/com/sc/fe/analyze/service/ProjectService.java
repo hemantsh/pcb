@@ -84,6 +84,7 @@ public class ProjectService {
      */
     public void save(DifferenceReport diffReport) {
         diffReportRepo.save(diffReport);
+        
     }
 
     /**
@@ -187,5 +188,15 @@ public class ProjectService {
         });
         obj.setFileDetails(fbList);
         return obj;
+    }
+    
+    public Set<String> getDifferences(String projectId)
+    {
+        Optional<DifferenceReport> diff=diffReportRepo.findById(projectId);
+        if(diff.isPresent())
+        {
+            return diff.get().getDifferences();
+        }
+        return null;
     }
 }

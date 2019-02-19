@@ -47,4 +47,10 @@ public class ReportController {
     public Map<String, Set<String>> getDistinctProjectId(){
         return projectService.getProjectVersionMap();
     }
+    
+    @GetMapping("/project/{projectId}/differences")
+    public Set<String> getDifferences(@PathVariable("projectId") String projectId)
+    {
+        return projectService.getDifferences(projectId);        
+    }
 }

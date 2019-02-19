@@ -84,17 +84,22 @@ public class FileExtractUploadService {
         Report report = new Report();
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
-
+        if (MappingUtil.getServiceId(projectDetails.getServiceType()) == null) {
+            projectDetails.getErrors().put("V1000", "Invalid Service Type !!");
+            return report;
+        }
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
-        if (missingTypes.size() > 0) {
-            report.setValidationStatus("We found some missing information. ");
-            missingTypes.stream().forEach(type -> {
-                report.addError(type);
-                report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
-            });
-        } else {
-            report.setValidationStatus("Matched with all required file types. All information collected.");
+        if (missingTypes != null) {
+            if (missingTypes.size() > 0) {
+                report.setValidationStatus("We found some missing information. ");
+                missingTypes.stream().forEach(type -> {
+                    report.addError(type);
+                    report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                });
+            } else {
+                report.setValidationStatus("Matched with all required file types. All information collected.");
+            }
         }
 
         //Set errors
@@ -159,21 +164,23 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
+        List<String> requiredFilesTypes = null;
         //Required files as per business rules        
+        if (MappingUtil.getServiceId(projectDetails.getServiceType()) != null) {
+            requiredFilesTypes = baseService.getServiceFiles(
+                    MappingUtil.getServiceId(projectDetails.getServiceType())
+            );
 
-        List<String> requiredFilesTypes = baseService.getServiceFiles(
-                MappingUtil.getServiceId(projectDetails.getServiceType())
-        );
+            //Files provided by customer
+            List<String> availFileTypes = projectDetails.getFileDetails().stream()
+                    .filter(fd -> fd.getType() != null)
+                    .map(FileDetails::getType)
+                    .collect(Collectors.toList());
 
-        //Files provided by customer
-        List<String> availFileTypes = projectDetails.getFileDetails().stream()
-                .filter(fd -> fd.getType() != null)
-                .map(FileDetails::getType)
-                .collect(Collectors.toList());
-
-        //Find missing files types
-        //Remove all available types from required, we get the missing types
-        requiredFilesTypes.removeAll(availFileTypes);
+            //Find missing files types
+            //Remove all available types from required, we get the missing types
+            requiredFilesTypes.removeAll(availFileTypes);
+        }
         return requiredFilesTypes;
     }
 
@@ -385,8 +392,7 @@ public class FileExtractUploadService {
      * File.separator).toAbsolutePath().normalize(); // END local	* //S3 Based
      * //util.storeFile(inputs.getProjectId(), file);
      * //report.setExctractedFileNames( util.listObjects(inputs.getProjectId())
-     * ); 
-     * // end S3 return util.listFiles(inputs.getProjectId()); }*
+     * ); // end S3 return util.listFiles(inputs.getProjectId()); }*
      */
     /**
      * Upload, extract and validates files

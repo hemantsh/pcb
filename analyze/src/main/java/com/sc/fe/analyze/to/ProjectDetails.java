@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.HashMap;
 
 @JsonInclude(Include.NON_EMPTY)
 public class ProjectDetails implements Serializable {
@@ -188,6 +189,10 @@ public class ProjectDetails implements Serializable {
      * @return the set of errors in Map(key,value) form
      */
     public Map<String, String> getErrors() {
+        if(this.errors==null)
+        {
+            this.errors=new HashMap<String,String>(); 
+        }
         return errors;
     }
 

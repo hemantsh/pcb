@@ -21,23 +21,19 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 @Table(value = "difference_report")
 public class DifferenceReport {
 
-    @PrimaryKey
-    private DifferenceReportPK key;
-
+    @PrimaryKey(value = "project_id")
+    private String projectId;
     @Column(value = "version")
     private UUID version;
     @Column(value = "differences")
     private Set<String> differences;
 
-    public DifferenceReportPK getKey() {
-        if (key == null) {
-            key = new DifferenceReportPK();
-        }
-        return key;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setKey(DifferenceReportPK key) {
-        this.key = key;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     public UUID getVersion() {
@@ -56,11 +52,4 @@ public class DifferenceReport {
         this.differences = differences;
     }
 
-    public String getProjectId() {
-        return getKey().getProjectId();
-    }
-
-    public void setProjectId(String projectId) {
-        this.getKey().setProjectId(projectId);
-    }
 }
