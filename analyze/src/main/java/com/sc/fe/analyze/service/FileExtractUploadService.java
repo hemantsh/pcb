@@ -31,8 +31,6 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  *
@@ -437,9 +435,9 @@ public class FileExtractUploadService {
         //For each file that is gerber format
         fileDetails.stream()
                 .filter( fd -> StringUtils.isEmpty( fd.getType() ) ) 
-                .forEach(fileDtl -> {
+                .forEach(fd -> {
                     //Apply rules by name pattern
-                    GerberFileProcessingUtil.parseFileName(fileDtl);                    
+                    GerberFileProcessingUtil.parseFileName(fd);                    
                 });
     }
 

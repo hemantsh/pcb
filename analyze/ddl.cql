@@ -79,6 +79,7 @@ CREATE INDEX on project (zipfile_name);
  	name text,
  	type text,
  	size text,
+       selected boolean,
  	file_date timestamp,
  	format text,
  	step text,
