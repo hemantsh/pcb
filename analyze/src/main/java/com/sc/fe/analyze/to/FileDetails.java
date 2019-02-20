@@ -40,6 +40,7 @@ public class FileDetails implements Serializable {
     private String endName;
     private String copperWeight;
     private String layerName;
+    private boolean selected;
 
     private Map<String, String> attributes; //Attributes in key:value form
     private Map<String, String> errors;     //Errors in key:value form

@@ -32,13 +32,14 @@ public class ProjectDetails implements Serializable {
     private String pcbClass;   
     private String boardType;
     private boolean itar;
+    private boolean nofly;
     private Map<Integer, Integer> turnTimeQuantity;
     private String designSpecification;
     private String customerId;
     private String emailAddress;
 
     private Map<String, String> errors; //Errors in (key:value) form
-    private Set<String> compareResults;
+    private Set<String> differences;
 
     /**
      * Details about the files we found while processing
@@ -409,14 +410,28 @@ public class ProjectDetails implements Serializable {
 	/**
 	 * @return the compareResults
 	 */
-	public Set<String> getCompareResults() {
-		return compareResults;
+	public Set<String> getDifferences() {
+		return differences;
 	}
 
 	/**
 	 * @param compareResults the compareResults to set
 	 */
-	public void setCompareResults(Set<String> compareResults) {
-		this.compareResults = compareResults;
+	public void setDifferences(Set<String> compareResults) {
+		this.differences = compareResults;
+	}
+
+	/**
+	 * @return the nofly
+	 */
+	public boolean isNofly() {
+		return nofly;
+	}
+
+	/**
+	 * @param nofly the nofly to set
+	 */
+	public void setNofly(boolean nofly) {
+		this.nofly = nofly;
 	}
 }

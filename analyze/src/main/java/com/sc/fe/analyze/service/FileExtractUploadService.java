@@ -94,8 +94,10 @@ public class FileExtractUploadService {
             if (missingTypes.size() > 0) {
                 report.setValidationStatus("We found some missing information. ");
                 missingTypes.stream().forEach(type -> {
-                    report.addError(type);
-                    report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                	if( ! StringUtils.isEmpty(type)) {
+	                    report.addError(type);
+	                    report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                	}
                 });
             } else {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
@@ -122,14 +124,14 @@ public class FileExtractUploadService {
         //Only store comparison of latest set. table key = ProjectId. 
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
-        projectDetails.setCompareResults(CompareUtility.formatedError(compareMap));
+        projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
 
         //Save the comparison Details
-        if (!projectDetails.getCompareResults().isEmpty()) {
+        if (!projectDetails.getDifferences().isEmpty()) {
             DifferenceReport diffReport = new DifferenceReport();
             diffReport.setProjectId(projectDetails.getProjectId());
             diffReport.setVersion(UUID.fromString(this.prevProjVersion));
-            diffReport.setDifferences(projectDetails.getCompareResults());
+            diffReport.setDifferences(projectDetails.getDifferences());
             projectService.save(diffReport);
         }
         return report;
@@ -198,6 +200,8 @@ public class FileExtractUploadService {
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
+        processGerber( projectDetails.getFileDetails() );
+        
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
@@ -429,7 +433,7 @@ public class FileExtractUploadService {
 
         //For each file that is gerber format
         fileDetails.stream()
-                //.filter( fd -> "gerber".equalsIgnoreCase( fd.getFormat()) ) //TODO: add later
+                .filter( fd -> StringUtils.isEmpty( fd.getType() ) ) 
                 .forEach(fileDtl -> {
                     //Apply rules by name pattern
                     GerberFileProcessingUtil.parseFileName(fileDtl);
