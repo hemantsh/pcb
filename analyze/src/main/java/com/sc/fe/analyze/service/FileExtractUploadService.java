@@ -31,7 +31,8 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
-import static java.lang.System.exit;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -80,6 +81,7 @@ public class FileExtractUploadService {
                 fileDetails.add(fd);
             });
         }
+
         // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
@@ -88,6 +90,7 @@ public class FileExtractUploadService {
             projectDetails.getErrors().put("V1000", "Invalid Service Type !!");
             return report;
         }
+
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         if (missingTypes != null) {
@@ -125,6 +128,7 @@ public class FileExtractUploadService {
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
         projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
+
 
         //Save the comparison Details
         if (!projectDetails.getDifferences().isEmpty()) {
@@ -201,7 +205,7 @@ public class FileExtractUploadService {
         projectDetails.setVersion(version);
 
         processGerber( projectDetails.getFileDetails() );
-        
+
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
@@ -212,7 +216,6 @@ public class FileExtractUploadService {
 
         //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-
     }
 
     /**
@@ -436,7 +439,7 @@ public class FileExtractUploadService {
                 .filter( fd -> StringUtils.isEmpty( fd.getType() ) ) 
                 .forEach(fileDtl -> {
                     //Apply rules by name pattern
-                    GerberFileProcessingUtil.parseFileName(fileDtl);
+                    GerberFileProcessingUtil.parseFileName(fileDtl);                    
                 });
     }
 
