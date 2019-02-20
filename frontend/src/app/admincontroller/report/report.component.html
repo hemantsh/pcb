@@ -102,6 +102,7 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>Selected</th>
                     <th>FileName</th>
                     <th>FileType</th>
                     <th>DataPolarity</th>
@@ -112,19 +113,22 @@
                 <tbody>
                   <tr *ngFor="let inner of report?.fileDetails">
                     <td>
-                      {{inner.name}}
+                      <label><input type="checkbox" [(ngModel)]="inner.selected"></label>
                     </td>
                     <td>
-                      {{inner.type}}
+                      <b *ngIf="inner.selected">{{inner.name}}</b> <span *ngIf="!inner.selected">{{inner.name}}</span>
                     </td>
                     <td>
-                      {{inner.polarity}}
+                      <b *ngIf="inner.selected">{{inner.type}}</b> <span *ngIf="!inner.selected">{{inner.type}}</span>
                     </td>
                     <td>
-                      {{inner.layerOrder}}
+                      <b *ngIf="inner.selected">{{inner.polarity}}</b> <span *ngIf="!inner.selected">{{inner.polarity}}</span>
                     </td>
                     <td>
-                      {{inner.copperWeight}}
+                      <b *ngIf="inner.selected">{{inner.layerOrder}}</b> <span *ngIf="!inner.selected">{{inner.layerOrder}}</span>
+                    </td>
+                    <td>
+                      <b *ngIf="inner.selected">{{inner.copperWeight}}</b> <span *ngIf="!inner.selected">{{inner.copperWeight}}</span>
                     </td>
                   </tr>
                 </tbody>

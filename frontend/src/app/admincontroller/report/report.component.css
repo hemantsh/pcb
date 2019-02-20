@@ -3,10 +3,10 @@
     height: 316px;
 }
 
-.reportscroll table tr td:first-child{
+/* .reportscroll table tr td:first-child{
     text-align: right;
     width: 30%;
-}
+} */
 
 .error{
     color: red;
