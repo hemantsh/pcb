@@ -73,6 +73,7 @@ public class ReportUtility {
         dtl.setLayerName(projectFiles.getLayerName());
         dtl.setAttributes(projectFiles.getAttributes());
         dtl.setErrors(projectFiles.getErrors());
+        dtl.setSelected(projectFiles.isSelected());
         return dtl;
     }
 
@@ -148,6 +149,7 @@ public class ReportUtility {
         }
         filesDbDetails.setModifiedDate(new Date());
         filesDbDetails.setErrors(fileDetails.getErrors());
+        filesDbDetails.setSelected(fileDetails.isSelected());
         return filesDbDetails;
     }
 }

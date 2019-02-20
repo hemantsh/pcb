@@ -60,6 +60,16 @@ public class ProjectFiles {
     private Date modifiedDate;
     @Column(value = "errors")
     private Map<String, String> errors;
+    @Column(value = "selected")
+    private boolean selected; 
+    
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     /**
      * Gets the StartName
