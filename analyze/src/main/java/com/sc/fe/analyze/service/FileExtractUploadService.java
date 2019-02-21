@@ -81,8 +81,7 @@ public class FileExtractUploadService {
 
         // REPORT
         Report report = new Report();        
-        report.setProjectDetail(projectDetails);
-        report.setSummary("****** File upload and basic validation by name and extension. *******");
+        
         String[] splitServiceTypes=projectDetails.getServiceType().split(",");        
         if(MappingUtil.getServiceId(splitServiceTypes[0]) == null) {
             projectDetails.getErrors().put("V1000", "Invalid Service Type !!");
@@ -136,6 +135,21 @@ public class FileExtractUploadService {
             diffReport.setDifferences(projectDetails.getDifferences());
             projectService.save(diffReport);
         }
+        
+        ProjectDetails temp = new ProjectDetails();
+        temp.setProjectId(projectDetails.getProjectId());
+        temp.setSetId( projectDetails.getSetId());
+        temp.setLayers( projectDetails.getLayers());
+        temp.setItar( projectDetails.getItar());
+        temp.setNofly(  projectDetails.isNofly());
+        temp.setNewProject( projectDetails.isNewProject() );
+        //temp.setTurnTimeQuantity( projectDetails.getTurnTimeQuantity() );
+        temp.setVersion( projectDetails.getVersion());
+        temp.setErrors( projectDetails.getErrors() );
+        temp.setDifferences( projectDetails.getDifferences() );
+        report.setProjectDetail(temp);
+        report.setSummary("****** File upload and basic validation by name and extension. *******");
+        
         return report;
     }
 

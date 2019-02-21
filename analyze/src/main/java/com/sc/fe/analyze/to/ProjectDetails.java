@@ -23,6 +23,7 @@ public class ProjectDetails implements Serializable {
     private String version;
     private boolean attachReplace;
     private boolean newProject;
+    private String setId;
     private String serviceType;
     private String zipFileName;
     private String zipFileSize;
@@ -433,5 +434,19 @@ public class ProjectDetails implements Serializable {
 	 */
 	public void setNofly(boolean nofly) {
 		this.nofly = nofly;
+	}
+
+	/**
+	 * @return the setId
+	 */
+	public String getSetId() {
+		return setId;
+	}
+
+	/**
+	 * @param setId the setId to set
+	 */
+	public void setSetId(String setId) {
+		this.setId = setId;
 	}
 }
