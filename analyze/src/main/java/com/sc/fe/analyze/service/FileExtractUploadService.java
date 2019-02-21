@@ -41,7 +41,6 @@ public class FileExtractUploadService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
     private FileStoreUtil util;
-    private String prevProjVersion;
 
     //private S3FileUtility util;
     @Autowired
@@ -80,26 +79,29 @@ public class FileExtractUploadService {
         }
 
         // REPORT
-        Report report = new Report();        
+        Report report = new Report();
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
-        
-        String[] splitServiceTypes=projectDetails.getServiceType().split(",");        
-        if(MappingUtil.getServiceId(splitServiceTypes[0]) == null) {
-            projectDetails.getErrors().put("V0000", "Invalid Service Type.");
-            return report;
-        }     
+
+        String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+        for (int i = 0; i < splitServiceTypes.length; i++) {
+            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+            if (MappingUtil.getServiceId(splitServiceType) == null) {
+                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                return report;
+            }
+        }
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         if (missingTypes != null) {
             if (missingTypes.size() > 0) {
-                report.setValidationStatus("We found some missing information. ");                                
+                report.setValidationStatus("We found some missing information. ");
                 missingTypes.stream().forEach(type -> {
-                	if( ! StringUtils.isEmpty(type)) {
-	                    report.addError(type);
-	                    report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
-                	}
+                    if (!StringUtils.isEmpty(type)) {
+                        report.addError(type);
+                        report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                    }
                 });
             } else {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
@@ -121,6 +123,8 @@ public class FileExtractUploadService {
 
         //compare the last ProjectDetails 
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
+        String prevProjVersion = compareMap.get("version");
+        compareMap.remove("version");
 
         //TODO: save the compare results in another table
         //Only store comparison of latest set. table key = ProjectId. 
@@ -128,16 +132,15 @@ public class FileExtractUploadService {
         //Errors will be formated text. Add these to report.error field
         projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
 
-
         //Save the comparison Details
         if (!projectDetails.getDifferences().isEmpty()) {
             DifferenceReport diffReport = new DifferenceReport();
             diffReport.setProjectId(projectDetails.getProjectId());
-            diffReport.setVersion( UUID.fromString(this.prevProjVersion) );
+            diffReport.setVersion(UUID.fromString(prevProjVersion));
             diffReport.setDifferences(projectDetails.getDifferences());
             projectService.save(diffReport);
         }
-        
+
         return report;
     }
 
@@ -159,8 +162,8 @@ public class FileExtractUploadService {
         if (prevprojDtl != null) {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
-            this.prevProjVersion = prevprojDtl.getVersion();
-            retErrors = CompareUtility.fullCompare(projectDetails, prevprojDtl);
+            retErrors.put("version", prevprojDtl.getVersion());
+            retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
             //TODO: prevProj version should not be stored at class level. 
             //Add into retErrors and make sure to remove in caller 
         }
@@ -172,28 +175,26 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = null;        
-        String[] splitService=projectDetails.getServiceType().split(",");      
-        
+        List<String> requiredFilesTypes = null;
+        String[] splitService = projectDetails.getServiceType().split(",");
+
         for (int i = 0; i < splitService.length; i++) {
+            splitService[i] = splitService[i].substring(0, 1).toUpperCase() + splitService[i].substring(1, splitService[i].length()).toLowerCase();
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes = baseService.getServiceFiles(
                         MappingUtil.getServiceId(splitService[i])
                 );
-
-                //Files provided by customer
-                List<String> availFileTypes = projectDetails.getFileDetails().stream()
-                        .filter(fd -> fd.getType() != null)
-                        .map(FileDetails::getType)
-                        .collect(Collectors.toList());
-
-                //Find missing files types
-                //Remove all available types from required, we get the missing types       
-                requiredFilesTypes.removeAll(availFileTypes);
             }
         }
-        
+        //Files provided by customer
+        List<String> availFileTypes = projectDetails.getFileDetails().stream()
+                .filter(fd -> fd.getType() != null)
+                .map(FileDetails::getType)
+                .collect(Collectors.toList());
+        //Find missing files types
+        //Remove all available types from required, we get the missing types             
+        requiredFilesTypes.removeAll(availFileTypes);
         return requiredFilesTypes;
     }
 
@@ -211,7 +212,7 @@ public class FileExtractUploadService {
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
-        processGerber( projectDetails.getFileDetails() );
+        processGerber(projectDetails.getFileDetails());
 
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
@@ -443,10 +444,10 @@ public class FileExtractUploadService {
 
         //For each file that is gerber format
         fileDetails.stream()
-                .filter( fd -> StringUtils.isEmpty( fd.getType() ) ) 
+                .filter(fd -> StringUtils.isEmpty(fd.getType()))
                 .forEach(fd -> {
                     //Apply rules by name pattern
-                    GerberFileProcessingUtil.parseFileName(fd);                    
+                    GerberFileProcessingUtil.parseFileName(fd);
                 });
     }
 
