@@ -19,12 +19,15 @@ public class ErrorCodeMap {
         temp.put("document", ErrorCodes.V0007);
         temp.put("domponent", ErrorCodes.V0008);
         temp.put("rout", ErrorCodes.V0009);
+        temp.put("bom", ErrorCodes.V0010);
+        temp.put("gerber", ErrorCodes.V0011);
+        temp.put("odb", ErrorCodes.V0012);
 
         return temp;
     }
 
     public static ErrorCodes getCodeForFileType(String fileType) {
-        ErrorCodes code = errorMap.get(fileType);
+        ErrorCodes code = errorMap.get(fileType.toLowerCase());
         if (code == null) {
             code = ErrorCodes.V0000;
         }

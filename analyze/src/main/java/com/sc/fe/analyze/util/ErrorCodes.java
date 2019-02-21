@@ -10,7 +10,10 @@ public enum ErrorCodes {
     V0006("solder_paste file missing"),
     V0007("Document file missing"),
     V0008("Component file missing"),
-    V0009("Rout file missing");
+    V0009("Rout file missing"),
+	V0010("BOM file missing"),
+	V0011("gerber file required"),
+	V0012("ODB file required");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;

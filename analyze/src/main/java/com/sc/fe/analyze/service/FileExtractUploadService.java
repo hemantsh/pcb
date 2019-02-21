@@ -81,10 +81,12 @@ public class FileExtractUploadService {
 
         // REPORT
         Report report = new Report();        
+        report.setProjectDetail(projectDetails);
+        report.setSummary("****** File upload and basic validation by name and extension. *******");
         
         String[] splitServiceTypes=projectDetails.getServiceType().split(",");        
         if(MappingUtil.getServiceId(splitServiceTypes[0]) == null) {
-            projectDetails.getErrors().put("V1000", "Invalid Service Type !!");
+            projectDetails.getErrors().put("V0000", "Invalid Service Type.");
             return report;
         }     
 
@@ -131,24 +133,10 @@ public class FileExtractUploadService {
         if (!projectDetails.getDifferences().isEmpty()) {
             DifferenceReport diffReport = new DifferenceReport();
             diffReport.setProjectId(projectDetails.getProjectId());
-            diffReport.setVersion(UUID.fromString(this.prevProjVersion));
+            diffReport.setVersion( UUID.fromString(this.prevProjVersion) );
             diffReport.setDifferences(projectDetails.getDifferences());
             projectService.save(diffReport);
         }
-        
-        ProjectDetails temp = new ProjectDetails();
-        temp.setProjectId(projectDetails.getProjectId());
-        temp.setSetId( projectDetails.getSetId());
-        temp.setLayers( projectDetails.getLayers());
-        temp.setItar( projectDetails.getItar());
-        temp.setNofly(  projectDetails.isNofly());
-        temp.setNewProject( projectDetails.isNewProject() );
-        //temp.setTurnTimeQuantity( projectDetails.getTurnTimeQuantity() );
-        temp.setVersion( projectDetails.getVersion());
-        temp.setErrors( projectDetails.getErrors() );
-        temp.setDifferences( projectDetails.getDifferences() );
-        report.setProjectDetail(temp);
-        report.setSummary("****** File upload and basic validation by name and extension. *******");
         
         return report;
     }
@@ -173,6 +161,8 @@ public class FileExtractUploadService {
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
             this.prevProjVersion = prevprojDtl.getVersion();
             retErrors = CompareUtility.fullCompare(projectDetails, prevprojDtl);
+            //TODO: prevProj version should not be stored at class level. 
+            //Add into retErrors and make sure to remove in caller 
         }
         return retErrors;
     }

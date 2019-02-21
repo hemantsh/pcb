@@ -38,12 +38,22 @@ public class FileManagementController {
 	public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 		
 		Report report = fileUploadService.validateFiles(projectDetails);
-		ProjectDetails retVal = new ProjectDetails();
-		if(report != null) {
-			retVal = report.getProjectDetail();
-			retVal.setFileDetails( new ArrayList<FileDetails>());
-		}
-		return retVal;
+		projectDetails = report.getProjectDetail();
+		
+		ProjectDetails temp = new ProjectDetails();
+        temp.setProjectId(projectDetails.getProjectId());
+        temp.setSetId( projectDetails.getSetId());
+        temp.setLayers( projectDetails.getLayers());
+        temp.setItar( projectDetails.getItar());
+        temp.setNofly(  projectDetails.isNofly());
+        temp.setNewProject( projectDetails.isNewProject() );
+        //temp.setTurnTimeQuantity( projectDetails.getTurnTimeQuantity() );
+        temp.setVersion( projectDetails.getVersion());
+        temp.setErrors( projectDetails.getErrors() );
+        temp.setDifferences( projectDetails.getDifferences() );
+        
+        
+		return temp;
 	}
 	
 	@PostMapping(path="/validateAndSave")
