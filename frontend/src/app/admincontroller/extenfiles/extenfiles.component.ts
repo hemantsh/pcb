@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
-import { Router } from '@angular/router';
 import { CanComponentDeactivate } from './candeactivate-guard.service';
 import { Observable } from 'rxjs';
 
@@ -17,14 +16,15 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   selectedExtensionId = 0;
 
   fileTypeArr = [];
-  filtypeList=[];
+  filtypeList = [];
   extensionsList = [];
 
   extensionsArr = [];
-  changesSaved = true;
+  deleteExtnArr = [];
 
-  divStyle= 'hide';
-  constructor(private fileService: FileService, private router: Router) { }
+  changesSaved = true;
+  successMsgDiv = 'hide';
+  constructor(private fileService: FileService) { }
 
   ngOnInit() {
     this.retriveExtnFilesTypes();
@@ -35,28 +35,28 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
   /** 
    * To reterive file types
   */
- retriveFilesTypes() {
-  this.fileService.getFiletypes()
-    .subscribe(
-      (response: Response) => {
-        this.filtypeList = response.json();
-        console.log("FileTypes is fetching...", this.filtypeList);
-        this.changesSaved=true;
-      },
-      (error) => console.log(error)
-    );
-}
+  retriveFilesTypes() {
+    this.fileService.getFiletypes()
+      .subscribe(
+        (response: Response) => {
+          this.filtypeList = response.json();
+          console.log("FileTypes is fetching...", this.filtypeList);
+          this.changesSaved = true;
+        },
+        (error) => console.log(error)
+      );
+  }
 
-/** 
-   * To reterive ExtnfilesTypes
-  */
+  /** 
+     * To reterive ExtnfilesTypes
+    */
   retriveExtnFilesTypes() {
     this.fileService.getExtnFiles()
       .subscribe(
         (response: Response) => {
           this.fileTypeArr = response.json();
           console.log("ExtnFiles is fetching...", this.fileTypeArr);
-          this.changesSaved=true;
+          this.changesSaved = true;
         },
         (error) => console.log(error)
       );
@@ -72,7 +72,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
         (response: Response) => {
           this.extensionsList = response.json();
           console.log("Extension is fetching...", this.extensionsList);
-          this.changesSaved=true;
+          this.changesSaved = true;
         },
         (error) => console.log(error)
       );
@@ -84,7 +84,6 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
         (response: Response) => {
           this.extensionsArr = response.json();
           console.log("onFiletypeSelect Data is fetching...", this.extensionsArr);
-          this.changesSaved=false;
         },
         (error) => console.log(error)
       );
@@ -95,7 +94,7 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
 
   onExtensionSelect(id) {
     console.log("selected extension id", id);
-    console.log("Selected Filetype is :"+this.selectedFileTypeId)
+    console.log("Selected Filetype is :" + this.selectedFileTypeId)
     if (this.extensionsArr && this.extensionsArr.findIndex(ext => ext.extensionId == id) > -1) {
       this.selectedExtensionId = 0;
       alert("This Extension already exists! Please choose another Extension");
@@ -103,17 +102,20 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       let selectedExtension = this.extensionsList.filter(ext => ext.id == id)[0];
       let selectedFileType = this.filtypeList.filter(file => file.id == this.selectedFileTypeId)[0];
       this.extensionsArr.push({ key: { extensionId: selectedExtension.id, filetypeId: selectedFileType.id }, extension: selectedExtension.name, extensionId: selectedExtension.id, file: selectedFileType.type, filetypeId: selectedFileType.id })
-      console.log("testing :"+JSON.stringify(this.extensionsArr));
+      console.log("testing :" + JSON.stringify(this.extensionsArr));
     }
-    this.changesSaved=false;
+    this.changesSaved = false;
   }
 
 
   removeExtension(extension) {
     console.log("remove Extension", extension);
+    this.changesSaved = false;
     let index = this.extensionsArr.indexOf(extension);
     console.log("index", index);
     this.extensionsArr.splice(index, 1);
+    this.deleteExtnArr.push(extension);
+    console.log("DeleteArrayList", this.deleteExtnArr);
   }
 
   onSaveClick() {
@@ -122,11 +124,22 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       .subscribe(
         (response: Response) => {
           console.log("this.ext", response);
-          this.divStyle= 'show';
+          this.successMsgDiv = 'show';
           this.changesSaved = true;
         },
         (error) => console.log(error)
       );
+
+    console.log("Array to delete: ", this.deleteExtnArr);
+    console.log("Array length", this.deleteExtnArr.length);
+    //This service be called and remove the extensions from the database if there is an extension to delete
+    if (this.deleteExtnArr.length !== 0) {
+      this.fileService.deleteExtnFiles(this.deleteExtnArr).subscribe(
+        (response:Response) => console.log(response),
+        (error) => console.log(error)
+      );
+    }
+
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {

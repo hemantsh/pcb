@@ -67,11 +67,11 @@ public class ServiceFilesServices {
 
     /**
      *
-     * @param df - - the list of services_files which will be deleted from the
+     * @param serviceFiles - - the list of services_files which will be deleted from the
      * database
      */
-    public void delete(ServiceFiles df) {
-        serviceFileRepo.delete(df);
+    public void deleteAll(List<ServiceFiles> serviceFiles) {
+        serviceFileRepo.deleteAll(serviceFiles);
     }
 
 }
