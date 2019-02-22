@@ -66,4 +66,7 @@ public class ExtensionFileService {
         return extensionFileRepo.findByKeyFiletypeId(id);
     }
 
+    public void deleteAll(List<ExtensionFileType> extensionFileType) {
+        extensionFileRepo.deleteAll(extensionFileType);
+    }
 }

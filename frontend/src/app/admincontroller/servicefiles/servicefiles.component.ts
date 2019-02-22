@@ -3,7 +3,7 @@ import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import {CanServiceFilesDeactivate} from './candeactivate-servicefilesguard.service';
+import { CanServiceFilesDeactivate } from './candeactivate-servicefilesguard.service';
 
 
 @Component({
@@ -12,18 +12,19 @@ import {CanServiceFilesDeactivate} from './candeactivate-servicefilesguard.servi
   styleUrls: ['./servicefiles.component.css']
 })
 
-export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
+export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate {
   selectedServiceId = 0; //selectedExtensionId
   selectedFileTypeId = 0;
 
   fileTypeArr = [];
   fileTypeList = []; //extensionsList
+  deleteFileTypeArr = [];
 
   serviceArr = []; //extensionsArr
-  serviceFiles=[];
-  changesSaved = true;
+  serviceFiles = [];
 
-  divStyle= 'hide';
+  changesSaved = true;
+  successMsgDiv = 'hide';
   constructor(private fileService: FileService, private router: Router) { }
 
   ngOnInit() {
@@ -35,13 +36,13 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
   /** 
    * To reterive services
   */
-  retriveServices(){
+  retriveServices() {
     this.fileService.getServices()
       .subscribe(
         (response: Response) => {
           this.serviceArr = response.json();
           console.log("Service is fetching...", this.serviceArr);
-          this.changesSaved=true;
+          this.changesSaved = true;
         },
         (error) => console.log(error)
       );
@@ -55,7 +56,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
         (response: Response) => {
           this.serviceFiles = response.json();
           console.log("ServiceFiles is fetching...", this.serviceFiles);
-          this.changesSaved=true;
+          this.changesSaved = true;
         },
         (error) => console.log(error)
       );
@@ -71,7 +72,7 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
         (response: Response) => {
           this.fileTypeList = response.json();
           console.log("Filetype Data is fetching...", this.fileTypeList);
-          this.changesSaved=true;
+          this.changesSaved = true;
         },
         (error) => console.log(error)
       );
@@ -84,7 +85,6 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
         (response: Response) => {
           this.fileTypeArr = response.json();
           console.log("ServiceFiles Data is fetching...", this.fileTypeArr);
-          this.changesSaved=false;
         },
         (error) => console.log(error)
       );
@@ -102,15 +102,18 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
       let selectedService = this.serviceArr.filter(service => service.id == this.selectedServiceId)[0];
       this.fileTypeArr.push({ key: { serviceId: selectedService.id, filetypeId: selectedFiletype.id }, service: selectedService.name, serviceId: selectedService.id, file: selectedFiletype.type, filetypeId: selectedFiletype.id })
     }
-      this.changesSaved=false;
+    this.changesSaved = false;
   }
 
 
   removeFiletype(filetype) {
     console.log(filetype);
+    this.changesSaved = false;
     let index = this.fileTypeArr.indexOf(filetype);
     this.fileTypeArr.splice(index, 1);
-    
+    this.deleteFileTypeArr.push(filetype);
+    console.log("DeleteArrayList", this.deleteFileTypeArr);
+
   }
 
   onSaveClick() {
@@ -118,11 +121,21 @@ export class ServicefilesComponent implements OnInit,CanServiceFilesDeactivate {
       .subscribe(
         (response: Response) => {
           console.log("OnSaveResult", response);
-          this.divStyle='show';
+          this.successMsgDiv = 'show';
           this.changesSaved = true;
         },
         (error) => console.log(error)
       );
+
+    console.log("Array to delete: ", this.deleteFileTypeArr);
+    console.log("Array length", this.deleteFileTypeArr.length);
+    //This service be called and remove the extensions from the database if there is an extension to delete
+    if (this.deleteFileTypeArr.length !== 0) {
+      this.fileService.deleteServiceFiles(this.deleteFileTypeArr).subscribe(
+        (response: Response) => console.log(response),
+        (error) => console.log(error)
+      );
+    }
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {

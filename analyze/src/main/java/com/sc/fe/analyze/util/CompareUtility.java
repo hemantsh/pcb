@@ -280,15 +280,24 @@ public class CompareUtility {
     			if( values.length == 2 ) {
 	    			StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
 	    			if( NA.equals(values[0]) ) {
+                                   
 	    				message.append("Current set does not have value. ");
 	    			}else {
-	    				message.append("Current set value '" + values[0] + "'. ");
+                                        
+                                            message.append("Current set value '" + values[0] + "'. "); 
 	    			}
 	    			
 	    			if( NA.equals(values[1]) ) {
 	    				message.append("Last set did not have value. ");
 	    			}else {
-	    				message.append("Old set value '" + values[1] + "'.");
+                                        if(values[1].equals("ADDED")){ 
+                                            message.replace(0,message.length(), "");
+                                            message.append(errorKey + " " + values[1]);
+                                        }
+                                        else{
+                                            message.append("Old set value '" + values[1] + "'.");
+                                        }
+	    				// message.append("Old set value '" + values[1] + "'.");
 	    			}
 	    			
 	    			formatedErrorSet.add(message.toString());
