@@ -33,7 +33,7 @@ public class FileTypeService {
      *
      * @return all the file type services which found in the database
      */
-    @Cacheable(value = "FileTypes")
+    //@Cacheable(value = "FileTypes")
     public List<FileTypes> findAll() {
         return fileTypesRepo.findAll();
     }

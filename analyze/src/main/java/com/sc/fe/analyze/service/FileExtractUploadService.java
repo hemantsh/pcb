@@ -83,14 +83,19 @@ public class FileExtractUploadService {
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
 
-        String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-        for (int i = 0; i < splitServiceTypes.length; i++) {
-            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
-            if (MappingUtil.getServiceId(splitServiceType) == null) {
-                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                return report;
-            }
-        }
+        if( StringUtils.isEmpty(projectDetails.getServiceType()) ) {
+    		projectDetails.getErrors().put("V0000", "Service Type is required");
+    		return report;
+    	} else {
+	    	String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+	        for (int i = 0; i < splitServiceTypes.length; i++) {
+	            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+	            if (MappingUtil.getServiceId(splitServiceType) == null) {
+	                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+	                return report;
+	            }
+	        }
+    	}
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
@@ -192,9 +197,13 @@ public class FileExtractUploadService {
                 .filter(fd -> fd.getType() != null)
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
+        
+       //TODO: add logic for or condition check 
+        
         //Find missing files types
         //Remove all available types from required, we get the missing types             
         requiredFilesTypes.removeAll(availFileTypes);
+        
         return requiredFilesTypes;
     }
 
@@ -204,6 +213,20 @@ public class FileExtractUploadService {
      * @param projectDetails Details of the project
      */
     public void save(ProjectDetails projectDetails) {
+    	
+    	if( StringUtils.isEmpty(projectDetails.getServiceType()) ) {
+    		projectDetails.getErrors().put("V0000", "Service Type is required");
+    		return;
+    	} else {
+	    	String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+	        for (int i = 0; i < splitServiceTypes.length; i++) {
+	            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+	            if (MappingUtil.getServiceId(splitServiceType) == null) {
+	                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+	                return ;
+	            }
+	        }
+    	}
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
@@ -234,7 +257,8 @@ public class FileExtractUploadService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-        String projectId = null;
+    	
+    	Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
@@ -242,22 +266,26 @@ public class FileExtractUploadService {
         //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
             //Get by customerID - Best chance to find match with this
-            projectId = getProjectIdByCustomerId(projectDetails.getCustomerId());
-            if (StringUtils.isEmpty(projectId)) {
+        	projKeyMap = getProjectIdByCustomerId(projectDetails.getCustomerId());
+            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
                 //Get by customerEmal - next best chance to find match with this
-                projectId = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
+            	projKeyMap = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
             }
-            if (StringUtils.isEmpty(projectId)) {
+            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
                 //Get by zipFileName - possible chance to find match with this
-                projectId = getProjectIdByZipName(projectDetails.getZipFileName());
+            	projKeyMap = getProjectIdByZipName(projectDetails.getZipFileName());
             }
         }
         //Still empty or a new project, CALL FEMS API to get it
-        if (StringUtils.isEmpty(projectId)) {
+        if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
             //TODO: when FEMS ready, we need to call API
-            projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+            //projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+            projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
         }
-        return projectId;
+        if( projectDetails.isAttachReplace() ) {
+        	projectDetails.setVersion(projKeyMap.get("version"));
+        }
+        return projKeyMap.get("project_id");
     }
 
     /**
@@ -314,18 +342,18 @@ public class FileExtractUploadService {
      * @param customerId the customerId of the customer
      * @return projectID of matching record
      */
-    private String getProjectIdByCustomerId(String customerId) {
-        String projectId = null;
-        if (StringUtils.isEmpty(customerId)) {
-            return projectId;
-        } else {
+    private Map<String, String> getProjectIdByCustomerId(String customerId) {
+    	Map<String, String> retMap = new HashMap<String, String>();
+        if ( !StringUtils.isEmpty(customerId)) {
+            
             List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-                projectId = latestRecord.getProjectId();
+            	retMap.put("project_id", latestRecord.getProjectId());
+            	retMap.put("version", latestRecord.getVersion());
             }
         }
-        return projectId;
+        return retMap;
     }
 
     /**
@@ -334,18 +362,18 @@ public class FileExtractUploadService {
      * @param emailId the email of the customer
      * @return projectID of matching record
      */
-    private String getProjectIdByCustomerEmail(String emailId) {
-        String projectId = null;
-        if (StringUtils.isEmpty(emailId)) {
-            return projectId;
-        } else {
+    private Map<String, String> getProjectIdByCustomerEmail(String emailId) {
+    	Map<String, String> retMap = new HashMap<String, String>();
+        if ( !StringUtils.isEmpty(emailId)) {
+            
             List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-                projectId = latestRecord.getProjectId();
+            	retMap.put("project_id", latestRecord.getProjectId());
+            	retMap.put("version", latestRecord.getVersion());
             }
         }
-        return projectId;
+        return retMap;
     }
 
     /**
@@ -354,18 +382,18 @@ public class FileExtractUploadService {
      * @param zipFileName
      * @return projectID of matching record
      */
-    private String getProjectIdByZipName(String zipFileName) {
-        String projectId = null;
-        if (StringUtils.isEmpty(zipFileName)) {
-            return projectId;
-        } else {
+    private Map<String, String> getProjectIdByZipName(String zipFileName) {
+    	Map<String, String> retMap = new HashMap<String, String>();
+        if ( !StringUtils.isEmpty(zipFileName)) {
+            
             List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-                projectId = latestRecord.getProjectId();
+            	retMap.put("project_id", latestRecord.getProjectId());
+            	retMap.put("version", latestRecord.getVersion());
             }
         }
-        return projectId;
+        return retMap;
     }
 
     /**

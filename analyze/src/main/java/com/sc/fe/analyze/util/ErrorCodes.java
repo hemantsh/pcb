@@ -1,7 +1,7 @@
 package com.sc.fe.analyze.util;
 
 public enum ErrorCodes {
-    V0000("Unknown error"),
+    V0000("Unknown fileType"),
     V0001("Drill file missing"),
     V0002("Signal file missing"),
     V0003("power_ground file missing"),
@@ -12,8 +12,10 @@ public enum ErrorCodes {
     V0008("Component file missing"),
     V0009("Rout file missing"),
 	V0010("BOM file missing"),
-	V0011("gerber file required"),
-	V0012("ODB file required");
+	V0011("Gerber file required"),
+	V0012("ODB file required"),
+	V0013("X&Y required"),
+	V0014("mixed file missing");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;
