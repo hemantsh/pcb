@@ -17,11 +17,13 @@ public class ErrorCodeMap {
         temp.put("silk_screen", ErrorCodes.V0005);
         temp.put("solder_paste", ErrorCodes.V0006);
         temp.put("document", ErrorCodes.V0007);
-        temp.put("domponent", ErrorCodes.V0008);
+        temp.put("component", ErrorCodes.V0008);
         temp.put("rout", ErrorCodes.V0009);
         temp.put("bom", ErrorCodes.V0010);
         temp.put("gerber", ErrorCodes.V0011);
         temp.put("odb", ErrorCodes.V0012);
+        temp.put("x&y", ErrorCodes.V0013);
+        temp.put("mixed", ErrorCodes.V0014);
 
         return temp;
     }
