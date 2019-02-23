@@ -2,6 +2,7 @@ package com.sc.fe.analyze.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
@@ -329,4 +331,50 @@ public class CompareUtility {
         }
         return retVal;
     }
+    
+    /**
+     * Find missing items from reqTypes by checking items in availTypes
+     * @param reqTypes
+     * @param availTypes
+     * @return
+     */
+    public static List<String> findMissingItems(final List<String> reqTypes, final List<String> availTypes) {
+    	//Collect all elements to be removed from requiredTypes. 
+    	//These are the elements which are common with availableTypes
+    	List<String> toRemove = new ArrayList<String>();
+        
+    	//Making copies of input params. We don't want to update/change parameters passed
+    	List<String> requiredTypes = new ArrayList<String>();
+    	requiredTypes.addAll(reqTypes);
+    	
+    	List<String> availableTypes = new ArrayList<String>();
+    	availableTypes.addAll(availTypes);
+    	
+        availableTypes.stream().forEach( type -> {
+        	
+        	toRemove.addAll( requiredTypes.stream()
+				        	.filter( e -> toList(e).contains(type.toLowerCase()) )
+				        	.collect( Collectors.toList())
+		        	);
+        });
+        
+        requiredTypes.removeAll( toRemove );
+        return requiredTypes;
+    }
+
+	private static List<String> toList(String e) {
+		if( StringUtils.isEmpty( e )) {
+			return new ArrayList<String>();
+		}
+		//Split by 'or'
+		List<String> temp = Arrays.asList( e.toLowerCase().split("or") );
+		if( temp.size() > 0) {
+			//remove white spaces
+			for( int i=0; i< temp.size(); i++) {
+				temp.set(i, temp.get(i).trim() );
+			}
+		}
+		return temp;
+	}
+    
 }

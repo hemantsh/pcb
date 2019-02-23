@@ -192,19 +192,20 @@ public class FileExtractUploadService {
                 );
             }
         }
-        //Files provided by customer
+        //Types provided by customer
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
+        //Formats
+        Set<String> availFormats = projectDetails.getFileDetails().stream()
+                .filter(fd -> fd.getFormat() != null)
+                .map(FileDetails::getFormat)
+                .collect(Collectors.toSet());
         
-       //TODO: add logic for or condition check 
-        
+        availFileTypes.addAll( availFormats );
         //Find missing files types
-        //Remove all available types from required, we get the missing types             
-        requiredFilesTypes.removeAll(availFileTypes);
-        
-        return requiredFilesTypes;
+        return CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes); 
     }
 
     /**
