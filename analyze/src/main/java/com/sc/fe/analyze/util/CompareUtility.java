@@ -174,24 +174,31 @@ public class CompareUtility {
     public static Map<String, String> compare(FileDetails newFD, FileDetails oldFD) throws IllegalArgumentException, IllegalAccessException {
         Map<String, String> differences = new HashMap<String, String>();
         Map<String, String> returnMap = new HashMap<String, String>();
-        if (newFD == null) {
-            newFD = new FileDetails();
+        
+        if( newFD != null && oldFD != null ) {
+	        //First compare as simple object
+	        differences.putAll(compareObject(newFD, oldFD));
+	        //Now compare collection attributes for FileDetails 
+		    differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
+	    }
+        
+        if (newFD == null && oldFD != null) {
+        	returnMap.put(oldFD.getName().toUpperCase() , "File got Removed.");
+        	newFD = new FileDetails();
         }
-        if (oldFD == null) {
-            oldFD = new FileDetails();
+        if (newFD != null && oldFD == null) {
+        	returnMap.put(newFD.getName().toUpperCase() , "File got Added.");
+        	oldFD = new FileDetails();
         }
-
-        //First compare as simple object
-        differences.putAll(compareObject(newFD, oldFD));
-        //Now compare collection attributes for FileDetails 
-        differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
+        
         String fileName = StringUtils.isEmpty(newFD.getName()) ? oldFD.getName() : newFD.getName();
 
-        differences.keySet().stream().forEach(key
-                -> {
+        differences.keySet().stream().forEach(key -> {
             returnMap.put(fileName.toUpperCase() + "." + key, differences.get(key));
         });
-        newFD.setErrors(differences);
+        if (newFD != null ) {
+        	newFD.setErrors(differences);
+        }
         return returnMap;
     }
 
@@ -274,39 +281,39 @@ public class CompareUtility {
     
     public static Set<String> formatedError( Map<String, String> errors) {
     	Set<String> formatedErrorSet = new HashSet<String>();
-    	if(errors != null && errors.size() > 0) {
-    		
-    		errors.keySet().stream().forEach( errorKey -> {
-    			
-    			String[] values = errors.get(errorKey).split(DELIMITER);
-    			if( values.length == 2 ) {
-	    			StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
-	    			if( NA.equals(values[0]) ) {
-                                   
-	    				message.append("Current set does not have value. ");
-	    			}else {
-                                        
-                                            message.append("Current set value '" + values[0] + "'. "); 
-	    			}
-	    			
-	    			if( NA.equals(values[1]) ) {
-	    				message.append("Last set did not have value. ");
-	    			}else {
-                                        if(values[1].equals("ADDED")){ 
-                                            message.replace(0,message.length(), "");
-                                            message.append(errorKey + " " + values[1]);
-                                        }
-                                        else{
-                                            message.append("Old set value '" + values[1] + "'.");
-                                        }
-	    				// message.append("Old set value '" + values[1] + "'.");
-	    			}
-	    			
-	    			formatedErrorSet.add(message.toString());
-    			}
-    			
-    		});
-    	}
+		if (errors != null && errors.size() > 0) {
+
+			errors.keySet().stream().forEach(errorKey -> {
+
+				String[] values = errors.get(errorKey).split(DELIMITER);
+				if (values.length == 2) {
+					StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
+					if (NA.equals(values[0])) {
+
+						message.append("Current set does not have value. ");
+					} else {
+
+						message.append("Current set value '" + values[0] + "'. ");
+					}
+
+					if (NA.equals(values[1])) {
+						message.append("Last set did not have value. ");
+					} else {
+						if (values[1].equals("ADDED")) {
+							message.replace(0, message.length(), "");
+							message.append(errorKey + " '" + values[0] + "' " + values[1]);
+						} else {
+							message.append("Old set value '" + values[1] + "'.");
+						}
+					}
+
+					formatedErrorSet.add(message.toString());
+				} else {
+					formatedErrorSet.add(errorKey + " " + errors.get(errorKey));
+				}
+
+			});
+		}
     	
     	return formatedErrorSet;
     }

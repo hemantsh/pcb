@@ -26,6 +26,7 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
+import com.sc.fe.analyze.util.ErrorCodes;
 import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
@@ -118,7 +119,9 @@ public class FileExtractUploadService {
         if (report != null && report.getErrorCodes() != null) {
 
             report.getErrorCodes().stream().forEach(err -> {
-                errMap.put(err.toString(), err.getErrorMessage());
+            	if(ErrorCodes.V0000 != err ) {
+            		errMap.put(err.toString(), err.getErrorMessage());
+            	}
             });
         }
         projectDetails.setErrors(errMap);
@@ -131,7 +134,7 @@ public class FileExtractUploadService {
         String prevProjVersion = compareMap.get("version");
         compareMap.remove("version");
 
-        //TODO: save the compare results in another table
+        //save the compare results in another table
         //Only store comparison of latest set. table key = ProjectId. 
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
@@ -169,8 +172,7 @@ public class FileExtractUploadService {
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
             retErrors.put("version", prevprojDtl.getVersion());
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
-            //TODO: prevProj version should not be stored at class level. 
-            //Add into retErrors and make sure to remove in caller 
+            
         }
         return retErrors;
     }

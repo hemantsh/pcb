@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiModel;
 @Table(value = "project")
 public class Project {
 
+	//TODO: add nofly column 
     @PrimaryKey
     private ProjectPK key;
 
