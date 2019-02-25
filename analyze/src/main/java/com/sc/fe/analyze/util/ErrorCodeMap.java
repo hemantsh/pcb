@@ -24,6 +24,8 @@ public class ErrorCodeMap {
         temp.put("odb", ErrorCodes.V0012);
         temp.put("x&y", ErrorCodes.V0013);
         temp.put("mixed", ErrorCodes.V0014);
+        temp.put("drawing", ErrorCodes.V0015);
+        temp.put("invalid_input", ErrorCodes.V0016);
 
         return temp;
     }
