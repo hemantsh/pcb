@@ -36,13 +36,13 @@ public class ReportUtility {
         dtl.setLayers(project.getLayerCount());
         dtl.setPcbClass(project.getPcbClass());
         dtl.setBoardType(project.getBoardType());
-        dtl.setItar(Boolean.valueOf(project.getItar()));
+        dtl.setItar(project.getItar());
         dtl.setTurnTimeQuantity(project.getTurntimeQuantity());
         dtl.setDesignSpecification(project.getDesignSpecification());
         dtl.setErrors(project.getErrors());
         dtl.setCreateDate(project.getCreateDate());
         dtl.setModifiedDate(project.getModifiedDate());
-
+        dtl.setNofly(project.getNofly());
         return dtl;
     }
 
@@ -107,8 +107,9 @@ public class ReportUtility {
             dbDetail.setCreateDate(projectDetails.getCreateDate());
         }
         
-        dbDetail.setItar(String.valueOf(projectDetails.getItar()));
+        dbDetail.setItar(projectDetails.getItar());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
+        dbDetail.setNofly(projectDetails.isNofly());
         return dbDetail;
     }
 

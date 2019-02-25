@@ -38,7 +38,7 @@ public class Project {
     @Column(value = "board_type")
     private String boardType;
     @Column(value = "itar")
-    private String itar;
+    private boolean itar;
     @Column(value = "turntime_quantity")
     private Map<Integer, Integer> turntimeQuantity;
     @Column(value = "design_specification")
@@ -53,7 +53,23 @@ public class Project {
     private Date modifiedDate;
     @Column(value = "errors")
     private Map<String, String> errors;
+    @Column(value = "nofly")
+    private boolean nofly;
 
+    /**
+     * Gets the nofly value.
+     * @return 
+     */
+    public boolean getNofly() {
+        return nofly;
+    }
+    /**
+     * Sets the nofly value.
+     * @param nofly 
+     */
+    public void setNofly(boolean nofly) {
+        this.nofly = nofly;
+    }
     /**
      * Gets the Key, if null then Initializes the ProjectPrimaryKey.
      *
@@ -224,7 +240,7 @@ public class Project {
      *
      * @return
      */
-    public String getItar() {
+    public boolean getItar() {
         return itar;
     }
 
@@ -233,7 +249,7 @@ public class Project {
      *
      * @param itar sets the itar.
      */
-    public void setItar(String itar) {
+    public void setItar(boolean itar) {
         this.itar = itar;
     }
 
