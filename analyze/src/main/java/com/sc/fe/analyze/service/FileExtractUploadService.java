@@ -84,19 +84,29 @@ public class FileExtractUploadService {
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
 
-        if( StringUtils.isEmpty(projectDetails.getServiceType()) ) {
-    		projectDetails.getErrors().put("V0000", "Service Type is required");
-    		return report;
-    	} else {
-	    	String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-	        for (int i = 0; i < splitServiceTypes.length; i++) {
-	            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
-	            if (MappingUtil.getServiceId(splitServiceType) == null) {
-	                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-	                return report;
-	            }
-	        }
-    	}
+        //Check that user give correct Service Type or not
+        if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+            projectDetails.getErrors().put("V0000", "Service Type is required");
+            return report;
+        } else {
+            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+            for (int i = 0; i < splitServiceTypes.length; i++) {
+                String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+                if (MappingUtil.getServiceId(splitServiceType) == null) {
+                    projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                    return report;
+                }
+            }
+        }
+
+        //Check that user give correct newProject and attachReplace values
+        if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
+            projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
+            return report;
+        } else if (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null) {
+            projectDetails.getErrors().put("V0016", "Please provide the version when AttachReplace is true");
+            return report;
+        }
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
@@ -113,20 +123,18 @@ public class FileExtractUploadService {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
             }
         }
-
         //Set errors
         Map<String, String> errMap = new HashMap<String, String>();
         if (report != null && report.getErrorCodes() != null) {
-
             report.getErrorCodes().stream().forEach(err -> {
-            	if(ErrorCodes.V0000 != err ) {
-            		errMap.put(err.toString(), err.getErrorMessage());
-            	}
+                if (ErrorCodes.V0000 != err) {
+                    errMap.put(err.toString(), err.getErrorMessage());
+                }
             });
         }
         projectDetails.setErrors(errMap);
 
-        //Save
+        //Save        
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
         //compare the last ProjectDetails 
@@ -148,7 +156,6 @@ public class FileExtractUploadService {
             diffReport.setDifferences(projectDetails.getDifferences());
             projectService.save(diffReport);
         }
-
         return report;
     }
 
@@ -172,7 +179,7 @@ public class FileExtractUploadService {
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
             retErrors.put("version", prevprojDtl.getVersion());
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
-            
+
         }
         return retErrors;
     }
@@ -204,10 +211,10 @@ public class FileExtractUploadService {
                 .filter(fd -> fd.getFormat() != null)
                 .map(FileDetails::getFormat)
                 .collect(Collectors.toSet());
-        
-        availFileTypes.addAll( availFormats );
+
+        availFileTypes.addAll(availFormats);
         //Find missing files types
-        return CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes); 
+        return CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
     }
 
     /**
@@ -216,20 +223,28 @@ public class FileExtractUploadService {
      * @param projectDetails Details of the project
      */
     public void save(ProjectDetails projectDetails) {
-    	
-    	if( StringUtils.isEmpty(projectDetails.getServiceType()) ) {
-    		projectDetails.getErrors().put("V0000", "Service Type is required");
-    		return;
-    	} else {
-	    	String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-	        for (int i = 0; i < splitServiceTypes.length; i++) {
-	            String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
-	            if (MappingUtil.getServiceId(splitServiceType) == null) {
-	                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-	                return ;
-	            }
-	        }
-    	}
+
+        if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+            projectDetails.getErrors().put("V0000", "Service Type is required");
+            return;
+        } else {
+            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+            for (int i = 0; i < splitServiceTypes.length; i++) {
+                String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+                if (MappingUtil.getServiceId(splitServiceType) == null) {
+                    projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                    return;
+                }
+            }
+        }
+
+        //Check for both newProject and attach/Replace values
+        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())
+                || (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null)) {
+            projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
+            return;
+        }
+
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
@@ -250,6 +265,7 @@ public class FileExtractUploadService {
 
         //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
+
     }
 
     /**
@@ -260,8 +276,8 @@ public class FileExtractUploadService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-    	
-    	Map<String, String> projKeyMap = new HashMap<String, String>();
+
+        Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
@@ -269,14 +285,14 @@ public class FileExtractUploadService {
         //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
             //Get by customerID - Best chance to find match with this
-        	projKeyMap = getProjectIdByCustomerId(projectDetails.getCustomerId());
+            projKeyMap = getProjectIdByCustomerId(projectDetails.getCustomerId());
             if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
                 //Get by customerEmal - next best chance to find match with this
-            	projKeyMap = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
+                projKeyMap = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
             }
             if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
                 //Get by zipFileName - possible chance to find match with this
-            	projKeyMap = getProjectIdByZipName(projectDetails.getZipFileName());
+                projKeyMap = getProjectIdByZipName(projectDetails.getZipFileName());
             }
         }
         //Still empty or a new project, CALL FEMS API to get it
@@ -285,8 +301,8 @@ public class FileExtractUploadService {
             //projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
             projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
         }
-        if( projectDetails.isAttachReplace() ) {
-        	projectDetails.setVersion(projKeyMap.get("version"));
+        if (projectDetails.isAttachReplace()) {
+            projectDetails.setVersion(projKeyMap.get("version"));
         }
         return projKeyMap.get("project_id");
     }
@@ -346,14 +362,14 @@ public class FileExtractUploadService {
      * @return projectID of matching record
      */
     private Map<String, String> getProjectIdByCustomerId(String customerId) {
-    	Map<String, String> retMap = new HashMap<String, String>();
-        if ( !StringUtils.isEmpty(customerId)) {
-            
+        Map<String, String> retMap = new HashMap<String, String>();
+        if (!StringUtils.isEmpty(customerId)) {
+
             List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-            	retMap.put("project_id", latestRecord.getProjectId());
-            	retMap.put("version", latestRecord.getVersion());
+                retMap.put("project_id", latestRecord.getProjectId());
+                retMap.put("version", latestRecord.getVersion());
             }
         }
         return retMap;
@@ -366,14 +382,14 @@ public class FileExtractUploadService {
      * @return projectID of matching record
      */
     private Map<String, String> getProjectIdByCustomerEmail(String emailId) {
-    	Map<String, String> retMap = new HashMap<String, String>();
-        if ( !StringUtils.isEmpty(emailId)) {
-            
+        Map<String, String> retMap = new HashMap<String, String>();
+        if (!StringUtils.isEmpty(emailId)) {
+
             List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-            	retMap.put("project_id", latestRecord.getProjectId());
-            	retMap.put("version", latestRecord.getVersion());
+                retMap.put("project_id", latestRecord.getProjectId());
+                retMap.put("version", latestRecord.getVersion());
             }
         }
         return retMap;
@@ -386,14 +402,14 @@ public class FileExtractUploadService {
      * @return projectID of matching record
      */
     private Map<String, String> getProjectIdByZipName(String zipFileName) {
-    	Map<String, String> retMap = new HashMap<String, String>();
-        if ( !StringUtils.isEmpty(zipFileName)) {
-            
+        Map<String, String> retMap = new HashMap<String, String>();
+        if (!StringUtils.isEmpty(zipFileName)) {
+
             List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
             ProjectDetails latestRecord = getLatestRecord(projDtl);
             if (latestRecord != null) {
-            	retMap.put("project_id", latestRecord.getProjectId());
-            	retMap.put("version", latestRecord.getVersion());
+                retMap.put("project_id", latestRecord.getProjectId());
+                retMap.put("version", latestRecord.getVersion());
             }
         }
         return retMap;

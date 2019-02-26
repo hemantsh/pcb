@@ -11,11 +11,13 @@ public enum ErrorCodes {
     V0007("Document file missing"),
     V0008("Component file missing"),
     V0009("Rout file missing"),
-	V0010("BOM file missing"),
-	V0011("Gerber file required"),
-	V0012("ODB file required"),
-	V0013("X&Y required"),
-	V0014("mixed file missing");
+    V0010("BOM file missing"),
+    V0011("Gerber file required"),
+    V0012("ODB file required"),
+    V0013("X&Y required"),    
+    V0014("mixed file missing"),
+    V0015("drawing file missing"),
+    V0016("Invalid input for newProject and attachReplace");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;
