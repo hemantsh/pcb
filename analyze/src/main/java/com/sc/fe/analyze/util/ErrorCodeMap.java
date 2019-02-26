@@ -21,12 +21,13 @@ public class ErrorCodeMap {
         temp.put("rout", ErrorCodes.V0009);
         temp.put("bom", ErrorCodes.V0010);
         temp.put("gerber", ErrorCodes.V0011);
-        temp.put("odb", ErrorCodes.V0012);
-        temp.put("x&y", ErrorCodes.V0013);
-        temp.put("mixed", ErrorCodes.V0014);
-        temp.put("drawing", ErrorCodes.V0015);
-        temp.put("invalid_input", ErrorCodes.V0016);
-
+        temp.put("odb", ErrorCodes.V0011);                
+        temp.put("gerber or odb", ErrorCodes.V0011);
+        temp.put("x&y", ErrorCodes.V0012);
+        temp.put("x&y or x and y", ErrorCodes.V0012);
+        temp.put("mixed", ErrorCodes.V0013);
+        temp.put("drawing", ErrorCodes.V0014);
+        temp.put("invalid_input", ErrorCodes.V0015);
         return temp;
     }
 
