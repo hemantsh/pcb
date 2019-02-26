@@ -89,9 +89,10 @@ public class FileExtractUploadService {
             projectDetails.getErrors().put("V0000", "Service Type is required");
             return report;
         } else {
+        	
             String[] splitServiceTypes = projectDetails.getServiceType().split(",");
             for (int i = 0; i < splitServiceTypes.length; i++) {
-                String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+                String splitServiceType = splitServiceTypes[i].toLowerCase();
                 if (MappingUtil.getServiceId(splitServiceType) == null) {
                     projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
                     return report;
@@ -193,7 +194,7 @@ public class FileExtractUploadService {
         String[] splitService = projectDetails.getServiceType().split(",");
 
         for (int i = 0; i < splitService.length; i++) {
-            splitService[i] = splitService[i].substring(0, 1).toUpperCase() + splitService[i].substring(1, splitService[i].length()).toLowerCase();
+            splitService[i] = splitService[i].toLowerCase();
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes = baseService.getServiceFiles(
@@ -230,7 +231,7 @@ public class FileExtractUploadService {
         } else {
             String[] splitServiceTypes = projectDetails.getServiceType().split(",");
             for (int i = 0; i < splitServiceTypes.length; i++) {
-                String splitServiceType = splitServiceTypes[i].substring(0, 1).toUpperCase() + splitServiceTypes[i].substring(1, splitServiceTypes[i].length()).toLowerCase();
+                String splitServiceType = splitServiceTypes[i].toLowerCase();
                 if (MappingUtil.getServiceId(splitServiceType) == null) {
                     projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
                     return;

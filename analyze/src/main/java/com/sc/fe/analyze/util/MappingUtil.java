@@ -43,21 +43,21 @@ public class MappingUtil {
 
         while (iKeys.hasNext()) {
             Integer key = iKeys.next();
-            extensionReverseMap.put(extensionMap.get(key), key);
+            extensionReverseMap.put(extensionMap.get(key).toLowerCase(), key);
         }
 
         fileTypeReverseMap = new HashMap<String, Integer>(fileTypeMap.size());
         iKeys = fileTypeMap.keySet().iterator();
         while (iKeys.hasNext()) {
             Integer key = iKeys.next();
-            fileTypeReverseMap.put(fileTypeMap.get(key), key);
+            fileTypeReverseMap.put(fileTypeMap.get(key).toLowerCase(), key);
         }
 
         serviceReverseMap = new HashMap<String, Integer>(serviceMap.size());
         iKeys = serviceMap.keySet().iterator();
         while (iKeys.hasNext()) {
             Integer key = iKeys.next();
-            serviceReverseMap.put(serviceMap.get(key), key);
+            serviceReverseMap.put(serviceMap.get(key).toLowerCase(), key);
         }
 
     }
