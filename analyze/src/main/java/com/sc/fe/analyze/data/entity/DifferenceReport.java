@@ -28,28 +28,57 @@ public class DifferenceReport {
     @Column(value = "differences")
     private Set<String> differences;
 
+    /**
+     * Gets the projectId
+     *
+     * @return the projectId
+     */
     public String getProjectId() {
         return projectId;
     }
 
+    /**
+     * Sets the projectId in the projectId instance variable.
+     *
+     * @param projectId Sets the projectId
+     */
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
+    /**
+     * Gets the version
+     *
+     * @return the version
+     */
     public UUID getVersion() {
         return version;
     }
 
+    /**
+     * Sets the version in the version instance variable
+     *
+     * @param version Sets the version
+     */
     public void setVersion(UUID version) {
         this.version = version;
     }
 
+    /**
+     * Gets the differences from differences instance variable
+     *
+     * @return the set of differences
+     */
     public Set<String> getDifferences() {
         return differences;
     }
 
+    /**
+     * Sets the differences in the differences instance variable
+     *
+     * @param differences Sets the differences
+     */
     public void setDifferences(Set<String> differences) {
         this.differences = differences;
     }
-
 }

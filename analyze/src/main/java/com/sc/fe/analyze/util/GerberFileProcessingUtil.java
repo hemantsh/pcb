@@ -455,8 +455,7 @@ public class GerberFileProcessingUtil {
     /**
      * This method reads the image(from S3 bucket) by OCR tool.
      *
-     * @param fileStorageProperties property file containing file upload
-     * options
+     * @param fileStorageProperties property file containing file upload options
      */
     public static void ocrImage(FileStorageProperties fileStorageProperties) throws Exception {
 

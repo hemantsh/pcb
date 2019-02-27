@@ -30,7 +30,7 @@ public class ProjectDetails implements Serializable {
     private int layers;
     private Date modifiedDate;
     private Date createDate;
-    private String pcbClass;   
+    private String pcbClass;
     private String boardType;
     private boolean itar;
     private boolean nofly;
@@ -191,9 +191,8 @@ public class ProjectDetails implements Serializable {
      * @return the set of errors in Map(key,value) form
      */
     public Map<String, String> getErrors() {
-        if(this.errors==null)
-        {
-            this.errors=new HashMap<String,String>(); 
+        if (this.errors == null) {
+            this.errors = new HashMap<String, String>();
         }
         return errors;
     }
@@ -341,7 +340,7 @@ public class ProjectDetails implements Serializable {
     }
 
     /**
-     * @param turnTimeQuantityList the turnTimeQuantityList to set
+     * @param turnTimeQuantity the turnTimeQuantity to set
      */
     public void setTurnTimeQuantity(Map<Integer, Integer> turnTimeQuantity) {
         this.turnTimeQuantity = turnTimeQuantity;
@@ -408,45 +407,45 @@ public class ProjectDetails implements Serializable {
         this.newProject = newProject;
     }
 
-	/**
-	 * @return the compareResults
-	 */
-	public Set<String> getDifferences() {
-		return differences;
-	}
+    /**
+     * @return the compareResults
+     */
+    public Set<String> getDifferences() {
+        return differences;
+    }
 
-	/**
-	 * @param compareResults the compareResults to set
-	 */
-	public void setDifferences(Set<String> compareResults) {
-		this.differences = compareResults;
-	}
+    /**
+     * @param compareResults the compareResults to set
+     */
+    public void setDifferences(Set<String> compareResults) {
+        this.differences = compareResults;
+    }
 
-	/**
-	 * @return the nofly
-	 */
-	public boolean isNofly() {
-		return nofly;
-	}
+    /**
+     * @return the nofly
+     */
+    public boolean isNofly() {
+        return nofly;
+    }
 
-	/**
-	 * @param nofly the nofly to set
-	 */
-	public void setNofly(boolean nofly) {
-		this.nofly = nofly;
-	}
+    /**
+     * @param nofly the nofly to set
+     */
+    public void setNofly(boolean nofly) {
+        this.nofly = nofly;
+    }
 
-	/**
-	 * @return the setId
-	 */
-	public String getSetId() {
-		return setId;
-	}
+    /**
+     * @return the setId
+     */
+    public String getSetId() {
+        return setId;
+    }
 
-	/**
-	 * @param setId the setId to set
-	 */
-	public void setSetId(String setId) {
-		this.setId = setId;
-	}
+    /**
+     * @param setId the setId to set
+     */
+    public void setSetId(String setId) {
+        this.setId = setId;
+    }
 }

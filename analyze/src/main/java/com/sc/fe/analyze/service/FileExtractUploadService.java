@@ -89,7 +89,7 @@ public class FileExtractUploadService {
             projectDetails.getErrors().put("V0000", "Service Type is required");
             return report;
         } else {
-        	
+            //Splits the serviceType by ',' and check each serviceType that is valid or not.            
             String[] splitServiceTypes = projectDetails.getServiceType().split(",");
             for (int i = 0; i < splitServiceTypes.length; i++) {
                 String splitServiceType = splitServiceTypes[i].toLowerCase();
@@ -100,7 +100,7 @@ public class FileExtractUploadService {
             }
         }
 
-        //Check that user give correct newProject and attachReplace values
+        //Check that user gives correct newProject and attachReplace values or not
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
             return report;
@@ -207,7 +207,8 @@ public class FileExtractUploadService {
                 .filter(fd -> fd.getType() != null)
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
-        //Formats
+
+        //Formats provided by customer
         Set<String> availFormats = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getFormat() != null)
                 .map(FileDetails::getFormat)
@@ -254,6 +255,7 @@ public class FileExtractUploadService {
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
+        //To process the gerber file,call the processGerber() method
         processGerber(projectDetails.getFileDetails());
 
         //Save projectFiles
@@ -502,9 +504,9 @@ public class FileExtractUploadService {
     /**
      * ODB processing. Mainly parse matrix file to get fileDetils
      *
-     * @param folder
+     * @param folder the path of the folder
      * @param projectId
-     * @return
+     * @return the list of fileDetails
      */
     private List<FileDetails> processODB(Path folder, String projectId) {
         //To check that whether file type is ODB or not.

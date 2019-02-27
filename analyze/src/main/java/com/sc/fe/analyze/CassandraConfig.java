@@ -10,44 +10,46 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 @EnableCassandraRepositories
 
 public class CassandraConfig extends AbstractCassandraConfiguration {
-	 
-	  @Value("${cassandra.contactpoints}")
-	  private String contactPoints;
 
-	  @Value("${cassandra.port}")
-	  private int port;
+    @Value("${cassandra.contactpoints}")
+    private String contactPoints;
 
-	  @Value("${cassandra.keyspace}")
-	  private String keySpace;
+    @Value("${cassandra.port}")
+    private int port;
 
-	  @Value("${cassandra.basePackages}")
-	  private String basePackages;
+    @Value("${cassandra.keyspace}")
+    private String keySpace;
 
-	  @Override
-	  protected String getKeyspaceName() {
-	    return keySpace;
-	  }
+    @Value("${cassandra.basePackages}")
+    private String basePackages;
 
-	  @Override
-	  protected String getContactPoints() {
-	    return contactPoints;
-	  }
+    @Override
+    protected String getKeyspaceName() {
+        return keySpace;
+    }
 
-	  @Override
-	  protected int getPort() {
-	    return port;
-	  }
+    @Override
+    protected String getContactPoints() {
+        return contactPoints;
+    }
 
-	  @Override
-	  public SchemaAction getSchemaAction() {
-	    return SchemaAction.CREATE_IF_NOT_EXISTS;
-	  }
+    @Override
+    protected int getPort() {
+        return port;
+    }
 
-	  @Override
-	  public String[] getEntityBasePackages() {
-	    return new String[] {basePackages};
-	  }
-    
-	  @Override
-	  protected boolean getMetricsEnabled() { return false; }
+    @Override
+    public SchemaAction getSchemaAction() {
+        return SchemaAction.CREATE_IF_NOT_EXISTS;
+    }
+
+    @Override
+    public String[] getEntityBasePackages() {
+        return new String[]{basePackages};
+    }
+
+    @Override
+    protected boolean getMetricsEnabled() {
+        return false;
+    }
 }

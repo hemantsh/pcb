@@ -18,7 +18,7 @@ public class ServiceFiles {
     /**
      * Gets the ServiceId.
      *
-     * @return
+     * @return the service Id
      */
     public int getServiceId() {
         return getKey().getServiceId();
@@ -27,7 +27,7 @@ public class ServiceFiles {
     /**
      * Sets the ServiceId into the serviceId variable.
      *
-     * @param serviceId takes serviceId and sets it
+     * @param serviceId Takes the serviceId value and sets it
      */
     public void setServiceId(int serviceId) {
         this.getKey().setServiceId(serviceId);
@@ -36,16 +36,16 @@ public class ServiceFiles {
     /**
      * Gets the FiletypeId.
      *
-     * @return
+     * @return the fileType id.
      */
     public int getFiletypeId() {
         return getKey().getFiletypeId();
     }
 
     /**
-     * Sets the FiletypeId into the variable filetypeId
+     * Sets the FiletypeId into the instance variable filetypeId
      *
-     * @param filetypeId sets the filetypeId
+     * @param filetypeId Sets the filetypeId
      */
     public void setFiletypeId(int filetypeId) {
         this.getKey().setFiletypeId(filetypeId);
@@ -54,7 +54,7 @@ public class ServiceFiles {
     /**
      * Gets the Service.
      *
-     * @return
+     * @return the service
      */
     public String getService() {
         return service;
@@ -63,7 +63,7 @@ public class ServiceFiles {
     /**
      * Sets the Service into the variable service.
      *
-     * @param service takes service and sets it
+     * @param service Takes the service value and sets it
      */
     public void setService(String service) {
         this.service = service;
@@ -72,7 +72,7 @@ public class ServiceFiles {
     /**
      * Gets the file.
      *
-     * @return
+     * @return the file
      */
     public String getFile() {
         return file;
@@ -81,7 +81,7 @@ public class ServiceFiles {
     /**
      * Sets the file into the variable file.
      *
-     * @param file takes file and sets it
+     * @param file Takes the file and sets it
      */
     public void setFile(String file) {
         this.file = file;
@@ -90,7 +90,7 @@ public class ServiceFiles {
     /**
      * Gets the PrimaryKey, if null then initializes the ServiceFiles PrimaryKey
      *
-     * @return
+     * @return the PrimaryKey.
      */
     public ServiceFilesPK getKey() {
         if (key == null) {
@@ -102,7 +102,7 @@ public class ServiceFiles {
     /**
      * Sets the ServiceFiles PrimaryKey into the variable key.
      *
-     * @param key takes key and sets it
+     * @param key Takes the key value and sets it
      */
     public void setKey(ServiceFilesPK key) {
         this.key = key;

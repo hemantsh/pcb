@@ -41,7 +41,7 @@ public class FileServices {
 
     /**
      *
-     * @param services - the services to store in a database
+     * @param services the services to store in a database
      */
     public void save(Services services) {
         serviceRepo.save(services);
@@ -50,7 +50,7 @@ public class FileServices {
 
     /**
      *
-     * @param services - the services to remove from a database
+     * @param services the services to remove from a database
      */
     public void delete(Services services) {
         serviceRepo.delete(services);
@@ -59,7 +59,7 @@ public class FileServices {
 
     /**
      *
-     * @param id - the specific service to find from database by id
+     * @param id the specific service to find from database by id
      * @return the services
      */
     public Services getServicesById(int id) {

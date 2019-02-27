@@ -16,16 +16,16 @@ public class FileTypes {
     /**
      * Gets the Id.
      *
-     * @return
+     * @return the Id.
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Sets the Id into the id variable.
+     * Sets the Id in the id instance variable.
      *
-     * @param id sets the id.
+     * @param id Sets the id.
      */
     public void setId(int id) {
         this.id = id;
@@ -34,7 +34,7 @@ public class FileTypes {
     /**
      * Gets the type.
      *
-     * @return
+     * @return the type
      */
     public String getType() {
         return type;
@@ -43,10 +43,9 @@ public class FileTypes {
     /**
      * Sets the type into the type variable.
      *
-     * @param type sets the type.
+     * @param type Sets the type.
      */
     public void setType(String type) {
         this.type = type;
     }
-
 }

@@ -22,35 +22,35 @@ import com.sc.fe.analyze.to.ProjectDetails;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @RestController
-@RequestMapping(path="/report")
+@RequestMapping(path = "/report")
 @CrossOrigin(origins = "*")
 
 public class ReportController {
+
     @Autowired
     ProjectService projectService;
-    
+
     @GetMapping("/projects")
-    public List<ProjectDetails> getAllProjects(ProjectDetails projectDetails){       
-       return projectService.findAll();       
+    public List<ProjectDetails> getAllProjects(ProjectDetails projectDetails) {
+        return projectService.findAll();
     }
-    
+
     @GetMapping("/project/{projectId}/version/{version}")
-    public ProjectDetails getProject(@PathVariable("projectId")String projectId,@PathVariable("version") String verison){    	
+    public ProjectDetails getProject(@PathVariable("projectId") String projectId, @PathVariable("version") String verison) {
         return projectService.getProject(projectId, verison);
     }
-    
+
     @GetMapping("/distinctProjectid")
     @ResponseBody
-    public Map<String, Set<String>> getDistinctProjectId(){
+    public Map<String, Set<String>> getDistinctProjectId() {
         return projectService.getProjectVersionMap();
     }
-    
+
     @GetMapping("/project/{projectId}/differences")
-    public Set<String> getDifferences(@PathVariable("projectId") String projectId)
-    {
-        return projectService.getDifferences(projectId);        
+    public Set<String> getDifferences(@PathVariable("projectId") String projectId) {
+        return projectService.getDifferences(projectId);
     }
 }

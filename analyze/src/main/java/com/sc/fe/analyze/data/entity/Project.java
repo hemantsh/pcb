@@ -19,7 +19,6 @@ import io.swagger.annotations.ApiModel;
 @Table(value = "project")
 public class Project {
 
-	//TODO: add nofly column 
     @PrimaryKey
     private ProjectPK key;
 
@@ -58,22 +57,26 @@ public class Project {
 
     /**
      * Gets the nofly value.
-     * @return 
+     *
+     * @return the nofly value.
      */
     public boolean getNofly() {
         return nofly;
     }
+
     /**
      * Sets the nofly value.
-     * @param nofly 
+     *
+     * @param nofly Sets the nofly value.
      */
     public void setNofly(boolean nofly) {
         this.nofly = nofly;
     }
+
     /**
      * Gets the Key, if null then Initializes the ProjectPrimaryKey.
      *
-     * @return
+     * @return the key.
      */
     public ProjectPK getKey() {
         if (key == null) {
@@ -85,7 +88,7 @@ public class Project {
     /**
      * Sets the Primary Key.
      *
-     * @param key sets the key.
+     * @param key Sets the key.
      */
     public void setKey(ProjectPK key) {
         this.key = key;
@@ -94,7 +97,7 @@ public class Project {
     /**
      * Gets the ProjectId.
      *
-     * @return
+     * @return the projectId.
      */
     public String getProjectId() {
         return getKey().getProjectId();
@@ -103,16 +106,16 @@ public class Project {
     /**
      * Sets the Composite PrimaryKey ProjectId.
      *
-     * @param projectId sets the projectId.
+     * @param projectId Sets the projectId.
      */
     public void setProjectId(String projectId) {
-        this.getKey().setProjectId(projectId);;
+        this.getKey().setProjectId(projectId);
     }
 
     /**
      * Gets the Composite PrimaryKey version.
      *
-     * @return
+     * @return the version.
      */
     public UUID getVersion() {
         return getKey().getVersion();
@@ -121,7 +124,7 @@ public class Project {
     /**
      * Sets the Composite PrimaryKey version.
      *
-     * @param version sets the version.
+     * @param version Sets the version.
      */
     public void setVersion(UUID version) {
         this.getKey().setVersion(version);
@@ -130,7 +133,7 @@ public class Project {
     /**
      * Gets the CustomerName.
      *
-     * @return
+     * @return the CustomerName.
      */
     public String getCustomerName() {
         return customerName;
@@ -148,16 +151,16 @@ public class Project {
     /**
      * Gets the CustomerId.
      *
-     * @return
+     * @return the CustomerId.
      */
     public String getCustomerId() {
         return customerId;
     }
 
     /**
-     * Sets the CustomerId into the customerId variable.
+     * Sets the CustomerId into the customerId instance variable.
      *
-     * @param customerId sets the customerId.
+     * @param customerId Sets the customerId.
      */
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
@@ -166,16 +169,16 @@ public class Project {
     /**
      * Gets the CustomerEmail.
      *
-     * @return
+     * @return the CustomerEmail.
      */
     public String getCustomerEmail() {
         return customerEmail;
     }
 
     /**
-     * Sets the CustomerEmail into the customerEmail.
+     * Sets the CustomerEmail into the customerEmail instance variable.
      *
-     * @param customerEmail sets the customerEmail.
+     * @param customerEmail Sets the customerEmail.
      */
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
@@ -184,16 +187,16 @@ public class Project {
     /**
      * Gets the ServiceType
      *
-     * @return
+     * @return the ServiceType.
      */
     public String getServiceType() {
         return serviceType;
     }
 
     /**
-     * Sets the serviceType into the serviceType variable.
+     * Sets the serviceType into the serviceType instance variable.
      *
-     * @param servicetype sets the serviceType.
+     * @param servicetype Sets the serviceType.
      */
     public void setServiceType(String servicetype) {
         this.serviceType = servicetype;
@@ -202,16 +205,16 @@ public class Project {
     /**
      * Gets the LayerCount.
      *
-     * @return
+     * @return the layerCount
      */
     public int getLayerCount() {
         return layerCount;
     }
 
     /**
-     * Sets the LayerCount into the layerCount.
+     * Sets the LayerCount into the layerCount instance variable.
      *
-     * @param layerCount sets the layerCount.
+     * @param layerCount Sets the layerCount.
      */
     public void setLayerCount(int layerCount) {
         this.layerCount = layerCount;
@@ -220,7 +223,7 @@ public class Project {
     /**
      * Gets the PCBClass.
      *
-     * @return
+     * @return the PCBClass.
      */
     public String getPcbClass() {
         return pcbClass;
@@ -229,7 +232,7 @@ public class Project {
     /**
      * Sets the PCBClass into pcbClass variable.
      *
-     * @param pcbClass sets the pcbClass.
+     * @param pcbClass Sets the pcbClass.
      */
     public void setPcbClass(String pcbClass) {
         this.pcbClass = pcbClass;
@@ -238,7 +241,7 @@ public class Project {
     /**
      * Gets the Itar.
      *
-     * @return
+     * @return the Itar
      */
     public boolean getItar() {
         return itar;
@@ -247,7 +250,7 @@ public class Project {
     /**
      * Sets the Itar into the itar variable.
      *
-     * @param itar sets the itar.
+     * @param itar Sets the itar.
      */
     public void setItar(boolean itar) {
         this.itar = itar;
@@ -256,7 +259,7 @@ public class Project {
     /**
      * Gets the DesignSpecification.
      *
-     * @return
+     * @return the designSpecification
      */
     public String getDesignSpecification() {
         return designSpecification;
@@ -265,7 +268,7 @@ public class Project {
     /**
      * Sets the DesginSpecification into the designSpecification Variable.
      *
-     * @param desingSpec sets the designSpecification.
+     * @param desingSpec Sets the designSpecification.
      */
     public void setDesignSpecification(String desingSpec) {
         this.designSpecification = desingSpec;
@@ -274,16 +277,16 @@ public class Project {
     /**
      * Gets the BoardType.
      *
-     * @return
+     * @return the boardType.
      */
     public String getBoardType() {
         return boardType;
     }
 
     /**
-     * Sets the BoardType into boardType variable.
+     * Sets the BoardType into the boardType variable.
      *
-     * @param boardType
+     * @param boardType Sets the BoardType.
      */
     public void setBoardType(String boardType) {
         this.boardType = boardType;
@@ -292,16 +295,16 @@ public class Project {
     /**
      * Gets the TurnTimeQuantity.
      *
-     * @return
+     * @return the turnTimeQuantity
      */
     public Map<Integer, Integer> getTurntimeQuantity() {
         return turntimeQuantity;
     }
 
     /**
-     * Sets the TurnTimeQuanity into the turntimeQuanity variable.
+     * Sets the TurnTimeQuanity into the turntimeQuanity instance variable.
      *
-     * @param turntimeQuantity sets the turntimeQuantity
+     * @param turntimeQuantity Sets the turntimeQuantity
      */
     public void setTurntimeQuantity(Map<Integer, Integer> turntimeQuantity) {
         this.turntimeQuantity = turntimeQuantity;
@@ -310,16 +313,16 @@ public class Project {
     /**
      * Gets the ZipFileName.
      *
-     * @return
+     * @return the zipFileName.
      */
     public String getZipfileName() {
         return zipFileName;
     }
 
     /**
-     * Sets the ZipfileName into the zipFileName variable.
+     * Sets the ZipfileName into the zipFileName instance variable.
      *
-     * @param zipfileName
+     * @param zipfileName Sets the ZipFileName.
      */
     public void setZipfileName(String zipfileName) {
         this.zipFileName = zipfileName;
@@ -328,16 +331,16 @@ public class Project {
     /**
      * Gets the ZipFileSize.
      *
-     * @return
+     * @return the zipFileSize.
      */
     public String getZipfileSize() {
         return zipfileSize;
     }
 
     /**
-     * Sets the ZipFileSize into the zipfileSize variable.
+     * Sets the ZipFileSize into the zipfileSize instance variable.
      *
-     * @param zipfileSize
+     * @param zipfileSize Sets the zipFileSize.
      */
     public void setZipfileSize(String zipfileSize) {
         this.zipfileSize = zipfileSize;
@@ -346,7 +349,7 @@ public class Project {
     /**
      * Gets the CreateDate.
      *
-     * @return
+     * @return the createDate
      */
     public Date getCreateDate() {
         return createDate;
@@ -355,7 +358,7 @@ public class Project {
     /**
      * Sets the CreateDate into the createDate variable.
      *
-     * @param createDate
+     * @param createDate Sets the createDate
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
@@ -364,7 +367,7 @@ public class Project {
     /**
      * Gets the Modified Date.
      *
-     * @return
+     * @return the modifiedDate
      */
     public Date getModifiedDate() {
         return modifiedDate;
@@ -373,7 +376,7 @@ public class Project {
     /**
      * Sets the Modified Date into the modifiedDate variable.
      *
-     * @param modifiedDate
+     * @param modifiedDate Sets the modifiedDate
      */
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
@@ -382,7 +385,7 @@ public class Project {
     /**
      * Gets the Errors.
      *
-     * @return
+     * @return the errors
      */
     public Map<String, String> getErrors() {
         return errors;
@@ -391,7 +394,7 @@ public class Project {
     /**
      * Sets the Errors into the errors variable.
      *
-     * @param error
+     * @param error Sets the errors
      */
     public void setErrors(Map<String, String> error) {
         this.errors = error;

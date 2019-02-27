@@ -1,10 +1,10 @@
 package exception;
 
 public class FileStorageException extends RuntimeException {
-    
-	private static final long serialVersionUID = -1685647355182000765L;
 
-	public FileStorageException(String message) {
+    private static final long serialVersionUID = -1685647355182000765L;
+
+    public FileStorageException(String message) {
         super(message);
     }
 

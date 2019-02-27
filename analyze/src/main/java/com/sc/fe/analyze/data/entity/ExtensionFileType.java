@@ -18,7 +18,7 @@ public class ExtensionFileType {
     /**
      * Gets the Extension.
      *
-     * @return
+     * @return the extension
      */
     public String getExtension() {
         return extension;
@@ -27,7 +27,7 @@ public class ExtensionFileType {
     /**
      * Sets the Extension in the extension variable.
      *
-     * @param extension sets the extension.
+     * @param extension Sets the extension.
      */
     public void setExtension(String extension) {
         this.extension = extension;
@@ -36,7 +36,7 @@ public class ExtensionFileType {
     /**
      * Gets the fileType.
      *
-     * @return
+     * @return the fileType
      */
     public String getFile() {
         return file;
@@ -45,7 +45,7 @@ public class ExtensionFileType {
     /**
      * Sets the fileType in the file variable.
      *
-     * @param file sets the file.
+     * @param file Sets the file.
      */
     public void setFile(String file) {
         this.file = file;
@@ -54,7 +54,7 @@ public class ExtensionFileType {
     /**
      * Gets the ExtensionId.
      *
-     * @return
+     * @return the extensionId
      */
     public int getExtensionId() {
         return getKey().getExtensionId();
@@ -63,7 +63,7 @@ public class ExtensionFileType {
     /**
      * Sets the ExtensionId in the PrimaryKey.
      *
-     * @param extensionId sets the extensionId.
+     * @param extensionId Sets the extensionId.
      */
     public void setExtensionId(int extensionId) {
         this.getKey().setExtensionId(extensionId);
@@ -72,7 +72,7 @@ public class ExtensionFileType {
     /**
      * Gets the FiletypeId.
      *
-     * @return
+     * @return the fileTypeId
      */
     public int getFiletypeId() {
         return getKey().getFiletypeId();
@@ -81,7 +81,7 @@ public class ExtensionFileType {
     /**
      * Sets the FiletypeId in the PrimaryKey.
      *
-     * @param filetypeId sets the filetypeId.
+     * @param filetypeId Sets the filetypeId.
      */
     public void setFiletypeId(int filetypeId) {
         this.getKey().setFiletypeId(filetypeId);
@@ -90,7 +90,7 @@ public class ExtensionFileType {
     /**
      * Gets the Primary Key, if null then initialize the new PrimaryKey.
      *
-     * @return
+     * @return the primary key.
      */
     public ExtensionFilePK getKey() {
         if (key == null) {
@@ -102,10 +102,9 @@ public class ExtensionFileType {
     /**
      * Set the ExtensionFileKey.
      *
-     * @param key sets the key.
+     * @param key Sets the key.
      */
     public void setKey(ExtensionFilePK key) {
         this.key = key;
     }
-
 }

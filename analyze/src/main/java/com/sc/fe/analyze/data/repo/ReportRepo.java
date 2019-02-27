@@ -10,6 +10,12 @@ import com.sc.fe.analyze.data.entity.ReportPK;
 
 @Repository
 public interface ReportRepo extends CassandraRepository<Report, ReportPK> {
-	
-	List<Report> findByKeyProjectId(final String projectId);
+
+    /**
+     * Extracts data by the projectId from the database.
+     *
+     * @param projectId Takes the projectId as an argument.
+     * @return the list of report
+     */
+    List<Report> findByKeyProjectId(final String projectId);
 }

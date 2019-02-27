@@ -13,9 +13,6 @@ import io.swagger.annotations.ApiModelProperty;
 @PrimaryKeyClass
 public class ServiceFilesPK implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 7133581623671470779L;
 
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "service_id")
@@ -53,7 +50,6 @@ public class ServiceFilesPK implements Serializable {
         if (other.serviceId != serviceId) {
             return false;
         }
-
         return true;
     }
 

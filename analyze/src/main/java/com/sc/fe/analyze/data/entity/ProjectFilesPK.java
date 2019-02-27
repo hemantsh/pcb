@@ -24,10 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 @PrimaryKeyClass
 public class ProjectFilesPK implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 0000;
+    private static final long serialVersionUID = 1L;
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "project_id")
     private String projectId;
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.PARTITIONED, name = "version")
@@ -38,8 +35,9 @@ public class ProjectFilesPK implements Serializable {
     private String name;
 
     @ApiModelProperty("Second Primary Key")
+
     /**
-     * Gets the ProjectId
+     * Gets the projectId
      */
     public String getProjectId() {
         return projectId;
@@ -48,7 +46,7 @@ public class ProjectFilesPK implements Serializable {
     /**
      * Sets the ProjectId into the projectId.
      *
-     * @param projectId sets the projectId
+     * @param projectId Sets the projectId
      */
     public void setProjectId(String projectId) {
         this.projectId = projectId;
@@ -57,7 +55,7 @@ public class ProjectFilesPK implements Serializable {
     /**
      * Gets the Version.
      *
-     * @return
+     * @return the version
      */
     public UUID getVersion() {
         return version;
@@ -75,7 +73,7 @@ public class ProjectFilesPK implements Serializable {
     /**
      * Gets the Name.
      *
-     * @return
+     * @return the name.
      */
     public String getName() {
         return name;
@@ -84,7 +82,7 @@ public class ProjectFilesPK implements Serializable {
     /**
      * Sets the Name into the variable name.
      *
-     * @param name takes name and sets it
+     * @param name Takes the name value and sets it
      */
     public void setName(String name) {
         this.name = name;

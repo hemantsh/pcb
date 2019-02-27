@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.to.FileDetails;
@@ -70,10 +69,10 @@ public class ProjectFilesService {
     }
 
     /**
-     * Gets Unique ProjectId with multiple versions.
+     * Gets the Unique ProjectId with multiple versions.
      *
-     * @param projectId takes projectId
-     * @return
+     * @param projectId takes the projectId
+     * @return the list of fileDetails
      */
     public List<FileDetails> getProjectById(String projectId) {
         return convertList(projectFilesRepo.findByKeyProjectId(projectId));
