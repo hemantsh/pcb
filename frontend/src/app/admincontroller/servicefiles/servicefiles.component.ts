@@ -33,9 +33,9 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
     this.retriveServices();
   }
 
-  /** 
-   * To reterive services
-  */
+  /**
+   * To reterive list of services
+   */
   retriveServices() {
     this.fileService.getServices()
       .subscribe(
@@ -47,9 +47,9 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
         (error) => console.log(error)
       );
   }
-  /** 
-   * To reterive serviceFiles
-  */
+  /**
+   * To reterive list of serviceFiles
+   */
   retriveServiceFiles() {
     this.fileService.getServiceFiles()
       .subscribe(
@@ -78,7 +78,10 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
       );
   }
 
-
+  /**
+   * Retrives Array values that contains serviceId
+   * @param serviceId takes serviceId 
+   */
   onServiceSelect(serviceId) {
     this.fileService.getServiceFilesById(serviceId)
       .subscribe(
@@ -91,7 +94,10 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
   }
 
 
-
+  /**
+   * Adds the new filetype for the selected service.
+   * @param id takes filetypeId
+   */
   onFiletypeSelect(id) {
     if (this.fileTypeArr && this.fileTypeArr.findIndex(file => file.filetypeId == id) > -1) {
       this.selectedFileTypeId = 0;
@@ -105,7 +111,10 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
     this.changesSaved = false;
   }
 
-
+  /**
+   * Removes the filetype for the selected service.
+   * @param filetype contains object that needs to be deleted 
+   */
   removeFiletype(filetype) {
     console.log(filetype);
     this.changesSaved = false;
@@ -115,7 +124,9 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
     console.log("DeleteArrayList", this.deleteFileTypeArr);
 
   }
-
+  /**
+   * Saves the selected service into the database.
+   */
   onSaveClick() {
     this.fileService.saveServiceFiles(this.fileTypeArr)
       .subscribe(
@@ -138,6 +149,9 @@ export class ServicefilesComponent implements OnInit, CanServiceFilesDeactivate 
     }
   }
 
+  /**
+   * This method shows warning before navigating to another page if changes are not saved.
+   */
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (!(this.changesSaved)) {
       return confirm("Do you want to discard the changes?");

@@ -122,13 +122,16 @@
                       <b *ngIf="inner.selected">{{inner.type}}</b> <span *ngIf="!inner.selected">{{inner.type}}</span>
                     </td>
                     <td>
-                      <b *ngIf="inner.selected">{{inner.polarity}}</b> <span *ngIf="!inner.selected">{{inner.polarity}}</span>
+                      <b *ngIf="inner.selected">{{inner.polarity}}</b> <span
+                        *ngIf="!inner.selected">{{inner.polarity}}</span>
                     </td>
                     <td>
-                      <b *ngIf="inner.selected">{{inner.layerOrder}}</b> <span *ngIf="!inner.selected">{{inner.layerOrder}}</span>
+                      <b *ngIf="inner.selected">{{inner.layerOrder}}</b> <span
+                        *ngIf="!inner.selected">{{inner.layerOrder}}</span>
                     </td>
                     <td>
-                      <b *ngIf="inner.selected">{{inner.format}}</b> <span *ngIf="!inner.selected">{{inner.format}}</span>
+                      <b *ngIf="inner.selected">{{inner.format}}</b> <span
+                        *ngIf="!inner.selected">{{inner.format}}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -144,8 +147,9 @@
             </ul>
           </div>
           <div *ngIf="differences" class="spacer">
-            <span class="heading">CompareResults &nbsp;&nbsp;&nbsp; <strong><i>(NOTE- Below comparison result is between last two sets.)</i></strong></span>
-            <br/><br/>
+            <span class="heading">CompareResults &nbsp;&nbsp;&nbsp; <strong><i>(NOTE- Below comparison result is between
+                  last two sets.)</i></strong></span>
+            <br /><br />
             <ul>
               <li *ngFor="let obj of differences">
                 {{obj}}

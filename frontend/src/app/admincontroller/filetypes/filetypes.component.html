@@ -1,25 +1,32 @@
 <div>
   <div class="fix">
-      <button type="button" class="btn btn-default btn-md" (click)="addFileType()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileType</button>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>FileTypes</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let fileType of fileTypes">
-        <td *ngIf="!fileType.edit && !fileType.add">{{fileType.type}}</td>
-        <td *ngIf="fileType.edit || fileType.add"> <input type="text" class="form-control" [(ngModel)]="fileType.type" ngModel name="addFileType" required/></td>
-        <td>
-          <button *ngIf="!fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.edit}" (click)="fileType.originalData = fileType.type; updateFileType(fileType); fileType.edit = !fileType.edit;" [disabled]="!fileType.type">{{fileType.edit
+    <button type="button" class="btn btn-default btn-md" (click)="addFileType()"><span
+        class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileType</button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>FileTypes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fileType of fileTypes">
+          <td *ngIf="!fileType.edit && !fileType.add">{{fileType.type}}</td>
+          <td *ngIf="fileType.edit || fileType.add"> <input type="text" class="form-control" [(ngModel)]="fileType.type"
+              ngModel name="addFileType" required /></td>
+          <td>
+            <button *ngIf="!fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.edit}"
+              (click)="fileType.originalData = fileType.type; updateFileType(fileType); fileType.edit = !fileType.edit;"
+              [disabled]="!fileType.type">{{fileType.edit
             ? 'Update':'Edit' }}</button>
-            <button *ngIf="fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.add}" (click)="updateFileType(fileType); fileType.add = !fileType.add;" [disabled]="!fileType.type">Save</button>
-          <button class="btn btn-danger" *ngIf="fileType.edit || fileType.add" (click)="cancelClick(fileType)">Cancel</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+            <button *ngIf="fileType.add" class="btn btn-primary" [ngClass]="{'btn-success' : fileType.add}"
+              (click)="updateFileType(fileType); fileType.add = !fileType.add;"
+              [disabled]="!fileType.type">Save</button>
+            <button class="btn btn-danger" *ngIf="fileType.edit || fileType.add"
+              (click)="cancelClick(fileType)">Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
