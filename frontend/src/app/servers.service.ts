@@ -28,6 +28,14 @@ export class FileService {
         return this.http.post(config.urlPath + 'admin/extensions/update', extn);
     }
 
+    /**
+     * Service that call the backend api to remove one or array of extensions from the database.
+     * @param extntodelete takes array of extensions
+     */
+    deleteExtensions(extntodelete) {
+        return this.http.put(config.urlPath + 'admin/extensions/delete', extntodelete);
+    }
+
     //Services for Services Start
 
     /**
@@ -43,6 +51,13 @@ export class FileService {
      */
     updateServices(service) {
         return this.http.post(config.urlPath + 'admin/services/update', service);
+    }
+    /**
+     * Service that call the backend api to remove one or array of services from the database.
+     * @param serviceTodelete takes array of services
+     */
+    deleteServices(serviceTodelete) {
+        return this.http.put(config.urlPath + 'admin/services/delete', serviceTodelete);
     }
 
     //Services for Filetypes 
@@ -60,6 +75,13 @@ export class FileService {
      */
     updateFiletypes(filetypes) {
         return this.http.post(config.urlPath + 'admin/filetypes/update', filetypes);
+    }
+    /**
+     * Service that call tha backend api to remove one or array of filetypes from the database.
+     * @param filetypesTodelete takes array of filetypes
+     */
+    deleteFiletypes(filetypesTodelete) {
+        return this.http.put(config.urlPath + 'admin/filetypes/delete', filetypesTodelete);
     }
 
     //Services for ServicesFiles
@@ -101,6 +123,7 @@ export class FileService {
     deleteServiceFiles(servicefilesDeleteData) {
         return this.http.put(config.urlPath + 'admin/servicefiles/delete', servicefilesDeleteData)
     }
+
     //Services for ExtensionFiles
 
     /**

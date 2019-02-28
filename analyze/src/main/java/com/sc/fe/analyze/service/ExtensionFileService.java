@@ -23,15 +23,15 @@ public class ExtensionFileService {
 
     @Autowired
     private ExtensionFileRepo extensionFileRepo;
-    @Autowired
-    private CachingService cacheService;
+//    @Autowired
+//    private CachingService cacheService;
 
     /**
      * This method find the extension_file
      *
      * @return all the extension_file which found in the database
      */
-    @Cacheable(value = "ExtnFileTypes")
+//    @Cacheable(value = "ExtnFileTypes")
     public List<ExtensionFileType> findAll() {
         return extensionFileRepo.findAll();
     }
@@ -43,7 +43,7 @@ public class ExtensionFileService {
      */
     public void save(ExtensionFileType exFT) {
         extensionFileRepo.save(exFT);
-        cacheService.evictAllCacheValues("ExtnFileTypes");
+//        cacheService.evictAllCacheValues("ExtnFileTypes");
     }
 
     /**
@@ -53,7 +53,7 @@ public class ExtensionFileService {
      */
     public void saveAll(List<ExtensionFileType> exFT) {
         extensionFileRepo.saveAll(exFT);
-        cacheService.evictAllCacheValues("ExtnFileTypes");
+//        cacheService.evictAllCacheValues("ExtnFileTypes");
     }
 
     /**

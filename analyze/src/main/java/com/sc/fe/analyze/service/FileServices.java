@@ -26,15 +26,15 @@ public class FileServices {
     @Autowired
     private ServicesRepo serviceRepo;
 
-    @Autowired
-    private CachingService cacheService;
+//    @Autowired
+//    private CachingService cacheService;
 
     /**
      * This method find the services
      *
      * @return all the services which found in the database
      */
-    @Cacheable(value = "Services")
+//    @Cacheable(value = "Services")
     public List<Services> findAll() {
         return serviceRepo.findAll();
     }
@@ -45,16 +45,17 @@ public class FileServices {
      */
     public void save(Services services) {
         serviceRepo.save(services);
-        cacheService.evictAllCacheValues("Services");
+//        cacheService.evictAllCacheValues("Services");
     }
 
     /**
+     * Removes List of services from the database.
      *
      * @param services the services to remove from a database
      */
-    public void delete(Services services) {
-        serviceRepo.delete(services);
-        cacheService.evictAllCacheValues("Services");
+    public void deleteAll(List<Services> services) {
+        serviceRepo.deleteAll(services);
+//        cacheService.evictAllCacheValues("Services");
     }
 
     /**

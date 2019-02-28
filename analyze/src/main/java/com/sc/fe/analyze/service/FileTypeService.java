@@ -24,8 +24,8 @@ public class FileTypeService {
 
     @Autowired
     private FileTypesRepo fileTypesRepo;
-    @Autowired
-    private CachingService cacheService;
+//    @Autowired
+//    private CachingService cacheService;
 
     /**
      * This method find the file type services
@@ -43,7 +43,7 @@ public class FileTypeService {
      */
     public void save(FileTypes ft) {
         fileTypesRepo.save(ft);
-        cacheService.evictAllCacheValues("FileTypes");
+//        cacheService.evictAllCacheValues("FileTypes");
     }
 
     /**
@@ -53,5 +53,14 @@ public class FileTypeService {
      */
     public FileTypes getTypeById(Integer id) {
         return fileTypesRepo.findById(id).get();
+    }
+
+    /**
+     * Deletes List of FileType from the database.
+     *
+     * @param fileType takes list of FileType object.
+     */
+    public void deleteAll(List<FileTypes> fileType) {
+        fileTypesRepo.deleteAll(fileType);
     }
 }

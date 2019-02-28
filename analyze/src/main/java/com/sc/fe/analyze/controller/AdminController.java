@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @CrossOrigin(origins = "*")
 @Api(value = "AdministrationController", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
-
+    
     @Autowired
     private FileExtensionService fileExtnServ;
     @Autowired
@@ -58,7 +58,7 @@ public class AdminController {
     private ServiceFilesServices serviceFileservice;
     @Autowired
     private ExtensionFileService extnFileService;
-
+    
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
     public ProjectDetails getProjectDetails(@PathParam("projectId") String projectId, @PathParam("version") String version) {
@@ -67,7 +67,7 @@ public class AdminController {
         //convert and combine to create ProjectDetails object
         return project;
     }
-
+    
     @GetMapping(path = "/projects")
     @ResponseBody
     public List<ProjectDetails> getAllProjects() {
@@ -83,23 +83,29 @@ public class AdminController {
     public List<Extensions> getAllExtensions() {
         return fileExtnServ.findAll();
     }
-
+    
     @ApiOperation("Insert a new Extension and store into Database.")
     @PostMapping(path = "/extensions/create")
     public void createExtensions(@ApiParam("Takes JSON of Extension Type as Input") @RequestBody Extensions extension) {
         fileExtnServ.save(extension);
     }
-
+    
     @ApiOperation("Update existing Extension stored into the Database.")
     @PostMapping(path = "/extensions/update")
     public void updateExtensions(@ApiParam("Takes JSON of Extension as Input") @RequestBody Extensions extension) {
         fileExtnServ.save(extension);
     }
-
+    
     @ApiOperation("Retrieve the Extension By Id from the Database.")
     @GetMapping(path = "/extensions/retrive/{id}")
     public Extensions retriveExtensions(@ApiParam("Takes Extension Id as Input") @PathVariable("id") int extensionId) {
         return fileExtnServ.getExtensionById(extensionId);
+    }
+    
+    @ApiOperation("Delete the List of Extensions from the Database.")
+    @PutMapping(path = "/extensions/delete")
+    public void deleteExtensions(@ApiParam("Takes JSON of Extensions as Input") @RequestBody List<Extensions> extension) {
+        fileExtnServ.deleteMultiple(extension);
     }
 
     //Service Services
@@ -108,23 +114,29 @@ public class AdminController {
     public List<Services> getAllServices() {
         return fileService.findAll();
     }
-
+    
     @ApiOperation("Insert a new Services and store into Database.")
     @PostMapping(path = "/services/create")
     public void createService(@ApiParam("Takes JSON of Services Type as Input") @RequestBody Services services) {
         fileService.save(services);
     }
-
+    
     @ApiOperation("Updates the existing Service stored into Database.")
     @PostMapping(path = "/services/update")
     public void updateService(@ApiParam("Takes JSON of Services as Input") @RequestBody Services services) {
         fileService.save(services);
     }
-
+    
     @ApiOperation("Retrieve the Services By Id from the Database")
     @GetMapping(path = "/services/retrive/{id}")
     public Services retriveServices(@ApiParam("Takes Service Id as Input") @PathVariable("id") int serviceId) {
         return fileService.getServicesById(serviceId);
+    }
+    
+    @ApiOperation("Delete List of Services from the database.")
+    @PutMapping(path = "/services/delete")
+    public void deleteServices(@ApiParam("Takes Array of JSON object of servieces as Input") @RequestBody List<Services> service) {
+        fileService.deleteAll(service);
     }
 
     //FileType Services
@@ -133,23 +145,29 @@ public class AdminController {
     public List<FileTypes> getAllFileTypes() {
         return fileTypeService.findAll();
     }
-
+    
     @ApiOperation("Insert a new Filetype and store into Database.")
     @PostMapping(path = "/filetypes/create")
     public void createFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype) {
         fileTypeService.save(filetype);
     }
-
+    
     @ApiOperation("Updates the existing Filetype stored into Database.")
     @PostMapping(path = "/filetypes/update")
     public void updateFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype) {
         fileTypeService.save(filetype);
     }
-
+    
     @ApiOperation("Retrieve the Filetype By Id from the Database")
     @GetMapping(path = "/filetypes/retrive/{id}")
     public FileTypes retriveFileType(@ApiParam("Takes filetypeId as Input") @PathVariable("id") int filetypeId) {
         return fileTypeService.getTypeById(filetypeId);
+    }
+    
+    @ApiOperation("Deletes the List of Filetype from the Database")
+    @PutMapping(path = "/filetypes/delete")
+    public void deleteFileType(@RequestBody List<FileTypes> fileType) {
+        fileTypeService.deleteAll(fileType);
     }
 
     //ServiceFiles services
@@ -158,31 +176,31 @@ public class AdminController {
     public List<ServiceFiles> getAllServiceFile() {
         return serviceFileservice.findAll();
     }
-
+    
     @ApiOperation("Insert a new Service To Files Mapping and store into Database.")
     @PostMapping(path = "/servicefiles/create")
     public void createServiceFiles(@ApiParam("Takes JSON of ServiceFiles as Input") @RequestBody ServiceFiles serviceFiles) {
         serviceFileservice.save(serviceFiles);
     }
-
+    
     @ApiOperation("Inserts an Array of Service To Files Mapping and store into Database.")
     @PostMapping(path = "/servicefiles/createmulti")
     public void createServiceFilesAll(@ApiParam("Takes Array JSON of ServiceFiles Mapping") @RequestBody List<ServiceFiles> serviceFiles) {
         serviceFileservice.saveAll(serviceFiles);
     }
-
+    
     @ApiOperation("Updates the existing Service To Files Mapping stored into Database.")
     @PostMapping(path = "/servicefiles/update")
     public void updateServiceFiles(@ApiParam("Takes JSON of ServiceFiles as Input") @RequestBody ServiceFiles serviceFiles) {
         serviceFileservice.save(serviceFiles);
     }
-
+    
     @ApiOperation("Retrieve the Service_Files By Id from the Database")
     @GetMapping(path = "/servicefiles/retrive/{id}")
     public List<ServiceFiles> retriveServiceFiles(@ApiParam("Takes Service Id as Input") @PathVariable("id") int service_id) {
         return serviceFileservice.getFilesByService(service_id);
     }
-
+    
     @ApiOperation("Delete the Service_Files from the Database")
     @PutMapping(path = "/servicefiles/delete")
     public void deleteServiceFiles(@ApiParam("Takes Array JSON of ServiceFiles to delete ServiceFile or an Array of ServiceFiles") @RequestBody List<ServiceFiles> serviceFiles) {
@@ -195,36 +213,36 @@ public class AdminController {
     public List<ExtensionFileType> getExtensionFiles() {
         return extnFileService.findAll();
     }
-
+    
     @ApiOperation("Map a new Extensions To File and store into Database.")
     @PostMapping(path = "/extensionfiles/create")
     public void createExtensionFiles(@ApiParam("Takes JSON of ExtensionFiles Mapping") @RequestBody ExtensionFileType extensionfileType) {
         extnFileService.save(extensionfileType);
     }
-
+    
     @ApiOperation("Inserts an Array of Extension To Files Mapping and store into Database.")
     @PostMapping(path = "/extensionfiles/createmulti")
     public void createExtensionFilesAll(@ApiParam("Takes Array JSON of ExtensionFiles Mapping") @RequestBody List<ExtensionFileType> extensionfileType) {
         extnFileService.saveAll(extensionfileType);
     }
-
+    
     @ApiOperation("Updates the existing Extension To Files Mapping stored into Database.")
     @PostMapping(path = "/extensionfiles/update")
     public void updateExtensionFiles(@ApiParam("Takes JSON of ExtensionFiles Mapping") @RequestBody ExtensionFileType extensionfileType) {
         extnFileService.save(extensionfileType);
     }
-
+    
     @ApiOperation("Retrieve the Extension To Files Mapping By FileType Id from the Database")
     @GetMapping(path = "/extensionfiles/retrive/{id}")
     public List<ExtensionFileType> getExtensionFilesById(@ApiParam("Takes Extension Id as Input") @PathVariable("id") int filetypeId) {
         List<ExtensionFileType> temp = extnFileService.getExtenFileTypeById(filetypeId);
         return temp;
     }
-
+    
     @ApiOperation("Delete the Extension_Files from the Database")
     @PutMapping(path = "/extensionfiles/delete")
     public void deleteExtensionFileType(@ApiParam("Takes JSON of ExtensionFiles Mapping to delete from database") @RequestBody List<ExtensionFileType> deleteData) {
         extnFileService.deleteAll(deleteData);
     }
-
+    
 }

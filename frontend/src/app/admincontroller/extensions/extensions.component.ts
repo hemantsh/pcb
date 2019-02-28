@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
+import { Observable } from 'rxjs';
+import { CanExtensionsComponentDeactivate } from './can-deactivate-extn.service';
 @Component({
   selector: 'app-extensions',
   templateUrl: './extensions.component.html',
   styleUrls: ['./extensions.component.css']
 })
-export class ExtensionsComponent implements OnInit {
+export class ExtensionsComponent implements OnInit, CanExtensionsComponentDeactivate {
 
   extns = [];
-  // displayedColumns: string[] = ['Extensions'];
+  deletedExtnArray = [];
+  changesSaved = true;
 
-  constructor(private fileService: FileService) { }
+  constructor(private fileService: FileService, private zone: NgZone) { }
   ngOnInit() {
     this.retriveExtn();
   }
@@ -25,7 +28,7 @@ export class ExtensionsComponent implements OnInit {
       .subscribe(
         (response: Response) => {
           this.extns = response.json();
-
+          this.changesSaved = true;
           console.log("Data is fetching...", this.extns);
         },
         (error) => console.log(error)
@@ -43,6 +46,8 @@ export class ExtensionsComponent implements OnInit {
         .subscribe(
           (response: Response) => {
             console.log("Your data is updated", response);
+            // this.reloadPage();
+            this.changesSaved = true;
           },
           (error) => console.log(error)
         );
@@ -67,6 +72,55 @@ export class ExtensionsComponent implements OnInit {
     } else {
       extn.edit = false;
       extn.name = extn.originalData
+    }
+  }
+  /**
+   * Removes the selected extensions.
+   * @param extn contains object that needs to be deleted 
+   */
+  removeExtension(extension) {
+    this.changesSaved = false;
+    console.log(extension);
+    let index = this.extns.indexOf(extension);
+    this.extns.splice(index, 1);
+    this.deletedExtnArray.push(extension);
+    console.log("Extensions to delete:", this.deletedExtnArray);
+    console.log("Remaining Extensions", this.extns);
+  }
+  /**
+    * Sends the Extensions array to database.
+    */
+  onSave() {
+    if (this.deletedExtnArray.length !== 0) {
+      let confirm = window.confirm("Are you sure you want to delete extensions ?");
+      if (confirm === true) {
+        this.fileService.deleteExtensions(this.deletedExtnArray).subscribe(
+          (response: Response) => {
+            console.log(response);
+            this.changesSaved = true;
+          },
+          (error) => console.log(error)
+        );
+      } else {
+        this.reloadPage();
+      }
+    }
+  }
+
+  reloadPage() { // click handler or similar
+    this.zone.runOutsideAngular(() => {
+      location.reload();
+    });
+  }
+  /**
+     * This method shows warning before navigating to another page if changes are not saved.
+     */
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!(this.changesSaved)) {
+      return confirm("Do you want to discard the changes?");
+    }
+    else {
+      return true;
     }
   }
 }

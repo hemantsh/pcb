@@ -15,8 +15,15 @@ import { ServicefilesComponent } from './admincontroller/servicefiles/servicefil
 import { FiletypesComponent } from './admincontroller/filetypes/filetypes.component';
 import { ReportComponent } from './admincontroller/report/report.component';
 import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
+
+// <------------------------------  Component Guards   ---------------------------------------> 
 import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
 import { CanServiceFilesDeactivateGuard } from './admincontroller/servicefiles/candeactivate-servicefilesguard.service';
+import { CanExtnDeactivateGuard } from './admincontroller/extensions/can-deactivate-extn.service';
+import { CanServiceDeactivateGuard } from './admincontroller/services/candeactivate-service.service';
+import { CanFiletypeDeactivateGuard } from './admincontroller/filetypes/candeactivate-filetype.service';
+
+// <-------------------------- Wrong URL Handlers ------------------------------------------->
 import { InputJSONComponent } from './input-json/input-json.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -34,9 +41,9 @@ const appRoutes: Routes = [
   {
     path: 'adminController', component: AdmincontrollerComponent,
     children: [
-      { path: "extensions", component: ExtensionsComponent },
-      { path: "services", component: ServicesComponent },
-      { path: "filetypes", component: FiletypesComponent },
+      { path: "extensions", component: ExtensionsComponent, canDeactivate: [CanExtnDeactivateGuard] },
+      { path: "services", component: ServicesComponent, canDeactivate: [CanServiceDeactivateGuard] },
+      { path: "filetypes", component: FiletypesComponent, canDeactivate: [CanFiletypeDeactivateGuard] },
       { path: "servicefiles", component: ServicefilesComponent, canDeactivate: [CanServiceFilesDeactivateGuard] },
       { path: "extensionfiles", component: ExtenfilesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: "report", component: ReportComponent }
@@ -72,7 +79,9 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [FileService, CanDeactivateGuard, CanServiceFilesDeactivateGuard],
+  providers: [FileService, CanDeactivateGuard, CanServiceFilesDeactivateGuard,
+    CanExtnDeactivateGuard, CanFiletypeDeactivateGuard, CanServiceDeactivateGuard],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
