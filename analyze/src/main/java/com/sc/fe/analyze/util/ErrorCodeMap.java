@@ -30,11 +30,12 @@ public class ErrorCodeMap {
         temp.put("x&y", ErrorCodes.V0012);
         temp.put("x&y or x and y", ErrorCodes.V0012);
         temp.put("x&y or x and y or xandy", ErrorCodes.V0012);
-        temp.put("mixed", ErrorCodes.V0013);
-        temp.put("drawing", ErrorCodes.V0014);
-        temp.put("drawing or fabrication drawing", ErrorCodes.V0014);
-        temp.put("drawing or assembly drawing", ErrorCodes.V0014);
-        temp.put("invalid_input", ErrorCodes.V0015);
+        temp.put("mixed", ErrorCodes.V0013);        
+        temp.put("invalid_input", ErrorCodes.V0014);
+        temp.put("drawing", ErrorCodes.V0015);
+        temp.put("assembly_drawing", ErrorCodes.V0015);
+        temp.put("fabrication_drawing", ErrorCodes.V0016);
+        temp.put("odb or ipc2581", ErrorCodes.V0017);
         return temp;
     }
 

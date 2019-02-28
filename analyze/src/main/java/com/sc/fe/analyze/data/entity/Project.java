@@ -22,6 +22,8 @@ public class Project {
     @PrimaryKey
     private ProjectPK key;
 
+    @Column(value = "setId")
+    private String setId;   
     @Column(value = "customer_name")
     private String customerName;
     @Column(value = "customer_id")
@@ -55,6 +57,21 @@ public class Project {
     @Column(value = "nofly")
     private boolean nofly;
 
+    /**
+     * Gets the setId value
+     * @return the setId value
+     */
+    public String getSetId() {
+        return setId;
+    }
+
+    /**
+     * Sets the setId value
+     * @param setId Sets the setId
+     */
+    public void setSetId(String setId) {
+        this.setId = setId;
+    }
     /**
      * Gets the nofly value.
      *

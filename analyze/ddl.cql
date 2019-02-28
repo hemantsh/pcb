@@ -48,7 +48,7 @@ CREATE KEYSPACE fileexchange
  
  	project_id text,
  	version timeuuid,
- 	
+ 	setId text,
  	customer_name text,
  	customer_id text,
  	customer_email text,

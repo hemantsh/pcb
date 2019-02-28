@@ -56,7 +56,7 @@ public class ServiceFilesPK implements Serializable {
     /**
      * Gets the serviceId.
      *
-     * @return
+     * @return the serviceId
      */
     public int getServiceId() {
         return serviceId;
@@ -74,7 +74,7 @@ public class ServiceFilesPK implements Serializable {
     /**
      * Gets the FiletypeId.
      *
-     * @return
+     * @return the fieType id
      */
     public int getFiletypeId() {
         return filetypeId;
@@ -88,5 +88,4 @@ public class ServiceFilesPK implements Serializable {
     public void setFiletypeId(int filetypeId) {
         this.filetypeId = filetypeId;
     }
-
 }
