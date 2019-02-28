@@ -12,10 +12,10 @@ public enum ErrorCodes {
     V0008("Component file missing"),
     V0009("Rout file missing"),
     V0010("BOM file missing"),
-    V0011("Gerber or ODB file missing"),    
+    V0011("Gerber, ODB or IPC2581 file missing"),    
     V0012("X&Y required"),    
     V0013("mixed file missing"),
-    V0014("drawing file missing"),
+    V0014("Fab or Assembly drawing file missing"),
     V0015("Invalid input for newProject and attachReplace");
     
     

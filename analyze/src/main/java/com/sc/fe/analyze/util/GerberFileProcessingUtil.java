@@ -172,7 +172,7 @@ public class GerberFileProcessingUtil {
                 currentMapping.add(exfile);
                 String fileType = extensionToFileMapping.get(extn);
                 filePurposeToNameMapping.put(fileType, currentMapping);
-                fileDetail.setFormat("gerber");
+                //fileDetail.setFormat("gerber"); TODO
             }
         });
         return filePurposeToNameMapping;
@@ -574,6 +574,7 @@ public class GerberFileProcessingUtil {
                         fd.setType(splitRSide[2]);
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);
+                        splitRSide[5] = splitRSide[5].replace("\\", "");
                         fd.setLayerOrder(Integer.parseInt(splitRSide[5].replaceAll("[^0-9]*", "")));
                         break;
                     }

@@ -40,6 +40,9 @@
 \.ipc$->reference misc document none none 0
 \.zip$->other misc other none none 0
 
+#XY
+\.*xy.*.txt$->assembly misc X&Y none none 0
+
 
 #BOM files
 \.*rohs.*.xls[a-z]*$->assembly misc bom none none 0
@@ -95,9 +98,9 @@ drawing->draw misc drawing positive bottom 0
 ^ascs\.*$->draw misc drawing positive bottom 0
 assembly->draw misc drawing positive bottom 0
 [\_\-]old[\_\-\.]->draw misc document positive bottom 0
-[\_\-]dwg(.)?[\_\-\.]->drawing misc document positive bottom 0
+[\_\-]dwg(.)?[\_\-\.]->drawing misc drawing positive bottom 0
 [\-\_]fab\.->fab misc drawing positive top 0
-fab.*.pdf$->fab misc drawing positive top 0
+\.*fab.*.pdf$->fab misc drawing positive top 0
 assy.*.pdf$->assembly misc drawing positive top 0
 assy[\_\-\.]top->top_assembly misc document positive bottom 0
 assy[\_\-\.]bot->bot_assembly misc document positive bottom 0
@@ -1010,11 +1013,6 @@ vcc([0-9][0-9]*)[\-\_\.]->copper-\1 board power_ground positive none \1
 
 \.g([0-9]+)$->copper-\1 board signal positive none \1
 \.gp([0-9]+)$->copper-\1 board power_ground positive none \1
-
-# Job from phillipe
-s([0-9]*).art$->copper-\1 board board signal positive none \1
-s([0-9]*).gbr$->copper-\1 board board signal positive none \1
-s([0-9]*).ger$->copper-\1 board board signal positive none \1
 
 .pwr$->pwr board power_ground negative none
 .pwr([0-9]+)$->copper-\1 board power_ground negative none \1
@@ -2041,9 +2039,9 @@ pg([0-9][0-9]*)$->copper-\1 board power_ground positive none \1
 \.gp([0-9]+)$->copper-\1 board power_ground positive none \1
 
 # Job from phillipe
-s([0-9]*).art$->copper-\1 board board signal positive none \1
-s([0-9]*).gbr$->copper-\1 board board signal positive none \1
-s([0-9]*).ger$->copper-\1 board board signal positive none \1
+s([0-9]*).art$->copper-\1 board signal positive none \1
+s([0-9]*).gbr$->copper-\1 board signal positive none \1
+s([0-9]*).ger$->copper-\1 board signal positive none \1
 
 .pwr$->pwr board power_ground negative none
 .pwr([0-9]+)$->copper-\1 board power_ground negative none \1
