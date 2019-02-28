@@ -1,5 +1,6 @@
 <div>
-    <button type="button" class="btn btn-default btn-md" (click)="addService()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</button>
+  <button type="button" class="btn btn-default btn-md" (click)="addService()"><span
+      class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</button>
   <table class="table">
     <thead>
       <tr>
@@ -11,12 +12,17 @@
     <tbody>
       <tr *ngFor="let service of services">
         <td *ngIf="!service.edit && !service.add">{{service.name}}</td>
-        <td *ngIf="service.edit || service.add"> <input type="text" class="form-control" [(ngModel)]="service.name" ngModel name="addService" required/></td>
+        <td *ngIf="service.edit || service.add"> <input type="text" class="form-control" [(ngModel)]="service.name"
+            ngModel name="addService" required /></td>
         <td>
-          <button *ngIf="!service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.edit}" (click)="service.originalData = service.name; updateService(service); service.edit = !service.edit;" [disabled]="!service.name">{{service.edit
+          <button *ngIf="!service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.edit}"
+            (click)="service.originalData = service.name; updateService(service); service.edit = !service.edit;"
+            [disabled]="!service.name">{{service.edit
             ? 'Update':'Edit' }}</button>
-            <button *ngIf="service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.add}" (click)="updateService(service); service.add = !service.add;" [disabled]="!service.name">Save</button>
-          <button class="btn btn-danger" *ngIf="service.edit || service.add" (click)="cancelClick(service)">Cancel</button>
+          <button *ngIf="service.add" class="btn btn-primary" [ngClass]="{'btn-success' : service.add}"
+            (click)="updateService(service); service.add = !service.add;" [disabled]="!service.name">Save</button>
+          <button class="btn btn-danger" *ngIf="service.edit || service.add"
+            (click)="cancelClick(service)">Cancel</button>
         </td>
       </tr>
 
