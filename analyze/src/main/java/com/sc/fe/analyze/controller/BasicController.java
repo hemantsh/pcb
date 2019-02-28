@@ -15,32 +15,29 @@ import com.sc.fe.analyze.service.BaseService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(path="/api")
+@RequestMapping(path = "/api")
 public class BasicController {
 
-	@Autowired
-	BaseService baseService;
-	
-	@GetMapping(path="/services")
-	public List<Services> getServices() {
-		//List all services
-		List<Services> services = null;
-		
-		return services;
-	}
-	
-	@GetMapping(path="/services/{id}")
-	public Services getServices(@PathVariable("id") int id) {
-		//service for given ID
-		return baseService.getServiceRepo().findById(id).get();
-	}
-	
-	
-	@PostMapping(path="/services/{id}/{name}")
-	public void getServices(@PathVariable("id") int id, @PathVariable("name") String name) {
-		//Update service name in DB for give id
-		
-	}
-	
-	
+    @Autowired
+    BaseService baseService;
+
+    @GetMapping(path = "/services")
+    public List<Services> getServices() {
+        //List all services
+        List<Services> services = null;
+
+        return services;
+    }
+
+    @GetMapping(path = "/services/{id}")
+    public Services getServices(@PathVariable("id") int id) {
+        //service for given ID
+        return baseService.getServiceRepo().findById(id).get();
+    }
+
+    @PostMapping(path = "/services/{id}/{name}")
+    public void getServices(@PathVariable("id") int id, @PathVariable("name") String name) {
+        //Update service name in DB for give id
+    }
+
 }

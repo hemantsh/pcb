@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-//import com.sc.fe.analyze.service.*;
-//import com.sc.fe.analyze.util.*;
 import com.sc.fe.analyze.data.entity.Extensions;
 import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 
@@ -43,16 +40,13 @@ public class FileExtensionService {
 
     /**
      *
-     * @param ext -the extensions to store in a database
+     * @param ext the extensions to store in a database
      */
     public void save(Extensions ext) {
         extensionRepo.save(ext);
         cacheService.evictAllCacheValues("Extensions");
     }
 
-//    public void delete(Extensions extn){
-//    extensionRepo.delete(extn);
-//    }
     /**
      *
      * @param id - the specific extension to find from database by id
@@ -61,5 +55,4 @@ public class FileExtensionService {
     public Extensions getExtensionById(Integer id) {
         return extensionRepo.findById(id).get();
     }
-
 }

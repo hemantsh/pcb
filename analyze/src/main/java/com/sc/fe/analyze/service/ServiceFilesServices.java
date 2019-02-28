@@ -39,8 +39,9 @@ public class ServiceFilesServices {
     }
 
     /**
+     * Saves the Service Data into the database.
      *
-     * @param sf - the service_files to store in a database
+     * @param sf the service_files to store in a database
      */
     public void save(ServiceFiles sf) {
         serviceFileRepo.save(sf);
@@ -48,8 +49,9 @@ public class ServiceFilesServices {
     }
 
     /**
+     * Saves all the service data into the database.
      *
-     * @param sf - the list of services_files to store in a database
+     * @param sf the list of services_files to store in a database
      */
     public void saveAll(List<ServiceFiles> sf) {
         serviceFileRepo.saveAll(sf);
@@ -57,8 +59,9 @@ public class ServiceFilesServices {
     }
 
     /**
+     * Retrieves the list of service_files by service_id
      *
-     * @param service_id - the specific service_file to find from database
+     * @param service_id the specific service_file to find from database
      * @return the service_files
      */
     public List<ServiceFiles> getFilesByService(Integer service_id) {
@@ -67,8 +70,8 @@ public class ServiceFilesServices {
 
     /**
      *
-     * @param serviceFiles - - the list of services_files which will be deleted from the
-     * database
+     * @param serviceFiles the list of services_files which will be deleted from
+     * the database
      */
     public void deleteAll(List<ServiceFiles> serviceFiles) {
         serviceFileRepo.deleteAll(serviceFiles);

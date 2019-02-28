@@ -31,7 +31,7 @@ public class ProjectPK implements Serializable {
     /**
      * Gets the version.
      *
-     * @return
+     * @return the version
      */
     public UUID getVersion() {
         return version;
@@ -40,7 +40,7 @@ public class ProjectPK implements Serializable {
     /**
      * Sets the version into the variable version.
      *
-     * @param version takes version and sets it
+     * @param version Takes version value and sets it
      */
     public void setVersion(UUID version) {
         this.version = version;
@@ -49,7 +49,7 @@ public class ProjectPK implements Serializable {
     /**
      * Gets the ProjectId
      *
-     * @return
+     * @return the projectId
      */
     public String getProjectId() {
         return projectId;
@@ -58,10 +58,9 @@ public class ProjectPK implements Serializable {
     /**
      * Sets the ProjectId into the variable projectId.
      *
-     * @param projectId takes projectId and sets it
+     * @param projectId Takes the projectId value and sets it
      */
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
-
 }

@@ -14,9 +14,9 @@ public class Extensions {
     private String name;
 
     /**
-     * Gets the Id.
+     * Gets the Id
      *
-     * @return
+     * @return the Id
      */
     public int getId() {
         return id;
@@ -25,7 +25,7 @@ public class Extensions {
     /**
      * Sets the id into the id variable.
      *
-     * @param id sets the id.
+     * @param id Sets the id
      */
     public void setId(int id) {
         this.id = id;
@@ -34,19 +34,18 @@ public class Extensions {
     /**
      * Gets the name.
      *
-     * @return
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Sets the name into the name variable.
+     * Sets the name in the instance variable name.
      *
-     * @param name sets the name.
+     * @param name Sets the name.
      */
     public void setName(String name) {
         this.name = name;
     }
-
 }

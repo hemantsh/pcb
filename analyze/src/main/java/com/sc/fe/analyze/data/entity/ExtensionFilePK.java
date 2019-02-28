@@ -13,9 +13,6 @@ import io.swagger.annotations.ApiModelProperty;
 @PrimaryKeyClass
 public class ExtensionFilePK implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 5975930711338764582L;
 
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "extension_id")
@@ -28,17 +25,17 @@ public class ExtensionFilePK implements Serializable {
     /**
      * This method gets the ExtensionId from the Database.
      *
-     * @return
+     * @return the extensionId
      */
     public int getExtensionId() {
         return extensionId;
     }
 
     /**
-     * This method takes the extensionId and sets the extensionId in
-     * the Database.
+     * This method takes the extensionId and sets the extensionId in the
+     * Database.
      *
-     * @param extensionId set the extensionId
+     * @param extensionId Sets the extensionId
      */
     public void setExtensionId(int extensionId) {
         this.extensionId = extensionId;
@@ -47,16 +44,16 @@ public class ExtensionFilePK implements Serializable {
     /**
      * This method gets the FileTypeId from the Database.
      *
-     * @return
+     * @return the fileType Id
      */
     public int getFiletypeId() {
         return filetypeId;
     }
 
     /**
-     * This takes the filetypeId and sets the Database.
+     * This takes the filetypeId and sets the fileType Id in the Database.
      *
-     * @param filetypeId sets the file_type
+     * @param filetypeId Sets the file_type
      */
     public void setFiletypeId(int filetypeId) {
         this.filetypeId = filetypeId;

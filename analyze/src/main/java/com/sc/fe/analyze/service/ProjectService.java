@@ -46,7 +46,7 @@ public class ProjectService {
      * Displays all the data of Project Table and returns data of ProjectDetails
      * type.
      *
-     * @return
+     * @return the list of projectDetails
      */
     public List<ProjectDetails> findAll() {
         List<Project> allRecords = projectRepo.findAll();
@@ -57,7 +57,7 @@ public class ProjectService {
      * Converts Project data into ProjectDetails type
      *
      * @param allRecords takes List of Project records.
-     * @return
+     * @return the list of projectDetails
      */
     private List<ProjectDetails> convertList(List<Project> allRecords) {
         List<ProjectDetails> retList = new ArrayList<ProjectDetails>();
@@ -84,13 +84,13 @@ public class ProjectService {
      */
     public void save(DifferenceReport diffReport) {
         diffReportRepo.save(diffReport);
-        
+
     }
 
     /**
      * Deletes data from the Project Table into the database.
      *
-     * @param project takes value that needs to delete
+     * @param project takes the value of project that needs to delete
      */
     public void delete(Project project) {
         projectRepo.delete(project);
@@ -100,7 +100,7 @@ public class ProjectService {
      * Finds the data by CustomerId.
      *
      * @param customerId takes customerId
-     * @return
+     * @return the list of projectDetails
      */
     public List<ProjectDetails> findByCustomerId(String customerId) {
         return convertList(projectRepo.findByCustomerId(customerId));
@@ -109,8 +109,8 @@ public class ProjectService {
     /**
      * Finds the data by ProjectId.
      *
-     * @param projectId takes projectId.
-     * @return
+     * @param projectId takes the projectId.
+     * @return the list of projectDetails
      */
     public List<ProjectDetails> findByKeyProjectId(String projectId) {
         return convertList(projectRepo.findByKeyProjectId(projectId));
@@ -120,7 +120,7 @@ public class ProjectService {
      * Finds the data by CustomerEmail
      *
      * @param customerEmail takes customerEmail
-     * @return
+     * @return the list of projectDetails
      */
     public List<ProjectDetails> findByCustomerEmail(String customerEmail) {
         return convertList(projectRepo.findByCustomerEmail(customerEmail));
@@ -130,7 +130,7 @@ public class ProjectService {
      * Finds the data by ZipFileName
      *
      * @param zipFileName takes zipFileName
-     * @return
+     * @return the list of projectDetails
      */
     public List<ProjectDetails> findByZipFileName(String zipFileName) {
         return convertList(projectRepo.findByZipFileName(zipFileName));
@@ -139,7 +139,7 @@ public class ProjectService {
     /**
      * Displays data of one unique projectId mapped with multiple versions.
      *
-     * @return
+     * @return the value in (key-value) pair
      */
     public Map<String, Set<String>> getProjectVersionMap() {
         //Key = projectID
@@ -172,7 +172,7 @@ public class ProjectService {
      *
      * @param projectId takes ProjectId
      * @param verison takes version
-     * @return
+     * @return the projectDetails
      */
     public ProjectDetails getProject(String projectId, String verison) {
         ProjectPK projectPK = new ProjectPK();
@@ -189,12 +189,16 @@ public class ProjectService {
         obj.setFileDetails(fbList);
         return obj;
     }
-    
-    public Set<String> getDifferences(String projectId)
-    {
-        Optional<DifferenceReport> diff=diffReportRepo.findById(projectId);
-        if(diff.isPresent())
-        {
+
+    /**
+     * This method takes the projectId and get all the differences
+     *
+     * @param projectId Takes the projectId
+     * @return the set of string
+     */
+    public Set<String> getDifferences(String projectId) {
+        Optional<DifferenceReport> diff = diffReportRepo.findById(projectId);
+        if (diff.isPresent()) {
             return diff.get().getDifferences();
         }
         return null;

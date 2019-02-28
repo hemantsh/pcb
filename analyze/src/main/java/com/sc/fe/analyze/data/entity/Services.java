@@ -16,7 +16,7 @@ public class Services {
     /**
      * Gets the Id.
      *
-     * @return
+     * @return the Id
      */
     public int getId() {
         return id;
@@ -25,7 +25,7 @@ public class Services {
     /**
      * Sets the id into the variable id.
      *
-     * @param id takes id and sets it
+     * @param id Takes the id value and sets it
      */
     public void setId(int id) {
         this.id = id;
@@ -34,7 +34,7 @@ public class Services {
     /**
      * Gets the Name.
      *
-     * @return
+     * @return the name.
      */
     public String getName() {
         return name;
@@ -43,7 +43,7 @@ public class Services {
     /**
      * Sets the Name into the variable name
      *
-     * @param name takes name and sets it
+     * @param name Takes the name value and sets it
      */
     public void setName(String name) {
         this.name = name;

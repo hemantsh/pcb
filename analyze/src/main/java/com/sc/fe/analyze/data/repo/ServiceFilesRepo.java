@@ -14,8 +14,8 @@ public interface ServiceFilesRepo extends CassandraRepository<ServiceFiles, Serv
     /**
      * Extracts data by serviceId from the database.
      *
-     * @param serviceId takes serviceId
-     * @return
+     * @param serviceId Takes the serviceId
+     * @return the list of Services
      */
     List<ServiceFiles> findByKeyServiceId(final int serviceId);
 }

@@ -37,8 +37,9 @@ public class ExtensionFileService {
     }
 
     /**
+     * This method saves the extension_file into the database.
      *
-     * @param exFT - the extension_file to store in a database
+     * @param exFT The extension_file to store in a database
      */
     public void save(ExtensionFileType exFT) {
         extensionFileRepo.save(exFT);
@@ -46,8 +47,9 @@ public class ExtensionFileService {
     }
 
     /**
+     * This method saves all the extension_file types into the database.
      *
-     * @param exFT - the list of extension_file to store in a database
+     * @param exFT The list of extension_file to store in a database
      */
     public void saveAll(List<ExtensionFileType> exFT) {
         extensionFileRepo.saveAll(exFT);
@@ -55,17 +57,21 @@ public class ExtensionFileService {
     }
 
     /**
+     * It returns the list of extension_file types from the database.
      *
-     * @param id - the specific extension_file to find from database by id
+     * @param id The specific extension_file to find from database by id
      * @return the list of extension_file
      */
     public List<ExtensionFileType> getExtenFileTypeById(Integer id) {
-
-//    	List<ExtensionFileType> retList = findAll();
-//    	return retList.stream().filter( e -> e.getFiletypeId() == id ).collect(Collectors.toList());
         return extensionFileRepo.findByKeyFiletypeId(id);
     }
 
+    /**
+     * It deletes all the extension file Types from the database.
+     *
+     * @param extensionFileType the list of extensionFileType which have to be
+     * delete from the database.
+     */
     public void deleteAll(List<ExtensionFileType> extensionFileType) {
         extensionFileRepo.deleteAll(extensionFileType);
     }

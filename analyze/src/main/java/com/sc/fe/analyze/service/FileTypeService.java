@@ -8,7 +8,6 @@ package com.sc.fe.analyze.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +39,7 @@ public class FileTypeService {
 
     /**
      *
-     * @param ft - the fileType to save in a database
+     * @param ft the fileType to save in a database
      */
     public void save(FileTypes ft) {
         fileTypesRepo.save(ft);
@@ -49,7 +48,7 @@ public class FileTypeService {
 
     /**
      *
-     * @param id - the specific FileType service to find from database by id
+     * @param id the specific FileType service to find from database by id
      * @return the fileType
      */
     public FileTypes getTypeById(Integer id) {

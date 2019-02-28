@@ -61,12 +61,22 @@ public class ProjectFiles {
     @Column(value = "errors")
     private Map<String, String> errors;
     @Column(value = "selected")
-    private boolean selected; 
-    
+    private boolean selected;
+
+    /**
+     * Gets the selected Value
+     *
+     * @return the selected value
+     */
     public boolean isSelected() {
         return selected;
     }
 
+    /**
+     * Sets the Selected value
+     *
+     * @param selected Sets the selected value.
+     */
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -74,16 +84,16 @@ public class ProjectFiles {
     /**
      * Gets the StartName
      *
-     * @return
+     * @return the startName
      */
     public String getStartName() {
         return startName;
     }
 
     /**
-     * Sets the StartName into the startName variable.
+     * Sets the StartName into the startName instance variable.
      *
-     * @param startName sets the startName
+     * @param startName Sets the startName
      */
     public void setStartName(String startName) {
         this.startName = startName;
@@ -92,16 +102,16 @@ public class ProjectFiles {
     /**
      * Gets the LayerOrder.
      *
-     * @return
+     * @return the layerOrder
      */
     public int getLayerOrder() {
         return layerOrder;
     }
 
     /**
-     * Sets the LayerOrder into the layerOrder variable.
+     * Sets the LayerOrder into the layerOrder instance variable.
      *
-     * @param layerOrder sets the layerOrder
+     * @param layerOrder Sets the layerOrder
      */
     public void setLayerOrder(int layerOrder) {
         this.layerOrder = layerOrder;
@@ -110,7 +120,7 @@ public class ProjectFiles {
     /**
      * Gets the EndName.
      *
-     * @return
+     * @return the endName
      */
     public String getEndName() {
         return endName;
@@ -119,7 +129,7 @@ public class ProjectFiles {
     /**
      * Sets the EndName into the endName variable.
      *
-     * @param endName sets the endName
+     * @param endName Sets the endName
      */
     public void setEndName(String endName) {
         this.endName = endName;
@@ -128,16 +138,16 @@ public class ProjectFiles {
     /**
      * Gets the LayerName.
      *
-     * @return
+     * @return the layerName
      */
     public String getLayerName() {
         return layerName;
     }
 
     /**
-     * Sets the LayerName into the layerName variable.
+     * Sets the LayerName into the layerName instance variable.
      *
-     * @param layerName sets the layerName
+     * @param layerName Sets the layerName
      */
     public void setLayerName(String layerName) {
         this.layerName = layerName;
@@ -146,7 +156,7 @@ public class ProjectFiles {
     /**
      * Gets the CopperWeight.
      *
-     * @return
+     * @return the copperWeight
      */
     public String getCopperWeight() {
         return copperWeight;
@@ -164,7 +174,7 @@ public class ProjectFiles {
     /**
      * Gets the CreateDate
      *
-     * @return
+     * @return the createDate
      */
     public Date getCreateDate() {
         return createDate;
@@ -173,7 +183,7 @@ public class ProjectFiles {
     /**
      * Sets the CreateDate into the createDate variable.
      *
-     * @param createDate sets the createDate
+     * @param createDate Sets the createDate
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
@@ -182,7 +192,7 @@ public class ProjectFiles {
     /**
      * Gets the ModifiedDate.
      *
-     * @return
+     * @return the modifiedDate
      */
     public Date getModifiedDate() {
         return modifiedDate;
@@ -191,7 +201,7 @@ public class ProjectFiles {
     /**
      * Sets the ModifiedDate into the modifiedDate variable.
      *
-     * @param modifiedDate sets the modifiedDate
+     * @param modifiedDate Sets the modifiedDate
      */
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
@@ -200,7 +210,7 @@ public class ProjectFiles {
     /**
      * Gets the Primary Key ProjectId
      *
-     * @return
+     * @return the projectId
      */
     public String getProjectId() {
         return getKey().getProjectId();
@@ -209,16 +219,16 @@ public class ProjectFiles {
     /**
      * Sets the PrimaryKey ProjectId
      *
-     * @param projectId sets the projectId
+     * @param projectId Sets the projectId
      */
     public void setProjectId(String projectId) {
-        this.getKey().setProjectId(projectId);;
+        this.getKey().setProjectId(projectId);
     }
 
     /**
      * Gets the PrimaryKey version.
      *
-     * @return
+     * @return the version.
      */
     public UUID getVersion() {
         return getKey().getVersion();
@@ -227,7 +237,7 @@ public class ProjectFiles {
     /**
      * Sets the PrimaryKey version.
      *
-     * @param version sets the version.
+     * @param version Sets the version.
      */
     public void setVersion(UUID version) {
         this.getKey().setVersion(version);
@@ -236,7 +246,7 @@ public class ProjectFiles {
     /**
      * Gets the Type.
      *
-     * @return
+     * @return the type
      */
     public String getType() {
         return type;
@@ -245,7 +255,7 @@ public class ProjectFiles {
     /**
      * Sets the Type into the type variable.
      *
-     * @param type sets the type
+     * @param type Sets the type
      */
     public void setType(String type) {
         this.type = type;
@@ -254,7 +264,7 @@ public class ProjectFiles {
     /**
      * Gets the name.
      *
-     * @return
+     * @return the name
      */
     public String getName() {
         return getKey().getName();
@@ -270,9 +280,9 @@ public class ProjectFiles {
     }
 
     /**
-     * Gets the key, if key is null the initializes it.
+     * Gets the Primary Key, if null then initialize the new PrimaryKey.
      *
-     * @return
+     * @return the PrimaryKey values.
      */
     public ProjectFilesPK getKey() {
         if (key == null) {
@@ -284,7 +294,7 @@ public class ProjectFiles {
     /**
      * Sets the ProjectFiles PrimaryKey
      *
-     * @param key sets the key
+     * @param key Sets the key
      */
     public void setKey(ProjectFilesPK key) {
         this.key = key;
@@ -293,7 +303,7 @@ public class ProjectFiles {
     /**
      * Sets the size into the size variable.
      *
-     * @param size takes size and sets it.
+     * @param size Takes size and sets it.
      */
     public void setSize(String size) {
         this.size = size;
@@ -302,7 +312,7 @@ public class ProjectFiles {
     /**
      * Gets the size.
      *
-     * @return
+     * @return the size.
      */
     public String getSize() {
         return size;
@@ -311,7 +321,7 @@ public class ProjectFiles {
     /**
      * Sets the FileDate into the fileDate.
      *
-     * @param fileDate takes the fileDate and sets it.
+     * @param fileDate Takes the fileDate and sets it.
      */
     public void setFileDate(Date fileDate) {
         this.fileDate = fileDate;
@@ -320,16 +330,16 @@ public class ProjectFiles {
     /**
      * Gets the FileDate
      *
-     * @return
+     * @return the fileDate
      */
     public Date getFileDate() {
         return fileDate;
     }
 
     /**
-     * Sets the Format into the format.
+     * Sets the Format value into the format variable.
      *
-     * @param format takes format and sets it.
+     * @param format Takes the format value and sets it.
      */
     public void setFormat(String format) {
         this.format = format;
@@ -338,34 +348,34 @@ public class ProjectFiles {
     /**
      * Gets the Format.
      *
-     * @return
+     * @return the format value
      */
     public String getFormat() {
         return format;
     }
 
     /**
-     * Sets the step into the step variable.
+     * Sets the step value into the step variable.
      *
-     * @param step takes step and sets it.
+     * @param step Takes step value and sets it.
      */
     public void setStep(String step) {
         this.step = step;
     }
 
     /**
-     * Gets the step.
+     * Gets the step value.
      *
-     * @return
+     * @return the Step value.
      */
     public String getStep() {
         return step;
     }
 
     /**
-     * Sets the context into the context variable.
+     * Sets the context value into the context variable.
      *
-     * @param context takes context and sets it
+     * @param context Takes context value and sets it
      */
     public void setContext(String context) {
         this.context = context;
@@ -374,43 +384,43 @@ public class ProjectFiles {
     /**
      * Gets the context.
      *
-     * @return
+     * @return the context value.
      */
     public String getContext() {
         return context;
     }
 
     /**
-     * Sets the polarity into the polarity variable..
+     * Sets the polarity value into the polarity variable..
      *
-     * @param polarity takes polarity and sets it
+     * @param polarity Takes polarity value and sets it
      */
     public void setPolarity(String polarity) {
         this.polarity = polarity;
     }
 
     /**
-     * Gets the Polarity.
+     * Gets the Polarity value.
      *
-     * @return
+     * @return the polarity value
      */
     public String getPolarity() {
         return polarity;
     }
 
     /**
-     * Sets the side into the variable side.
+     * Sets the side value into the variable side.
      *
-     * @param side takes side and sets it
+     * @param side Takes the side value and sets it
      */
     public void setSide(String side) {
         this.side = side;
     }
 
     /**
-     * Gets the Side.
+     * Gets the Side value.
      *
-     * @return
+     * @return the side value
      */
     public String getSide() {
         return side;
@@ -419,7 +429,7 @@ public class ProjectFiles {
     /**
      * Gets the Attribute.
      *
-     * @return
+     * @return the attributes in key-value pair
      */
     public Map<String, String> getAttributes() {
         return attributes;
@@ -428,7 +438,7 @@ public class ProjectFiles {
     /**
      * Sets the Attributes into the variable attributes.
      *
-     * @param attributes
+     * @param attributes Sets the attribute in (key,value) pair.
      */
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
@@ -437,7 +447,7 @@ public class ProjectFiles {
     /**
      * Sets the Errors into the errors variable.
      *
-     * @param errors takes errors and sets it
+     * @param errors Takes errors and sets it
      */
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
@@ -446,7 +456,7 @@ public class ProjectFiles {
     /**
      * Gets the Errors.
      *
-     * @return
+     * @return the errors
      */
     public Map<String, String> getErrors() {
         return errors;

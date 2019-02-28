@@ -1,12 +1,10 @@
 package com.sc.fe.analyze.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,7 @@ import com.sc.fe.analyze.data.repo.FileTypesRepo;
 import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
 import com.sc.fe.analyze.util.MappingUtil;
+import java.util.HashMap;
 
 /**
  *
@@ -84,7 +83,7 @@ public class BaseService {
     }
 
     /**
-     * This method retrieves the file Services from database.
+     * This method retrieves the Services from database.
      *
      * @return the Map
      */
@@ -101,8 +100,9 @@ public class BaseService {
     }
 
     /**
+     * This method retrieves the service files from the database.
      *
-     * @param serviceId - the serviceId to get
+     * @param serviceId The serviceId to get
      * @return the serviceFiles
      */
     public List<String> getServiceFiles(int serviceId) {
@@ -137,29 +137,32 @@ public class BaseService {
 
     /**
      *
-     * @param serviceFilesRepo - the serviceFilesRepo to set
+     * @param serviceFilesRepo The serviceFilesRepo to set
      */
     public void setServiceFilesRepo(ServiceFilesRepo serviceFilesRepo) {
         this.serviceFilesRepo = serviceFilesRepo;
     }
 
     /**
+     * Gets the extension Report
      *
-     * @return the etensionFileReport
+     * @return the extensionFileReport
      */
     public ExtensionFileRepo getExtRepo() {
         return extnFileRepo;
     }
 
     /**
+     * Sets the extensionFileReport into the extnFileRepo instance variable.
      *
-     * @param extRepo the extnFileRepo to set
+     * @param extRepo The extnFileRepo to set
      */
     public void setExtRepo(ExtensionFileRepo extRepo) {
         this.extnFileRepo = extRepo;
     }
 
     /**
+     * Gets the extension FileRepo
      *
      * @return the ExtensionFileRepo
      */
@@ -168,6 +171,7 @@ public class BaseService {
     }
 
     /**
+     * Sets the extensionFile
      *
      * @param extnFileRepo the extensionFileRepo to set
      */
@@ -176,6 +180,7 @@ public class BaseService {
     }
 
     /**
+     * Gets the ServiceRepo
      *
      * @return the serviceRepo
      */
@@ -184,6 +189,7 @@ public class BaseService {
     }
 
     /**
+     * Sets the serviceRepo
      *
      * @param serviceRepo the serviceRepo to set
      */
@@ -192,6 +198,7 @@ public class BaseService {
     }
 
     /**
+     * Gets the fileTypesRepo
      *
      * @return the fileTypesRepo
      */
@@ -200,6 +207,7 @@ public class BaseService {
     }
 
     /**
+     * Sets the fileTypesRepo
      *
      * @param fileTypesRepo the fileTypesRepo to set
      */
@@ -208,6 +216,7 @@ public class BaseService {
     }
 
     /**
+     * Gets the extensionRepo
      *
      * @return the extensionRepo
      */
@@ -216,8 +225,9 @@ public class BaseService {
     }
 
     /**
+     * Sets the extensionRepo
      *
-     * @param extnRepo the etxnensionRepo to set
+     * @param extnRepo the extnensionRepo to set
      */
     public void setExtnRepo(ExtensionsRepo extnRepo) {
         this.extnRepo = extnRepo;
