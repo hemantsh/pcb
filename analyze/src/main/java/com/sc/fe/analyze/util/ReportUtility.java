@@ -26,6 +26,7 @@ public class ReportUtility {
      */
     public static ProjectDetails convertToObject(Project project) {
         ProjectDetails dtl = new ProjectDetails();
+        dtl.setSetId(project.getSetId());
         dtl.setProjectId(project.getProjectId());
         dtl.setVersion(project.getVersion().toString());
         dtl.setCustomerId(project.getCustomerId());
@@ -87,6 +88,7 @@ public class ReportUtility {
     public static Project convertToDBObject(ProjectDetails projectDetails) {
         //TODO check all attributes are set
         Project dbDetail = new Project();
+        dbDetail.setSetId(projectDetails.getSetId());
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
         dbDetail.setBoardType(projectDetails.getBoardType());
         dbDetail.setCustomerId(projectDetails.getCustomerId());

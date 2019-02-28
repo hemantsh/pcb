@@ -79,36 +79,36 @@ plat_bot->selective_plat_bot  misc document positive bottom 0
 ^silk_wmask_top->silk_wmask_top misc document positive top 0
 ^.*_silk_wmask_top->silk_wmask_top misc document positive top 0
 silk_wmask_bot->silk_wmask_bot misc document positive bottom 0
-fab_([0-9]+)->fab_drawing_sheet\1 misc drawing positive bottom 0
-botmasm->bottom_assembly misc drawing positive bottom 0
+fab_([0-9]+)->fab_drawing_sheet\1 misc fabrication_drawing positive bottom 0
+botmasm->bottom_assembly misc assembly_drawing positive bottom 0
 
-assmtop->top_assembly misc drawing positive top 0
-assmbot->bottom_assembly misc drawing positive bottom 0
+assmtop->top_assembly misc assembly_drawing positive top 0
+assmbot->bottom_assembly misc assembly_drawing positive bottom 0
 
 
-topasm->top_assembly misc drawing positive bottom 0
-.ast$->top_assembly misc drawing positive bottom 0
-.asb$->bottom_assembly misc drawing positive bottom 0
-asb.atr->bottom_assembly misc drawing positive bottom 0
-ast.atr->top_assembly misc drawing positive bottom 0
+topasm->top_assembly misc assembly_drawing positive bottom 0
+.ast$->top_assembly misc assembly_drawing positive bottom 0
+.asb$->bottom_assembly misc assembly_drawing positive bottom 0
+asb.atr->bottom_assembly misc assembly_drawing positive bottom 0
+ast.atr->top_assembly misc assembly_drawing positive bottom 0
 ^.*\.dwg->drawing misc drawing positive bottom 0
 ^.*\.plc->drawing misc drawing positive bottom 0
 drawing->draw misc drawing positive bottom 0
-^.*_ascs\.*$->draw misc drawing positive bottom 0
-^ascs\.*$->draw misc drawing positive bottom 0
-assembly->draw misc drawing positive bottom 0
+^.*_ascs\.*$->draw misc assembly_drawing positive bottom 0
+^ascs\.*$->draw misc assembly_drawing positive bottom 0
+assembly->draw misc assembly_drawing positive bottom 0
 [\_\-]old[\_\-\.]->draw misc document positive bottom 0
 [\_\-]dwg(.)?[\_\-\.]->drawing misc drawing positive bottom 0
-[\-\_]fab\.->fab misc drawing positive top 0
-\.*fab.*.pdf$->fab misc drawing positive top 0
-assy.*.pdf$->assembly misc drawing positive top 0
-assy[\_\-\.]top->top_assembly misc document positive bottom 0
-assy[\_\-\.]bot->bot_assembly misc document positive bottom 0
-top[\_\-\.]assy->top_assembly misc document positive bottom 0
-bot(tom)?[\_\-\.]assy->bot_assembly misc document positive bottom 0
-[\-\_\.]fab->fab misc drawing positive top 0
-asy[\_\-\.]top->top_assembly misc document positive bottom 0
-asy[\_\-\.]bot->bot_assembly misc document positive bottom 0
+[\-\_]fab\.->fab misc fabrication_drawing positive top 0
+\.*fab.*.pdf$->fab misc fabrication_drawing positive top 0
+assy.*.pdf$->assembly misc assembly_drawing positive top 0
+assy[\_\-\.]top->top_assembly misc assembly_drawing positive bottom 0
+assy[\_\-\.]bot->bot_assembly misc assembly_drawing positive bottom 0
+top[\_\-\.]assy->top_assembly misc assembly_drawing positive bottom 0
+bot(tom)?[\_\-\.]assy->bot_assembly misc assembly_drawing positive bottom 0
+[\-\_\.]fab->fab misc fabrication_drawing positive top 0
+asy[\_\-\.]top->top_assembly misc assembly_drawing positive bottom 0
+asy[\_\-\.]bot->bot_assembly misc assembly_drawing positive bottom 0
 
 # outline
 ^.*boardoutline.*$->outline misc document positive none 0
@@ -1134,27 +1134,27 @@ plat_bot->selective_plat_bot  misc document positive bottom 0
 ^silk_wmask_top->silk_wmask_top misc document positive top 0
 ^.*_silk_wmask_top->silk_wmask_top misc document positive top 0
 silk_wmask_bot->silk_wmask_bot misc document positive bottom 0
-fab_([0-9]+)->fab_drawing_sheet\1 misc drawing positive bottom 0
-botmasm->bottom_assembly misc drawing positive bottom 0
-topasm->top_assembly misc drawing positive bottom 0
-.ast$->top_assembly misc drawing positive bottom 0
-.asb$->bottom_assembly misc drawing positive bottom 0
-asb.atr->bottom_assembly misc drawing positive bottom 0
-ast.atr->top_assembly misc drawing positive bottom 0
+fab_([0-9]+)->fab_drawing_sheet\1 misc fabrication_drawing positive bottom 0
+botmasm->bottom_assembly misc assembly_drawing positive bottom 0
+topasm->top_assembly misc assembly_drawing positive bottom 0
+.ast$->top_assembly misc assembly_drawing positive bottom 0
+.asb$->bottom_assembly misc assembly_drawing positive bottom 0
+asb.atr->bottom_assembly misc assembly_drawing positive bottom 0
+ast.atr->top_assembly misc assembly_drawing positive bottom 0
 ^.*\.dwg->drawing misc drawing positive bottom 0
 ^.*\.plc->drawing misc drawing positive bottom 0
 drawing->draw misc drawing positive bottom 0
-^.*_ascs\.*$->draw misc drawing positive bottom 0
-^ascs\.*$->draw misc drawing positive bottom 0
-assembly->draw misc drawing positive bottom 0
+^.*_ascs\.*$->draw misc assembly_drawing positive bottom 0
+^ascs\.*$->draw misc assembly_drawing positive bottom 0
+assembly->draw misc assembly_drawing positive bottom 0
 old ->draw misc document positive bottom 0
 dwg(.)? ->drawing misc document positive bottom 0
-fab\.->fab misc drawing positive top 0
-assy[\_\-\.]top->top_assembly misc document positive bottom 0
-assy[\_\-\.]bot->bot_assembly misc document positive bottom 0
-top[\_\-\.]assy->top_assembly misc document positive bottom 0
-bot(tom)?[\_\-\.]assy->bot_assembly misc document positive bottom 0
-fab->fab misc drawing positive top 0
+fab\.->fab misc fabrication_drawing positive top 0
+assy[\_\-\.]top->top_assembly misc assembly_drawing positive bottom 0
+assy[\_\-\.]bot->bot_assembly misc assembly_drawing positive bottom 0
+top[\_\-\.]assy->top_assembly misc assembly_drawing positive bottom 0
+bot(tom)?[\_\-\.]assy->bot_assembly misc assembly_drawing positive bottom 0
+fab->fab misc fabrication_drawing positive top 0
 
 # outline
 out->outline misc document positive none 0

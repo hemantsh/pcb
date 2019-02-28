@@ -32,7 +32,7 @@ public class Report {
     /**
      * Gets the ProjectId
      *
-     * @return
+     * @return the projectId
      */
     public String getProjectId() {
         return getKey().getProjectId();
@@ -50,7 +50,7 @@ public class Report {
     /**
      * Gets the version.
      *
-     * @return
+     * @return the version
      */
     public int getVersion() {
         return getKey().getVersion();
@@ -68,7 +68,7 @@ public class Report {
     /**
      * Gets CustomerId
      *
-     * @return
+     * @return the customerId
      */
     public String getCustomerId() {
         return customerId;
@@ -86,7 +86,7 @@ public class Report {
     /**
      * Gets the serviceTypeId.
      *
-     * @return
+     * @return the serviceTypeId
      */
     public int getServiceTypeId() {
         return serviceTypeId;
@@ -104,7 +104,7 @@ public class Report {
     /**
      * Gets the Summary.
      *
-     * @return
+     * @return the summary of the report.
      */
     public String getSummary() {
         return summary;
@@ -120,7 +120,7 @@ public class Report {
     }
     /**
      * Gets the File
-     * @return 
+     * @return the fileTypeToFileNameMapping
      */
     public Map<Integer, String> getFileTypeToFileNameMapping() {
         return fileTypeToFileNameMapping;

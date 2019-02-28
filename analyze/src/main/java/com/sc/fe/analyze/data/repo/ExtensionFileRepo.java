@@ -15,7 +15,7 @@ public interface ExtensionFileRepo extends CassandraRepository<ExtensionFileType
      * Used to Extract the data by the extensionId from the database.
      *
      * @param extensionId takes extensionId which can be passed to database.
-     * @return
+     * @return the list of extension
      */
     List<ExtensionFileType> findByKeyExtensionId(final int extensionId);
 
@@ -23,7 +23,7 @@ public interface ExtensionFileRepo extends CassandraRepository<ExtensionFileType
      * Used to Extract the data by the filetypeId from the database.
      *
      * @param filetypeId take filetypeId which can be passed to database.
-     * @return
+     * @return the list of ExtensionFileType
      */
     List<ExtensionFileType> findByKeyFiletypeId(final int filetypeId);
 }
