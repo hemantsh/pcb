@@ -12,8 +12,8 @@ export class CustomerinputsComponent implements OnInit {
   changeFile: any;
   responeGlobal: Array<any>;
 
-  divStyle='hide';
-  hideStyle='show';
+  divStyle = 'hide';
+  hideStyle = 'show';
   constructor(private fileUploadService: FileService) { }
 
   ngOnInit() {
@@ -41,8 +41,8 @@ export class CustomerinputsComponent implements OnInit {
       .subscribe(
         (response) => {
           this.responeGlobal = response.json();
-          this.divStyle='show';
-          this.hideStyle='hide';
+          this.divStyle = 'show';
+          this.hideStyle = 'hide';
           console.log(this.responeGlobal)
         },
         (error) => console.log(error)
@@ -50,9 +50,9 @@ export class CustomerinputsComponent implements OnInit {
       );
 
   }
-  viewAnotherReport(){
-    this.hideStyle='show';
-    this.divStyle='hide';
+  viewAnotherReport() {
+    this.hideStyle = 'show';
+    this.divStyle = 'hide';
   }
 
   public fileChangeEvent(fileInput: any) {

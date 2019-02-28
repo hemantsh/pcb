@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +118,7 @@ public class FileExtractUploadService {
                 missingTypes.stream().forEach(type -> {
                     if (!StringUtils.isEmpty(type)) {
                         report.addError(type);
-                        report.addErrorCode(ErrorCodeMap.getCodeForFileType(type));
+                        report.addErrorCode(ErrorCodeMap.getCodeForFileType(type.trim()));
                     }
                 });
             } else {
@@ -216,7 +217,17 @@ public class FileExtractUploadService {
 
         availFileTypes.addAll(availFormats);
         //Find missing files types
-        return CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
+        List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
+        if( missing != null && missing.size() > 0 ) {
+        	missing.stream().forEach( item -> {
+        		item = item.toLowerCase();
+        		if( item.contains("or")) {
+        			List<String> temp = Arrays.asList( item.split("or") );
+        			item = temp.get(0);
+        		}
+        	});
+        }
+        return missing;
     }
 
     /**

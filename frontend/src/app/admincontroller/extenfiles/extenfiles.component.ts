@@ -32,9 +32,9 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
     this.retriveFilesTypes();
   }
 
-  /** 
+  /**
    * To reterive file types
-  */
+   */
   retriveFilesTypes() {
     this.fileService.getFiletypes()
       .subscribe(
@@ -47,9 +47,9 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       );
   }
 
-  /** 
-     * To reterive ExtnfilesTypes
-    */
+  /**
+   * To reterive ExtnfilesTypes
+   */
   retriveExtnFilesTypes() {
     this.fileService.getExtnFiles()
       .subscribe(
@@ -62,10 +62,9 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       );
   }
 
-  /** 
-   * To reterive extensions
-  */
-
+  /**
+   * To retrive extensions
+   */
   retriveExtension() {
     this.fileService.getExtensions()
       .subscribe(
@@ -78,6 +77,10 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       );
   }
 
+  /**
+   * Retrives Array values that contains filetypeId
+   * @param fileTypeId contains filetypeId 
+   */
   onFileTypeSelect(fileTypeId) {
     this.fileService.getExtnFiletypesById(fileTypeId)
       .subscribe(
@@ -89,9 +92,10 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
       );
   }
 
-
-
-
+  /**
+   * Adds the new extension for the selected filetype.
+   * @param id contains extensionId 
+   */
   onExtensionSelect(id) {
     console.log("selected extension id", id);
     console.log("Selected Filetype is :" + this.selectedFileTypeId)
@@ -107,7 +111,10 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
     this.changesSaved = false;
   }
 
-
+  /**
+   * Removes the extension for the selected filetype.
+   * @param extension contains object that needs to be deleted 
+   */
   removeExtension(extension) {
     console.log("remove Extension", extension);
     this.changesSaved = false;
@@ -118,6 +125,9 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
     console.log("DeleteArrayList", this.deleteExtnArr);
   }
 
+  /**
+   * Saves the selected filetype into the database.
+   */
   onSaveClick() {
     console.log("this.extensionsArr", this.extensionsArr);
     this.fileService.saveExtensionFile(this.extensionsArr)
@@ -135,13 +145,15 @@ export class ExtenfilesComponent implements OnInit, CanComponentDeactivate {
     //This service be called and remove the extensions from the database if there is an extension to delete
     if (this.deleteExtnArr.length !== 0) {
       this.fileService.deleteExtnFiles(this.deleteExtnArr).subscribe(
-        (response:Response) => console.log(response),
+        (response: Response) => console.log(response),
         (error) => console.log(error)
       );
     }
 
   }
-
+  /**
+   * This method shows warning before navigating to another page if changes are not saved.
+   */
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (!(this.changesSaved)) {
       return confirm("Do you want to discard the changes?");
