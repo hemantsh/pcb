@@ -135,7 +135,6 @@ public class FileExtractUploadService {
             });
         }
         projectDetails.setErrors(errMap);
-
         //Save        
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
@@ -191,15 +190,15 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = null;
-        String[] splitService = projectDetails.getServiceType().split(",");
+        List<String> requiredFilesTypes = new ArrayList<>();       
 
+        String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
             splitService[i] = splitService[i].toLowerCase();
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {
-                requiredFilesTypes = baseService.getServiceFiles(
-                        MappingUtil.getServiceId(splitService[i])
+                requiredFilesTypes.addAll(baseService.getServiceFiles(
+                        MappingUtil.getServiceId(splitService[i]))
                 );
             }
         }
@@ -216,17 +215,9 @@ public class FileExtractUploadService {
                 .collect(Collectors.toSet());
 
         availFileTypes.addAll(availFormats);
+
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
-        if( missing != null && missing.size() > 0 ) {
-        	missing.stream().forEach( item -> {
-        		item = item.toLowerCase();
-        		if( item.contains("or")) {
-        			List<String> temp = Arrays.asList( item.split("or") );
-        			item = temp.get(0);
-        		}
-        	});
-        }
         return missing;
     }
 
