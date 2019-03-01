@@ -69,16 +69,16 @@ public class FileExtractUploadService {
      * @return the report
      */
     public Report validateFiles(ProjectDetails projectDetails) {
-        List<FileDetails> fileDetails = projectDetails.getFileDetails();
+//        List<FileDetails> fileDetails = projectDetails.getFileDetails();
         //If no file details,  try to create it
-        if (fileDetails == null || fileDetails.size() <= 0) {
-            Set<String> allFiles = util.listFiles(projectDetails.getProjectId());
-            allFiles.stream().forEach(name -> {
-                FileDetails fd = new FileDetails();
-                fd.setName(name);
-                fileDetails.add(fd);
-            });
-        }
+//        if (fileDetails == null || fileDetails.size() <= 0) {
+//            Set<String> allFiles = util.listFiles(projectDetails.getProjectId());
+//            allFiles.stream().forEach(name -> {
+//                FileDetails fd = new FileDetails();
+//                fd.setName(name);
+//                fileDetails.add(fd);
+//            });
+//        }
 
         // REPORT
         Report report = new Report();
@@ -190,7 +190,7 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = new ArrayList<>();       
+        List<String> requiredFilesTypes = new ArrayList<>();
 
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
