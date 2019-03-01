@@ -1,17 +1,17 @@
 <div>
+  <button type="button" class="btn btn-default btn-md" (click)="addFileType()"><span
+      class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileType</button>
   <div class="fix">
-    <button type="button" class="btn btn-default btn-md" (click)="addFileType()"><span
-        class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileType</button>
     <table class="table">
       <thead>
         <tr>
-          <th>FileTypes</th>
-          <th>Action</th>
+          <th class="text-center">FileTypes</th>
+          <th class="text-center" colspan="2">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let fileType of fileTypes">
-          <td *ngIf="!fileType.edit && !fileType.add">{{fileType.type}}</td>
+          <td *ngIf="!fileType.edit && !fileType.add" class="text-center">{{fileType.type}}</td>
           <td *ngIf="fileType.edit || fileType.add"> <input type="text" class="form-control" [(ngModel)]="fileType.type"
               ngModel name="addFileType" required /></td>
           <td>
@@ -25,8 +25,17 @@
             <button class="btn btn-danger" *ngIf="fileType.edit || fileType.add"
               (click)="cancelClick(fileType)">Cancel</button>
           </td>
+          <td>
+            <!-- Remove Button HTML -->
+            <button class="btn btn-danger btn-md" (click)="removefileType(fileType)"><span
+                class="glyphicon glyphicon-remove-sign"></span></button>
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
+  <br />
+  <div class="text-center">
+    <button class="btn btn-primary" (click)="onSave()">Save</button>
   </div>
 </div>

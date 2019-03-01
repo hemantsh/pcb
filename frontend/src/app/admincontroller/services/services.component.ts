@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
+import { Observable } from 'rxjs';
+import { CanServiceComponentDeactivate } from './candeactivate-service.service';
+
+
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
-export class ServicesComponent implements OnInit {
+export class ServicesComponent implements OnInit, CanServiceComponentDeactivate {
   services = [];
-  constructor(private fileService: FileService) { }
+  deletedServiceArray = [];
+  changesSaved = true;
+
+  constructor(private fileService: FileService, private zone: NgZone) { }
 
   ngOnInit() {
     this.retriveExtn();
@@ -64,6 +71,59 @@ export class ServicesComponent implements OnInit {
     } else {
       service.edit = false;
       service.name = service.originalData
+    }
+  }
+
+  /**
+   * Removes the service and stores into serviceArray  
+   *
+   * @param service takes service object
+   */
+  removeServices(service) {
+    console.log(service);
+    this.changesSaved = false;
+    let index = this.services.indexOf(service);
+    this.services.splice(index, 1);
+    this.deletedServiceArray.push(service);
+    console.log("services to delete:", this.deletedServiceArray);
+    console.log("Remaining Services", this.services);
+  }
+
+  /**
+   * Sends the Service array to database.
+   */
+  onSave() {
+    if (this.deletedServiceArray.length !== 0) {
+      let confirm = window.confirm("Are you sure you want to delete services ?");
+      if (confirm === true) {
+        this.fileService.deleteServices(this.deletedServiceArray).subscribe(
+          (response: Response) => {
+            console.log(response);
+            this.changesSaved = true;
+            // this.reloadPage();
+          },
+          (error) => console.log(error)
+        );
+      } else {
+        this.reloadPage();
+      }
+    }
+    // console.log(this.deletedServiceArray);
+  }
+  reloadPage() { // click handler or similar
+    this.zone.runOutsideAngular(() => {
+      location.reload();
+    });
+  }
+  /**
+   * This method shows warning before navigating to another page if changes are not saved.
+   */
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!(this.changesSaved)) {
+      return confirm("Do you want to discard the changes?");
+    }
+    else {
+      return true;
     }
   }
 

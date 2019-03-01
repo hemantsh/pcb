@@ -4,14 +4,14 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Services Name</th>
-        <th>Action</th>
+        <th class="text-center">Services Name</th>
+        <th colspan="2" class="text-center">Action</th>
         <!-- <th><button class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal"></button></th> -->
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let service of services">
-        <td *ngIf="!service.edit && !service.add">{{service.name}}</td>
+        <td *ngIf="!service.edit && !service.add" class="text-center">{{service.name}}</td>
         <td *ngIf="service.edit || service.add"> <input type="text" class="form-control" [(ngModel)]="service.name"
             ngModel name="addService" required /></td>
         <td>
@@ -24,9 +24,15 @@
           <button class="btn btn-danger" *ngIf="service.edit || service.add"
             (click)="cancelClick(service)">Cancel</button>
         </td>
+        <td>
+          <!-- Remove Button HTML -->
+          <button class="btn btn-danger btn-md" (click)="removeServices(service)"><span
+              class="glyphicon glyphicon-remove-sign"></span></button>
+        </td>
       </tr>
-
-
     </tbody>
   </table>
+  <div class="text-center">
+    <button class="btn btn-primary" (click)="onSave()">Save</button>
+  </div>
 </div>
