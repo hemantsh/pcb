@@ -34,7 +34,8 @@ public class ProjectDetails implements Serializable {
     private String boardType;
     private boolean itar;
     private boolean nofly;
-    private Map<Integer, Integer> turnTimeQuantity;
+    private Map<Integer, Integer> assemblyTurnTimeQuantity;
+    private Map<Integer, Integer> fabricationTurnTimeQuantity;
     private String designSpecification;
     private String customerId;
     private String emailAddress;
@@ -46,6 +47,42 @@ public class ProjectDetails implements Serializable {
      * Details about the files we found while processing
      */
     private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
+
+    /**
+     *
+     * @return the assemblyTurnTimeQuantity
+     */
+    public Map<Integer, Integer> getAssemblyTurnTimeQuantity() {
+        return assemblyTurnTimeQuantity;
+    }
+
+    /**
+     * Sets the assemblyTurnTimeQuantity into the assemblyTurnTimeQuantity
+     * instance variable
+     *
+     * @param assemblyTurnTimeQuantity Sets the assemblyTurnTimeQuantity
+     */
+    public void setAssemblyTurnTimeQuantity(Map<Integer, Integer> assemblyTurnTimeQuantity) {
+        this.assemblyTurnTimeQuantity = assemblyTurnTimeQuantity;
+    }
+
+    /**
+     *
+     * @return the fabricationTurnTimeQuantity
+     */
+    public Map<Integer, Integer> getFabricationTurnTimeQuantity() {
+        return fabricationTurnTimeQuantity;
+    }
+
+    /**
+     * Sets the fabricationTurnTimeQuantity into the fabricationTurnTimeQuantity
+     * instance variable
+     *
+     * @param fabricationTurnTimeQuantity Sets the fabricationTurnTimeQuantity
+     */
+    public void setFabricationTurnTimeQuantity(Map<Integer, Integer> fabricationTurnTimeQuantity) {
+        this.fabricationTurnTimeQuantity = fabricationTurnTimeQuantity;
+    }
 
     /**
      * It returns the date of the file on which the file was modified/update
@@ -330,20 +367,6 @@ public class ProjectDetails implements Serializable {
      */
     public boolean getItar() {
         return itar;
-    }
-
-    /**
-     * @return the turnTimeQuantityList
-     */
-    public Map<Integer, Integer> getTurnTimeQuantity() {
-        return turnTimeQuantity;
-    }
-
-    /**
-     * @param turnTimeQuantity the turnTimeQuantity to set
-     */
-    public void setTurnTimeQuantity(Map<Integer, Integer> turnTimeQuantity) {
-        this.turnTimeQuantity = turnTimeQuantity;
     }
 
     /**

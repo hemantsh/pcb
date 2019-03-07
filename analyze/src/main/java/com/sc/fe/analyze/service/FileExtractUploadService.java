@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,13 +90,13 @@ public class FileExtractUploadService {
             return report;
         } else {
             //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-            for (int i = 0; i < splitServiceTypes.length; i++) {
-                String splitServiceType = splitServiceTypes[i].toLowerCase();
-                if (MappingUtil.getServiceId(splitServiceType) == null) {
+            String[] splitServiceTypes = projectDetails.getServiceType().split(",");            
+            for (int i = 0; i < splitServiceTypes.length; i++) {                 
+                String splitServiceType = splitServiceTypes[i].toLowerCase();                
+                 if (MappingUtil.getServiceId(splitServiceType) == null) {
                     projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
                     return report;
-                }
+                }                               
             }
         }
 
@@ -190,11 +189,24 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = new ArrayList<>();
-
+        List<String> requiredFilesTypes = new ArrayList<>();     
+        int assemblyTurnTimeQtyFlag=0,fabricationTurnTimeQtyFlag=0;
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
             splitService[i] = splitService[i].toLowerCase();
+
+            //Check that serviceType is Assembly
+            if (splitService[i].equals("assembly")) {
+                assemblyTurnTimeQtyFlag = 1;
+                if (projectDetails.getAssemblyTurnTimeQuantity().isEmpty()) {
+                    System.out.println("You forgot to add the details of Assembly turnTime Quantity.");
+                }
+            } else if (splitService[i].equals("fabrication")) {
+                fabricationTurnTimeQtyFlag = 1;
+                if (projectDetails.getFabricationTurnTimeQuantity().isEmpty()) {
+                    System.out.println("You forgot to add the details of Fabrication turnTime Quantity");
+                }
+            }
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes.addAll(baseService.getServiceFiles(
@@ -202,6 +214,13 @@ public class FileExtractUploadService {
                 );
             }
         }
+        if (fabricationTurnTimeQtyFlag == 0) {
+            projectDetails.setFabricationTurnTimeQuantity(null);
+        }
+        if (assemblyTurnTimeQtyFlag == 0) {
+            projectDetails.setAssemblyTurnTimeQuantity(null);
+        }
+        
         //Types provided by customer
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
