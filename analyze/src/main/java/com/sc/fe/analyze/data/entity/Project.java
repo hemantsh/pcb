@@ -23,7 +23,7 @@ public class Project {
     private ProjectPK key;
 
     @Column(value = "setId")
-    private String setId;   
+    private String setId;
     @Column(value = "customer_name")
     private String customerName;
     @Column(value = "customer_id")
@@ -40,8 +40,10 @@ public class Project {
     private String boardType;
     @Column(value = "itar")
     private boolean itar;
-    @Column(value = "turntime_quantity")
-    private Map<Integer, Integer> turntimeQuantity;
+    @Column(value = "assembly_turntime_quantity")
+    private Map<Integer, Integer> assemblyTurntimeQuantity;
+    @Column(value = "fabrication_turntime_quantity")
+    private Map<Integer, Integer> fabricationTurntimeQuantity;
     @Column(value = "design_specification")
     private String designSpecification;
     @Column(value = "zipfile_name")
@@ -58,7 +60,46 @@ public class Project {
     private boolean nofly;
 
     /**
+     * Gets the assembly TurnTimeQuantity for Assembly ServiceType.
+     *
+     * @return the assemblyTurnTimeQuantity
+     */
+    public Map<Integer, Integer> getAssemblyTurntimeQuantity() {
+        return assemblyTurntimeQuantity;
+    }
+
+    /**
+     * Sets the TurnTimeQuanity into the assemblyTurntimeQuanity instance
+     * variable.
+     *
+     * @param assemblyTurntimeQuantity Sets the turntimeQuantity
+     */
+    public void setAssemblyTurntimeQuantity(Map<Integer, Integer> assemblyTurntimeQuantity) {
+        this.assemblyTurntimeQuantity = assemblyTurntimeQuantity;
+    }
+
+    /**
+     * Gets the fabrication TurnTimeQuantity for the Fabrication ServiceType.
+     *
+     * @return the turnTimeQuantity
+     */
+    public Map<Integer, Integer> getFabricationTurntimeQuantity() {
+        return fabricationTurntimeQuantity;
+    }
+
+    /**
+     * Sets the fabrication TurnTimeQuanity into the fabricationTurntimeQuanity
+     * instance variable.
+     *
+     * @param fabricationTurntimeQuantity Sets the turntimeQuantity
+     */
+    public void setFabricationTurntimeQuantity(Map<Integer, Integer> fabricationTurntimeQuantity) {
+        this.fabricationTurntimeQuantity = fabricationTurntimeQuantity;
+    }
+
+    /**
      * Gets the setId value
+     *
      * @return the setId value
      */
     public String getSetId() {
@@ -67,11 +108,13 @@ public class Project {
 
     /**
      * Sets the setId value
+     *
      * @param setId Sets the setId
      */
     public void setSetId(String setId) {
         this.setId = setId;
     }
+
     /**
      * Gets the nofly value.
      *
@@ -307,24 +350,6 @@ public class Project {
      */
     public void setBoardType(String boardType) {
         this.boardType = boardType;
-    }
-
-    /**
-     * Gets the TurnTimeQuantity.
-     *
-     * @return the turnTimeQuantity
-     */
-    public Map<Integer, Integer> getTurntimeQuantity() {
-        return turntimeQuantity;
-    }
-
-    /**
-     * Sets the TurnTimeQuanity into the turntimeQuanity instance variable.
-     *
-     * @param turntimeQuantity Sets the turntimeQuantity
-     */
-    public void setTurntimeQuantity(Map<Integer, Integer> turntimeQuantity) {
-        this.turntimeQuantity = turntimeQuantity;
     }
 
     /**

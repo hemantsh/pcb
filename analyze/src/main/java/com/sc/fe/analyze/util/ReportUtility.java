@@ -13,7 +13,7 @@ import com.sc.fe.analyze.to.ProjectDetails;
  * @author Hemant
  */
 public class ReportUtility {
-
+    
     private ReportUtility() {
     }
 
@@ -38,7 +38,8 @@ public class ReportUtility {
         dtl.setPcbClass(project.getPcbClass());
         dtl.setBoardType(project.getBoardType());
         dtl.setItar(project.getItar());
-        dtl.setTurnTimeQuantity(project.getTurntimeQuantity());
+        dtl.setAssemblyTurnTimeQuantity(project.getAssemblyTurntimeQuantity());
+        dtl.setFabricationTurnTimeQuantity(project.getFabricationTurntimeQuantity());
         dtl.setDesignSpecification(project.getDesignSpecification());
         dtl.setErrors(project.getErrors());
         dtl.setCreateDate(project.getCreateDate());
@@ -97,7 +98,8 @@ public class ReportUtility {
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setProjectId(projectDetails.getProjectId());
         dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
-        dbDetail.setTurntimeQuantity(projectDetails.getTurnTimeQuantity());
+        dbDetail.setAssemblyTurntimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
+        dbDetail.setFabricationTurntimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
         dbDetail.setServiceType(projectDetails.getServiceType());
         dbDetail.setZipfileName(projectDetails.getZipFileName());
         dbDetail.setZipfileSize(projectDetails.getZipFileSize());

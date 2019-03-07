@@ -58,7 +58,8 @@ public class CompareUtility {
         try {
             differences.putAll(compareObject(newRecord, oldRecord));
 
-            differences.putAll(compareObjectMaps(newRecord.getTurnTimeQuantity(), oldRecord.getTurnTimeQuantity()));
+            differences.putAll(compareObjectMaps(newRecord.getAssemblyTurnTimeQuantity(), oldRecord.getAssemblyTurnTimeQuantity()));
+            differences.putAll(compareObjectMaps(newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity()));
             //Comparing the Validation errors with previous validation errors
             differences.putAll(compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
 
