@@ -57,6 +57,7 @@ public class ReportUtility {
      */
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
         FileDetails dtl = new FileDetails();
+        dtl.setFileDate(projectFiles.getFileDate());
         dtl.setName(projectFiles.getName());
         dtl.setVersion(projectFiles.getVersion());
         dtl.setFormat(projectFiles.getFormat());
@@ -140,7 +141,7 @@ public class ReportUtility {
         filesDbDetails.setStep(fileDetails.getStep());
         filesDbDetails.setContext(fileDetails.getContext());
         filesDbDetails.setPolarity(fileDetails.getPolarity());
-        filesDbDetails.setSide(fileDetails.getSide());
+        filesDbDetails.setSide(fileDetails.getSide());        
         filesDbDetails.setLayerOrder(fileDetails.getLayerOrder());
         filesDbDetails.setStartName(fileDetails.getStartName());
         filesDbDetails.setEndName(fileDetails.getEndName());
