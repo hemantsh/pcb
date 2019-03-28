@@ -170,15 +170,15 @@ export class FileService {
      * Service that call the backend api to get the unique project id's
      */
     getUniqueId() {
-        return this.http.get(config.urlPath + 'report/distinctProjectid');
+        return this.http.get(config.urlPath + 'fm/distinctProjectid');
     }
     /**
      * Service that call the backend api to get the ProjectReport by projectId and version.
      * @param projectId contains uniqueProjectId
-     * @param version contains uniqueVersion
+     * @param version contains uniqueVersion 
      */
     getReportByIdAndVersion(projectId, version) {
-        return this.http.get(config.urlPath + `report/project/${projectId}/version/${version}`);
+        return this.http.get(config.urlPath + `fm/project/${projectId}/version/${version}`);
     }
 
     /**
@@ -186,7 +186,7 @@ export class FileService {
      * @param input takes JSON input
      */
     saveFileManagementReport(input) {
-        return this.http.post(config.urlPath + 'fm/validateAndSave', input);
+        return this.http.post(config.urlPath + 'fm/project', input);
     }
 
     /**
@@ -194,6 +194,6 @@ export class FileService {
      * @param projectId contains the projectId
      */
     getDifferences(projectId) {
-        return this.http.get(config.urlPath + `report/project/${projectId}/differences`);
+        return this.http.get(config.urlPath + `fm/project/${projectId}/differences`);
     }
 }

@@ -38,3 +38,6 @@
 .spacer{
     margin-top: 2% ;
 }
+.table.bold-change tr td b {
+    font-size: 13px;
+}
