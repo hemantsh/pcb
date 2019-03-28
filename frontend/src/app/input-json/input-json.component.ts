@@ -19,12 +19,22 @@ export class InputJSONComponent implements OnInit {
    */
   onSend() {
     console.log(JSON.parse(this.inputJSON));
+
     this.fileService.saveFileManagementReport(JSON.parse(this.inputJSON))
       .subscribe(
         (response) => {
-          console.log(response);
+          if (response.status == 200) {
+            console.log(response);
+            alert('Your data has been saved successfully.');
+          }
+          else {
+            alert('Some error has been encountered'); 
+          }
         },
-        (error) => console.log(error)
+        (error) => {
+          alert(error);
+          console.log(error)
+        }
       );
   }
 }
