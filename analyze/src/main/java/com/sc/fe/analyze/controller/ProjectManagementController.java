@@ -12,6 +12,8 @@ import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
 import io.swagger.annotations.Api;
+import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -89,4 +91,15 @@ public class ProjectManagementController {
     public List<FileDetails> getLatestProject(@PathVariable("projectId") String projectId){
         return projectService.getFileDetails(projectId);              
     } 
+    
+    @GetMapping("/project/{projectId}/differences")
+    public Set<String> getDifferences(@PathVariable("projectId") String projectId) {
+        return projectService.getDifferences(projectId);
+    }
+    
+    @GetMapping("/distinctProjectid")
+    @ResponseBody
+    public Map<String, Set<String>> getDistinctProjectId() {
+        return projectService.getProjectVersionMap();
+    }
 }

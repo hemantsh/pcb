@@ -11,14 +11,16 @@ public enum ErrorCodes {
     V0007("Document file missing"),
     V0008("Component file missing"),
     V0009("Rout file missing"),
-    V0010("BOM file missing"),    
+    V0010("BOM file missing"),
     V0012("X&Y required"),
-    V0011("Gerber, ODB or IPC2581 file missing"), 
-    V0013("mixed file missing"),        
-    V0014("Invalid input for newProject and attachReplace"),    
+    V0011("Gerber, ODB or IPC2581 file missing"),
+    V0013("mixed file missing"),
+    V0014("Invalid input for newProject and attachReplace"),
     V0015("Assembly Drawing file missing"),
     V0016("Fabrication Drawing file missing"),
-    V0017("ODB or IPC2581 file missing");
+    V0017("ODB or IPC2581 file missing"),
+    V0018("Assembly TurnTime Quantity missing"),
+    V0019("Fabrication TrunTime Quantity missing");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;
