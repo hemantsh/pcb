@@ -90,13 +90,13 @@ public class FileExtractUploadService {
             return report;
         } else {
             //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-            String[] splitServiceTypes = projectDetails.getServiceType().split(",");            
-            for (int i = 0; i < splitServiceTypes.length; i++) {                 
-                String splitServiceType = splitServiceTypes[i].toLowerCase();                
-                 if (MappingUtil.getServiceId(splitServiceType) == null) {
+            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+            for (int i = 0; i < splitServiceTypes.length; i++) {
+                String splitServiceType = splitServiceTypes[i].toLowerCase();
+                if (MappingUtil.getServiceId(splitServiceType) == null) {
                     projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
                     return report;
-                }                               
+                }
             }
         }
 
@@ -133,7 +133,7 @@ public class FileExtractUploadService {
                 }
             });
         }
-        projectDetails.setErrors(errMap);
+        projectDetails.getErrors().putAll(errMap);
         //Save        
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
@@ -189,24 +189,26 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = new ArrayList<>();     
-        int assemblyTurnTimeQtyFlag=0,fabricationTurnTimeQtyFlag=0;
+        List<String> requiredFilesTypes = new ArrayList<>();
+        int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
             splitService[i] = splitService[i].toLowerCase();
 
-            //Check that serviceType is Assembly
+            //Check that serviceType is Assembly or not
             if (splitService[i].equals("assembly")) {
-                assemblyTurnTimeQtyFlag = 1;
-                if (projectDetails.getAssemblyTurnTimeQuantity().isEmpty()) {
-                    System.out.println("You forgot to add the details of Assembly turnTime Quantity.");
+                assTurnTimeQtyFlag = 1;
+                if ((projectDetails.getAssemblyTurnTimeQuantity() == null) || projectDetails.getAssemblyTurnTimeQuantity().isEmpty()) {
+                    projectDetails.getErrors().put("V0018", "Assembly TurnTime Quantity missing");
                 }
-            } else if (splitService[i].equals("fabrication")) {
-                fabricationTurnTimeQtyFlag = 1;
-                if (projectDetails.getFabricationTurnTimeQuantity().isEmpty()) {
-                    System.out.println("You forgot to add the details of Fabrication turnTime Quantity");
+            }//Check that serviceType is Fabrication or not
+            if (splitService[i].equals("fabrication")) {
+                fabTurnTimeQtyFlag = 1;
+                if ((projectDetails.getFabricationTurnTimeQuantity() == null) || projectDetails.getFabricationTurnTimeQuantity().isEmpty()) {
+                    projectDetails.getErrors().put("V0019", "Fabrication TurnTime Quantity missing");
                 }
             }
+
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes.addAll(baseService.getServiceFiles(
@@ -214,13 +216,13 @@ public class FileExtractUploadService {
                 );
             }
         }
-        if (fabricationTurnTimeQtyFlag == 0) {
-            projectDetails.setFabricationTurnTimeQuantity(null);
-        }
-        if (assemblyTurnTimeQtyFlag == 0) {
+        //Set the null values of Assembly and Fabrication turnTime Quantity if it is empty
+        if (assTurnTimeQtyFlag == 0) {
             projectDetails.setAssemblyTurnTimeQuantity(null);
         }
-        
+        if (fabTurnTimeQtyFlag == 0) {
+            projectDetails.setFabricationTurnTimeQuantity(null);
+        }
         //Types provided by customer
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)

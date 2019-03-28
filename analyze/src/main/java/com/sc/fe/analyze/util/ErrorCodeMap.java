@@ -21,8 +21,8 @@ public class ErrorCodeMap {
         temp.put("rout", ErrorCodes.V0009);
         temp.put("bom", ErrorCodes.V0010);
         temp.put("gerber", ErrorCodes.V0011);
-        temp.put("odb", ErrorCodes.V0011);   
-        temp.put("ipc2581", ErrorCodes.V0011);  
+        temp.put("odb", ErrorCodes.V0011);
+        temp.put("ipc2581", ErrorCodes.V0011);
         temp.put("gerber or odb", ErrorCodes.V0011);
         temp.put("gerber or odb or odb++", ErrorCodes.V0011);
         temp.put("gerber or odb or odb++ or ipc2581", ErrorCodes.V0011);
@@ -30,12 +30,14 @@ public class ErrorCodeMap {
         temp.put("x&y", ErrorCodes.V0012);
         temp.put("x&y or x and y", ErrorCodes.V0012);
         temp.put("x&y or x and y or xandy", ErrorCodes.V0012);
-        temp.put("mixed", ErrorCodes.V0013);        
+        temp.put("mixed", ErrorCodes.V0013);
         temp.put("invalid_input", ErrorCodes.V0014);
         temp.put("drawing", ErrorCodes.V0015);
         temp.put("assembly_drawing", ErrorCodes.V0015);
         temp.put("fabrication_drawing", ErrorCodes.V0016);
         temp.put("odb or ipc2581", ErrorCodes.V0017);
+        temp.put("assembly turnTime qunatity", ErrorCodes.V0018);
+        temp.put("fabrication turnTime qunatity", ErrorCodes.V0019);
         return temp;
     }
 
