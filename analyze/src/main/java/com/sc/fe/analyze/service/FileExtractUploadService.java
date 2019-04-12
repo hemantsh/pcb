@@ -115,6 +115,28 @@ public class FileExtractUploadService {
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
+        List<String> missingSelection = nonSelectedFiles(projectDetails);
+
+        //Set Errors for those files which are not selected
+        Map<String, String> errMapSelected = new HashMap<String, String>();
+        if (missingSelection != null) {
+            if (missingSelection.size() > 0) {
+                missingSelection.stream().forEach(type -> {
+                    if (!StringUtils.isEmpty(type)) {
+                        report.addError(type);
+                        report.addErrorCode(ErrorCodeMap.getCodeForFileType(type.trim()));
+                    }
+                });
+                report.getErrorCodes().stream().forEach(err -> {
+                    if (ErrorCodes.V0000 != err) {
+                        errMapSelected.put(err.toString(), err.getErrorMessage() + " not Selected");
+                    }
+                });
+                report.getErrorCodes().clear();
+            }
+        }
+
+        //Set Errors for those files which are missing
         if (missingTypes != null) {
             if (missingTypes.size() > 0) {
                 report.setValidationStatus("We found some missing information. ");
@@ -128,16 +150,19 @@ public class FileExtractUploadService {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
             }
         }
-        //Set errors
         Map<String, String> errMap = new HashMap<String, String>();
         if (report != null && report.getErrorCodes() != null) {
             report.getErrorCodes().stream().forEach(err -> {
                 if (ErrorCodes.V0000 != err) {
-                    errMap.put(err.toString(), err.getErrorMessage());
+                    errMap.put(err.toString(), err.getErrorMessage() + " missing");
                 }
             });
         }
+
+        //Set errors for missing files or for not selected files
+        projectDetails.getErrors().putAll(errMapSelected);
         projectDetails.getErrors().putAll(errMap);
+
         //Save        
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
@@ -226,29 +251,8 @@ public class FileExtractUploadService {
         }
         if (fabTurnTimeQtyFlag == 0) {
             projectDetails.setFabricationTurnTimeQuantity(null);
-        }        
-        
-        
-        //Check that if file is not selected,then it is available in zipFile(which user select) or not
-        for (int i = 0; i < projectDetails.getFileDetails().size(); i++) {
-            if (projectDetails.getFileDetails().get(i).isSelected() == false) {
-                try {
-                    String zipFileName = projectDetails.getZipFileName();
-                    String zipFilePath = ("C:\\Users\\pc\\Documents\\NetBeansProjects\\pcb\\sample\\" + zipFileName);
-                    ZipFile zipFile = new ZipFile(zipFilePath); 
-                    Enumeration entries = zipFile.entries();                                                                                                       
-                    while (entries.hasMoreElements()) {
-                        ZipEntry entry = (ZipEntry) entries.nextElement();                        
-                        if (projectDetails.getFileDetails().get(i).getName().equals(entry.toString())) {
-                            System.out.println("ERROR -- Required " + projectDetails.getFileDetails().get(i).getName() + " file is missing in selected  files but is available in customer originals.");
-                        }
-                    }
-                } catch (IOException e) {
-                    System.out.println("Error opening Zip" + e);
-                }
-            }
         }
-
+        
         //Types provided by customer
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
@@ -266,6 +270,26 @@ public class FileExtractUploadService {
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
         return missing;
+    }
+
+    //This function is used to retrieve those files which are not selected by user
+    public List<String> nonSelectedFiles(ProjectDetails projectDetails) {
+        //Types provided by customer
+        List<String> availFileTypes = projectDetails.getFileDetails().stream()
+                .filter(fd -> fd.getType() != null)
+                .filter(fd -> !fd.isSelected())
+                .map(FileDetails::getType)
+                .collect(Collectors.toList());
+
+        //Formats provided by customer
+        Set<String> availFormats = projectDetails.getFileDetails().stream()
+                .filter(fd -> fd.getFormat() != null)
+                .filter(fd -> !fd.isSelected())
+                .map(FileDetails::getFormat)
+                .collect(Collectors.toSet());
+
+        availFileTypes.addAll(availFormats);
+        return availFileTypes;
     }
 
     /**
