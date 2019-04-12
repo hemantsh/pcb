@@ -32,6 +32,10 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  *
@@ -222,7 +226,29 @@ public class FileExtractUploadService {
         }
         if (fabTurnTimeQtyFlag == 0) {
             projectDetails.setFabricationTurnTimeQuantity(null);
+        }        
+        
+        
+        //Check that if file is not selected,then it is available in zipFile(which user select) or not
+        for (int i = 0; i < projectDetails.getFileDetails().size(); i++) {
+            if (projectDetails.getFileDetails().get(i).isSelected() == false) {
+                try {
+                    String zipFileName = projectDetails.getZipFileName();
+                    String zipFilePath = ("C:\\Users\\pc\\Documents\\NetBeansProjects\\pcb\\sample\\" + zipFileName);
+                    ZipFile zipFile = new ZipFile(zipFilePath); 
+                    Enumeration entries = zipFile.entries();                                                                                                       
+                    while (entries.hasMoreElements()) {
+                        ZipEntry entry = (ZipEntry) entries.nextElement();                        
+                        if (projectDetails.getFileDetails().get(i).getName().equals(entry.toString())) {
+                            System.out.println("ERROR -- Required " + projectDetails.getFileDetails().get(i).getName() + " file is missing in selected  files but is available in customer originals.");
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error opening Zip" + e);
+                }
+            }
         }
+
         //Types provided by customer
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
