@@ -115,26 +115,7 @@ public class FileExtractUploadService {
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
-        List<String> missingSelection = nonSelectedFiles(projectDetails);
-
-        //Set Errors for those files which are not selected
-        Map<String, String> errMapSelected = new HashMap<String, String>();
-        if (missingSelection != null) {
-            if (missingSelection.size() > 0) {
-                missingSelection.stream().forEach(type -> {
-                    if (!StringUtils.isEmpty(type)) {
-                        report.addError(type);
-                        report.addErrorCode(ErrorCodeMap.getCodeForFileType(type.trim()));
-                    }
-                });
-                report.getErrorCodes().stream().forEach(err -> {
-                    if (ErrorCodes.V0000 != err) {
-                        errMapSelected.put(err.toString(), err.getErrorMessage() + " not Selected");
-                    }
-                });
-                report.getErrorCodes().clear();
-            }
-        }
+        List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
 
         //Set Errors for those files which are missing
         if (missingTypes != null) {
@@ -151,16 +132,19 @@ public class FileExtractUploadService {
             }
         }
         Map<String, String> errMap = new HashMap<String, String>();
+        
         if (report != null && report.getErrorCodes() != null) {
-            report.getErrorCodes().stream().forEach(err -> {
-                if (ErrorCodes.V0000 != err) {
-                    errMap.put(err.toString(), err.getErrorMessage() + " missing");
+            report.getErrorCodes().stream().forEach(errCode -> {
+                if (ErrorCodes.V0000 != errCode) {
+                    errMap.put(errCode.toString(), errCode.getErrorMessage());
+                    if(missingTypeErrorCodes.contains(errCode)) {
+                    	errMap.put(errCode.toString() , errCode.getErrorMessage() + " - [File Unselected]");
+                    }
                 }
             });
         }
 
         //Set errors for missing files or for not selected files
-        projectDetails.getErrors().putAll(errMapSelected);
         projectDetails.getErrors().putAll(errMap);
 
         //Save        
@@ -253,15 +237,17 @@ public class FileExtractUploadService {
             projectDetails.setFabricationTurnTimeQuantity(null);
         }
         
-        //Types provided by customer
+        //Types provided by customer (Only selected ones)
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
+                .filter(fd -> fd.isSelected())
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
 
-        //Formats provided by customer
+        //Formats provided by customer(Only selected ones)
         Set<String> availFormats = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getFormat() != null)
+                .filter(fd -> fd.isSelected())
                 .map(FileDetails::getFormat)
                 .collect(Collectors.toSet());
 
@@ -273,8 +259,9 @@ public class FileExtractUploadService {
     }
 
     //This function is used to retrieve those files which are not selected by user
-    public List<String> nonSelectedFiles(ProjectDetails projectDetails) {
+    public List<ErrorCodes> nonSelectedFilesErorCodes(ProjectDetails projectDetails) {
         //Types provided by customer
+    	List<ErrorCodes> errCodes = new ArrayList<ErrorCodes>();
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
                 .filter(fd -> !fd.isSelected())
@@ -289,7 +276,10 @@ public class FileExtractUploadService {
                 .collect(Collectors.toSet());
 
         availFileTypes.addAll(availFormats);
-        return availFileTypes;
+        availFileTypes.forEach( type -> {
+        	errCodes.add(ErrorCodeMap.getCodeForFileType(type));
+        });
+        return errCodes;
     }
 
     /**
