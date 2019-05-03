@@ -32,10 +32,6 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  *
@@ -111,12 +107,14 @@ public class FileExtractUploadService {
         } else if (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null) {
             projectDetails.getErrors().put("V0016", "Please provide the version when AttachReplace is true");
             return report;
+        }else if(projectDetails.isAttachReplace() && projectDetails.getVersion()!=null){            
+            return report;
         }
-
+        
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
-        List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
-
+        List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);        
+        
         //Set Errors for those files which are missing
         if (missingTypes != null) {
             if (missingTypes.size() > 0) {
@@ -131,6 +129,7 @@ public class FileExtractUploadService {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
             }
         }
+        
         Map<String, String> errMap = new HashMap<String, String>();
         
         if (report != null && report.getErrorCodes() != null) {
@@ -202,7 +201,7 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        List<String> requiredFilesTypes = new ArrayList<>();
+         List<String> requiredFilesTypes = new ArrayList<>();
         int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
@@ -252,9 +251,10 @@ public class FileExtractUploadService {
                 .collect(Collectors.toSet());
 
         availFileTypes.addAll(availFormats);
-
+        
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
+
         return missing;
     }
 
@@ -276,12 +276,13 @@ public class FileExtractUploadService {
                 .collect(Collectors.toSet());
 
         availFileTypes.addAll(availFormats);
+
         availFileTypes.forEach( type -> {
         	errCodes.add(ErrorCodeMap.getCodeForFileType(type));
         });
         return errCodes;
     }
-
+    
     /**
      * This method save the details of the projectDetails into the database
      *
