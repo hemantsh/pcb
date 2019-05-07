@@ -53,6 +53,10 @@
 \.*bill.*$->assembly misc bom none none 0
 \.*mat.*$->assembly misc bom none none 0
 
+.*.fab.*.pdf$->fab misc fabrication_drawing positive top 0
+fab.*.pdf$->fab misc fabrication_drawing positive top 0
+.*.assy.*.pdf$->assembly misc assembly_drawing positive top 0
+
 ^.*top.*serial.*$->serial_top misc document positive none 0
 ^.*bot.*serial.*$->serial_bot misc document positive none 0
 ^.*npth.*$->drlnpt board drill positive none 0

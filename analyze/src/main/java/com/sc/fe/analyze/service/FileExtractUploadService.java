@@ -107,14 +107,12 @@ public class FileExtractUploadService {
         } else if (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null) {
             projectDetails.getErrors().put("V0016", "Please provide the version when AttachReplace is true");
             return report;
-        }else if(projectDetails.isAttachReplace() && projectDetails.getVersion()!=null){            
-            return report;
         }
-        
+
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
-        List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);        
-        
+        List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
+
         //Set Errors for those files which are missing
         if (missingTypes != null) {
             if (missingTypes.size() > 0) {
@@ -129,15 +127,15 @@ public class FileExtractUploadService {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
             }
         }
-        
+
         Map<String, String> errMap = new HashMap<String, String>();
-        
+
         if (report != null && report.getErrorCodes() != null) {
             report.getErrorCodes().stream().forEach(errCode -> {
                 if (ErrorCodes.V0000 != errCode) {
                     errMap.put(errCode.toString(), errCode.getErrorMessage());
-                    if(missingTypeErrorCodes.contains(errCode)) {
-                    	errMap.put(errCode.toString() , errCode.getErrorMessage() + " - [File Unselected]");
+                    if (missingTypeErrorCodes.contains(errCode)) {
+                        errMap.put(errCode.toString(), errCode.getErrorMessage() + " - [File Unselected]");
                     }
                 }
             });
@@ -190,10 +188,16 @@ public class FileExtractUploadService {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
             retErrors.put("version", prevprojDtl.getVersion());
-            retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
 
+            if (projectDetails.isAttachReplace()) {
+                List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
+                prevprojDtl.setFileDetails(shortList);
+            }
+
+            retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
         }
         return retErrors;
+
     }
 
     /**
@@ -201,7 +205,7 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-         List<String> requiredFilesTypes = new ArrayList<>();
+        List<String> requiredFilesTypes = new ArrayList<>();
         int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
@@ -235,7 +239,7 @@ public class FileExtractUploadService {
         if (fabTurnTimeQtyFlag == 0) {
             projectDetails.setFabricationTurnTimeQuantity(null);
         }
-        
+
         //Types provided by customer (Only selected ones)
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
@@ -251,7 +255,7 @@ public class FileExtractUploadService {
                 .collect(Collectors.toSet());
 
         availFileTypes.addAll(availFormats);
-        
+
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
 
@@ -261,7 +265,7 @@ public class FileExtractUploadService {
     //This function is used to retrieve those files which are not selected by user
     public List<ErrorCodes> nonSelectedFilesErorCodes(ProjectDetails projectDetails) {
         //Types provided by customer
-    	List<ErrorCodes> errCodes = new ArrayList<ErrorCodes>();
+        List<ErrorCodes> errCodes = new ArrayList<ErrorCodes>();
         List<String> availFileTypes = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getType() != null)
                 .filter(fd -> !fd.isSelected())
@@ -277,12 +281,12 @@ public class FileExtractUploadService {
 
         availFileTypes.addAll(availFormats);
 
-        availFileTypes.forEach( type -> {
-        	errCodes.add(ErrorCodeMap.getCodeForFileType(type));
+        availFileTypes.forEach(type -> {
+            errCodes.add(ErrorCodeMap.getCodeForFileType(type));
         });
         return errCodes;
     }
-    
+
     /**
      * This method save the details of the projectDetails into the database
      *
