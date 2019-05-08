@@ -104,11 +104,8 @@ public class FileExtractUploadService {
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
             return report;
-        } else if (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null) {
-            projectDetails.getErrors().put("V0016", "Please provide the version when AttachReplace is true");
-            return report;
-        }
-
+        } 
+     
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
@@ -309,8 +306,7 @@ public class FileExtractUploadService {
         }
 
         //Check for both newProject and attach/Replace values
-        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())
-                || (projectDetails.isNewProject() == false && projectDetails.isAttachReplace() && projectDetails.getVersion() == null)) {
+        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())){              
             projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
             return;
         }
@@ -350,9 +346,9 @@ public class FileExtractUploadService {
 
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that
-        if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
+        if (!StringUtils.isEmpty(projectDetails.getProjectId())) {            
             return projectDetails.getProjectId();
-        }
+        }        
         //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
             //Get by customerID - Best chance to find match with this
@@ -493,7 +489,7 @@ public class FileExtractUploadService {
      * @return Create new if doesn't exist in given project
      */
     private String getVersion(ProjectDetails projectDetails) {
-        String version = null;
+        String version = null;        
         if (projectDetails.isAttachReplace()) {
             return projectDetails.getVersion();
         } else {
