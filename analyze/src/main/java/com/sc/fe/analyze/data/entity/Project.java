@@ -22,6 +22,8 @@ public class Project {
     @PrimaryKey
     private ProjectPK key;
 
+    @Column(value = "rnumber")
+    private String rNumber;      
     @Column(value = "setId")
     private String setId;
     @Column(value = "customer_name")
@@ -59,6 +61,14 @@ public class Project {
     @Column(value = "nofly")
     private boolean nofly;
 
+    
+    public String getrNumber() {
+        return rNumber;
+    }
+
+    public void setrNumber(String rNumber) {
+        this.rNumber = rNumber;
+    }
     /**
      * Gets the assembly TurnTimeQuantity for Assembly ServiceType.
      *

@@ -46,14 +46,25 @@ public class ProjectManagementController {
 
         Report report = fileUploadService.validateFiles(projectDetails);
         projectDetails = report.getProjectDetail();
-
         ProjectDetails temp = new ProjectDetails();
+        
+        if(projectDetails.isAttachReplace()){
+            temp.setProjectId(projectDetails.getProjectId());
+            temp.setSetId(projectDetails.getSetId());
+            temp.setVersion(projectDetails.getVersion());
+            temp.setErrors(projectDetails.getErrors());
+            temp.setDifferences(projectDetails.getDifferences());
+            return temp;
+        }
+        
+        
         temp.setProjectId(projectDetails.getProjectId());
         temp.setSetId(projectDetails.getSetId());
         temp.setLayers(projectDetails.getLayers());
         temp.setItar(projectDetails.getItar());
         temp.setNofly(projectDetails.isNofly());
         temp.setNewProject(projectDetails.isNewProject());
+        temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
         temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
         temp.setVersion(projectDetails.getVersion());

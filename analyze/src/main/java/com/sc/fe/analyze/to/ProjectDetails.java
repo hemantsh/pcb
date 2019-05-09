@@ -21,6 +21,7 @@ public class ProjectDetails implements Serializable {
 
     private String projectId;
     private String version;
+    private String rNumber;    
     private boolean attachReplace;
     private boolean newProject;
     private String setId;
@@ -48,6 +49,14 @@ public class ProjectDetails implements Serializable {
      */
     private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 
+    
+    public String getrNumber() {
+        return rNumber;
+    }
+
+    public void setrNumber(String rNumber) {
+        this.rNumber = rNumber;
+    }
     /**
      *
      * @return the assemblyTurnTimeQuantity

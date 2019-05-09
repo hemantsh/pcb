@@ -84,6 +84,25 @@ public class FileExtractUploadService {
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
 
+        //If attachReplace=true,then only update the fileDetails in the request
+        if(projectDetails.isAttachReplace()){
+               //compare the last ProjectDetails 
+            Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
+            String prevProjVersion = compareMap.get("version");
+            compareMap.remove("version");
+            projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
+
+        //Save the comparison Details
+        if (!projectDetails.getDifferences().isEmpty()) {
+            DifferenceReport diffReport = new DifferenceReport();
+            diffReport.setProjectId(projectDetails.getProjectId());
+            diffReport.setVersion(UUID.fromString(prevProjVersion));
+            diffReport.setDifferences(projectDetails.getDifferences());
+            projectService.save(diffReport);
+        }
+        return report;
+        }
+        
         //Check that user give correct Service Type or not
         if (StringUtils.isEmpty(projectDetails.getServiceType())) {
             projectDetails.getErrors().put("V0000", "Service Type is required");
@@ -189,6 +208,8 @@ public class FileExtractUploadService {
             if (projectDetails.isAttachReplace()) {
                 List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
                 prevprojDtl.setFileDetails(shortList);
+                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));              
+               return retErrors;
             }
 
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
@@ -291,7 +312,9 @@ public class FileExtractUploadService {
      */
     public void save(ProjectDetails projectDetails) {
 
-        if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+        if(projectDetails.isAttachReplace()){            
+        } 
+        else if (StringUtils.isEmpty(projectDetails.getServiceType())) {
             projectDetails.getErrors().put("V0000", "Service Type is required");
             return;
         } else {
@@ -304,7 +327,7 @@ public class FileExtractUploadService {
                 }
             }
         }
-
+       
         //Check for both newProject and attach/Replace values
         if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())){              
             projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
@@ -330,8 +353,10 @@ public class FileExtractUploadService {
             projectFilesService.save(pFiles);
         });
 
-        //Save into project table               
-        projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        if(!projectDetails.isAttachReplace()){
+            //Save into project table               
+            projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        }
 
     }
 
@@ -411,6 +436,11 @@ public class FileExtractUploadService {
 
         List<ProjectDetails> allRecords = projectService.findByKeyProjectId(projDtl.getProjectId());
         if (allRecords != null) {
+            if(projDtl.isAttachReplace() && allRecords.size()==1){
+                prevRecord = allRecords.stream()            
+                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
+                return prevRecord;
+            }
             // first remove the current record by removing same version record.
             // From the remaining, we will find the latest by created date
             prevRecord = allRecords.stream()

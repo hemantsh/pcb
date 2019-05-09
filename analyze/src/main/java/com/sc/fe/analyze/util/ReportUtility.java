@@ -37,6 +37,7 @@ public class ReportUtility {
         dtl.setLayers(project.getLayerCount());
         dtl.setPcbClass(project.getPcbClass());
         dtl.setBoardType(project.getBoardType());
+        dtl.setrNumber(project.getrNumber());
         dtl.setItar(project.getItar());
         dtl.setAssemblyTurnTimeQuantity(project.getAssemblyTurntimeQuantity());
         dtl.setFabricationTurnTimeQuantity(project.getFabricationTurntimeQuantity());
@@ -90,6 +91,7 @@ public class ReportUtility {
     public static Project convertToDBObject(ProjectDetails projectDetails) {
         //TODO check all attributes are set
         Project dbDetail = new Project();
+        dbDetail.setrNumber(projectDetails.getrNumber());
         dbDetail.setSetId(projectDetails.getSetId());
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
         dbDetail.setBoardType(projectDetails.getBoardType());
