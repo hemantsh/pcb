@@ -133,12 +133,7 @@ public class ReportUtility {
         filesDbDetails.setVersion(fileDetails.getVersion());
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getSize());
-        filesDbDetails.setType(fileDetails.getType());
-        if (fileDetails.getFileDate() == null) {
-            filesDbDetails.setFileDate(new Date());
-        } else {
-            filesDbDetails.setFileDate(fileDetails.getFileDate());
-        }
+        filesDbDetails.setType(fileDetails.getType());      
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
         filesDbDetails.setContext(fileDetails.getContext());
@@ -154,6 +149,12 @@ public class ReportUtility {
             filesDbDetails.setCreateDate(new Date());
         } else {
             filesDbDetails.setCreateDate(fileDetails.getCreateDate());
+        }
+        
+        if (fileDetails.getFileDate() == null) {
+            filesDbDetails.setFileDate(new Date());
+        } else {
+            filesDbDetails.setFileDate(fileDetails.getFileDate());
         }
         filesDbDetails.setModifiedDate(new Date());
         filesDbDetails.setErrors(fileDetails.getErrors());

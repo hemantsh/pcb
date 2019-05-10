@@ -44,19 +44,8 @@ public class ProjectManagementController {
     @ResponseBody
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 
-        Report report = fileUploadService.validateFiles(projectDetails);
-        projectDetails = report.getProjectDetail();
-        ProjectDetails temp = new ProjectDetails();
-        
-        if(projectDetails.isAttachReplace()){
-            temp.setProjectId(projectDetails.getProjectId());
-            temp.setSetId(projectDetails.getSetId());
-            temp.setVersion(projectDetails.getVersion());
-            temp.setErrors(projectDetails.getErrors());
-            temp.setDifferences(projectDetails.getDifferences());
-            return temp;
-        }
-        
+        Report report = fileUploadService.validateFiles(projectDetails);        
+        ProjectDetails temp = new ProjectDetails();        
         
         temp.setProjectId(projectDetails.getProjectId());
         temp.setSetId(projectDetails.getSetId());

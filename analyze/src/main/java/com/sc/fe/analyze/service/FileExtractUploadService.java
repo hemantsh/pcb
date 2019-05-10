@@ -82,43 +82,25 @@ public class FileExtractUploadService {
         // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
-        report.setSummary("****** File upload and basic validation by name and extension. *******");
-
-        //If attachReplace=true,then only update the fileDetails in the request
-        if(projectDetails.isAttachReplace()){
-               //compare the last ProjectDetails 
-            Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
-            String prevProjVersion = compareMap.get("version");
-            compareMap.remove("version");
-            projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
-
-        //Save the comparison Details
-        if (!projectDetails.getDifferences().isEmpty()) {
-            DifferenceReport diffReport = new DifferenceReport();
-            diffReport.setProjectId(projectDetails.getProjectId());
-            diffReport.setVersion(UUID.fromString(prevProjVersion));
-            diffReport.setDifferences(projectDetails.getDifferences());
-            projectService.save(diffReport);
-        }
-        return report;
-        }
-        
+        report.setSummary("****** File upload and basic validation by name and extension. *******");       
+ 
         //Check that user give correct Service Type or not
-        if (StringUtils.isEmpty(projectDetails.getServiceType())) {
-            projectDetails.getErrors().put("V0000", "Service Type is required");
-            return report;
-        } else {
-            //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-            for (int i = 0; i < splitServiceTypes.length; i++) {
-                String splitServiceType = splitServiceTypes[i].toLowerCase();
-                if (MappingUtil.getServiceId(splitServiceType) == null) {
-                    projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                    return report;
+        if(!projectDetails.isAttachReplace()){
+            if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+                projectDetails.getErrors().put("V0000", "Service Type is required");
+                return report;
+            } else {
+                //Splits the serviceType by ',' and check each serviceType that is valid or not.            
+                String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+                for (int i = 0; i < splitServiceTypes.length; i++) {
+                    String splitServiceType = splitServiceTypes[i].toLowerCase();
+                    if (MappingUtil.getServiceId(splitServiceType) == null) {
+                        projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                        return report;
+                    }
                 }
             }
         }
-
         //Check that user gives correct newProject and attachReplace values or not
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
@@ -161,7 +143,9 @@ public class FileExtractUploadService {
         projectDetails.getErrors().putAll(errMap);
 
         //Save        
-        projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        if(projectDetails.isNewProject()){
+            projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        }
 
         //compare the last ProjectDetails 
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
@@ -207,11 +191,10 @@ public class FileExtractUploadService {
 
             if (projectDetails.isAttachReplace()) {
                 List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
-                prevprojDtl.setFileDetails(shortList);
-                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));              
-               return retErrors;
+                prevprojDtl.setFileDetails(shortList);       
+                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));                 
+                return retErrors;
             }
-
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
         }
         return retErrors;
@@ -223,6 +206,9 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
+        if(projectDetails.isAttachReplace()){
+            return null;
+        }
         List<String> requiredFilesTypes = new ArrayList<>();
         int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
@@ -276,7 +262,6 @@ public class FileExtractUploadService {
 
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
-
         return missing;
     }
 
