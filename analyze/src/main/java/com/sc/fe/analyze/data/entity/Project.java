@@ -43,9 +43,9 @@ public class Project {
     @Column(value = "itar")
     private boolean itar;
     @Column(value = "assembly_turntime_quantity")
-    private Map<Integer, Integer> assemblyTurntimeQuantity;
+    private String assemblyTurntimeQuantity;
     @Column(value = "fabrication_turntime_quantity")
-    private Map<Integer, Integer> fabricationTurntimeQuantity;
+    private String fabricationTurntimeQuantity;
     @Column(value = "design_specification")
     private String designSpecification;
     @Column(value = "zipfile_name")
@@ -74,7 +74,7 @@ public class Project {
      *
      * @return the assemblyTurnTimeQuantity
      */
-    public Map<Integer, Integer> getAssemblyTurntimeQuantity() {
+    public String getAssemblyTurntimeQuantity() {
         return assemblyTurntimeQuantity;
     }
 
@@ -84,7 +84,7 @@ public class Project {
      *
      * @param assemblyTurntimeQuantity Sets the turntimeQuantity
      */
-    public void setAssemblyTurntimeQuantity(Map<Integer, Integer> assemblyTurntimeQuantity) {
+    public void setAssemblyTurntimeQuantity(String assemblyTurntimeQuantity) {
         this.assemblyTurntimeQuantity = assemblyTurntimeQuantity;
     }
 
@@ -93,7 +93,7 @@ public class Project {
      *
      * @return the turnTimeQuantity
      */
-    public Map<Integer, Integer> getFabricationTurntimeQuantity() {
+    public String getFabricationTurntimeQuantity() {
         return fabricationTurntimeQuantity;
     }
 
@@ -103,7 +103,7 @@ public class Project {
      *
      * @param fabricationTurntimeQuantity Sets the turntimeQuantity
      */
-    public void setFabricationTurntimeQuantity(Map<Integer, Integer> fabricationTurntimeQuantity) {
+    public void setFabricationTurntimeQuantity(String fabricationTurntimeQuantity) {
         this.fabricationTurntimeQuantity = fabricationTurntimeQuantity;
     }
 

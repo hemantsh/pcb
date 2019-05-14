@@ -34,6 +34,7 @@ import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
+import io.netty.util.internal.StringUtil;
 
 /**
  *
@@ -508,22 +509,22 @@ public class GerberFileProcessingUtil {
 
         FileDetails parsedFD = parseFileName(fd.getName());
         if (parsedFD != null) {
-            if (!StringUtils.isEmpty(parsedFD.getContext())) {
+            if (StringUtils.isEmpty(fd.getContext())) {
                 fd.setContext(parsedFD.getContext());
             }
-            if (!StringUtils.isEmpty(parsedFD.getLayerName())) {
+            if (StringUtils.isEmpty(fd.getLayerName())) {
                 fd.setLayerName(parsedFD.getLayerName());
             }
-
-            fd.setLayerOrder(parsedFD.getLayerOrder());
-
-            if (!StringUtils.isEmpty(parsedFD.getPolarity())) {
+            if (StringUtils.isEmpty(fd.getLayerOrder())) {
+                fd.setLayerOrder(parsedFD.getLayerOrder());
+            }
+            if (StringUtils.isEmpty(fd.getPolarity())) {
                 fd.setPolarity(parsedFD.getPolarity());
             }
-            if (!StringUtils.isEmpty(parsedFD.getSide())) {
+            if (StringUtils.isEmpty(fd.getSide())) {
                 fd.setSide(parsedFD.getSide());
             }
-            if (!StringUtils.isEmpty(parsedFD.getType())) {
+            if (StringUtils.isEmpty(fd.getType())) {
                 fd.setType(parsedFD.getType());
             }
         }

@@ -82,10 +82,10 @@ public class FileExtractUploadService {
         // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
-        report.setSummary("****** File upload and basic validation by name and extension. *******");       
- 
+        report.setSummary("****** File upload and basic validation by name and extension. *******");
+
         //Check that user give correct Service Type or not
-        if(!projectDetails.isAttachReplace()){
+        if (!projectDetails.isAttachReplace()) {
             if (StringUtils.isEmpty(projectDetails.getServiceType())) {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return report;
@@ -105,8 +105,8 @@ public class FileExtractUploadService {
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
             return report;
-        } 
-     
+        }
+
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
@@ -143,7 +143,7 @@ public class FileExtractUploadService {
         projectDetails.getErrors().putAll(errMap);
 
         //Save        
-        if(projectDetails.isNewProject()){
+        if (projectDetails.isNewProject()) {
             projectService.save(ReportUtility.convertToDBObject(projectDetails));
         }
 
@@ -177,13 +177,13 @@ public class FileExtractUploadService {
      * @return the differences after comparing the latest project record from
      * the last project record
      */
+    
     private Map<String, String> compareWithLastProjectData(ProjectDetails projectDetails) {
 
         Map<String, String> retErrors = new HashMap<String, String>();
 
         //Retrieve latest Record of similar project Id
-        ProjectDetails prevprojDtl = getPreviousRecord(projectDetails);
-
+        ProjectDetails prevprojDtl = getPreviousRecord(projectDetails);        
         if (prevprojDtl != null) {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
@@ -191,8 +191,8 @@ public class FileExtractUploadService {
 
             if (projectDetails.isAttachReplace()) {
                 List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
-                prevprojDtl.setFileDetails(shortList);       
-                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));                 
+                prevprojDtl.setFileDetails(shortList);
+                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));
                 return retErrors;
             }
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
@@ -206,7 +206,7 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-        if(projectDetails.isAttachReplace()){
+        if (projectDetails.isAttachReplace()) {
             return null;
         }
         List<String> requiredFilesTypes = new ArrayList<>();
@@ -297,9 +297,8 @@ public class FileExtractUploadService {
      */
     public void save(ProjectDetails projectDetails) {
 
-        if(projectDetails.isAttachReplace()){            
-        } 
-        else if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+        if (projectDetails.isAttachReplace()) {
+        } else if (StringUtils.isEmpty(projectDetails.getServiceType())) {
             projectDetails.getErrors().put("V0000", "Service Type is required");
             return;
         } else {
@@ -312,9 +311,9 @@ public class FileExtractUploadService {
                 }
             }
         }
-       
+
         //Check for both newProject and attach/Replace values
-        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())){              
+        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
             projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
             return;
         }
@@ -338,7 +337,7 @@ public class FileExtractUploadService {
             projectFilesService.save(pFiles);
         });
 
-        if(!projectDetails.isAttachReplace()){
+        if (!projectDetails.isAttachReplace()) {
             //Save into project table               
             projectService.save(ReportUtility.convertToDBObject(projectDetails));
         }
@@ -356,9 +355,9 @@ public class FileExtractUploadService {
 
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that
-        if (!StringUtils.isEmpty(projectDetails.getProjectId())) {            
+        if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
-        }        
+        }
         //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
             //Get by customerID - Best chance to find match with this
@@ -421,9 +420,9 @@ public class FileExtractUploadService {
 
         List<ProjectDetails> allRecords = projectService.findByKeyProjectId(projDtl.getProjectId());
         if (allRecords != null) {
-            if(projDtl.isAttachReplace() && allRecords.size()==1){
-                prevRecord = allRecords.stream()            
-                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
+            if (projDtl.isAttachReplace() && allRecords.size() == 1) {
+                prevRecord = allRecords.stream()
+                        .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
                 return prevRecord;
             }
             // first remove the current record by removing same version record.
@@ -504,7 +503,7 @@ public class FileExtractUploadService {
      * @return Create new if doesn't exist in given project
      */
     private String getVersion(ProjectDetails projectDetails) {
-        String version = null;        
+        String version = null;
         if (projectDetails.isAttachReplace()) {
             return projectDetails.getVersion();
         } else {

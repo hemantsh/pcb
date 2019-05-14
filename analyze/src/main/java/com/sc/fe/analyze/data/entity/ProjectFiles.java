@@ -43,7 +43,7 @@ public class ProjectFiles {
     @Column(value = "side")
     private String side;
     @Column(value = "layer_order")
-    private int layerOrder;
+    private int layerOrder;   
     @Column(value = "start_name")
     private String startName;
     @Column(value = "end_name")
@@ -106,7 +106,7 @@ public class ProjectFiles {
      */
     public int getLayerOrder() {
         return layerOrder;
-    }
+    }    
 
     /**
      * Sets the LayerOrder into the layerOrder instance variable.
@@ -116,7 +116,6 @@ public class ProjectFiles {
     public void setLayerOrder(int layerOrder) {
         this.layerOrder = layerOrder;
     }
-
     /**
      * Gets the EndName.
      *

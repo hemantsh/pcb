@@ -35,15 +35,15 @@ public class ProjectDetails implements Serializable {
     private String boardType;
     private boolean itar;
     private boolean nofly;
-    private Map<Integer, Integer> assemblyTurnTimeQuantity;
-    private Map<Integer, Integer> fabricationTurnTimeQuantity;
+    private List<TurnTimeQuantity> assemblyTurnTimeQuantity;   
+    private List<TurnTimeQuantity> fabricationTurnTimeQuantity;    
     private String designSpecification;
     private String customerId;
     private String emailAddress;
 
     private Map<String, String> errors; //Errors in (key:value) form
     private Set<String> differences;
-
+    
     /**
      * Details about the files we found while processing
      */
@@ -61,17 +61,17 @@ public class ProjectDetails implements Serializable {
      *
      * @return the assemblyTurnTimeQuantity
      */
-    public Map<Integer, Integer> getAssemblyTurnTimeQuantity() {
+     public List<TurnTimeQuantity> getAssemblyTurnTimeQuantity() {
         return assemblyTurnTimeQuantity;
     }
-
+    
     /**
      * Sets the assemblyTurnTimeQuantity into the assemblyTurnTimeQuantity
      * instance variable
      *
      * @param assemblyTurnTimeQuantity Sets the assemblyTurnTimeQuantity
      */
-    public void setAssemblyTurnTimeQuantity(Map<Integer, Integer> assemblyTurnTimeQuantity) {
+    public void setAssemblyTurnTimeQuantity(List<TurnTimeQuantity> assemblyTurnTimeQuantity) {            
         this.assemblyTurnTimeQuantity = assemblyTurnTimeQuantity;
     }
 
@@ -79,7 +79,7 @@ public class ProjectDetails implements Serializable {
      *
      * @return the fabricationTurnTimeQuantity
      */
-    public Map<Integer, Integer> getFabricationTurnTimeQuantity() {
+    public List<TurnTimeQuantity> getFabricationTurnTimeQuantity() {
         return fabricationTurnTimeQuantity;
     }
 
@@ -89,7 +89,7 @@ public class ProjectDetails implements Serializable {
      *
      * @param fabricationTurnTimeQuantity Sets the fabricationTurnTimeQuantity
      */
-    public void setFabricationTurnTimeQuantity(Map<Integer, Integer> fabricationTurnTimeQuantity) {
+    public void setFabricationTurnTimeQuantity(List<TurnTimeQuantity> fabricationTurnTimeQuantity) {
         this.fabricationTurnTimeQuantity = fabricationTurnTimeQuantity;
     }
 
@@ -270,6 +270,7 @@ public class ProjectDetails implements Serializable {
      * @return the serviceType
      */
     public String getServiceType() {
+
         return serviceType;
     }
 

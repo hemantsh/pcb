@@ -65,11 +65,10 @@ public class ProjectManagementController {
 
     @PostMapping(path = "/project")
     @ResponseBody
-    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
-
-        //ProjectDetails validationResult = validate(projectDetails);
-        fileUploadService.save(projectDetails);
-        return validate(projectDetails);
+    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
+       // ProjectDetails validationResult = validate(projectDetails);        
+        fileUploadService.save(projectDetails);        
+        return validate(projectDetails);        
     }
     
     @GetMapping("/projects")
