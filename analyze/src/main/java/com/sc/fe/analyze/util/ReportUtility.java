@@ -69,7 +69,7 @@ public class ReportUtility {
      * @return the FileDetails Object
      */
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
-        FileDetails dtl = new FileDetails();
+        FileDetails dtl = new FileDetails();       
         dtl.setFileDate(projectFiles.getFileDate());
         dtl.setName(projectFiles.getName());
         dtl.setVersion(projectFiles.getVersion());
@@ -181,8 +181,6 @@ public class ReportUtility {
 
     //This method converts the String type to List of TurnTimeQuantity
     private static List<TurnTimeQuantity> convertToList(String qtyDetails) {
-        //qtyDetails = qtyDetails.replace("[", "");
-        //qtyDetails = qtyDetails.replace("]", "");
         List<TurnTimeQuantity> turnTime = new ArrayList<TurnTimeQuantity>();
         List<String> myList = new ArrayList<String>(Arrays.asList(qtyDetails.split(",")));
         for (int i = 0; i < myList.size(); i++) {

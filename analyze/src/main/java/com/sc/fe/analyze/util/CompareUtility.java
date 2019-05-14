@@ -123,7 +123,7 @@ public class CompareUtility {
      * @return the differences after comparing the new project from the old
      * project
      */
-    public static Map<String, String> compareFileDetails(ProjectDetails newProject, ProjectDetails oldProject) {
+    public static Map<String, String> compareFileDetails(ProjectDetails oldProject, ProjectDetails newProject) {
         //FileDetail objects are compared if they have same file name
         Map<String, String> differences = new HashMap<String, String>();
         Set<String> combinedKeys = new HashSet<String>();
