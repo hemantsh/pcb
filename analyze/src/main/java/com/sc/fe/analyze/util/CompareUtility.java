@@ -57,9 +57,6 @@ public class CompareUtility {
         }
         try {
             differences.putAll(compareObject(newRecord, oldRecord));
-
-            differences.putAll(compareObjectMaps(newRecord.getAssemblyTurnTimeQuantity(), oldRecord.getAssemblyTurnTimeQuantity()));
-            differences.putAll(compareObjectMaps(newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity()));
             //Comparing the Validation errors with previous validation errors
             differences.putAll(compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
 
@@ -126,7 +123,7 @@ public class CompareUtility {
      * @return the differences after comparing the new project from the old
      * project
      */
-    public static Map<String, String> compareFileDetails(ProjectDetails newProject, ProjectDetails oldProject) {
+    public static Map<String, String> compareFileDetails(ProjectDetails oldProject, ProjectDetails newProject) {
         //FileDetail objects are compared if they have same file name
         Map<String, String> differences = new HashMap<String, String>();
         Set<String> combinedKeys = new HashSet<String>();
@@ -146,7 +143,7 @@ public class CompareUtility {
         //Reading All fileNames 
         combinedKeys.stream().forEach(fileName -> {
             //Get FileDetail from 2 sets by same filename    
-            FileDetails newFD = newProject.getFileDetails(fileName);
+            FileDetails newFD = newProject.getFileDetails(fileName);    
             FileDetails oldFD = oldProject.getFileDetails(fileName);
 
             try {

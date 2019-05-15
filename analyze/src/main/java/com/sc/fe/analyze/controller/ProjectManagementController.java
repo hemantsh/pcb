@@ -44,16 +44,16 @@ public class ProjectManagementController {
     @ResponseBody
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 
-        Report report = fileUploadService.validateFiles(projectDetails);
-        projectDetails = report.getProjectDetail();
-
-        ProjectDetails temp = new ProjectDetails();
+        Report report = fileUploadService.validateFiles(projectDetails);        
+        ProjectDetails temp = new ProjectDetails();        
+        
         temp.setProjectId(projectDetails.getProjectId());
         temp.setSetId(projectDetails.getSetId());
         temp.setLayers(projectDetails.getLayers());
         temp.setItar(projectDetails.getItar());
         temp.setNofly(projectDetails.isNofly());
         temp.setNewProject(projectDetails.isNewProject());
+        temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
         temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
         temp.setVersion(projectDetails.getVersion());
@@ -65,11 +65,10 @@ public class ProjectManagementController {
 
     @PostMapping(path = "/project")
     @ResponseBody
-    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
-
-        //ProjectDetails validationResult = validate(projectDetails);
-        fileUploadService.save(projectDetails);
-        return validate(projectDetails);
+    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
+       // ProjectDetails validationResult = validate(projectDetails);        
+        fileUploadService.save(projectDetails);        
+        return validate(projectDetails);        
     }
     
     @GetMapping("/projects")

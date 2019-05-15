@@ -48,6 +48,7 @@ CREATE KEYSPACE fileexchange
  
  	project_id text,
  	version timeuuid,
+        rnumber text,
  	setId text,
  	customer_name text,
  	customer_id text,
@@ -58,8 +59,8 @@ CREATE KEYSPACE fileexchange
  	board_type text,
  	itar boolean,
         nofly boolean,
- 	assembly_turntime_quantity map<int,int>,
-        fabrication_turntime_quantity map<int,int>,
+ 	assembly_turntime_quantity text,
+        fabrication_turntime_quantity text,
  	design_specification text,
  	zipfile_name text,
  	zipfile_size text,

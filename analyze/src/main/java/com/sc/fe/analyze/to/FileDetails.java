@@ -35,7 +35,7 @@ public class FileDetails implements Serializable {
     private String type;
     private String polarity;
     private String side;
-    private int layerOrder;
+    private int layerOrder; 
     private String startName;
     private String endName;
     private String copperWeight;
