@@ -59,15 +59,21 @@ public class ProjectManagementController {
         temp.setVersion(projectDetails.getVersion());
         temp.setErrors(projectDetails.getErrors());
         temp.setDifferences(projectDetails.getDifferences());
-
+        
         return temp;
     }
 
     @PostMapping(path = "/project")
     @ResponseBody
     public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
-       // ProjectDetails validationResult = validate(projectDetails);        
-        fileUploadService.save(projectDetails);        
+        if(projectDetails.isAttachReplace()){
+             fileUploadService.compareProject(fileUploadService.returnProjectId(projectDetails));   
+             ProjectDetails validationResult = validate(projectDetails);               
+             fileUploadService.save(projectDetails);
+             return validationResult;
+        }
+        fileUploadService.save(projectDetails);      
+        fileUploadService.compareProject(projectDetails);
         return validate(projectDetails);        
     }
     
