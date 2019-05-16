@@ -69,7 +69,7 @@ public class ReportUtility {
      * @return the FileDetails Object
      */
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
-        FileDetails dtl = new FileDetails();       
+        FileDetails dtl = new FileDetails();
         dtl.setFileDate(projectFiles.getFileDate());
         dtl.setName(projectFiles.getName());
         dtl.setVersion(projectFiles.getVersion());
@@ -114,11 +114,11 @@ public class ReportUtility {
         dbDetail.setProjectId(projectDetails.getProjectId());
         dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
         if (projectDetails.getAssemblyTurnTimeQuantity() != null) {
-            String joined = projectDetails.getAssemblyTurnTimeQuantity().stream().map(Object::toString).collect(Collectors.joining(", "));
+            String joined = projectDetails.getAssemblyTurnTimeQuantity().stream().map(Object::toString).collect(Collectors.joining(","));
             dbDetail.setAssemblyTurntimeQuantity(joined);
         }
         if (projectDetails.getFabricationTurnTimeQuantity() != null) {
-            String joined = projectDetails.getFabricationTurnTimeQuantity().stream().map(Object::toString).collect(Collectors.joining(", "));            
+            String joined = projectDetails.getFabricationTurnTimeQuantity().stream().map(Object::toString).collect(Collectors.joining(","));
             dbDetail.setFabricationTurntimeQuantity(joined);
         }
         dbDetail.setServiceType(projectDetails.getServiceType());
@@ -189,4 +189,5 @@ public class ReportUtility {
         }
         return turnTime;
     }
+
 }

@@ -30,10 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Hemant
  */
 @RestController
-@RequestMapping(path="/fm")
+@RequestMapping(path = "/fm")
 @CrossOrigin(origins = "*")
 @Api(value = "ProjectManagementController", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProjectManagementController {
+
     @Autowired
     ProjectService projectService;
     
@@ -43,7 +44,7 @@ public class ProjectManagementController {
     @PostMapping(path = "/test")
     @ResponseBody
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
-
+        
         Report report = fileUploadService.validateFiles(projectDetails);        
         ProjectDetails temp = new ProjectDetails();        
         
@@ -62,17 +63,21 @@ public class ProjectManagementController {
         
         return temp;
     }
-
+    
     @PostMapping(path = "/project")
     @ResponseBody
     public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
-        if(projectDetails.isAttachReplace()){
-             fileUploadService.compareProject(fileUploadService.returnProjectId(projectDetails));   
-             ProjectDetails validationResult = validate(projectDetails);               
-             fileUploadService.save(projectDetails);
-             return validationResult;
+        if (projectDetails.isAttachReplace()) {
+            fileUploadService.compareProject(fileUploadService.returnProjectId(projectDetails));            
+            Set<String> diff = projectDetails.getDifferences();
+            fileUploadService.save(projectDetails);
+            projectDetails = fileUploadService.getLatestRecord(projectDetails.getProjectId());
+            projectDetails.setAttachReplace(true);
+            projectDetails.setDifferences(diff);
+            ProjectDetails validationResult = validate(projectDetails);            
+            return validationResult;
         }
-        fileUploadService.save(projectDetails);      
+        fileUploadService.save(projectDetails);        
         fileUploadService.compareProject(projectDetails);
         return validate(projectDetails);        
     }
@@ -93,9 +98,9 @@ public class ProjectManagementController {
     }
     
     @GetMapping("/project/{projectId}/files")
-    public List<FileDetails> getLatestProject(@PathVariable("projectId") String projectId){
-        return projectService.getFileDetails(projectId);              
-    } 
+    public List<FileDetails> getLatestProject(@PathVariable("projectId") String projectId) {
+        return projectService.getFileDetails(projectId);        
+    }    
     
     @GetMapping("/project/{projectId}/differences")
     public Set<String> getDifferences(@PathVariable("projectId") String projectId) {
