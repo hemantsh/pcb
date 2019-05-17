@@ -102,28 +102,21 @@ public class FileExtractUploadService {
                 }
             }
         }
-        
+
         //Check that user gives correct newProject and attachReplace values or not
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
             return report;
         }
-        
-        Map<String,String> prevErrors=new HashMap<String, String>();
-        if(projectDetails.isAttachReplace()){
-            //Retrieve latest Record of similar project Id
-            ProjectDetails prevprojDtl = getPreviousRecord(projectDetails);                    
-            projectDetails.setServiceType(prevprojDtl.getServiceType());    
-            prevErrors=prevprojDtl.getErrors();
-        }
+
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
         List<ErrorCodes> missingTypeErrorCodes = nonSelectedFilesErorCodes(projectDetails);
 
         //Set Errors for those files which are missing
         if (missingTypes != null) {
-            if (missingTypes.size() > 0) {                
-                report.setValidationStatus("We found some missing information. ");                
+            if (missingTypes.size() > 0) {
+                report.setValidationStatus("We found some missing information. ");
                 missingTypes.stream().forEach(type -> {
                     if (!StringUtils.isEmpty(type)) {
                         report.addError(type);
@@ -133,7 +126,7 @@ public class FileExtractUploadService {
             } else {
                 report.setValidationStatus("Matched with all required file types. All information collected.");
             }
-        }        
+        }
         Map<String, String> errMap = new HashMap<String, String>();
 
         if (report != null && report.getErrorCodes() != null) {
@@ -142,37 +135,17 @@ public class FileExtractUploadService {
                     errMap.put(errCode.toString(), errCode.getErrorMessage());
                     if (missingTypeErrorCodes.contains(errCode)) {
                         errMap.put(errCode.toString(), errCode.getErrorMessage() + " - [File Unselected]");
-                    }                                        
-                }                
-            });
-        }
-        
-        //Update the errors column in the project table 
-        if (projectDetails.isAttachReplace()) {
-            if (!prevErrors.isEmpty()) {
-                Map<String, String> errs = CompareUtility.compareMaps(errMap, prevErrors);
-                Map<String, String> codes = new HashMap<String, String>();
-                for (Entry<String, String> e1 : prevErrors.entrySet()) {
-                    for (Entry<String, String> e2 : errs.entrySet()) {
-                        if (e1.getKey() == e2.getKey()) {
-                            codes.put(e1.getKey(), e1.getValue());
-                        }
                     }
                 }
-                for (Entry<String, String> e1 : codes.entrySet()) {
-                    prevErrors.remove(e1.getKey());
-                }
-                projectDetails.setErrors(prevErrors);
-                return report;
-            }
+            });
         }
+
         //Set errors for missing files or for not selected files
-        projectDetails.getErrors().putAll(errMap);
+        projectDetails.setErrors(errMap);
 
         //Save        
-        if (projectDetails.isNewProject()) {
-            projectService.save(ReportUtility.convertToDBObject(projectDetails));
-        }                
+        projectService.save(ReportUtility.convertToDBObject(projectDetails));
+
         return report;
     }
 
@@ -206,13 +179,12 @@ public class FileExtractUploadService {
      * @return the differences after comparing the latest project record from
      * the last project record
      */
-    
     private Map<String, String> compareWithLastProjectData(ProjectDetails projectDetails) {
 
         Map<String, String> retErrors = new HashMap<String, String>();
 
         //Retrieve latest Record of similar project Id
-        ProjectDetails prevprojDtl = getPreviousRecord(projectDetails);        
+        ProjectDetails prevprojDtl = getPreviousRecord(projectDetails);
         if (prevprojDtl != null) {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
@@ -235,9 +207,6 @@ public class FileExtractUploadService {
      * @return the list of required File types
      */
     private List<String> validateGoldenCheckRules(ProjectDetails projectDetails) {
-//        if (projectDetails.isAttachReplace()) {
-//            return null;
-//        }
         List<String> requiredFilesTypes = new ArrayList<>();
         int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
@@ -365,7 +334,7 @@ public class FileExtractUploadService {
             pFiles.setProjectId(projectId);
             projectFilesService.save(pFiles);
         });
-       
+
         if (!projectDetails.isAttachReplace()) {
             //Save into project table               
             projectService.save(ReportUtility.convertToDBObject(projectDetails));
@@ -419,8 +388,10 @@ public class FileExtractUploadService {
      * @param projectId the projectId of the record
      * @return the projectDetails of matching projectId
      */
-    private ProjectDetails getLatestRecord(String projectId) {
-        return getLatestRecord(projectService.findByKeyProjectId(projectId));
+    public ProjectDetails getLatestRecord(String projectId) {
+        ProjectDetails projectDetails = getLatestRecord(projectService.findByKeyProjectId(projectId));
+        projectDetails.setFileDetails(projectFilesService.getProjectById(projectId));
+        return projectDetails;
     }
 
     /**
@@ -545,15 +516,15 @@ public class FileExtractUploadService {
         //TODO: implememt
         //Get the projectDetails by projectId
         //call validateFiles( ProjectDetails projectDetails ) to get results
-            //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
+        //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
         String version = getVersion(projectDetails);
 
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
-        
-          //To process the gerber file,call the processGerber() method
+
+        //To process the gerber file,call the processGerber() method
         processGerber(projectDetails.getFileDetails());
         return projectDetails;
     }
