@@ -87,6 +87,8 @@ public class FileExtractUploadService {
 
         //Check that user give correct Service Type or not
         if (!projectDetails.isAttachReplace()) {
+            //TODO: For new project do we need to check all the other project attributes ?
+            //like - turnTimeQuantity,PCBClass,layers, etc.
             if (StringUtils.isEmpty(projectDetails.getServiceType())) {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return report;
@@ -105,7 +107,7 @@ public class FileExtractUploadService {
 
         //Check that user gives correct newProject and attachReplace values or not
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
-            projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace");
+            projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
             return report;
         }
 
@@ -295,21 +297,21 @@ public class FileExtractUploadService {
      */
     public void save(ProjectDetails projectDetails) {
 
-        if (projectDetails.isAttachReplace()) {
-        } else if (StringUtils.isEmpty(projectDetails.getServiceType())) {
-            projectDetails.getErrors().put("V0000", "Service Type is required");
-            return;
-        } else {
-            String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-            for (int i = 0; i < splitServiceTypes.length; i++) {
-                String splitServiceType = splitServiceTypes[i].toLowerCase();
-                if (MappingUtil.getServiceId(splitServiceType) == null) {
-                    projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                    return;
+        if (!projectDetails.isAttachReplace()) {
+            if (StringUtils.isEmpty(projectDetails.getServiceType())) {
+                projectDetails.getErrors().put("V0000", "Service Type is required");
+                return;
+            } else {
+                String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+                for (int i = 0; i < splitServiceTypes.length; i++) {
+                    String splitServiceType = splitServiceTypes[i].toLowerCase();
+                    if (MappingUtil.getServiceId(splitServiceType) == null) {
+                        projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                        return;
+                    }
                 }
             }
         }
-
         //Check for both newProject and attach/Replace values
         if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
             projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
@@ -319,8 +321,9 @@ public class FileExtractUploadService {
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
+        //TODO:Check for null value of projectId.If null, give error just like LineNo-317.
         String version = getVersion(projectDetails);
-
+        
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
@@ -350,12 +353,13 @@ public class FileExtractUploadService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-
+        //TODO: Get the project from rNumber.
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
         }
+        //TODO:Get by RNumber.
         //For existing project ( customer forgot to pass projectID, we need to find it)
         if (!projectDetails.isNewProject()) {
             //Get by customerID - Best chance to find match with this

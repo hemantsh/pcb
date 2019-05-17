@@ -243,6 +243,12 @@ public class ProjectDetails implements Serializable {
         return errors;
     }
 
+    public boolean hasError() {
+        if (this.errors != null && this.errors.size() > 0) {
+            return true;
+        }
+        return false;
+    }
     /**
      * It sets the errors in the Map(key,value) pair
      *
