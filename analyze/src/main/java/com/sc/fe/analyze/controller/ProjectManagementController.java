@@ -67,19 +67,22 @@ public class ProjectManagementController {
     @PostMapping(path = "/project")
     @ResponseBody
     public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
-        if (projectDetails.isAttachReplace()) {
+        if (projectDetails.isAttachReplace() && !projectDetails.isNewProject()) {
             fileUploadService.compareProject(fileUploadService.returnProjectId(projectDetails));            
             Set<String> diff = projectDetails.getDifferences();
             fileUploadService.save(projectDetails);
             projectDetails = fileUploadService.getLatestRecord(projectDetails.getProjectId());
             projectDetails.setAttachReplace(true);
             projectDetails.setDifferences(diff);
-            ProjectDetails validationResult = validate(projectDetails);            
-            return validationResult;
+            return validate(projectDetails);                       
+        }        
+        fileUploadService.save(projectDetails);  
+        if(projectDetails.hasError()){
+            return validate(projectDetails);    
         }
-        fileUploadService.save(projectDetails);        
         fileUploadService.compareProject(projectDetails);
         return validate(projectDetails);        
+        
     }
     
     @GetMapping("/projects")
