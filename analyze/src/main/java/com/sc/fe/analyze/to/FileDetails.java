@@ -29,13 +29,14 @@ public class FileDetails implements Serializable {
     private Date createDate;
     private Date fileDate;
     private String size;
+    private String status;
 
     private String step;
     private String context;
     private String type;
     private String polarity;
     private String side;
-    private int layerOrder; 
+    private int layerOrder;
     private String startName;
     private String endName;
     private String copperWeight;
@@ -43,6 +44,24 @@ public class FileDetails implements Serializable {
     private boolean selected;
     private Map<String, String> attributes; //Attributes in key:value form
     private Map<String, String> errors;     //Errors in key:value form
+
+    /**
+     * Gets the status Value
+     *
+     * @return the status value
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the Status value
+     *
+     * @param status Sets the status value.
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     /**
      *

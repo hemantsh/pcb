@@ -79,6 +79,7 @@ public class ReportUtility {
         dtl.setModifiedDate(projectFiles.getModifiedDate());
         dtl.setCreateDate(projectFiles.getCreateDate());
         dtl.setSize(projectFiles.getSize());
+        dtl.setStatus(projectFiles.getStatus());
         dtl.setStep(projectFiles.getStep());
         dtl.setContext(projectFiles.getContext());
         dtl.setPolarity(projectFiles.getPolarity());
@@ -156,9 +157,14 @@ public class ReportUtility {
             filesDbDetails.setFileDate(new Date());
         } else {
             filesDbDetails.setFileDate(fileDetails.getFileDate());
-        }
+        }        
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
+        if(fileDetails.getStatus()==null){
+            filesDbDetails.setStatus("active");
+        }else{
+            filesDbDetails.setStatus(fileDetails.getStatus());
+        }
         filesDbDetails.setContext(fileDetails.getContext());
         filesDbDetails.setPolarity(fileDetails.getPolarity());
         filesDbDetails.setSide(fileDetails.getSide());
