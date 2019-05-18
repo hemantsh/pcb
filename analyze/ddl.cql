@@ -44,8 +44,7 @@ CREATE KEYSPACE fileexchange
  CREATE INDEX on extension_file (extension);
  
  
- CREATE TABLE project (
- 
+ CREATE TABLE project ( 
  	project_id text,
  	version timeuuid,
         rnumber text,
@@ -86,6 +85,7 @@ CREATE INDEX on project (zipfile_name);
  	file_date timestamp,
  	format text,
  	step text,
+        status text,
  	context text,
  	polarity text,
  	side text,
