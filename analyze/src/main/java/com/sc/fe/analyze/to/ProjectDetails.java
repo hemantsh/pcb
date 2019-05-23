@@ -21,7 +21,8 @@ public class ProjectDetails implements Serializable {
 
     private String projectId;
     private String version;
-    private String rNumber;    
+    private String partNumber;
+    private String rNumber;
     private boolean attachReplace;
     private boolean newProject;
     private String setId;
@@ -35,43 +36,70 @@ public class ProjectDetails implements Serializable {
     private String boardType;
     private boolean itar;
     private boolean nofly;
-    private List<TurnTimeQuantity> assemblyTurnTimeQuantity;   
-    private List<TurnTimeQuantity> fabricationTurnTimeQuantity;    
+    private List<TurnTimeQuantity> assemblyTurnTimeQuantity;
+    private List<TurnTimeQuantity> fabricationTurnTimeQuantity;
     private String designSpecification;
     private String customerId;
     private String emailAddress;
-
     private Map<String, String> errors; //Errors in (key:value) form
     private Set<String> differences;
-    
+
     /**
      * Details about the files we found while processing
      */
     private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
 
-    
+    /**
+     * Gets the partNumber
+     *
+     * @return the partNumber
+     */
+    public String getPartNumber() {
+        return partNumber;
+    }
+
+    /**
+     * Sets the partNumber into the partNumber instance variable.
+     *
+     * @param partNumber Sets the partNumber
+     */
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    }
+
+    /**
+     * Gets the rNumber
+     *
+     * @return the rNumber
+     */
     public String getrNumber() {
         return rNumber;
     }
 
+    /**
+     * Sets the rNumber into the rNumber instance variable.
+     *
+     * @param rNumber Sets the rNumber
+     */
     public void setrNumber(String rNumber) {
         this.rNumber = rNumber;
     }
+
     /**
      *
      * @return the assemblyTurnTimeQuantity
      */
-     public List<TurnTimeQuantity> getAssemblyTurnTimeQuantity() {
+    public List<TurnTimeQuantity> getAssemblyTurnTimeQuantity() {
         return assemblyTurnTimeQuantity;
     }
-    
+
     /**
      * Sets the assemblyTurnTimeQuantity into the assemblyTurnTimeQuantity
      * instance variable
      *
      * @param assemblyTurnTimeQuantity Sets the assemblyTurnTimeQuantity
      */
-    public void setAssemblyTurnTimeQuantity(List<TurnTimeQuantity> assemblyTurnTimeQuantity) {            
+    public void setAssemblyTurnTimeQuantity(List<TurnTimeQuantity> assemblyTurnTimeQuantity) {
         this.assemblyTurnTimeQuantity = assemblyTurnTimeQuantity;
     }
 
@@ -249,6 +277,7 @@ public class ProjectDetails implements Serializable {
         }
         return false;
     }
+
     /**
      * It sets the errors in the Map(key,value) pair
      *
