@@ -32,7 +32,6 @@ import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.Map.Entry;
 
 /**
  *
@@ -89,6 +88,12 @@ public class FileExtractUploadService {
         if (!projectDetails.isAttachReplace()) {
             //TODO: For new project do we need to check all the other project attributes ?
             //like - turnTimeQuantity,PCBClass,layers, etc.
+
+            //Check that rNumber is given in the JSON request or not.
+            if (StringUtils.isEmpty(projectDetails.getrNumber())) {
+                projectDetails.getErrors().put("V0000", "rNumber is required");
+                return report;
+            }
             if (StringUtils.isEmpty(projectDetails.getServiceType())) {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return report;
@@ -298,6 +303,11 @@ public class FileExtractUploadService {
     public void save(ProjectDetails projectDetails) {
 
         if (!projectDetails.isAttachReplace()) {
+            //Check that rNumber is given in the JSON request or not.
+            if (StringUtils.isEmpty(projectDetails.getrNumber())) {
+                projectDetails.getErrors().put("V0000", "rNumber is required");
+                return;
+            }
             if (StringUtils.isEmpty(projectDetails.getServiceType())) {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return;
@@ -314,16 +324,16 @@ public class FileExtractUploadService {
         }
         //Check for both newProject and attach/Replace values
         if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
-            projectDetails.getErrors().put("V0016", "Invalid newProject and attachReplace");
+            projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
             return;
-        }
+        }   
 
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
         //TODO:Check for null value of projectId.If null, give error just like LineNo-317.
         String version = getVersion(projectDetails);
-        
+
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
@@ -355,7 +365,7 @@ public class FileExtractUploadService {
     private String getProjectId(ProjectDetails projectDetails) {
         //TODO: Get the project from rNumber.
         Map<String, String> projKeyMap = new HashMap<String, String>();
-        //If exists in parameter object, return that
+        //If exists in parameter object, return that       
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
         }

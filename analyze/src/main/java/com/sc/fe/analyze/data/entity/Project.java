@@ -22,8 +22,10 @@ public class Project {
     @PrimaryKey
     private ProjectPK key;
 
+    @Column(value = "part_number")
+    private String partNumber;
     @Column(value = "rnumber")
-    private String rNumber;      
+    private String rNumber;
     @Column(value = "setId")
     private String setId;
     @Column(value = "customer_name")
@@ -61,14 +63,42 @@ public class Project {
     @Column(value = "nofly")
     private boolean nofly;
 
-    
+    /**
+     * Gets the partNumber
+     *
+     * @return the partNumber
+     */
+    public String getPartNumber() {
+        return partNumber;
+    }
+
+    /**
+     * Sets the partNumber into the partNumber instance variable.
+     *
+     * @param partNumber Sets the partNumber
+     */
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    }
+
+    /**
+     * Gets the rNumber
+     *
+     * @return the rNumber
+     */
     public String getrNumber() {
         return rNumber;
     }
 
+    /**
+     * Sets the rNumber into the rNumber instance variable.
+     *
+     * @param rNumber Sets the rNumber
+     */
     public void setrNumber(String rNumber) {
         this.rNumber = rNumber;
     }
+
     /**
      * Gets the assembly TurnTimeQuantity for Assembly ServiceType.
      *

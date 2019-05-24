@@ -42,6 +42,7 @@ public class ReportUtility {
         dtl.setLayers(project.getLayerCount());
         dtl.setPcbClass(project.getPcbClass());
         dtl.setBoardType(project.getBoardType());
+        dtl.setPartNumber(project.getPartNumber());
         dtl.setrNumber(project.getrNumber());
         dtl.setItar(project.getItar());
         if (project.getFabricationTurntimeQuantity() != null) {
@@ -104,6 +105,7 @@ public class ReportUtility {
     public static Project convertToDBObject(ProjectDetails projectDetails) {
         //TODO check all attributes are set
         Project dbDetail = new Project();
+        dbDetail.setPartNumber(projectDetails.getPartNumber());
         dbDetail.setrNumber(projectDetails.getrNumber());
         dbDetail.setSetId(projectDetails.getSetId());
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
