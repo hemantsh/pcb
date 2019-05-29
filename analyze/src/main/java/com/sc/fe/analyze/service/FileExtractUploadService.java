@@ -99,14 +99,9 @@ public class FileExtractUploadService {
                 return report;
             } else {
                 //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-                String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-                for (int i = 0; i < splitServiceTypes.length; i++) {
-                    String splitServiceType = splitServiceTypes[i].toLowerCase();
-                    if (MappingUtil.getServiceId(splitServiceType) == null) {
-                        projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                        return report;
-                    }
-                }
+                if (!validateServiceType(projectDetails)) {
+                    return report;
+                } 
             }
         }
 
@@ -218,7 +213,8 @@ public class FileExtractUploadService {
         int fabTurnTimeQtyFlag = 0, assTurnTimeQtyFlag = 0;
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
-            splitService[i] = splitService[i].toLowerCase();
+            splitService[i] = splitService[i].toLowerCase().trim();
+            
 
             //Check that serviceType is Assembly or not
             if (splitService[i].equals("assembly")) {
@@ -312,13 +308,8 @@ public class FileExtractUploadService {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return;
             } else {
-                String[] splitServiceTypes = projectDetails.getServiceType().split(",");
-                for (int i = 0; i < splitServiceTypes.length; i++) {
-                    String splitServiceType = splitServiceTypes[i].toLowerCase();
-                    if (MappingUtil.getServiceId(splitServiceType) == null) {
-                        projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                        return;
-                    }
+                if (validateServiceType(projectDetails)) {
+                    return;
                 }
             }
         }
@@ -353,6 +344,18 @@ public class FileExtractUploadService {
             projectService.save(ReportUtility.convertToDBObject(projectDetails));
         }
 
+    }
+
+    public boolean validateServiceType(ProjectDetails projectDetails) {
+        String[] splitServiceTypes = projectDetails.getServiceType().split(",");
+        for (int i = 0; i < splitServiceTypes.length; i++) {
+            String splitServiceType = splitServiceTypes[i].toLowerCase().trim();
+            if (MappingUtil.getServiceId(splitServiceType) == null) {
+                projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
