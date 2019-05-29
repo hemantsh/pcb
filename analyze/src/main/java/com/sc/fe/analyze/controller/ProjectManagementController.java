@@ -51,6 +51,7 @@ public class ProjectManagementController {
         }
         ProjectDetails temp = new ProjectDetails();
         temp.setProjectId(projectDetails.getProjectId());
+        temp.setRequestOwner(projectDetails.getRequestOwner());
         temp.setSetId(projectDetails.getSetId());
         temp.setLayers(projectDetails.getLayers());
         temp.setPartNumber(projectDetails.getPartNumber());
@@ -90,7 +91,6 @@ public class ProjectManagementController {
         }
         fileUploadService.compareProject(projectDetails);
         return validate(projectDetails);
-
     }
 
     @GetMapping("/projects")

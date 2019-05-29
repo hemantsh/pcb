@@ -28,6 +28,14 @@ public class Project {
     private String rNumber;
     @Column(value = "setId")
     private String setId;
+    @Column(value = "request_owner")
+    private String requestOwner;
+    @Column(value = "company")
+    private String company;
+    @Column(value = "part_rev")
+    private String partRev;
+    @Column(value = "assembly_spec")
+    private String assemblySpec;
     @Column(value = "customer_name")
     private String customerName;
     @Column(value = "customer_id")
@@ -62,6 +70,78 @@ public class Project {
     private Map<String, String> errors;
     @Column(value = "nofly")
     private boolean nofly;
+
+    /**
+     * Gets the requestOwner
+     *
+     * @return the requestOwner
+     */
+    public String getRequestOwner() {
+        return requestOwner;
+    }
+
+    /**
+     * Sets the requestOwner into the requestOwner instance variable.
+     *
+     * @param requestOwner Sets the requestOwner
+     */
+    public void setRequestOwner(String requestOwner) {
+        this.requestOwner = requestOwner;
+    }
+
+    /**
+     * Gets the company name
+     *
+     * @return the company name
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * Sets the company name into the company instance variable.
+     *
+     * @param company Sets the company
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
+     * Gets the partRevision
+     *
+     * @return the partRev
+     */
+    public String getPartRev() {
+        return partRev;
+    }
+
+    /**
+     * Sets the partRev into the partRev instance variable.
+     *
+     * @param partRev Sets the partRev
+     */
+    public void setPartRev(String partRev) {
+        this.partRev = partRev;
+    }
+
+    /**
+     * Gets the assemblySpec
+     *
+     * @return the assemblySec
+     */
+    public String getAssemblySpec() {
+        return assemblySpec;
+    }
+
+    /**
+     * Sets the assemblySpec into the assemblySpec instance variable.
+     *
+     * @param assemblySpec Sets the assemblySpec
+     */
+    public void setAssemblySpec(String assemblySpec) {
+        this.assemblySpec = assemblySpec;
+    }
 
     /**
      * Gets the partNumber
