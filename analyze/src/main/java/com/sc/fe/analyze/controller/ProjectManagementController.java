@@ -51,7 +51,6 @@ public class ProjectManagementController {
         }
         ProjectDetails temp = new ProjectDetails();
         temp.setProjectId(projectDetails.getProjectId());
-        temp.setRequestOwner(projectDetails.getRequestOwner());
         temp.setSetId(projectDetails.getSetId());
         temp.setLayers(projectDetails.getLayers());
         temp.setPartNumber(projectDetails.getPartNumber());
@@ -86,10 +85,10 @@ public class ProjectManagementController {
             return validate(projectDetails);
         }
         fileUploadService.save(projectDetails);
-        if (projectDetails.hasError()) {
+        if (projectDetails.hasError()) {           
             return validate(projectDetails);
         }
-        fileUploadService.compareProject(projectDetails);
+        fileUploadService.compareProject(projectDetails);        
         return validate(projectDetails);
     }
 

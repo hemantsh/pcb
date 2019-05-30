@@ -13,7 +13,13 @@ INSERT into file_types (id,type) VALUES (7, 'drill');
 INSERT into file_types (id,type) VALUES (8, 'Rout');
 INSERT into file_types (id,type) VALUES (9, 'Document');
 INSERT into file_types (id,type) VALUES (10,'Component');
-
+INSERT into file_types (id,type) VALUES (11,'Assembly_drawing');
+INSERT into file_types (id,type) VALUES (12,'Fabrication_drawing');
+INSERT into file_types (id,type) VALUES (13,'gerber or odb or IPC2581');
+INSERT into file_types (id,type) VALUES (14,'odb or IPC2581');
+INSERT into file_types (id,type) VALUES (15,'X&Y or x and y or xandy');
+INSERT into file_types (id,type) VALUES (16,'bom');
+INSERT into file_types (id,type) VALUES (17,'gerber or odb');
 
 
  	
@@ -136,8 +142,8 @@ INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES 
 INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 25,9,'GND Plane', 'g1');
 
 INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 26,10,'V3P3 Plane', 'gp2');
-INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 27,11,'Fab Drawing', 'pdf');
-INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 27,12,'Assembly Drawing', 'pdf');
+INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 27,11,'Fabrication_Drawing', 'pdf');
+INSERT into extension_file ( extension_id, filetype_id,file, extension ) VALUES ( 27,12,'Assembly_Drawing', 'pdf');
 
 
 

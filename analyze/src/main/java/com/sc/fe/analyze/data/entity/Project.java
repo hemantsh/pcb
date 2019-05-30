@@ -28,8 +28,6 @@ public class Project {
     private String rNumber;
     @Column(value = "setId")
     private String setId;
-    @Column(value = "request_owner")
-    private String requestOwner;
     @Column(value = "company")
     private String company;
     @Column(value = "part_rev")
@@ -70,24 +68,6 @@ public class Project {
     private Map<String, String> errors;
     @Column(value = "nofly")
     private boolean nofly;
-
-    /**
-     * Gets the requestOwner
-     *
-     * @return the requestOwner
-     */
-    public String getRequestOwner() {
-        return requestOwner;
-    }
-
-    /**
-     * Sets the requestOwner into the requestOwner instance variable.
-     *
-     * @param requestOwner Sets the requestOwner
-     */
-    public void setRequestOwner(String requestOwner) {
-        this.requestOwner = requestOwner;
-    }
 
     /**
      * Gets the company name

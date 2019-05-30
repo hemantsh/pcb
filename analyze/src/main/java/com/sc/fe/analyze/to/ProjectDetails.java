@@ -26,7 +26,6 @@ public class ProjectDetails implements Serializable {
     private boolean attachReplace;
     private boolean newProject;
     private String setId;
-    private String requestOwner;
     private String company;
     private String partRev;
     private String assemblySpec;
@@ -53,24 +52,6 @@ public class ProjectDetails implements Serializable {
      * Details about the files we found while processing
      */
     private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
-
-    /**
-     * Gets the requestOwner
-     *
-     * @return the requestOwner
-     */
-    public String getRequestOwner() {
-        return requestOwner;
-    }
-
-    /**
-     * Sets the requestOwner into the requestOwner instance variable.
-     *
-     * @param requestOwner Sets the requestOwner
-     */
-    public void setRequestOwner(String requestOwner) {
-        this.requestOwner = requestOwner;
-    }
 
     /**
      * Gets the company name

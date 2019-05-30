@@ -46,8 +46,7 @@ CREATE KEYSPACE fileexchange
  
  CREATE TABLE project ( 
  	project_id text,
- 	version timeuuid,
-        request_owner text,
+ 	version timeuuid,        
         company text,
         part_rev text,
         assembly_spec text,
