@@ -85,12 +85,11 @@ public class ProjectManagementController {
             return validate(projectDetails);
         }
         fileUploadService.save(projectDetails);
-        if (projectDetails.hasError()) {
+        if (projectDetails.hasError()) {           
             return validate(projectDetails);
         }
-        fileUploadService.compareProject(projectDetails);
+        fileUploadService.compareProject(projectDetails);        
         return validate(projectDetails);
-
     }
 
     @GetMapping("/projects")

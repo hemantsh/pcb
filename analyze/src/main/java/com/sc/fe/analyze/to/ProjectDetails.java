@@ -26,6 +26,9 @@ public class ProjectDetails implements Serializable {
     private boolean attachReplace;
     private boolean newProject;
     private String setId;
+    private String company;
+    private String partRev;
+    private String assemblySpec;
     private String serviceType;
     private String zipFileName;
     private String zipFileSize;
@@ -40,6 +43,7 @@ public class ProjectDetails implements Serializable {
     private List<TurnTimeQuantity> fabricationTurnTimeQuantity;
     private String designSpecification;
     private String customerId;
+    private String customerName;
     private String emailAddress;
     private Map<String, String> errors; //Errors in (key:value) form
     private Set<String> differences;
@@ -48,6 +52,78 @@ public class ProjectDetails implements Serializable {
      * Details about the files we found while processing
      */
     private List<FileDetails> fileDetails = new ArrayList<FileDetails>();
+
+    /**
+     * Gets the company name
+     *
+     * @return the company name
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * Sets the company name into the company instance variable.
+     *
+     * @param company Sets the company
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
+     * Gets the partRevision
+     *
+     * @return the partRev
+     */
+    public String getPartRev() {
+        return partRev;
+    }
+
+    /**
+     * Sets the partRev into the partRev instance variable.
+     *
+     * @param partRev Sets the partRev
+     */
+    public void setPartRev(String partRev) {
+        this.partRev = partRev;
+    }
+
+    /**
+     * Gets the assemblySpec
+     *
+     * @return the assemblySec
+     */
+    public String getAssemblySpec() {
+        return assemblySpec;
+    }
+
+    /**
+     * Sets the assemblySpec into the assemblySpec instance variable.
+     *
+     * @param assemblySpec Sets the assemblySpec
+     */
+    public void setAssemblySpec(String assemblySpec) {
+        this.assemblySpec = assemblySpec;
+    }
+
+    /**
+     * Gets the CustomerName.
+     *
+     * @return the CustomerName.
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    /**
+     * Sets the CustomerName into the CustomerName variable.
+     *
+     * @param customerName sets the customerName.
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
     /**
      * Gets the partNumber

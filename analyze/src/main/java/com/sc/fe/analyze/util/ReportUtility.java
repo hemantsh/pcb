@@ -34,7 +34,11 @@ public class ReportUtility {
         dtl.setSetId(project.getSetId());
         dtl.setProjectId(project.getProjectId());
         dtl.setVersion(project.getVersion().toString());
+        dtl.setAssemblySpec(project.getAssemblySpec());
+        dtl.setCompany(project.getCompany());
+        dtl.setPartRev(project.getPartRev());        
         dtl.setCustomerId(project.getCustomerId());
+        dtl.setCustomerName(project.getCustomerName());
         dtl.setEmailAddress(project.getCustomerEmail());
         dtl.setServiceType(project.getServiceType());
         dtl.setZipFileName(project.getZipfileName());
@@ -108,7 +112,11 @@ public class ReportUtility {
         dbDetail.setPartNumber(projectDetails.getPartNumber());
         dbDetail.setrNumber(projectDetails.getrNumber());
         dbDetail.setSetId(projectDetails.getSetId());
+        dbDetail.setCustomerName(projectDetails.getCustomerName());
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
+        dbDetail.setAssemblySpec(projectDetails.getAssemblySpec());
+        dbDetail.setCompany(projectDetails.getCompany());
+        dbDetail.setPartRev(projectDetails.getPartRev());        
         dbDetail.setBoardType(projectDetails.getBoardType());
         dbDetail.setCustomerId(projectDetails.getCustomerId());
         dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());

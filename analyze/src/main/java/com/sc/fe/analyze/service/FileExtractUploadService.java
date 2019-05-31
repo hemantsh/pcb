@@ -99,7 +99,7 @@ public class FileExtractUploadService {
                 return report;
             } else {
                 //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-                if (!validateServiceType(projectDetails)) {
+                if (validateServiceType(projectDetails)) {
                     return report;
                 } 
             }

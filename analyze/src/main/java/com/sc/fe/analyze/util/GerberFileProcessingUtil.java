@@ -158,22 +158,24 @@ public class GerberFileProcessingUtil {
         Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
 
         fileDetails.forEach(fileDetail -> {
+            if (fileDetail.getType() == null) {
+                String exfile = fileDetail.getName();
+                String[] nameParts = exfile.split("\\.");
+                String extn = nameParts[nameParts.length - 1].toLowerCase();
 
-            String exfile = fileDetail.getName();
-            String[] nameParts = exfile.split("\\.");
-            String extn = nameParts[nameParts.length - 1].toLowerCase();
+                if (extensionToFileMapping.containsKey(extn)) {
 
-            if (extensionToFileMapping.containsKey(extn)) {
+                    Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get(extn));
+                    if (currentMapping == null) {
+                        currentMapping = new HashSet<String>();
+                    }
 
-                Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get(extn));
-                if (currentMapping == null) {
-                    currentMapping = new HashSet<String>();
+                    currentMapping.add(exfile);
+                    String fileType = extensionToFileMapping.get(extn);
+                    filePurposeToNameMapping.put(fileType, currentMapping);
+                    fileDetail.setType(fileType);
+                    //fileDetail.setFormat("gerber"); TODO
                 }
-
-                currentMapping.add(exfile);
-                String fileType = extensionToFileMapping.get(extn);
-                filePurposeToNameMapping.put(fileType, currentMapping);
-                //fileDetail.setFormat("gerber"); TODO
             }
         });
         return filePurposeToNameMapping;
