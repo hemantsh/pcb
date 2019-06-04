@@ -196,4 +196,12 @@ export class FileService {
     getDifferences(projectId) {
         return this.http.get(config.urlPath + `fm/project/${projectId}/differences`);
     }
+
+    getFiletypeExtensions() {
+        return this.http.get(config.urlPath + 'admin/filetypeextensions');
+    }
+
+    createOrUpdateFiletypeExtensions(newData:any) {
+        return this.http.post(config.urlPath + 'admin/filetypeextensions/create', newData)
+    }
 }

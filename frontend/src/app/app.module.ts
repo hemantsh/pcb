@@ -26,6 +26,7 @@ import { CanFiletypeDeactivateGuard } from './admincontroller/filetypes/candeact
 // <-------------------------- Wrong URL Handlers ------------------------------------------->
 import { InputJSONComponent } from './input-json/input-json.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FiletypeextensionsComponent } from './admincontroller/filetypeextensions/filetypeextensions.component';
 
 /**
  * Routes are used to navigate from one page to another.
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
       { path: "filetypes", component: FiletypesComponent, canDeactivate: [CanFiletypeDeactivateGuard] },
       { path: "servicefiles", component: ServicefilesComponent, canDeactivate: [CanServiceFilesDeactivateGuard] },
       { path: "extensionfiles", component: ExtenfilesComponent, canDeactivate: [CanDeactivateGuard] },
-      { path: "report", component: ReportComponent }
+      { path: "report", component: ReportComponent },
+      { path: "filetypeextensions", component: FiletypeextensionsComponent }
     ]
   },
   {
@@ -70,7 +72,8 @@ const appRoutes: Routes = [
     ReportComponent,
     ExtenfilesComponent,
     InputJSONComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FiletypeextensionsComponent
   ],
   imports: [
     BrowserModule,
