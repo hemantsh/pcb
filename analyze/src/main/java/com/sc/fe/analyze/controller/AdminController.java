@@ -24,14 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sc.fe.analyze.data.entity.ExtensionFileType;
 import com.sc.fe.analyze.data.entity.Extensions;
 import com.sc.fe.analyze.data.entity.FileTypes;
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
 import com.sc.fe.analyze.data.entity.ServiceFiles;
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.BaseService;
 import com.sc.fe.analyze.service.ExtensionFileService;
 import com.sc.fe.analyze.service.FileExtensionService;
 import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FileTypeService;
+import com.sc.fe.analyze.service.FiletypeExtensionsService;
 import com.sc.fe.analyze.service.ServiceFilesServices;
+import com.sc.fe.analyze.service.ServiceFiletypesService;
 import com.sc.fe.analyze.to.ProjectDetails;
 
 import io.swagger.annotations.Api;
@@ -61,6 +65,10 @@ public class AdminController {
     private ExtensionFileService extnFileService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private FiletypeExtensionsService filetypeExtensionService;
+    @Autowired
+    private ServiceFiletypesService serviceFiletypesService;
 
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
@@ -254,4 +262,40 @@ public class AdminController {
         extnFileService.deleteAll(deleteData);
     }
 
+    // Filetype Extensions Services
+    @GetMapping(path = "/filetypeextensions")
+    public List<FiletypeExtensions> getFiletypeExtensions() {
+        return filetypeExtensionService.findAll();
+    }
+
+    @PostMapping(path = "/filetypeextensions/create")
+    public void createFiletypeExtensions(@RequestBody FiletypeExtensions filetypeExtensions) {
+        filetypeExtensionService.save(filetypeExtensions);
+    }
+
+    @PutMapping(path = "/filetypeextensions/delete")
+    public void deleteFiletypeExtensions(@RequestBody FiletypeExtensions filetypeExtensions) {
+        filetypeExtensionService.delete(filetypeExtensions);
+    }
+
+    @GetMapping(path = "/filetypeextensions/{extension}")
+    public void searchByFiletypeExtensions(@PathVariable("extension") String extension) {
+        filetypeExtensionService.getFileExtenions(extension);
+    }
+//  ServiceFiletype Services
+
+    @GetMapping(path = "/servicefiletypes")
+    public List<ServiceFiletypes> getServiceFiletypes() {
+        return serviceFiletypesService.findAll();
+    }
+
+    @PostMapping(path = "/servicefiletypes/create")
+    public void createServiceFiletypes(@RequestBody ServiceFiletypes serviceFileTypes) {
+        serviceFiletypesService.save(serviceFileTypes);
+    }
+
+    @PutMapping(path = "/servicefiletypes/delete")
+    public void deleteServiceFiletypes(@RequestBody ServiceFiletypes serviceFileTypes) {
+        serviceFiletypesService.delete(serviceFileTypes);
+    }
 }
