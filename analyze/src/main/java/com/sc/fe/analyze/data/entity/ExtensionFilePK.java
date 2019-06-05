@@ -8,7 +8,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+//Todo This class is not going to be used anymore.....................................
 @ApiModel(value = "ExtensionFilePK", description = "Combined Primary Key of ExtensionFiles")
 @PrimaryKeyClass
 public class ExtensionFilePK implements Serializable {

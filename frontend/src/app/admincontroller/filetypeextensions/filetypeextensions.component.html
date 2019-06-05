@@ -14,39 +14,51 @@
 <!-- Drop Down Code -->
 <div class="new-div">
   <div class="form-group">
-    <div class="row">
-      <div class="col-md-12">
-        <label for="filetype" class="control-label">Select FileType:</label>
-        <select id="file_type" class="form-control" [(ngModel)]="selectedFileType"
-          (change)="onFileTypeSelect(selectedFileType)">
-          <option value="0" selected disabled="true">Please Select a FileType</option>
-          <option *ngFor="let file of fileTypeExtensions" [value]="file.file_type">{{file.file_type}}</option>
-
-        </select>
+    <div class="col-md-6 col-sm-6">
+      <div class="row">
+        <div class="col-md-12">
+          <label for="filetype" class="control-label">Select FileType:</label>
+          <select id="file_type" class="form-control" [(ngModel)]="selectedFileType"
+            (change)="onFileTypeSelect(selectedFileType)">
+            <option value="0" selected disabled="true">Please Select a FileType</option>
+            <option *ngFor="let file of fileTypeExtensions" [value]="file.file_type">{{file.file_type}}</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="reportscroll col-md-12">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Extension</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let extension of selectedFileTypeObj?.extensions">
-              <td>{{extension}}</td>
-              <td>
-                <button class="btn btn-danger btn-md" (click)="removeExtension(extension)"><span
-                    class="glyphicon glyphicon-remove-sign"></span></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="col-md-6 col-sm-6">
+      <div class="row">
+        <div class="col-md-12" *ngIf="extensions && extensions.length >0">
+            <label for="filetype" class="control-label">Select Extensions:</label>
+          <ng-multiselect-dropdown 
+          name="extensions" 
+          [placeholder]="'Select Extension'" 
+          [data]="extensions"
+          [settings]="dropdownSettings" 
+          (onSelect)="onItemSelect($event)">
+          </ng-multiselect-dropdown>
+          <!-- <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Extension</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td >{{selectedFileTypeObj?.extensions}}</td>
+                    <td>
+                      <button class="btn btn-danger btn-md" (click)="removeExtension(extension)"><span
+                          class="glyphicon glyphicon-remove-sign"></span></button>
+                    </td>
+                    
+                  </tr>
+                </tbody>
+              </table> -->
+        </div>
       </div>
     </div>
-    <div class="row pad-top">
+    <!-- <div class="row">
       <div class="col-md-12">
         <label for="extnType" class="control-label">Select Extension:</label>
         <select id="extn_Type" class="form-control" [(ngModel)]="selectedExtension"
@@ -55,9 +67,9 @@
           <option *ngFor="let extn of extensions" [value]="extn">{{extn}}</option>
         </select>
       </div>
-    </div>
+    </div> -->
   </div>
-  <div class="form-group btn-center">
+  <div class="form-group button-top-margin btn-center">
     <button type="button" class="btn btn-primary" (click)="onSaveClick()" data-toggle="modal"
       data-target="#exampleModalCenter">Save</button>
   </div>

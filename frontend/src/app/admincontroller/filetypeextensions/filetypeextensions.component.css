@@ -1,7 +1,8 @@
-.reportscroll{
+/* .reportscroll{
     overflow-y: auto;
-    height: 300px;
-}
+    margin: 30px auto;
+    height:200px;
+} */
 .fixback{
    position: relative;
    width: 100%;
@@ -12,28 +13,47 @@
 .static{
     position: relative;
 }
-.table{
+/* .table{
     margin-top: 50px;    
-}
+} */
 .new-div .form-group{
-    margin-bottom: 5px;
-    overflow: hidden;
+    /* margin-bottom: 5px; */
+    /* overflow: hidden; */
     padding-top: 20px;
 }
 .btn-center{
     text-align: center;
 }
-.pad-top{
+
+/* .pad-top{
     padding-top:30px; 
-}
-@media only screen and (max-width:767px){
+} */
+/* @media only screen and (max-width:767px){
     
 }
 @media only screen and (min-width:768px) and (max-width:991px){
-}
+} */
 .hide{
     visibility:hidden; 
 }
 .show{
     visibility: visible;
+}
+
+/* .dropdown-up  .multiselect-dropdown .dropdown-down{
+
+    position: absolute;
+    right: 10px;
+}
+.multiselect-dropdown .dropdown-btn .dropdown-up{
+    position: absolute;
+    top: 13px;
+    right: 10px;
+}
+.dropdownbox .multiselect-dropdown .dropdown-btn{
+    padding: 6px 50px 6px 12px;
+} */
+
+.button-top-margin{
+    margin-top: 10%;
 }

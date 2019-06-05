@@ -15,6 +15,7 @@ import { ServicefilesComponent } from './admincontroller/servicefiles/servicefil
 import { FiletypesComponent } from './admincontroller/filetypes/filetypes.component';
 import { ReportComponent } from './admincontroller/report/report.component';
 import { ExtenfilesComponent } from './admincontroller/extenfiles/extenfiles.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 // <------------------------------  Component Guards   ---------------------------------------> 
 import { CanDeactivateGuard } from './admincontroller/extenfiles/candeactivate-guard.service';
@@ -80,6 +81,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
+    NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
   providers: [FileService, CanDeactivateGuard, CanServiceFilesDeactivateGuard,
