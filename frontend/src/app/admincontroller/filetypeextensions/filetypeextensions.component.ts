@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 
 
@@ -7,20 +7,14 @@ import { FileService } from 'src/app/servers.service';
   templateUrl: './filetypeextensions.component.html',
   styleUrls: ['./filetypeextensions.component.css']
 })
-export class FiletypeextensionsComponent implements OnInit, OnChanges {
+export class FiletypeextensionsComponent implements OnInit {
   fileTypeExtensions = [];
   extensions = [];
-  selectedFileType: any = 0;
 
   selectedFileTypeObj: any;
   successMsgDiv = 'hide';
-  // selectedExtension = 0;
 
-  // below variables are for Multi select dropdoewn
-  cities = [];
-  selectedItems = [];
-  dropdownSettings = {}
-  ShowFilter = false;
+
   constructor(private fileService: FileService) { }
 
   ngOnInit() {
@@ -29,31 +23,8 @@ export class FiletypeextensionsComponent implements OnInit, OnChanges {
     // this.extensions = [
     // ];
     // this.selectedItems = [];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 50,
-      allowSearchFilter: this.ShowFilter
-    };
   }
-  ngOnChanges() {
-    this.extensions = [
-    ];
-    this.selectedItems = [];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 50,
-      allowSearchFilter: this.ShowFilter
-    };
-    this.onFileTypeSelect(this.selectedFileType);
-  }
+
   getFiletypeExtensions() {
     this.fileService.getFiletypeExtensions().subscribe(
       (response) => {
@@ -65,6 +36,26 @@ export class FiletypeextensionsComponent implements OnInit, OnChanges {
     )
   }
 
+  updateData(data) {
+    if (!data.edit) {
+      console.log(data.edit);
+      this.fileService.createOrUpdateFiletypeExtensions(data)
+        .subscribe(
+          (response) => {
+            console.log("Your data is updated", response);
+          },
+          (error) => console.log(error)
+        );
+
+    }
+  }
+
+  removeExtension(extension){
+    console.log(extension);
+    let index = this.fileTypeExtensions.indexOf(extension);
+    console.log(index);
+    this.fileTypeExtensions.splice(index,1);
+  }
   // processExtensions() {
   //   for (let i = 0; i < this.fileTypeExtensions.length; i++) {
   //     for (let j = 0; j < this.fileTypeExtensions[i].extensions.length; j++) {
@@ -73,7 +64,7 @@ export class FiletypeextensionsComponent implements OnInit, OnChanges {
   //   }
   // }
 
-  onFileTypeSelect(selectedFileType) {
+  /*onFileTypeSelect(selectedFileType) {
     this.selectedItems=[];
     this.extensions=[];
     this.selectedFileType = selectedFileType;
@@ -85,7 +76,7 @@ export class FiletypeextensionsComponent implements OnInit, OnChanges {
     }
     console.log(this.extensions);
     console.log(this.selectedItems);
-  }
+  }*/
 
   /*onExtensionSelect(selectedExtension) {
     if (this.selectedFileType == 0) {
@@ -119,12 +110,5 @@ export class FiletypeextensionsComponent implements OnInit, OnChanges {
     //     console.log(response);
     //   }, (error) => console.log(error)
     // );
-  }
-
-  onItemSelect(item: any) {
-    console.log('onItemSelect', item);
-  }
-  onSelectAll(items: any) {
-    console.log('onSelectAll', items);
   }
 }
