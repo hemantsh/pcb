@@ -36,6 +36,7 @@ import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.FiletypeExtensionsService;
 import com.sc.fe.analyze.service.ServiceFilesServices;
 import com.sc.fe.analyze.service.ServiceFiletypesService;
+import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
 
 import io.swagger.annotations.Api;
@@ -264,12 +265,12 @@ public class AdminController {
 
     // Filetype Extensions Services
     @GetMapping(path = "/filetypeextensions")
-    public List<FiletypeExtensions> getFiletypeExtensions() {
+    public List<FileTypeExtensions> getFiletypeExtensions() {
         return filetypeExtensionService.findAll();
     }
 
     @PostMapping(path = "/filetypeextensions/create")
-    public void createFiletypeExtensions(@RequestBody FiletypeExtensions filetypeExtensions) {
+    public void createFiletypeExtensions(@RequestBody FileTypeExtensions filetypeExtensions) {
         filetypeExtensionService.save(filetypeExtensions);
     }
 

@@ -1,5 +1,7 @@
 package com.sc.fe.analyze.util;
 
+import com.sc.fe.analyze.to.FileTypeExtensions;
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,7 +12,9 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +22,7 @@ import java.util.stream.Collectors;
  * @author Hemant
  */
 public class ReportUtility {
-
+    
     private ReportUtility() {
     }
 
@@ -36,7 +40,7 @@ public class ReportUtility {
         dtl.setVersion(project.getVersion().toString());
         dtl.setAssemblySpec(project.getAssemblySpec());
         dtl.setCompany(project.getCompany());
-        dtl.setPartRev(project.getPartRev());        
+        dtl.setPartRev(project.getPartRev());
         dtl.setCustomerId(project.getCustomerId());
         dtl.setCustomerName(project.getCustomerName());
         dtl.setEmailAddress(project.getCustomerEmail());
@@ -57,7 +61,7 @@ public class ReportUtility {
             String check = project.getAssemblyTurntimeQuantity();
             dtl.setAssemblyTurnTimeQuantity(convertToList(check));
         }
-
+        
         dtl.setDesignSpecification(project.getDesignSpecification());
         dtl.setErrors(project.getErrors());
         dtl.setCreateDate(project.getCreateDate());
@@ -98,6 +102,24 @@ public class ReportUtility {
         dtl.setSelected(projectFiles.isSelected());
         return dtl;
     }
+    
+    public static FileTypeExtensions convertToObject(FiletypeExtensions filetypeExtn) {
+        
+        FileTypeExtensions fe = new FileTypeExtensions();
+        
+        fe.setFile_type(filetypeExtn.getFile_type());
+        fe.setExtensions(fe.extnToString(filetypeExtn.getExtensions()));
+        
+        return fe;
+    }
+    
+    public static FiletypeExtensions convertToDBObject(FileTypeExtensions fe) {
+        FiletypeExtensions filetypeExtn = new FiletypeExtensions();
+        filetypeExtn.setFile_type(fe.getFile_type());
+        filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
+        
+        return filetypeExtn;
+    }
 
     /**
      * It sets the each Project Class attributes from the ProjectDetails Class
@@ -116,7 +138,7 @@ public class ReportUtility {
         dbDetail.setCustomerEmail(projectDetails.getEmailAddress());
         dbDetail.setAssemblySpec(projectDetails.getAssemblySpec());
         dbDetail.setCompany(projectDetails.getCompany());
-        dbDetail.setPartRev(projectDetails.getPartRev());        
+        dbDetail.setPartRev(projectDetails.getPartRev());
         dbDetail.setBoardType(projectDetails.getBoardType());
         dbDetail.setCustomerId(projectDetails.getCustomerId());
         dbDetail.setDesignSpecification(projectDetails.getDesignSpecification());
@@ -142,7 +164,7 @@ public class ReportUtility {
         } else {
             dbDetail.setCreateDate(projectDetails.getCreateDate());
         }
-
+        
         dbDetail.setItar(projectDetails.getItar());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setNofly(projectDetails.isNofly());
@@ -167,12 +189,12 @@ public class ReportUtility {
             filesDbDetails.setFileDate(new Date());
         } else {
             filesDbDetails.setFileDate(fileDetails.getFileDate());
-        }        
+        }
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());
-        if(fileDetails.getStatus()==null){
+        if (fileDetails.getStatus() == null) {
             filesDbDetails.setStatus("active");
-        }else{
+        } else {
             filesDbDetails.setStatus(fileDetails.getStatus());
         }
         filesDbDetails.setContext(fileDetails.getContext());
@@ -195,6 +217,15 @@ public class ReportUtility {
         return filesDbDetails;
     }
 
+    /*public static FileTypeExtensions convertToDBObject(FiletypeExtensions fe){
+    FiletypeExtensions fileExtn = new FiletypeExtensions();
+    fileExtn.setFile_type(fe.getFile_type());
+    if(!fe.getExtensions().isEmpty()){
+        Set<String> chk = fe.getExtensions();
+        fileExtn.setExtensions(convertToSet(chk));
+    }
+    return fileExtn;
+    }*/
     //This method converts the String type to List of TurnTimeQuantity
     private static List<TurnTimeQuantity> convertToList(String qtyDetails) {
         List<TurnTimeQuantity> turnTime = new ArrayList<TurnTimeQuantity>();
@@ -205,5 +236,12 @@ public class ReportUtility {
         }
         return turnTime;
     }
-
+    
+    private static Set<String> convertToSet(String extensions) {
+        
+        Set<String> mySet = new HashSet<String>(Arrays.asList(extensions.split(",")));
+        
+        return mySet;
+    }
+    
 }

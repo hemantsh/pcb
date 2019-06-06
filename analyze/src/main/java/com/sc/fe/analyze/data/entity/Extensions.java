@@ -4,6 +4,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import io.swagger.annotations.ApiModel;
+//Todo This class is not going to be used anymore.....................................
 
 @ApiModel(value = "Extensions", description = "Table Structure of Extensions")
 @Table(value = "extensions")
