@@ -5,7 +5,9 @@
  */
 package com.sc.fe.analyze.data.entity;
 
+import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -14,18 +16,18 @@ import org.springframework.data.cassandra.core.mapping.Table;
  * @author pc
  */
 @Table(value = "filetype_extensions")
-public class FiletypeExtensions {
+public class FiletypeExtensions implements Serializable {
 
     @PrimaryKey
-    private String file_type;
+    private FiletypeExtensionsPK key;
     private Set<String> extensions;
 
-    public String getFile_type() {
-        return file_type;
+    public FiletypeExtensionsPK getKey() {
+        return key;
     }
 
-    public void setFile_type(String file_type) {
-        this.file_type = file_type.toLowerCase();
+    public void setKey(FiletypeExtensionsPK key) {
+        this.key = key;
     }
 
     public Set<String> getExtensions() {
@@ -34,6 +36,14 @@ public class FiletypeExtensions {
 
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
+    }
+
+    public UUID getId() {
+        return getKey().getId();
+    }
+
+    public void setId(UUID id) {
+        this.getKey().setId(id);
     }
 
 }

@@ -33,6 +33,24 @@
 }
 @media only screen and (min-width:768px) and (max-width:991px){
 } */
+.align-buttons-right{
+    display: inline-block;
+    text-align: right;
+}
+.new-div span{
+    display: inline-block;
+    width: 88%;
+}
+.new-div .form-control{
+    width:82%;
+    display: inline-block;
+}
+.new-div table tr td {
+    width: 32%;
+}
+.new-div table tr td:nth-child(3){
+    width: 10%;
+}
 .hide{
     visibility:hidden; 
 }

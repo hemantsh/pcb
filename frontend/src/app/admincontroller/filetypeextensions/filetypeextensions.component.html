@@ -6,9 +6,7 @@
 <!-- Table Code -->
 <div class="static">
   <div class="fixback">
-    <a routerLink="../extensions"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add
-      Extensions</a>&nbsp;&nbsp;
-    <a routerLink="../filetypes"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</a>
+    <button class="btn btn-primary btn-sm" (click)="addFiletype()"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add FileTypes</button>
   </div>
 </div>
 <!-- Drop Down Code -->
@@ -20,36 +18,49 @@
           <thead>
             <tr>
               <th class="text-center">FileType</th>
-              <th class="text-center">Action</th>
+              
               <th class="text-center">Extensions</th>
-              <th class="text-center">Action</th>
+              
               <th class="text-center">Remove Row</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of fileTypeExtensions">
               <!-- FileTypes -->
-              <td *ngIf="!data.file">{{data.file_type}}</td>
-              <td *ngIf="data.file">
-                <input type="text" [(ngModel)]="data.file_type" class="form-control" required/>
+              <td>
+                <span *ngIf="!data.file">{{data.key.filetype}}</span>
+                <input *ngIf="data.file" type="text" [(ngModel)]="data.key.filetype" class="form-control" required/>
+                <input *ngIf="data.key.filetype == null " type="text" [(ngModel)]="data.key.filetype" class="form-control" required/>
+                <div class="align-buttons-right">
+                  <button *ngIf="!data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.key.filetype;"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.key.filetype;"><span class="glyphicon glyphicon-edit" [ngClass]="{'glyphicon-check':'data.file'}" [ngStyle]="{'color':data.file?'green':'green'}"></span></button>
+                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.key.filetype=data.originalFiletype; data.file= !data.file"><span class="glyphicon glyphicon-remove-sign" [ngStyle]="{'color':data.file?'red':'red'}"></span></button>
+                </div>
               </td>
-              <td class="text-center">
-                <button class="btn btn-primary btn-sm" (click)="data.file = !data.file; data.originalFiletype = data.file_type;" [ngClass]="{'btn-success':data.file}" [disabled]="!data.file_type">
+              <!-- <td class="text-center">
+                <button class="btn btn-primary btn-sm" (click)="data.file = !data.file; data.originalFiletype = data.key.filetype;" [ngClass]="{'btn-success':data.file}" [disabled]="!data.key.filetype">
                   <span class="glyphicon glyphicon-edit"></span> {{data.file? 'update':'edit'}}
                 </button>&nbsp;
-                <button *ngIf="data.file" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-remove-sign" (click)="data.file_type=data.originalFiletype; data.file= !data.file"></span></button>
-              </td>
+                <button *ngIf="data.file" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-remove-sign" (click)="data.key.filetype=data.originalFiletype; data.file= !data.file"></span></button>
+              </td> -->
+
               <!-- DataTypes -->
-              <td *ngIf="!data.edit">{{data.extensions}}</td>
-              <td *ngIf="data.edit">
-                <input type="text" [(ngModel)]="data.extensions" class="form-control" required/>
-              </td>
-              <td class="text-center">
+              <td>
+                <span *ngIf="!data.edit">{{data.extensions}}</span>
+                <input *ngIf="data.edit" type="text" [(ngModel)]="data.extensions" class="form-control" required/>
+                <input *ngIf="data.extensions == null" type="text" [(ngModel)]="data.extensions" class="form-control" required/>
+                <div class="align-buttons-right">
+                  <button *ngIf="!data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-edit" [ngClass]="{'glyphicon-check':data.edit}" [ngStyle]="{'color':data.edit?'green':'green'}"></span></button>
+                  <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-remove-sign" [ngStyle]="{'color':data.edit?'red':'red'}"></span></button>
+                </div>  
+                </td>
+              <!-- <td class="text-center">
                   <button class="btn btn-primary btn-sm" (click)="data.edit = !data.edit; data.originalExtn = data.extensions; updateData(data)" [ngClass]="{'btn-success':data.edit}" [disabled]="!data.extensions">
                     <span class="glyphicon glyphicon-edit"></span> {{data.edit?'update':'edit'}}
                   </button>&nbsp;
                   <button *ngIf="data.edit" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-remove-sign" (click)="data.extensions=data.originalExtn; data.edit= !data.edit"></span></button>
-              </td>
+              </td> -->
               
               <td class="text-center">
                 <button class="btn btn-danger btn-md" (click)="removeExtension(data)"><span

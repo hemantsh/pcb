@@ -72,24 +72,7 @@ public class Test {
         System.out.println("missing :"+missing);
          */
     }
-
-    public static FileTypeExtensions convertToObject(FiletypeExtensions filetypeExtn) {
-        
-        FileTypeExtensions fe = new FileTypeExtensions();
-        
-        fe.setFile_type(filetypeExtn.getFile_type());
-        fe.setExtensions(fe.extnToString(filetypeExtn.getExtensions()));
-        
-        return fe;
-    }
     
-    public static FiletypeExtensions convertToDBObject(FileTypeExtensions fe) {
-        FiletypeExtensions filetypeExtn = new FiletypeExtensions();
-        filetypeExtn.setFile_type(fe.getFile_type());
-        filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
-        
-        return filetypeExtn;
-    }
     private static Set<String> convertToSet(String extensions) {
         
         Set<String> mySet = new HashSet<String>(Arrays.asList(extensions.split(",")));
