@@ -1,7 +1,9 @@
 package com.sc.fe.analyze.util;
 
+import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.FiletypeExtensionsPK;
 import java.util.Date;
 import java.util.UUID;
 
@@ -106,8 +108,10 @@ public class ReportUtility {
     public static FileTypeExtensions convertToObject(FiletypeExtensions filetypeExtn) {
         
         FileTypeExtensions fe = new FileTypeExtensions();
-        
-        fe.setFile_type(filetypeExtn.getFile_type());
+//        FileTypeExtensionsPK fileTypePK= new FileTypeExtensionsPK();
+//        fileTypePK.setId(UUIDs.timeBased());
+//        fileTypePK
+        fe.setKey(filetypeExtn.getKey());
         fe.setExtensions(fe.extnToString(filetypeExtn.getExtensions()));
         
         return fe;
@@ -115,7 +119,9 @@ public class ReportUtility {
     
     public static FiletypeExtensions convertToDBObject(FileTypeExtensions fe) {
         FiletypeExtensions filetypeExtn = new FiletypeExtensions();
-        filetypeExtn.setFile_type(fe.getFile_type());
+        
+//        filetypeExtn.setFile_type(fe.getFile_type());
+        filetypeExtn.setKey(fe.getKey());
         filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
         
         return filetypeExtn;
@@ -243,5 +249,14 @@ public class ReportUtility {
         
         return mySet;
     }
+//    private FiletypeExtensionsPK getId(FileTypeExtensions fe) {
+//        String version = null;
+//        if (fe.getKey() != null) {
+//            return fe.getKey();
+//        } else {
+//            version = UUIDs.timeBased().toString();
+//        }
+//        return version;
+//    }
     
 }

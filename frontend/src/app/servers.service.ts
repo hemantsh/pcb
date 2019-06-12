@@ -201,7 +201,11 @@ export class FileService {
         return this.http.get(config.urlPath + 'admin/filetypeextensions');
     }
 
-    createOrUpdateFiletypeExtensions(newData:any) {
-        return this.http.post(config.urlPath + 'admin/filetypeextensions/create', newData)
+    createFiletypeExtensions(newData: any) {
+        return this.http.post(config.urlPath + 'admin/filetypeextensions', newData)
+    }
+    deleteFiletypeExtensions(newData:any) {
+        console.log(newData);
+        return this.http.delete(config.urlPath + `admin/filetypeextensions/${newData.file_type}`);
     }
 }

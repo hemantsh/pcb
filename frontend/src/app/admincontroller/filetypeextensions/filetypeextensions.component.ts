@@ -13,16 +13,12 @@ export class FiletypeextensionsComponent implements OnInit {
 
   selectedFileTypeObj: any;
   successMsgDiv = 'hide';
-
+  deleteObj;
 
   constructor(private fileService: FileService) { }
 
   ngOnInit() {
     this.getFiletypeExtensions();
-    // Below code is for Multi select Dropdown
-    // this.extensions = [
-    // ];
-    // this.selectedItems = [];
   }
 
   getFiletypeExtensions() {
@@ -30,7 +26,6 @@ export class FiletypeextensionsComponent implements OnInit {
       (response) => {
         this.fileTypeExtensions = response.json();
         console.log(this.fileTypeExtensions);
-        // this.processExtensions();
       },
       (error) => console.log(error)
     )
@@ -39,7 +34,7 @@ export class FiletypeextensionsComponent implements OnInit {
   updateData(data) {
     if (!data.edit) {
       console.log(data.edit);
-      this.fileService.createOrUpdateFiletypeExtensions(data)
+      this.fileService.createFiletypeExtensions(data)
         .subscribe(
           (response) => {
             console.log("Your data is updated", response);
@@ -49,12 +44,18 @@ export class FiletypeextensionsComponent implements OnInit {
 
     }
   }
-
-  removeExtension(extension){
+  addFiletype() {
+    this.fileTypeExtensions.unshift({ id: null, extensions: null, key: { id: null, filetype: null } });
+  }
+  removeExtension(extension) {
     console.log(extension);
     let index = this.fileTypeExtensions.indexOf(extension);
     console.log(index);
-    this.fileTypeExtensions.splice(index,1);
+    this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];
+    this.fileService.deleteFiletypeExtensions(this.deleteObj).subscribe(
+      (response) => console.log(response),
+      (error) => console.log(error)
+    )
   }
   // processExtensions() {
   //   for (let i = 0; i < this.fileTypeExtensions.length; i++) {

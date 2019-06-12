@@ -5,7 +5,9 @@
  */
 package com.sc.fe.analyze.to;
 
+import com.sc.fe.analyze.data.entity.FiletypeExtensionsPK;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  *
@@ -13,15 +15,23 @@ import java.util.Set;
  */
 public class FileTypeExtensions {
 
-    private String file_type;
+    private FiletypeExtensionsPK key;
     private String extensions;
 
-    public String getFile_type() {
-        return file_type;
+    public FiletypeExtensionsPK getKey() {
+        return key;
     }
 
-    public void setFile_type(String file_type) {
-        this.file_type = file_type;
+    public void setKey(FiletypeExtensionsPK key) {
+        this.key = key;
+    }
+
+    public UUID getId() {
+        return getKey().getId();
+    }
+
+    public void setId(UUID id) {
+        this.getKey().setId(id);
     }
 
     public String getExtensions() {
@@ -38,7 +48,7 @@ public class FileTypeExtensions {
             if (stringExtensions.isEmpty()) {
                 stringExtensions = extn;
             } else {
-                stringExtensions +=  ","+extn;
+                stringExtensions += "," + extn;
             }
         }
         return stringExtensions;

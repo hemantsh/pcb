@@ -42,6 +42,7 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 /**
@@ -269,16 +270,16 @@ public class AdminController {
         return filetypeExtensionService.findAll();
     }
 
-    @PostMapping(path = "/filetypeextensions/create")
+    @PostMapping(path = "/filetypeextensions")
     public void createFiletypeExtensions(@RequestBody FileTypeExtensions filetypeExtensions) {
         filetypeExtensionService.save(filetypeExtensions);
     }
 
-    @PutMapping(path = "/filetypeextensions/delete")
-    public void deleteFiletypeExtensions(@RequestBody FiletypeExtensions filetypeExtensions) {
+    @DeleteMapping(path = "/filetypeextensions/{filetypeId}")
+    public void deleteFiletypeExtensions(@PathVariable("filetypeId") String filetypeExtensions) {
         filetypeExtensionService.delete(filetypeExtensions);
     }
-
+    
     @GetMapping(path = "/filetypeextensions/{extension}")
     public void searchByFiletypeExtensions(@PathVariable("extension") String extension) {
         filetypeExtensionService.getFileExtenions(extension);
