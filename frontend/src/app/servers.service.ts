@@ -205,7 +205,6 @@ export class FileService {
         return this.http.post(config.urlPath + 'admin/filetypeextensions', newData)
     }
     deleteFiletypeExtensions(newData:any) {
-        console.log(newData);
-        return this.http.delete(config.urlPath + `admin/filetypeextensions/${newData.file_type}`);
+        return this.http.delete(config.urlPath + `admin/filetypeextensions/${newData.id}`);
     }
 }

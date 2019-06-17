@@ -3,7 +3,6 @@ package com.sc.fe.analyze.util;
 import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.data.entity.FiletypeExtensions;
-import com.sc.fe.analyze.data.entity.FiletypeExtensionsPK;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
  * @author Hemant
  */
 public class ReportUtility {
-    
+
     private ReportUtility() {
     }
 
@@ -63,7 +62,7 @@ public class ReportUtility {
             String check = project.getAssemblyTurntimeQuantity();
             dtl.setAssemblyTurnTimeQuantity(convertToList(check));
         }
-        
+
         dtl.setDesignSpecification(project.getDesignSpecification());
         dtl.setErrors(project.getErrors());
         dtl.setCreateDate(project.getCreateDate());
@@ -104,26 +103,32 @@ public class ReportUtility {
         dtl.setSelected(projectFiles.isSelected());
         return dtl;
     }
-    
+
     public static FileTypeExtensions convertToObject(FiletypeExtensions filetypeExtn) {
-        
+
         FileTypeExtensions fe = new FileTypeExtensions();
-//        FileTypeExtensionsPK fileTypePK= new FileTypeExtensionsPK();
-//        fileTypePK.setId(UUIDs.timeBased());
-//        fileTypePK
-        fe.setKey(filetypeExtn.getKey());
-        fe.setExtensions(fe.extnToString(filetypeExtn.getExtensions()));
-        
+
+        fe.setId(filetypeExtn.getKey().getId().toString());
+        fe.setFile_type(filetypeExtn.getKey().getFiletype());
+        fe.setExtensions(extnToString(filetypeExtn.getExtensions()));
         return fe;
     }
-    
+
     public static FiletypeExtensions convertToDBObject(FileTypeExtensions fe) {
         FiletypeExtensions filetypeExtn = new FiletypeExtensions();
-        
-//        filetypeExtn.setFile_type(fe.getFile_type());
-        filetypeExtn.setKey(fe.getKey());
-        filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
-        
+
+//        filetypeExtn.getKey().setId(UUID.fromString(fe.getId()));
+        if (fe.getId() == null) {
+            filetypeExtn.getKey().setId(UUIDs.timeBased());
+            filetypeExtn.getKey().setFiletype(fe.getFile_type());
+            filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
+        }
+        if (fe.getId() != null) {
+            filetypeExtn.getKey().setId(UUID.fromString(fe.getId()));
+            filetypeExtn.getKey().setFiletype(fe.getFile_type());
+            filetypeExtn.setExtensions(convertToSet(fe.getExtensions()));
+        }
+
         return filetypeExtn;
     }
 
@@ -170,7 +175,7 @@ public class ReportUtility {
         } else {
             dbDetail.setCreateDate(projectDetails.getCreateDate());
         }
-        
+
         dbDetail.setItar(projectDetails.getItar());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setNofly(projectDetails.isNofly());
@@ -242,21 +247,24 @@ public class ReportUtility {
         }
         return turnTime;
     }
-    
+
     private static Set<String> convertToSet(String extensions) {
-        
+
         Set<String> mySet = new HashSet<String>(Arrays.asList(extensions.split(",")));
-        
+
         return mySet;
     }
-//    private FiletypeExtensionsPK getId(FileTypeExtensions fe) {
-//        String version = null;
-//        if (fe.getKey() != null) {
-//            return fe.getKey();
-//        } else {
-//            version = UUIDs.timeBased().toString();
-//        }
-//        return version;
-//    }
-    
+
+    public static String extnToString(Set<String> extensions) {
+        String stringExtensions = "";
+        for (String extn : extensions) {
+            if (stringExtensions.isEmpty()) {
+                stringExtensions = extn;
+            } else {
+                stringExtensions += "," + extn;
+            }
+        }
+        return stringExtensions;
+    }
+
 }

@@ -9,9 +9,7 @@ import { FileService } from 'src/app/servers.service';
 })
 export class FiletypeextensionsComponent implements OnInit {
   fileTypeExtensions = [];
-  extensions = [];
-
-  selectedFileTypeObj: any;
+  // extensions = [];
   successMsgDiv = 'hide';
   deleteObj;
 
@@ -45,18 +43,18 @@ export class FiletypeextensionsComponent implements OnInit {
     }
   }
   addFiletype() {
-    this.fileTypeExtensions.unshift({ id: null, extensions: null, key: { id: null, filetype: null } });
+    this.fileTypeExtensions.unshift({ id: null, extensions: null, file_type: null, file: true, edit: true });
   }
   removeExtension(extension) {
-    console.log(extension);
     let index = this.fileTypeExtensions.indexOf(extension);
-    console.log(index);
     this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];
-    this.fileService.deleteFiletypeExtensions(this.deleteObj).subscribe(
+    console.log(this.deleteObj);
+    /*this.fileService.deleteFiletypeExtensions(this.deleteObj).subscribe(
       (response) => console.log(response),
       (error) => console.log(error)
-    )
+    )*/
   }
+
   // processExtensions() {
   //   for (let i = 0; i < this.fileTypeExtensions.length; i++) {
   //     for (let j = 0; j < this.fileTypeExtensions[i].extensions.length; j++) {
@@ -105,11 +103,11 @@ export class FiletypeextensionsComponent implements OnInit {
   }*/
 
   onSaveClick() {
-    console.log(this.selectedFileTypeObj);
-    // this.fileService.createOrUpdateFiletypeExtensions(this.selectedFileTypeObj).subscribe(
-    //   (response) => {
-    //     console.log(response);
-    //   }, (error) => console.log(error)
-    // );
+    // Right now we are just pushing the top value of the stack.
+    this.fileService.createFiletypeExtensions(this.fileTypeExtensions[0]).subscribe(
+      (response) => {
+        console.log(response);
+      }, (error) => console.log(error)
+    );
   }
 }

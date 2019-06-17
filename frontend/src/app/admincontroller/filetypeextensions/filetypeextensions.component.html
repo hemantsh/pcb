@@ -28,13 +28,13 @@
             <tr *ngFor="let data of fileTypeExtensions">
               <!-- FileTypes -->
               <td>
-                <span *ngIf="!data.file">{{data.key.filetype}}</span>
-                <input *ngIf="data.file" type="text" [(ngModel)]="data.key.filetype" class="form-control" required/>
-                <input *ngIf="data.key.filetype == null " type="text" [(ngModel)]="data.key.filetype" class="form-control" required/>
+                <span *ngIf="!data.file">{{data.file_type}}</span>
+                <input *ngIf="data.file" type="text" [(ngModel)]="data.file_type" class="form-control" required/>
+               
                 <div class="align-buttons-right">
-                  <button *ngIf="!data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.key.filetype;"><span class="glyphicon glyphicon-edit"></span></button>
-                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.key.filetype;"><span class="glyphicon glyphicon-edit" [ngClass]="{'glyphicon-check':'data.file'}" [ngStyle]="{'color':data.file?'green':'green'}"></span></button>
-                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.key.filetype=data.originalFiletype; data.file= !data.file"><span class="glyphicon glyphicon-remove-sign" [ngStyle]="{'color':data.file?'red':'red'}"></span></button>
+                  <button *ngIf="!data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.file_type;"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file = !data.file; data.originalFiletype = data.file_type;"><span class="glyphicon glyphicon-check" [ngStyle]="{'color':data.file?'green':'green'}"></span></button>
+                  <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.file_type=data.originalFiletype; data.file= !data.file"><span class="glyphicon glyphicon-remove-sign" [ngStyle]="{'color':data.file?'red':'red'}"></span></button>
                 </div>
               </td>
               <!-- <td class="text-center">
@@ -48,10 +48,10 @@
               <td>
                 <span *ngIf="!data.edit">{{data.extensions}}</span>
                 <input *ngIf="data.edit" type="text" [(ngModel)]="data.extensions" class="form-control" required/>
-                <input *ngIf="data.extensions == null" type="text" [(ngModel)]="data.extensions" class="form-control" required/>
+              
                 <div class="align-buttons-right">
                   <button *ngIf="!data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-edit"></span></button>
-                  <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-edit" [ngClass]="{'glyphicon-check':data.edit}" [ngStyle]="{'color':data.edit?'green':'green'}"></span></button>
+                  <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-check" [ngStyle]="{'color':data.edit?'green':'green'}"></span></button>
                   <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;" (click)="data.edit = !data.edit; data.originalExtn = data.extensions;"><span class="glyphicon glyphicon-remove-sign" [ngStyle]="{'color':data.edit?'red':'red'}"></span></button>
                 </div>  
                 </td>
