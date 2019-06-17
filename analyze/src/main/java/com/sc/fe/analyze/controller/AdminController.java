@@ -277,7 +277,7 @@ public class AdminController {
 
     @DeleteMapping(path = "/filetypeextensions/{filetypeId}")
     public void deleteFiletypeExtensions(@PathVariable("filetypeId") String filetypeExtensions) {
-        filetypeExtensionService.delete(filetypeExtensions);
+        filetypeExtensionService.deletebyid(filetypeExtensions);
     }
     
     @GetMapping(path = "/filetypeextensions/{extension}")

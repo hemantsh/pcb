@@ -23,6 +23,9 @@ public class FiletypeExtensions implements Serializable {
     private Set<String> extensions;
 
     public FiletypeExtensionsPK getKey() {
+        if(key == null){
+            key = new FiletypeExtensionsPK();
+        }
         return key;
     }
 
@@ -36,14 +39,6 @@ public class FiletypeExtensions implements Serializable {
 
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
-    }
-
-    public UUID getId() {
-        return getKey().getId();
-    }
-
-    public void setId(UUID id) {
-        this.getKey().setId(id);
     }
 
 }

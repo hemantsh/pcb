@@ -38,13 +38,16 @@ public class FiletypeExtensionsService {
     }
 
     public void save(FileTypeExtensions filetypeExtensions) {
-
+//        List<FileTypeExtensions> returnList = new ArrayList<FileTypeExtensions>();
+//        filetypeExtensions.stream().forEach(row -> {
+//            returnList.add(ReportUtility.convertToDBObject(row));
+//        });
         FiletypeExtensions fe = ReportUtility.convertToDBObject(filetypeExtensions);
-        filetypeExtensionsRepo.save(fe);
+       filetypeExtensionsRepo.save(fe);
 
     }
 
-    public void delete(String filetypeExtensions) {
+    public void deletebyid(String filetypeExtensions) {
 //        FiletypeExtensions fe = ReportUtility.convertToDBObject(filetypeExtensions);
         filetypeExtensionsRepo.deleteById(filetypeExtensions);
     }

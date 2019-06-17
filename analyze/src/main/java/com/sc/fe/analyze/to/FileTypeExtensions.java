@@ -15,25 +15,29 @@ import java.util.UUID;
  */
 public class FileTypeExtensions {
 
-    private FiletypeExtensionsPK key;
     private String extensions;
+    private String id;
+    private String file_type;
 
-    public FiletypeExtensionsPK getKey() {
-        return key;
+    public String getFile_type() {
+        return file_type;
     }
 
-    public void setKey(FiletypeExtensionsPK key) {
-        this.key = key;
+    public void setFile_type(String file_type) {
+        this.file_type = file_type;
     }
 
-    public UUID getId() {
-        return getKey().getId();
+    public String getId() {
+        return id;
     }
 
-    public void setId(UUID id) {
-        this.getKey().setId(id);
+    public void setId(String id) {
+        this.id = id;
     }
 
+    
+
+     
     public String getExtensions() {
         return extensions;
     }
@@ -42,15 +46,4 @@ public class FileTypeExtensions {
         this.extensions = extensions;
     }
 
-    public String extnToString(Set<String> extensions) {
-        String stringExtensions = "";
-        for (String extn : extensions) {
-            if (stringExtensions.isEmpty()) {
-                stringExtensions = extn;
-            } else {
-                stringExtensions += "," + extn;
-            }
-        }
-        return stringExtensions;
-    }
 }
