@@ -11,7 +11,9 @@ import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.util.ReportUtility;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,13 +45,20 @@ public class FiletypeExtensionsService {
 //            returnList.add(ReportUtility.convertToDBObject(row));
 //        });
         FiletypeExtensions fe = ReportUtility.convertToDBObject(filetypeExtensions);
-       filetypeExtensionsRepo.save(fe);
+        filetypeExtensionsRepo.save(fe);
 
     }
 
-    public void deletebyid(String filetypeExtensions) {
-//        FiletypeExtensions fe = ReportUtility.convertToDBObject(filetypeExtensions);
-        filetypeExtensionsRepo.deleteById(filetypeExtensions);
+    public void deletebyid(final String filetypeExtensions) {
+        filetypeExtensionsRepo.deleteByKeyId(UUID.fromString(filetypeExtensions));
+    }
+
+    public void deleteFiletype(FileTypeExtensions filetypeExtensions) {
+//        List<FileTypeExtensions> returnList = new ArrayList<FileTypeExtensions>();
+//        
+//        filetypeExtensions.stream().forEach(row -> {
+        filetypeExtensionsRepo.delete(ReportUtility.convertToDBObject(filetypeExtensions));
+//        });
     }
 
     public FiletypeExtensions getFileExtenions(String extension) {

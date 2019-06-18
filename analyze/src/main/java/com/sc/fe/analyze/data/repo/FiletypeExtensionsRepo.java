@@ -6,7 +6,9 @@
 package com.sc.fe.analyze.data.repo;
 
 import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.FiletypeExtensionsPK;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Repository;
  * @author pc
  */
 @Repository
-public interface FiletypeExtensionsRepo extends CassandraRepository<FiletypeExtensions, String> {
+public interface FiletypeExtensionsRepo extends CassandraRepository<FiletypeExtensions, FiletypeExtensionsPK> {
 
     List<FiletypeExtensions> findByExtensions(final String extension);
+
+    void deleteByKeyId(final UUID id);
 }
