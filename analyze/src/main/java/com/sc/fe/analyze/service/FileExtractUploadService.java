@@ -231,11 +231,11 @@ public class FileExtractUploadService {
             }
 
             //Required files as per business rules            
-//            if (MappingUtil.getServiceId(splitService[i]) != null) {
-//                requiredFilesTypes.addAll(baseService.getServiceFiles(
-//                        MappingUtil.getServiceId(splitService[i]))
-//                );
-//            }
+            if (MappingUtil.getServiceId(splitService[i]) != null) {
+                requiredFilesTypes.addAll(baseService.getServiceFiles(
+                        MappingUtil.getServiceId(splitService[i]))
+                );
+            }
         }
         //Set the null values of Assembly and Fabrication turnTime Quantity if it is empty
         if (assTurnTimeQtyFlag == 0) {

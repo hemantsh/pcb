@@ -35,9 +35,6 @@ public class FileTypeExtensions {
         this.id = id;
     }
 
-    
-
-     
     public String getExtensions() {
         return extensions;
     }

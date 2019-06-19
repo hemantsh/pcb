@@ -25,4 +25,18 @@ public class ServiceFiletypes {
     public void setKey(ServiceFiletypesPK key) {
         this.key = key;
     }
+    
+    public String getFileType(){
+        return getKey().getFiletype();
+    }
+    
+    public void setFileType(String filetype){
+        
+        if(key==null){
+            key= new ServiceFiletypesPK();
+        }
+        
+        key.setFiletype(filetype);
+    }
+    
 }

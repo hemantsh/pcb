@@ -21,5 +21,5 @@ public interface FiletypeExtensionsRepo extends CassandraRepository<FiletypeExte
 
     List<FiletypeExtensions> findByExtensions(final String extension);
 
-    void deleteByKeyId(final UUID id);
+//    void deleteByKeyId(final UUID id);
 }

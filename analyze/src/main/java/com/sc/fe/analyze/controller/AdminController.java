@@ -122,7 +122,6 @@ public class AdminController {
 //        fileExtnServ.deleteMultiple(extension);
 //        baseService.afterConst();
 //    }
-
     //Service Services
     @ApiOperation("Retrieve all the Services from the Database.")
     @GetMapping(path = "/services")
@@ -168,7 +167,6 @@ public class AdminController {
 //    public void createFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype) {
 //        fileTypeService.save(filetype);
 //    }
-
 //    @ApiOperation("Updates the existing Filetype stored into Database.")
 //    @PostMapping(path = "/filetypes/update")
 //    public void updateFileType(@ApiParam("Takes JSON of Filetype as Input") @RequestBody FileTypes filetype) {
@@ -188,7 +186,6 @@ public class AdminController {
 //        fileTypeService.deleteAll(fileType);
 //        baseService.afterConst();
 //    }
-
     //ServiceFiles services
 //    @ApiOperation("Retrieve all the Service To Files Mapping from the Database.")
 //    @GetMapping(path = "/servicefiles")
@@ -225,7 +222,6 @@ public class AdminController {
 //    public void deleteServiceFiles(@ApiParam("Takes Array JSON of ServiceFiles to delete ServiceFile or an Array of ServiceFiles") @RequestBody List<ServiceFiles> serviceFiles) {
 //        serviceFileservice.deleteAll(serviceFiles);
 //    }
-
     //ExtensionFileServices
 //    @ApiOperation("Retrieve all the Extension To Files Mapping from the Database.")
 //    @GetMapping(path = "/extensionfiles")
@@ -263,7 +259,6 @@ public class AdminController {
 //    public void deleteExtensionFileType(@ApiParam("Takes JSON of ExtensionFiles Mapping to delete from database") @RequestBody List<ExtensionFileType> deleteData) {
 //        extnFileService.deleteAll(deleteData);
 //    }
-
     // Filetype Extensions Services
     @GetMapping(path = "/filetypeextensions")
     public List<FileTypeExtensions> getFiletypeExtensions() {
@@ -275,14 +270,11 @@ public class AdminController {
         filetypeExtensionService.save(filetypeExtensions);
     }
 
-    @DeleteMapping(path = "/filetypeextensions")
-//    public void deleteFiletypeExtensions(@PathVariable("id") String id) {
-//        filetypeExtensionService.deletebyid(id);
-//    }
-    public void deleteFiletypeExtensions(@RequestBody FileTypeExtensions filetypeExtensions){
-        filetypeExtensionService.deleteFiletype(filetypeExtensions);
+    @DeleteMapping(path = "/filetypeextensions/id/{id}/filetype/{file_type}")
+    public void deleteFiletypeExtensions(@PathVariable("id") String id, @PathVariable("file_type") String file_type) {
+        filetypeExtensionService.deletebyid(id, file_type);
     }
-    
+
     @GetMapping(path = "/filetypeextensions/{extension}")
     public void searchByFiletypeExtensions(@PathVariable("extension") String extension) {
         filetypeExtensionService.getFileExtenions(extension);

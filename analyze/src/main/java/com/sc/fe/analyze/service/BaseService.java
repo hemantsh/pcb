@@ -4,21 +4,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //import com.sc.fe.analyze.data.entity.ExtensionFileType;
 //import com.sc.fe.analyze.data.entity.Extensions;
 //import com.sc.fe.analyze.data.entity.FileTypes;
-import com.sc.fe.analyze.data.entity.ServiceFiles;
+//import com.sc.fe.analyze.data.entity.ServiceFiles;
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.data.repo.ServiceFiletypesRepo;
 //import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
 //import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 //import com.sc.fe.analyze.data.repo.FileTypesRepo;
 //import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
-import com.sc.fe.analyze.util.MappingUtil;
+//import com.sc.fe.analyze.util.MappingUtil;
 import java.util.HashMap;
 
 /**
@@ -32,6 +34,8 @@ public class BaseService {
 //    private ServiceFilesRepo serviceFilesRepo;
 //    @Autowired
 //    private ExtensionFileRepo extnFileRepo;
+    @Autowired
+    private ServiceFiletypesRepo serviceFiletypesRepo;
     @Autowired
     private ServicesRepo serviceRepo;
 //    @Autowired
@@ -47,7 +51,6 @@ public class BaseService {
 //    public void afterConst() {
 //        MappingUtil.init(getExtensionMap(), getFileTypeMap(), getServiceMap());
 //    }
-
     /**
      * This method retrieves file Extensions from database.
      *
@@ -64,7 +67,6 @@ public class BaseService {
 //
 //        return retMap;
 //    }
-
     /**
      * This method retrieves file FileTypes from database.
      *
@@ -80,7 +82,7 @@ public class BaseService {
 //        });
 //
 //        return retMap;
-return null;
+        return null;
     }
 
     /**
@@ -111,6 +113,10 @@ return null;
 //        List<ServiceFiles> serviceFiles = serviceFilesRepo.findByKeyServiceId(serviceId);
 //        return serviceFiles.stream().map(ServiceFiles::getFile).collect(Collectors.toList());
 //    }
+    public List<String> getServiceFiles(int serviceId) {
+        List<ServiceFiletypes> serviceFiletypes = serviceFiletypesRepo.findByKeyServiceId(serviceId);
+        return serviceFiletypes.stream().map(ServiceFiletypes::getFileType).collect(Collectors.toList());
+    }
 
     /**
      * This method list file extension with their FileType.
@@ -127,7 +133,6 @@ return null;
 //
 //        return returnMap;
 //    }
-
     /**
      *
      * @return the serviceFilesReport
@@ -135,6 +140,13 @@ return null;
 //    public ServiceFilesRepo getServiceFilesRepo() {
 //        return serviceFilesRepo;
 //    }
+    public ServiceFiletypesRepo getServiceFiletypesRepo() {
+        return serviceFiletypesRepo;
+    }
+
+    public void setServiceFiletypesRepo(ServiceFiletypesRepo serviceFiletypeRepo) {
+        this.serviceFiletypesRepo = serviceFiletypeRepo;
+    }
 
     /**
      *
@@ -143,7 +155,6 @@ return null;
 //    public void setServiceFilesRepo(ServiceFilesRepo serviceFilesRepo) {
 //        this.serviceFilesRepo = serviceFilesRepo;
 //    }
-
     /**
      * Gets the extension Report
      *
@@ -152,7 +163,6 @@ return null;
 //    public ExtensionFileRepo getExtRepo() {
 //        return extnFileRepo;
 //    }
-
     /**
      * Sets the extensionFileReport into the extnFileRepo instance variable.
      *
@@ -161,7 +171,6 @@ return null;
 //    public void setExtRepo(ExtensionFileRepo extRepo) {
 //        this.extnFileRepo = extRepo;
 //    }
-
     /**
      * Gets the extension FileRepo
      *
@@ -170,7 +179,6 @@ return null;
 //    public ExtensionFileRepo getExtnFileRepo() {
 //        return extnFileRepo;
 //    }
-
     /**
      * Sets the extensionFile
      *
@@ -179,7 +187,6 @@ return null;
 //    public void setExtnFileRepo(ExtensionFileRepo extnFileRepo) {
 //        this.extnFileRepo = extnFileRepo;
 //    }
-
     /**
      * Gets the ServiceRepo
      *
@@ -206,7 +213,6 @@ return null;
 //    public FileTypesRepo getFileTypesRepo() {
 //        return fileTypesRepo;
 //    }
-
     /**
      * Sets the fileTypesRepo
      *
@@ -215,7 +221,6 @@ return null;
 //    public void setFileTypesRepo(FileTypesRepo fileTypesRepo) {
 //        this.fileTypesRepo = fileTypesRepo;
 //    }
-
     /**
      * Gets the extensionRepo
      *
@@ -224,7 +229,6 @@ return null;
 //    public ExtensionsRepo getExtnRepo() {
 //        return extnRepo;
 //    }
-
     /**
      * Sets the extensionRepo
      *
@@ -233,5 +237,4 @@ return null;
 //    public void setExtnRepo(ExtensionsRepo extnRepo) {
 //        this.extnRepo = extnRepo;
 //    }
-
 }

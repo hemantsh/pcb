@@ -7,6 +7,7 @@ package com.sc.fe.analyze.data.repo;
 
 import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.ServiceFiletypesPK;
+import java.util.List;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServiceFiletypesRepo extends CassandraRepository<ServiceFiletypes, ServiceFiletypesPK> {
 
+    List<ServiceFiletypes> findByKeyServiceId(final int serviceId);
 }
