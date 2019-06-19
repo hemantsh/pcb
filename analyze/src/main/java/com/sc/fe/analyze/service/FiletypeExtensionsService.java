@@ -49,8 +49,11 @@ public class FiletypeExtensionsService {
 
     }
 
-    public void deletebyid(final String filetypeExtensions) {
-        filetypeExtensionsRepo.deleteByKeyId(UUID.fromString(filetypeExtensions));
+    public void deletebyid(final String id, final String file_type) {
+        FiletypeExtensions filetypeObj = new FiletypeExtensions();
+        filetypeObj.getKey().setId(UUID.fromString(id));
+        filetypeObj.getKey().setFiletype(file_type);
+        filetypeExtensionsRepo.delete(filetypeObj);
     }
 
     public void deleteFiletype(FileTypeExtensions filetypeExtensions) {

@@ -17,24 +17,24 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 public class ServiceFiletypesPK {
 
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "service_id")
-    private int service_id;
+    private int serviceid;
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "file_type")
-    private String file_type;
+    private String filetype;
 
-    public int getService_id() {
-        return service_id;
+    public int getServiceId() {
+        return serviceid;
     }
 
-    public void setService_id(int service_id) {
-        this.service_id = service_id;
+    public void setServiceId(int service_id) {
+        this.serviceid = service_id;
     }
 
-    public String getFile_type() {
-        return file_type;
+    public String getFiletype() {
+        return filetype;
     }
 
-    public void setFile_type(String file_type) {
-        this.file_type = file_type.toLowerCase();
+    public void setFiletype(String file_type) {
+        this.filetype = file_type.toLowerCase();
     }
 
 }

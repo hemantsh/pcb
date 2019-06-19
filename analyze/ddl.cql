@@ -114,6 +114,18 @@ CREATE TABLE difference_report(
         differences set<text>,
         PRIMARY KEY(project_id)
 );
- 
- 
- 
+
+ CREATE TABLE filetype_extensions (
+	id uuid,
+	file_type text,
+	extensions set<text>, 
+	PRIMARY KEY(id,file_type)
+);
+
+CREATE INDEX on filetype_extensions (extensions);
+
+CREATE TABLE service_filetypes (
+	service_id int,
+        file_type text,
+        PRIMARY KEY ( service_id ,file_type)
+);

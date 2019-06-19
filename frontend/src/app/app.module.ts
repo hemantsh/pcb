@@ -22,7 +22,7 @@ import { CanServiceFilesDeactivateGuard } from './admincontroller/servicefiles/c
 import { CanExtnDeactivateGuard } from './admincontroller/extensions/can-deactivate-extn.service';
 import { CanServiceDeactivateGuard } from './admincontroller/services/candeactivate-service.service';
 import { CanFiletypeDeactivateGuard } from './admincontroller/filetypes/candeactivate-filetype.service';
-
+import {CanFiletypeExtnDeactivateGuard} from './admincontroller/filetypeextensions/can-deactivate-filetype-extn.service';
 // <-------------------------- Wrong URL Handlers ------------------------------------------->
 import { InputJSONComponent } from './input-json/input-json.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -48,7 +48,7 @@ const appRoutes: Routes = [
       { path: "servicefiles", component: ServicefilesComponent, canDeactivate: [CanServiceFilesDeactivateGuard] },
       { path: "extensionfiles", component: ExtenfilesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: "report", component: ReportComponent },
-      { path: "filetypeextensions", component: FiletypeextensionsComponent }
+      { path: "filetypeextensions", component: FiletypeextensionsComponent,canDeactivate:[CanFiletypeExtnDeactivateGuard] }
     ]
   },
   {
@@ -83,7 +83,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   providers: [FileService, CanDeactivateGuard, CanServiceFilesDeactivateGuard,
-    CanExtnDeactivateGuard, CanFiletypeDeactivateGuard, CanServiceDeactivateGuard],
+    CanExtnDeactivateGuard, CanFiletypeDeactivateGuard, CanServiceDeactivateGuard,CanFiletypeExtnDeactivateGuard],
 
   bootstrap: [AppComponent]
 })
