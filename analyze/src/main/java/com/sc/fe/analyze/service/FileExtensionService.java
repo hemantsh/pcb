@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.sc.fe.analyze.data.entity.Extensions;
-import com.sc.fe.analyze.data.repo.ExtensionsRepo;
+//import com.sc.fe.analyze.data.entity.Extensions;
+//import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 
 /**
  *
@@ -22,8 +22,8 @@ import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 @Transactional
 public class FileExtensionService {
 
-    @Autowired
-    private ExtensionsRepo extensionRepo;
+//    @Autowired
+//    private ExtensionsRepo extensionRepo;
 
 //    @Autowired
 //    private CachingService cacheService;
@@ -34,34 +34,34 @@ public class FileExtensionService {
      * @return all the extensions which found in the database
      */
 //    @Cacheable(value = "Extensions")
-    public List<Extensions> findAll() {
-        return extensionRepo.findAll();
-    }
+//    public List<Extensions> findAll() {
+//        return extensionRepo.findAll();
+//    }
 
     /**
      *
      * @param ext the extensions to store in a database
      */
-    public void save(Extensions ext) {
-        extensionRepo.save(ext);
-//        cacheService.evictAllCacheValues("Extensions");
-    }
+//    public void save(Extensions ext) {
+//        extensionRepo.save(ext);
+////        cacheService.evictAllCacheValues("Extensions");
+//    }
 
     /**
      *
      * @param id - the specific extension to find from database by id
      * @return the extension
      */
-    public Extensions getExtensionById(Integer id) {
-        return extensionRepo.findById(id).get();
-    }
+//    public Extensions getExtensionById(Integer id) {
+//        return extensionRepo.findById(id).get();
+//    }
 
     /**
      * This method deletes Extensions from the database.
      *
      * @param extn takes list of extensions to delete
      */
-    public void deleteMultiple(List<Extensions> extn) {
-        extensionRepo.deleteAll(extn);
-    }
+//    public void deleteMultiple(List<Extensions> extn) {
+//        extensionRepo.deleteAll(extn);
+//    }
 }

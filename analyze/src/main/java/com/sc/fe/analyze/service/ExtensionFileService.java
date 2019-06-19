@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.sc.fe.analyze.data.entity.ExtensionFileType;
-import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
+//import com.sc.fe.analyze.data.entity.ExtensionFileType;
+//import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
 
 /**
  *
@@ -21,8 +21,8 @@ import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
 @Service
 public class ExtensionFileService {
 
-    @Autowired
-    private ExtensionFileRepo extensionFileRepo;
+//    @Autowired
+//    private ExtensionFileRepo extensionFileRepo;
 //    @Autowired
 //    private CachingService cacheService;
 
@@ -32,29 +32,29 @@ public class ExtensionFileService {
      * @return all the extension_file which found in the database
      */
 //    @Cacheable(value = "ExtnFileTypes")
-    public List<ExtensionFileType> findAll() {
-        return extensionFileRepo.findAll();
-    }
+//    public List<ExtensionFileType> findAll() {
+//        return extensionFileRepo.findAll();
+//    }
 
     /**
      * This method saves the extension_file into the database.
      *
      * @param exFT The extension_file to store in a database
      */
-    public void save(ExtensionFileType exFT) {
-        extensionFileRepo.save(exFT);
-//        cacheService.evictAllCacheValues("ExtnFileTypes");
-    }
+//    public void save(ExtensionFileType exFT) {
+//        extensionFileRepo.save(exFT);
+////        cacheService.evictAllCacheValues("ExtnFileTypes");
+//    }
 
     /**
      * This method saves all the extension_file types into the database.
      *
      * @param exFT The list of extension_file to store in a database
      */
-    public void saveAll(List<ExtensionFileType> exFT) {
-        extensionFileRepo.saveAll(exFT);
-//        cacheService.evictAllCacheValues("ExtnFileTypes");
-    }
+//    public void saveAll(List<ExtensionFileType> exFT) {
+//        extensionFileRepo.saveAll(exFT);
+////        cacheService.evictAllCacheValues("ExtnFileTypes");
+//    }
 
     /**
      * It returns the list of extension_file types from the database.
@@ -62,9 +62,9 @@ public class ExtensionFileService {
      * @param id The specific extension_file to find from database by id
      * @return the list of extension_file
      */
-    public List<ExtensionFileType> getExtenFileTypeById(Integer id) {
-        return extensionFileRepo.findByKeyFiletypeId(id);
-    }
+//    public List<ExtensionFileType> getExtenFileTypeById(Integer id) {
+//        return extensionFileRepo.findByKeyFiletypeId(id);
+//    }
 
     /**
      * It deletes all the extension file Types from the database.
@@ -72,7 +72,7 @@ public class ExtensionFileService {
      * @param extensionFileType the list of extensionFileType which have to be
      * delete from the database.
      */
-    public void deleteAll(List<ExtensionFileType> extensionFileType) {
-        extensionFileRepo.deleteAll(extensionFileType);
-    }
+//    public void deleteAll(List<ExtensionFileType> extensionFileType) {
+//        extensionFileRepo.deleteAll(extensionFileType);
+//    }
 }

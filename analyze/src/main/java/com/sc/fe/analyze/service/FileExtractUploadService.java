@@ -231,11 +231,11 @@ public class FileExtractUploadService {
             }
 
             //Required files as per business rules            
-            if (MappingUtil.getServiceId(splitService[i]) != null) {
-                requiredFilesTypes.addAll(baseService.getServiceFiles(
-                        MappingUtil.getServiceId(splitService[i]))
-                );
-            }
+//            if (MappingUtil.getServiceId(splitService[i]) != null) {
+//                requiredFilesTypes.addAll(baseService.getServiceFiles(
+//                        MappingUtil.getServiceId(splitService[i]))
+//                );
+//            }
         }
         //Set the null values of Assembly and Fabrication turnTime Quantity if it is empty
         if (assTurnTimeQtyFlag == 0) {
@@ -596,7 +596,7 @@ public class FileExtractUploadService {
      */
     private void processGerber(List<FileDetails> fileDetails) {
 
-        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping());
+//        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping());
 
         //For each file that is gerber format
         fileDetails.stream()

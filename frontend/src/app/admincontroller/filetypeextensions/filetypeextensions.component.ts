@@ -9,7 +9,6 @@ import { FileService } from 'src/app/servers.service';
 })
 export class FiletypeextensionsComponent implements OnInit {
   fileTypeExtensions = [];
-  // extensions = [];
   successMsgDiv = 'hide';
   deleteObj;
 
@@ -46,13 +45,16 @@ export class FiletypeextensionsComponent implements OnInit {
     this.fileTypeExtensions.unshift({ id: null, extensions: null, file_type: null, file: true, edit: true });
   }
   removeExtension(extension) {
+    let cnfrm = window.confirm("Are you sure you want to delete ?")
     let index = this.fileTypeExtensions.indexOf(extension);
-    this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];
-    console.log(this.deleteObj);
-    /*this.fileService.deleteFiletypeExtensions(this.deleteObj).subscribe(
-      (response) => console.log(response),
-      (error) => console.log(error)
-    )*/
+    if (cnfrm == true) {
+      this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];
+     
+      this.fileService.deleteFiletypeExtensions(this.deleteObj).subscribe(
+        (response) => console.log(response),
+        (error) => console.log(error)
+      )
+    }
   }
 
   // processExtensions() {
