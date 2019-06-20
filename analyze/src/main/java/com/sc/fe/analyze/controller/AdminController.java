@@ -38,6 +38,7 @@ import com.sc.fe.analyze.service.FiletypeExtensionsService;
 import com.sc.fe.analyze.service.ServiceFiletypesService;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.util.MappingUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,23 +56,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Api(value = "AdministrationController", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
 
-    @Autowired
-    private FileExtensionService fileExtnServ;
+//    @Autowired
+//    private FileExtensionService fileExtnServ;
     @Autowired
     private FileServices fileService;
 //    @Autowired
 //    private FileTypeService fileTypeService;
 //    @Autowired
 //    private ServiceFilesServices serviceFileservice;
-    @Autowired
-    private ExtensionFileService extnFileService;
+//    @Autowired
+//    private ExtensionFileService extnFileService;
     @Autowired
     private BaseService baseService;
     @Autowired
     private FiletypeExtensionsService filetypeExtensionService;
     @Autowired
     private ServiceFiletypesService serviceFiletypesService;
-
+    
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
     public ProjectDetails getProjectDetails(@PathParam("projectId") String projectId, @PathParam("version") String version) {
@@ -295,4 +296,5 @@ public class AdminController {
     public void deleteServiceFiletypes(@RequestBody ServiceFiletypes serviceFileTypes) {
         serviceFiletypesService.delete(serviceFileTypes);
     }
+
 }

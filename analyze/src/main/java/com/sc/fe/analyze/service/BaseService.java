@@ -1,5 +1,7 @@
 package com.sc.fe.analyze.service;
 
+//import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,14 +16,19 @@ import org.springframework.stereotype.Service;
 //import com.sc.fe.analyze.data.entity.ServiceFiles;
 import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.data.repo.FiletypeExtensionsRepo;
 import com.sc.fe.analyze.data.repo.ServiceFiletypesRepo;
 //import com.sc.fe.analyze.data.repo.ExtensionFileRepo;
 //import com.sc.fe.analyze.data.repo.ExtensionsRepo;
 //import com.sc.fe.analyze.data.repo.FileTypesRepo;
 //import com.sc.fe.analyze.data.repo.ServiceFilesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
+import com.sc.fe.analyze.util.MappingUtil;
+import com.sc.fe.analyze.util.ReportUtility;
 //import com.sc.fe.analyze.util.MappingUtil;
 import java.util.HashMap;
+import java.util.Set;
+import javax.annotation.PostConstruct;
 
 /**
  *
@@ -34,6 +41,10 @@ public class BaseService {
 //    private ServiceFilesRepo serviceFilesRepo;
 //    @Autowired
 //    private ExtensionFileRepo extnFileRepo;
+//    @Autowired
+//    private FiletypeExtensions filetypeExtensions;
+    @Autowired
+    private FiletypeExtensionsRepo filetypeExtensionsRepo;
     @Autowired
     private ServiceFiletypesRepo serviceFiletypesRepo;
     @Autowired
@@ -47,10 +58,27 @@ public class BaseService {
      * This method initialize the elements(extensionMap,fileTypeMap and
      * serviceMap) of MappingUtil class.
      */
-//    @PostConstruct
-//    public void afterConst() {
+    @PostConstruct
+    public void afterConst() {
 //        MappingUtil.init(getExtensionMap(), getFileTypeMap(), getServiceMap());
-//    }
+        MappingUtil.init(serviceRepo.findAll(), serviceFiletypesRepo.findAll(), filetypeExtensionsRepo.findAll());
+    }
+
+    public Map<String, String> getFileTypeByExtension() {
+
+        Map<String, String> retMap = new HashMap<String, String>();
+
+        List<FiletypeExtensions> list = filetypeExtensionsRepo.findAll();
+        list.stream().forEach(e -> {
+            for (String extn : e.getExtensions()) {
+                retMap.put(extn, e.getKey().getFiletype());
+            }
+            
+        });
+        System.out.println(retMap);
+        return retMap;
+    }
+
     /**
      * This method retrieves file Extensions from database.
      *
@@ -62,7 +90,7 @@ public class BaseService {
 //
 //        List<Extensions> list = extnRepo.findAll();
 //        list.stream().forEach(e -> {
-//            retMap.put(e.getId(), e.getName());
+//            retMap.put(e.getId(), e.get Name());
 //        });
 //
 //        return retMap;
@@ -72,7 +100,7 @@ public class BaseService {
      *
      * @return the Map
      */
-    public Map<Integer, String> getFileTypeMap() {
+//    public Map<Integer, String> getFileTypeMap() {
 
 //        Map<Integer, String> retMap = new HashMap<Integer, String>();
 //
@@ -82,9 +110,7 @@ public class BaseService {
 //        });
 //
 //        return retMap;
-        return null;
-    }
-
+//    }
     /**
      * This method retrieves the Services from database.
      *
@@ -113,9 +139,14 @@ public class BaseService {
 //        List<ServiceFiles> serviceFiles = serviceFilesRepo.findByKeyServiceId(serviceId);
 //        return serviceFiles.stream().map(ServiceFiles::getFile).collect(Collectors.toList());
 //    }
-    public List<String> getServiceFiles(int serviceId) {
-        List<ServiceFiletypes> serviceFiletypes = serviceFiletypesRepo.findByKeyServiceId(serviceId);
+    public List<String> getServiceFiles(int serviceid) {
+        List<ServiceFiletypes> serviceFiletypes = serviceFiletypesRepo.findByKeyServiceid(serviceid);
         return serviceFiletypes.stream().map(ServiceFiletypes::getFileType).collect(Collectors.toList());
+    }
+
+    public List<String> getFilesType(String extension) {
+        List<FiletypeExtensions> extensionFiletypes = filetypeExtensionsRepo.findByExtensions(extension);
+        return extensionFiletypes.stream().map(FiletypeExtensions::getFileType).collect(Collectors.toList());
     }
 
     /**

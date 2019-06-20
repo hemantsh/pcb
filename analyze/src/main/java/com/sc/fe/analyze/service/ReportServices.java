@@ -46,8 +46,5 @@ public class ReportServices {
     public List<Report> getReportById(String projectId) {
         return reportRepo.findByKeyProjectId(projectId);
     }
-
-    public String getFileType(Integer id) {
-        return MappingUtil.getFileType(id);
-    }
+    
 }
