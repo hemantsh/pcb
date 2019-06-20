@@ -40,5 +40,18 @@ public class FiletypeExtensions implements Serializable {
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
     }
+    
+      public String getFileType(){
+        return getKey().getFiletype();
+    }
+    
+    public void setFileType(String filetype){
+        
+        if(key==null){
+            key= new FiletypeExtensionsPK();
+        }
+        
+        key.setFiletype(filetype);
+    }
 
 }

@@ -231,7 +231,7 @@ public class FileExtractUploadService {
             }
 
             //Required files as per business rules            
-            if (MappingUtil.getServiceId(splitService[i]) != null) {
+            if (MappingUtil.getServiceId(splitService[i]) != null) {                    
                 requiredFilesTypes.addAll(baseService.getServiceFiles(
                         MappingUtil.getServiceId(splitService[i]))
                 );
@@ -596,7 +596,7 @@ public class FileExtractUploadService {
      */
     private void processGerber(List<FileDetails> fileDetails) {
 
-//        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getExtensionToFileMapping());
+        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getFileTypeByExtension());
 
         //For each file that is gerber format
         fileDetails.stream()

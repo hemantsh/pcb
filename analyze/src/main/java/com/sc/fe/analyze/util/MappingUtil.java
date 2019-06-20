@@ -1,8 +1,18 @@
 package com.sc.fe.analyze.util;
 
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
+import com.sc.fe.analyze.data.entity.Services;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+//import com.sc.fe.analyze.to.FileTypeExtensions;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -10,101 +20,81 @@ import java.util.Map;
  */
 public class MappingUtil {
 
-    private static Map<Integer, String> extensionMap;
-    private static Map<Integer, String> fileTypeMap;
-    private static Map<Integer, String> serviceMap;
+//    private static Map<Integer, String> extensionMap;
+//    private static Map<Integer, String> fileTypeMap;
+    private static Map<Integer, Set<String>> serviceFiletypesMap = new HashMap<Integer, Set<String>>();//Key is ServiceId and value is filetype.
+    private static Map<Integer, String> serviceMap = new HashMap<Integer, String>();//Key is serviceId and value is Service Name.
+    private static Map<String, Set<String>> extensionTofiletypeMap = new HashMap<String, Set<String>>();//Key is extension and value is filetype.
 
-    private static Map<String, Integer> extensionReverseMap;
-    private static Map<String, Integer> fileTypeReverseMap;
+//    private static Map<String, Integer> extensionReverseMap;
+//    private static Map<String, Integer> fileTypeReverseMap;
     private static Map<String, Integer> serviceReverseMap;
 
     private MappingUtil() {
     }
 
-    ;
-	
-    /**
-     *
-     * @param p_extensionMap initialize the extensionMap
-     * @param p_fileTypeMap  initialize the fileTypeMap
-     * @param p_serviceMap initialize the serviceMap
-     */
-    public static void init(Map<Integer, String> p_extensionMap,
-            Map<Integer, String> p_fileTypeMap,
-            Map<Integer, String> p_serviceMap) {
+    public static void init(List<Services> pServices,
+            List<ServiceFiletypes> pServiceFiletypes,
+            List<FiletypeExtensions> pFiletypeExtensions) {        
 
-        extensionMap = p_extensionMap;
-        fileTypeMap = p_fileTypeMap;
-        serviceMap = p_serviceMap;
-
-        extensionReverseMap = new HashMap<String, Integer>(extensionMap.size());
-
-        Iterator<Integer> iKeys = extensionMap.keySet().iterator();
-
-        while (iKeys.hasNext()) {
-            Integer key = iKeys.next();
-            extensionReverseMap.put(extensionMap.get(key).toLowerCase(), key);
-        }
-
-        fileTypeReverseMap = new HashMap<String, Integer>(fileTypeMap.size());
-        iKeys = fileTypeMap.keySet().iterator();
-        while (iKeys.hasNext()) {
-            Integer key = iKeys.next();
-            fileTypeReverseMap.put(fileTypeMap.get(key).toLowerCase(), key);
-        }
-
+        servicesMap(pServices);
+        servicesFilesMap(pServiceFiletypes);
+        extensionToFileMap(pFiletypeExtensions);
+        
         serviceReverseMap = new HashMap<String, Integer>(serviceMap.size());
-        iKeys = serviceMap.keySet().iterator();
+        Iterator<Integer> iKeys = serviceMap.keySet().iterator();
         while (iKeys.hasNext()) {
             Integer key = iKeys.next();
             serviceReverseMap.put(serviceMap.get(key).toLowerCase(), key);
         }
 
+
     }
 
-    /**
-     *
-     * @param extension retrieve the id by extension
-     * @return the extension id
-     */
-    public static Integer getExtensionId(String extension) {
-        return extensionReverseMap.get(extension);
+    public static void servicesMap(List<Services> services) {
+        services.stream().forEach(row -> {
+            serviceMap.put(row.getId(), row.getName());
+        });
     }
 
-    /**
-     *
-     * @param extId retrieve the extension by id
-     * @return the extension
-     */
-    public static String getExtension(Integer extId) {
-        return extensionMap.get(extId);
+    public static void servicesFilesMap(List<ServiceFiletypes> serviceFilesMap) {
+        serviceFilesMap.stream().forEach(row -> {
+            if(serviceFiletypesMap.containsKey(row.getKey().getServiceid())){
+                Set<String> filetypes =serviceFiletypesMap.get(row.getKey().getServiceid());
+                filetypes.add(row.getFileType());
+                serviceFiletypesMap.put(row.getKey().getServiceid(), filetypes);
+            }
+            else{
+                  Set<String> file=new HashSet<String>();
+                  file.add(row.getFileType());
+                  serviceFiletypesMap.put(row.getKey().getServiceid(), file);                  
+            }
+        });
     }
 
-    /**
-     *
-     * @param fileType retrieve the id by fileType
-     * @return the fileTypeId
-     */
-    public static Integer getFileTypeId(String fileType) {
-        return fileTypeReverseMap.get(fileType);
+    public static void extensionToFileMap(List<FiletypeExtensions> filetypeExtensions) {
+        Set<String> filetypeSet = new HashSet<String>();
+        filetypeExtensions.stream().forEach(row -> {
+            for (String extn : row.getExtensions()) {
+                if (!extensionTofiletypeMap.containsKey(extn)) {
+                    if (!filetypeSet.contains(row.getKey().getFiletype())) {
+                        filetypeSet.add(row.getKey().getFiletype());
+                    }
+                    extensionTofiletypeMap.put(extn, filetypeSet);
+                }
+            }
+        });
     }
 
-    /**
-     *
-     * @param fileId retrieve the fileTypeby id
-     * @return the fileType
-     */
-    public static String getFileType(Integer fileId) {
-        return fileTypeMap.get(fileId);
-    }
-
+    
     /**
      *
      * @param serviceName retrieve the id by serviceName
      * @return the service id
      */
-    public static Integer getServiceId(String serviceName) {
+    public static Integer getServiceId(String serviceName) {                
         return serviceReverseMap.get(serviceName);
+        
     }
 
     /**

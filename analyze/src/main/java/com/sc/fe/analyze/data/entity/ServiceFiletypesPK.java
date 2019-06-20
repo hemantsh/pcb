@@ -21,14 +21,15 @@ public class ServiceFiletypesPK {
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "file_type")
     private String filetype;
 
-    public int getServiceId() {
+    public int getServiceid() {
         return serviceid;
     }
 
-    public void setServiceId(int service_id) {
-        this.serviceid = service_id;
+    public void setServiceid(int serviceid) {
+        this.serviceid = serviceid;
     }
 
+    
     public String getFiletype() {
         return filetype;
     }

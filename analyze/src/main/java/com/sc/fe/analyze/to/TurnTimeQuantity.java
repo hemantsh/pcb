@@ -5,11 +5,16 @@
  */
 package com.sc.fe.analyze.to;
 
+import java.io.Serializable;
+
 /**
  *
  * @author pc
  */
-public class TurnTimeQuantity {
+public class TurnTimeQuantity implements Serializable{
+
+    public TurnTimeQuantity() {
+    }
     private String time;    
     private int quantity;
 
