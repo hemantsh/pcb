@@ -20,7 +20,8 @@ public enum ErrorCodes {
     V0016("Fabrication Drawing file missing"),
     V0017("ODB or IPC2581 file missing"),
     V0018("Assembly TurnTime Quantity missing"),
-    V0019("Fabrication TrunTime Quantity missing");
+    V0019("Fabrication TrunTime Quantity missing"),
+	V0020("Drawing file missing");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;

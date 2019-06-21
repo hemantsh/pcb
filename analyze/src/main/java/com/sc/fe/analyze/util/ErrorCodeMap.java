@@ -32,12 +32,12 @@ public class ErrorCodeMap {
         temp.put("x&y or x and y or xandy", ErrorCodes.V0012);
         temp.put("mixed", ErrorCodes.V0013);
         temp.put("invalid_input", ErrorCodes.V0014);
-        temp.put("drawing", ErrorCodes.V0015);
         temp.put("assembly_drawing", ErrorCodes.V0015);
         temp.put("fabrication_drawing", ErrorCodes.V0016);
         temp.put("odb or ipc2581", ErrorCodes.V0017);
         temp.put("assembly turnTime qunatity", ErrorCodes.V0018);
         temp.put("fabrication turnTime qunatity", ErrorCodes.V0019);
+        temp.put("drawing", ErrorCodes.V0020);
         return temp;
     }
 

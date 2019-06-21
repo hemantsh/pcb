@@ -175,7 +175,15 @@ public class GerberFileProcessingUtil {
 	                	}
 	                	currentMapping.add(fileName);
 	                	filePurposeToNameMapping.put(fileType, currentMapping);
-	                	fileDetail.setType(fileType);
+	                	
+	                	String typ = fileDetail.getType();
+	                	if( StringUtils.isEmpty( typ) ) {
+	                		typ = "";
+	                	}else {
+	                		typ = typ +",";
+	                	}
+	                	typ = typ+fileType;
+	                	fileDetail.setType(typ);
 	                });
                 }
                 

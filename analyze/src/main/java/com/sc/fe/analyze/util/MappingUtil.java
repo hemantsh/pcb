@@ -67,15 +67,22 @@ public class MappingUtil {
     }
 
     public static void extensionToFileMap(List<FiletypeExtensions> filetypeExtensions) {
-        Set<String> filetypeSet = new HashSet<String>();
+        
         filetypeExtensions.stream().forEach(row -> {
             for (String extn : row.getExtensions()) {
-                if (!extensionTofiletypeMap.containsKey(extn)) {
-                    if (!filetypeSet.contains(row.getKey().getFiletype())) {
-                        filetypeSet.add(row.getKey().getFiletype());
-                    }
-                    extensionTofiletypeMap.put(extn, filetypeSet);
-                }
+            	Set<String> filetypeSet = extensionTofiletypeMap.get(extn);
+            	if( filetypeSet == null) {
+            		filetypeSet = new HashSet<String>();
+            	}
+            	filetypeSet.add(row.getKey().getFiletype());
+            	extensionTofiletypeMap.put(extn, filetypeSet);
+            	
+//                if (!extensionTofiletypeMap.containsKey(extn)) {
+//                    if (!filetypeSet.contains(row.getKey().getFiletype())) {
+//                        filetypeSet.add(row.getKey().getFiletype());
+//                    }
+//                    extensionTofiletypeMap.put(extn, filetypeSet);
+//                }
             }
         });
     }
