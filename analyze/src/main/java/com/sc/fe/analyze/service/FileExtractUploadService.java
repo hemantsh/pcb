@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,12 +247,8 @@ public class FileExtractUploadService extends BaseService {
         }
 
         //Types provided by customer (Only selected ones)
-        List<String> availFileTypes = projectDetails.getFileDetails().stream()
-                .filter(fd -> fd.getType() != null)
-                .filter(fd -> fd.isSelected())
-                .map(FileDetails::getType)
-                .collect(Collectors.toList());
-
+        List<String> availFileTypes = getAvailableFileTypes( projectDetails.getFileDetails(), true );
+        
         //Formats provided by customer(Only selected ones)
         Set<String> availFormats = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getFormat() != null)
@@ -266,15 +263,34 @@ public class FileExtractUploadService extends BaseService {
         return missing;
     }
 
+    private List<String> getAvailableFileTypes( List<FileDetails> fileDetails, boolean filterSelected) {
+    	//Types provided by customer (Only selected ones)
+        List<String> availFileTypes = fileDetails.stream()
+                .filter(fd -> fd.getType() != null)
+                .filter(fd -> fd.isSelected() == filterSelected )
+                .map(FileDetails::getType)
+                .collect(Collectors.toList());
+        
+        List<String> upd_availFileTypes = new ArrayList<String>();
+        //fileType can have multi values sep by , Here we make each of then separate.
+        availFileTypes.stream().forEach( type-> {	
+        	if(type.contains(",")) {
+        		String[] parts = type.split(",");
+        		upd_availFileTypes.addAll( Arrays.asList(parts));
+        	}else {
+        		upd_availFileTypes.add( type );
+        	}
+        });
+        availFileTypes.clear();
+        availFileTypes.addAll( upd_availFileTypes);
+        return availFileTypes;
+    }
+    
     //This function is used to retrieve those files which are not selected by user
     public List<ErrorCodes> nonSelectedFilesErorCodes(ProjectDetails projectDetails) {
         //Types provided by customer
         List<ErrorCodes> errCodes = new ArrayList<ErrorCodes>();
-        List<String> availFileTypes = projectDetails.getFileDetails().stream()
-                .filter(fd -> fd.getType() != null)
-                .filter(fd -> !fd.isSelected())
-                .map(FileDetails::getType)
-                .collect(Collectors.toList());
+        List<String> availFileTypes = getAvailableFileTypes( projectDetails.getFileDetails(), false );
 
         //Formats provided by customer
         Set<String> availFormats = projectDetails.getFileDetails().stream()

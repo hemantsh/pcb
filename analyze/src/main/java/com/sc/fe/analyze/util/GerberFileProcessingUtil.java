@@ -175,7 +175,8 @@ public class GerberFileProcessingUtil {
 	                	}
 	                	currentMapping.add(fileName);
 	                	filePurposeToNameMapping.put(fileType, currentMapping);
-	                	
+	                	//TODO: One extension can map to many fileTypes so we are adding 
+	                	//all types as comma separated. This will be useful later
 	                	String typ = fileDetail.getType();
 	                	if( StringUtils.isEmpty( typ) ) {
 	                		typ = "";
