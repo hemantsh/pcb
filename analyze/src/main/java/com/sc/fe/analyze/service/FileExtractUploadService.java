@@ -46,8 +46,6 @@ public class FileExtractUploadService extends BaseService {
 
     //private S3FileUtility util;
     @Autowired
-    BaseService baseService;
-    @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
     ProjectService projectService;
@@ -233,7 +231,7 @@ public class FileExtractUploadService extends BaseService {
 
             //Required files as per business rules            
             if (MappingUtil.getServiceId(splitService[i]) != null) {                    
-                requiredFilesTypes.addAll(baseService.getServiceFiles(
+                requiredFilesTypes.addAll(getServiceFiles(
                         MappingUtil.getServiceId(splitService[i]))
                 );
             }
