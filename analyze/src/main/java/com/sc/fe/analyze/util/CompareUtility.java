@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.to.TurnTimeQuantity;
 
 /**
  *
@@ -58,10 +59,15 @@ public class CompareUtility {
         try {
             differences.putAll(compareObject(newRecord, oldRecord));
             //Comparing the Validation errors with previous validation errors
-            differences.putAll(compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
+            //differences.putAll(compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
 
             //Compare the FileDetails of the file
             differences.putAll(compareFileDetails(newRecord, oldRecord));
+            
+            //CompareTrunTimes
+            differences.putAll(compareTurnTimes (newRecord.getAssemblyTurnTimeQuantity(), oldRecord.getAssemblyTurnTimeQuantity(), "AssemblyTurnTimes") );
+            differences.putAll(compareTurnTimes (newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity(), "FabricationTurnTimes") );
+            
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -69,6 +75,45 @@ public class CompareUtility {
             e.printStackTrace();
         }
         return differences;
+    }
+    
+    private static Map<String, String> compareTurnTimes(List<TurnTimeQuantity> newRecord, List<TurnTimeQuantity> oldRecord, String field) {
+    	
+    	Set<String> newSet, oldSet = null;
+    	if( newRecord == null) {
+    		newSet = new HashSet<String>();
+    	}else {
+    		newSet = newRecord.stream()
+        			.map(TurnTimeQuantity::stringData)
+        			.collect(Collectors.toSet());
+    	}
+    	
+    	if( oldRecord == null) {
+    		oldSet = new HashSet<String>();
+    	} else {
+    		oldSet = oldRecord.stream()
+        			.map(TurnTimeQuantity::stringData)
+        			.collect(Collectors.toSet());
+    	}
+    		
+    	Set<String> deletion = new HashSet<String>();
+    	deletion.addAll(oldSet);
+    	deletion.removeAll(newSet);
+    	
+    	Set<String> addition = new HashSet<String>();
+    	addition.addAll(newSet);
+    	addition.removeAll(oldSet);
+    	
+    	Map<String, String> differences = new HashMap<String, String>();
+    	if (deletion != null && deletion.size() > 0 ) {
+            differences.put(field+"(R)", "REMOVED" + DELIMITER + deletion);
+        }
+        
+        if (addition != null &&  addition.size() > 0) {
+            differences.put(field+"(A)", addition + DELIMITER + "ADDED");
+        }
+        
+    	return differences;
     }
 
     /**
@@ -145,6 +190,10 @@ public class CompareUtility {
             //Get FileDetail from 2 sets by same filename    
             FileDetails newFD = newProject.getFileDetails(fileName);    
             FileDetails oldFD = oldProject.getFileDetails(fileName);
+            
+            //RESET fields that are not supposed to be compared.
+            newFD.setStatus(""); newFD.setFileDate(null);
+            oldFD.setStatus(""); oldFD.setFileDate(null);
 
             try {
                 //Now compare

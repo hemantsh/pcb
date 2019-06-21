@@ -65,9 +65,11 @@ public class MappingUtil {
     }
 
     public static void extensionToFileMap(List<FiletypeExtensions> filetypeExtensions) {
-
+    	if(filetypeExtensions == null) {
+    		return;
+    	}
         filetypeExtensions.stream().forEach(row -> {
-            if (row.getExtensions().size() > 0) {
+            if (row.getExtensions() != null && row.getExtensions().size() > 0) {
 
                 for (String extn : row.getExtensions()) {
                     Set<String> filetypeSet = extensionTofiletypeMap.get(extn);

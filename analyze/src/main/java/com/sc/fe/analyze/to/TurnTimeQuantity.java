@@ -43,4 +43,8 @@ public class TurnTimeQuantity implements Serializable{
     public String toString() {
         return time+":"+quantity; //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public String stringData() {
+    	return "Time:"+time+"-Quantity:"+quantity;
+    }
 }
