@@ -51,5 +51,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
      * @return
      */
     List<Project> findByZipFileName(final String zipFileName);
+    
+    List<Project> findByRNumber(final String rNumber);
 
 }

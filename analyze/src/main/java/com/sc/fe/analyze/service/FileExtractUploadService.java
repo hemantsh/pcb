@@ -46,8 +46,6 @@ public class FileExtractUploadService extends BaseService {
 
     //private S3FileUtility util;
     @Autowired
-    BaseService baseService;
-    @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
     ProjectService projectService;
@@ -102,7 +100,7 @@ public class FileExtractUploadService extends BaseService {
                 //Splits the serviceType by ',' and check each serviceType that is valid or not.            
                 if (validateServiceType(projectDetails)) {
                     return report;
-                } 
+                }
             }
         }
 
@@ -215,7 +213,6 @@ public class FileExtractUploadService extends BaseService {
         String[] splitService = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitService.length; i++) {
             splitService[i] = splitService[i].toLowerCase().trim();
-            
 
             //Check that serviceType is Assembly or not
             if (splitService[i].equals("assembly")) {
@@ -232,8 +229,8 @@ public class FileExtractUploadService extends BaseService {
             }
 
             //Required files as per business rules            
-            if (MappingUtil.getServiceId(splitService[i]) != null) {                    
-                requiredFilesTypes.addAll(baseService.getServiceFiles(
+            if (MappingUtil.getServiceId(splitService[i]) != null) {
+                requiredFilesTypes.addAll(getServiceFiles(
                         MappingUtil.getServiceId(splitService[i]))
                 );
             }
@@ -247,8 +244,8 @@ public class FileExtractUploadService extends BaseService {
         }
 
         //Types provided by customer (Only selected ones)
-        List<String> availFileTypes = getAvailableFileTypes( projectDetails.getFileDetails(), true );
-        
+        List<String> availFileTypes = getAvailableFileTypes(projectDetails.getFileDetails(), true);
+
         //Formats provided by customer(Only selected ones)
         Set<String> availFormats = projectDetails.getFileDetails().stream()
                 .filter(fd -> fd.getFormat() != null)
@@ -263,34 +260,34 @@ public class FileExtractUploadService extends BaseService {
         return missing;
     }
 
-    private List<String> getAvailableFileTypes( List<FileDetails> fileDetails, boolean filterSelected) {
-    	//Types provided by customer (Only selected ones)
+    private List<String> getAvailableFileTypes(List<FileDetails> fileDetails, boolean filterSelected) {
+        //Types provided by customer (Only selected ones)
         List<String> availFileTypes = fileDetails.stream()
                 .filter(fd -> fd.getType() != null)
-                .filter(fd -> fd.isSelected() == filterSelected )
+                .filter(fd -> fd.isSelected() == filterSelected)
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
-        
+
         List<String> upd_availFileTypes = new ArrayList<String>();
         //fileType can have multi values sep by , Here we make each of then separate.
-        availFileTypes.stream().forEach( type-> {	
-        	if(type.contains(",")) {
-        		String[] parts = type.split(",");
-        		upd_availFileTypes.addAll( Arrays.asList(parts));
-        	}else {
-        		upd_availFileTypes.add( type );
-        	}
+        availFileTypes.stream().forEach(type -> {
+            if (type.contains(",")) {
+                String[] parts = type.split(",");
+                upd_availFileTypes.addAll(Arrays.asList(parts));
+            } else {
+                upd_availFileTypes.add(type);
+            }
         });
         availFileTypes.clear();
-        availFileTypes.addAll( upd_availFileTypes);
+        availFileTypes.addAll(upd_availFileTypes);
         return availFileTypes;
     }
-    
+
     //This function is used to retrieve those files which are not selected by user
     public List<ErrorCodes> nonSelectedFilesErorCodes(ProjectDetails projectDetails) {
         //Types provided by customer
         List<ErrorCodes> errCodes = new ArrayList<ErrorCodes>();
-        List<String> availFileTypes = getAvailableFileTypes( projectDetails.getFileDetails(), false );
+        List<String> availFileTypes = getAvailableFileTypes(projectDetails.getFileDetails(), false);
 
         //Formats provided by customer
         Set<String> availFormats = projectDetails.getFileDetails().stream()
@@ -333,7 +330,7 @@ public class FileExtractUploadService extends BaseService {
         if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
             return;
-        }   
+        }
 
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
@@ -389,18 +386,10 @@ public class FileExtractUploadService extends BaseService {
             return projectDetails.getProjectId();
         }
         //TODO:Get by RNumber.
-        //For existing project ( customer forgot to pass projectID, we need to find it)
+        //For existing project ( customer forgot to pass projectID, we need to find it)        
         if (!projectDetails.isNewProject()) {
-            //Get by customerID - Best chance to find match with this
-            projKeyMap = getProjectIdByCustomerId(projectDetails.getCustomerId());
-            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-                //Get by customerEmal - next best chance to find match with this
-                projKeyMap = getProjectIdByCustomerEmail(projectDetails.getEmailAddress());
-            }
-            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-                //Get by zipFileName - possible chance to find match with this
-                projKeyMap = getProjectIdByZipName(projectDetails.getZipFileName());
-            }
+            //Get by rNumber 
+            projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
         }
         //Still empty or a new project, CALL FEMS API to get it
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
@@ -412,6 +401,25 @@ public class FileExtractUploadService extends BaseService {
             projectDetails.setVersion(projKeyMap.get("version"));
         }
         return projKeyMap.get("project_id");
+    }
+
+    /**
+     * Find the project by rNumber
+     *
+     * @param rNumber the rNumber
+     * @return map of projectId and version of matching record
+     */
+    private Map<String, String> getProjectIdByRNumber(String rNumber) {
+        Map<String, String> retMap = new HashMap<String, String>();
+        if (!StringUtils.isEmpty(rNumber)) {
+            List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
+            ProjectDetails latestRecord = getLatestRecord(projDtl);
+            if (latestRecord != null) {
+                retMap.put("project_id", latestRecord.getProjectId());
+                retMap.put("version", latestRecord.getVersion());
+            }
+        }
+        return retMap;
     }
 
     /**
@@ -467,66 +475,6 @@ public class FileExtractUploadService extends BaseService {
         }
 
         return prevRecord;
-    }
-
-    /**
-     * Find the project by customerID
-     *
-     * @param customerId the customerId of the customer
-     * @return projectID of matching record
-     */
-    private Map<String, String> getProjectIdByCustomerId(String customerId) {
-        Map<String, String> retMap = new HashMap<String, String>();
-        if (!StringUtils.isEmpty(customerId)) {
-
-            List<ProjectDetails> projDtl = projectService.findByCustomerId(customerId);
-            ProjectDetails latestRecord = getLatestRecord(projDtl);
-            if (latestRecord != null) {
-                retMap.put("project_id", latestRecord.getProjectId());
-                retMap.put("version", latestRecord.getVersion());
-            }
-        }
-        return retMap;
-    }
-
-    /**
-     * Find the project by customerEmail
-     *
-     * @param emailId the email of the customer
-     * @return projectID of matching record
-     */
-    private Map<String, String> getProjectIdByCustomerEmail(String emailId) {
-        Map<String, String> retMap = new HashMap<String, String>();
-        if (!StringUtils.isEmpty(emailId)) {
-
-            List<ProjectDetails> projDtl = projectService.findByCustomerEmail(emailId);
-            ProjectDetails latestRecord = getLatestRecord(projDtl);
-            if (latestRecord != null) {
-                retMap.put("project_id", latestRecord.getProjectId());
-                retMap.put("version", latestRecord.getVersion());
-            }
-        }
-        return retMap;
-    }
-
-    /**
-     * Find the project by zipFileName
-     *
-     * @param zipFileName
-     * @return projectID of matching record
-     */
-    private Map<String, String> getProjectIdByZipName(String zipFileName) {
-        Map<String, String> retMap = new HashMap<String, String>();
-        if (!StringUtils.isEmpty(zipFileName)) {
-
-            List<ProjectDetails> projDtl = projectService.findByZipFileName(zipFileName);
-            ProjectDetails latestRecord = getLatestRecord(projDtl);
-            if (latestRecord != null) {
-                retMap.put("project_id", latestRecord.getProjectId());
-                retMap.put("version", latestRecord.getVersion());
-            }
-        }
-        return retMap;
     }
 
     /**
@@ -612,7 +560,7 @@ public class FileExtractUploadService extends BaseService {
      */
     private void processGerber(List<FileDetails> fileDetails) {
 
-        GerberFileProcessingUtil.processFilesByExtension( fileDetails, getExtensionTofiletypeMap() );
+        GerberFileProcessingUtil.processFilesByExtension(fileDetails, getExtensionTofiletypeMap());
 
         //For each file that is gerber format
         fileDetails.stream()

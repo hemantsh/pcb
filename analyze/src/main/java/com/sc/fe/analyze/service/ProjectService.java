@@ -106,6 +106,9 @@ public class ProjectService {
         return convertList(projectRepo.findByCustomerId(customerId));
     }
 
+    public List<ProjectDetails> findByrNumber(String rNumber) {
+        return convertList(projectRepo.findByRNumber(rNumber));
+    }
     /**
      * Finds the data by ProjectId.
      *
