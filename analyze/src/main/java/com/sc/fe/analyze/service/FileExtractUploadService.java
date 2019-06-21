@@ -38,7 +38,7 @@ import com.sc.fe.analyze.util.ReportUtility;
  * @author Hemant
  */
 @Service
-public class FileExtractUploadService {
+public class FileExtractUploadService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
     private FileStoreUtil util;
@@ -596,7 +596,7 @@ public class FileExtractUploadService {
      */
     private void processGerber(List<FileDetails> fileDetails) {
 
-        GerberFileProcessingUtil.processFilesByExtension(fileDetails, baseService.getFileTypeByExtension());
+        GerberFileProcessingUtil.processFilesByExtension( fileDetails, getExtensionTofiletypeMap() );
 
         //For each file that is gerber format
         fileDetails.stream()

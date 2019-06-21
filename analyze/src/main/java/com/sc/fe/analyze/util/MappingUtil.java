@@ -1,11 +1,5 @@
 package com.sc.fe.analyze.util;
 
-import com.sc.fe.analyze.data.entity.FiletypeExtensions;
-
-import com.sc.fe.analyze.data.entity.ServiceFiletypes;
-import com.sc.fe.analyze.data.entity.Services;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,20 +8,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
+import com.sc.fe.analyze.data.entity.Services;
+
 /**
  *
  * @author Hemant
  */
 public class MappingUtil {
 
-//    private static Map<Integer, String> extensionMap;
-//    private static Map<Integer, String> fileTypeMap;
     private static Map<Integer, Set<String>> serviceFiletypesMap = new HashMap<Integer, Set<String>>();//Key is ServiceId and value is filetype.
     private static Map<Integer, String> serviceMap = new HashMap<Integer, String>();//Key is serviceId and value is Service Name.
     private static Map<String, Set<String>> extensionTofiletypeMap = new HashMap<String, Set<String>>();//Key is extension and value is filetype.
 
-//    private static Map<String, Integer> extensionReverseMap;
-//    private static Map<String, Integer> fileTypeReverseMap;
     private static Map<String, Integer> serviceReverseMap;
 
     private MappingUtil() {
@@ -105,5 +99,33 @@ public class MappingUtil {
     public static String getServiceName(Integer serviceId) {
         return serviceMap.get(serviceId);
     }
+
+	/**
+	 * @return the serviceFiletypesMap
+	 */
+	public static Map<Integer, Set<String>> getServiceFiletypesMap() {
+		return serviceFiletypesMap;
+	}
+
+	/**
+	 * @param serviceFiletypesMap the serviceFiletypesMap to set
+	 */
+	public static void setServiceFiletypesMap(Map<Integer, Set<String>> serviceFiletypesMap) {
+		MappingUtil.serviceFiletypesMap = serviceFiletypesMap;
+	}
+
+	/**
+	 * @return the extensionTofiletypeMap
+	 */
+	public static Map<String, Set<String>> getExtensionTofiletypeMap() {
+		return extensionTofiletypeMap;
+	}
+
+	/**
+	 * @param extensionTofiletypeMap the extensionTofiletypeMap to set
+	 */
+	public static void setExtensionTofiletypeMap(Map<String, Set<String>> extensionTofiletypeMap) {
+		MappingUtil.extensionTofiletypeMap = extensionTofiletypeMap;
+	}
 
 }

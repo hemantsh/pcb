@@ -34,7 +34,6 @@ import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
-import io.netty.util.internal.StringUtil;
 
 /**
  *
@@ -153,36 +152,40 @@ public class GerberFileProcessingUtil {
      * @return the filePurposeToNameMapping
      */
     public static Map<String, Set<String>> processFilesByExtension(List<FileDetails> fileDetails,
-            Map<String, String> extensionToFileMapping) {
+            Map<String, Set<String> > extensionToFileTypeMapping) {
 
         Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
+        //Key:fileType , Value = set of fileNames from zip that match to be of this fileType
 
         fileDetails.forEach(fileDetail -> {
+        	
             if (fileDetail.getType() == null) {
-                String exfile = fileDetail.getName();
-                String[] nameParts = exfile.split("\\.");
+                String fileName = fileDetail.getName();
+                String[] nameParts = fileName.split("\\.");
                 String extn = nameParts[nameParts.length - 1].toLowerCase();
 
-                if (extensionToFileMapping.containsKey(extn)) {
-
-                    Set<String> currentMapping = filePurposeToNameMapping.get(extensionToFileMapping.get(extn));
-                    if (currentMapping == null) {
-                        currentMapping = new HashSet<String>();
-                    }
-
-                    currentMapping.add(exfile);
-                    String fileType = extensionToFileMapping.get(extn);
-                    filePurposeToNameMapping.put(fileType, currentMapping);
-                    fileDetail.setType(fileType);
-                    //fileDetail.setFormat("gerber"); TODO
+                Set<String> fileTypes = extensionToFileTypeMapping.get(extn);// All the types by the extension
+                
+                if(fileTypes != null) {
+	                fileTypes.stream().forEach( fileType -> {
+	                	
+	                	Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
+	                	if (currentMapping == null) {
+	                		currentMapping = new HashSet<String>();
+	                	}
+	                	currentMapping.add(fileName);
+	                	filePurposeToNameMapping.put(fileType, currentMapping);
+	                	fileDetail.setType(fileType);
+	                });
                 }
+                
             }
         });
         return filePurposeToNameMapping;
     }
 
     public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
-            Map<String, String> extensionToFileMapping) {
+            Map<String, Set<String> > extensionToFileMapping) {
 
         return processFilesByExtension(report.getFileDetails(), extensionToFileMapping);
     }
@@ -573,7 +576,11 @@ public class GerberFileProcessingUtil {
                         //System.out.println("File Found--Filename--"+fileName+"--RegularExpression--"+p);                        
                         fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*", ""));
                         fd.setContext(splitRSide[1]);
-                        fd.setType(splitRSide[2]);
+                        
+                        if( StringUtils.isEmpty(fd.getType()) ) {
+                        	fd.setType(splitRSide[2]);
+                        }
+                        
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);
                         splitRSide[5] = splitRSide[5].replace("\\", "");
