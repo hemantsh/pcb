@@ -229,6 +229,7 @@ public class FileExtractUploadService extends BaseService {
             }
 
             //Required files as per business rules            
+
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes.addAll(getServiceFiles(
                         MappingUtil.getServiceId(splitService[i]))
