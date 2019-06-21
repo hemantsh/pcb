@@ -76,6 +76,7 @@ CREATE KEYSPACE fileexchange
  
 CREATE INDEX on project (project_id);
 CREATE INDEX on project (customer_id);
+CREATE INDEX on project (rnumber);
 CREATE INDEX on project (customer_email);
 CREATE INDEX on project (zipfile_name);
 
