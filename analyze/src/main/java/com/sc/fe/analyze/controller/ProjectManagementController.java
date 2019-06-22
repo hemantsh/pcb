@@ -41,6 +41,19 @@ public class ProjectManagementController {
 
     @Autowired
     private FileExtractUploadService fileUploadService;
+    
+    @GetMapping(path="/project/runmber/{rnumber}")
+    public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String projectId) {
+    	//TODO: implement this
+    	ProjectDetails temp = new ProjectDetails();
+    	
+    	//Only project information is required. Nullify rest info
+    	temp.setFileDetails(null);
+    	temp.setErrors(null);
+    	temp.setDifferences(null);
+    	
+    	return temp;
+    }
 
     @PostMapping(path = "/test")
     @ResponseBody
