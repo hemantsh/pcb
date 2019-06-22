@@ -37,22 +37,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectManagementController {
 
     @Autowired
-    ProjectService projectService;
-
+    ProjectService projectService;    
     @Autowired
     private FileExtractUploadService fileUploadService;
     
-    @GetMapping(path="/project/runmber/{rnumber}")
-    public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String projectId) {
-    	//TODO: implement this
-    	ProjectDetails temp = new ProjectDetails();
-    	
+    @GetMapping(path="/project/rnumber/{rnumber}")
+    public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String rNumber) {
+    	//TODO: implement this    	
+        List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
+        ProjectDetails latestRecord = fileUploadService.getLatestRecord(projDtl);
     	//Only project information is required. Nullify rest info
-    	temp.setFileDetails(null);
-    	temp.setErrors(null);
-    	temp.setDifferences(null);
-    	
-    	return temp;
+    	latestRecord.setErrors(null);
+    	return latestRecord;
     }
 
     @PostMapping(path = "/test")
@@ -73,17 +69,20 @@ public class ProjectManagementController {
         temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
         temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
-        temp.setVersion(projectDetails.getVersion());
-        temp.setErrors(projectDetails.getErrors());
-        temp.setDifferences(projectDetails.getDifferences());
-
+        if(projectDetails.getSetId()==null){
+            temp.setErrors(projectDetails.getErrors());
+            temp.setDifferences(projectDetails.getDifferences());        
+        }else{
+            temp.setVersion(projectDetails.getVersion());
+        }
         return temp;
     }
 
     @PostMapping(path = "/project")
     @ResponseBody
-    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
+    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
         if (projectDetails.isAttachReplace() && !projectDetails.isNewProject()) {
+            String setId=projectDetails.getSetId();
             if (StringUtils.isEmpty(projectDetails.getrNumber())) {
                 projectDetails.getErrors().put("V0000", "rNumber is required");
                 return validate(projectDetails);
@@ -94,16 +93,24 @@ public class ProjectManagementController {
             fileUploadService.save(projectDetails);
             projectDetails = fileUploadService.getLatestRecord(projectDetails.getProjectId());
             projectDetails.setAttachReplace(true);
-            projectDetails.setDifferences(diff);
-            return validate(projectDetails);
+            projectDetails.setDifferences(diff);   
+            projectDetails.setSetId(setId);
+            return validate(projectDetails);            
         }
         fileUploadService.save(projectDetails);
         if (projectDetails.hasError()) {           
             return validate(projectDetails);
+        }        
+        fileUploadService.compareProject(projectDetails);    
+        ProjectDetails retDetails=validate(projectDetails);
+        //If setId is not there,then delete the records from project_files or project table.
+        if(retDetails.getSetId()==null){   
+            fileUploadService.setIdValidation(projectDetails);
         }
-        fileUploadService.compareProject(projectDetails);        
-        return validate(projectDetails);
+        return retDetails;
     }
+
+   
 
     @GetMapping("/projects")
     public List<ProjectDetails> getAllProjects(ProjectDetails projectDetails) {
