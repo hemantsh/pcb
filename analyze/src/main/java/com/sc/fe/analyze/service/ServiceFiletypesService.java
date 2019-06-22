@@ -25,11 +25,15 @@ public class ServiceFiletypesService {
         return serviceFiletypeRepo.findAll();
     }
 
-    public void save(ServiceFiletypes serviceFileType) {
-        serviceFiletypeRepo.save(serviceFileType);
+    public List<ServiceFiletypes> findByKeyServiceId(int serviceId) {
+        return serviceFiletypeRepo.findByKeyServiceid(serviceId);
     }
 
-    public void delete(ServiceFiletypes serviceFiletype) {
-        serviceFiletypeRepo.delete(serviceFiletype);
+    public void save(List<ServiceFiletypes> serviceFileType) {
+        serviceFiletypeRepo.saveAll(serviceFileType);
+    }
+
+    public void delete(List<ServiceFiletypes> serviceFiletype) {
+        serviceFiletypeRepo.deleteAll(serviceFiletype);
     }
 }

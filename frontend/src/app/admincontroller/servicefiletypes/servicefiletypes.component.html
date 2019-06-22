@@ -1,0 +1,61 @@
+<!-- Status Code -->
+<div class="alert alert-success alert-dismissible fade in"  [ngClass]="[successMsgDiv]" id="success">
+  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  Data has been saved <strong>Successfully!</strong>
+</div>
+<!-- Table Code -->
+<div class="static">
+  <div class="fixback">
+    <a routerLink="../services"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</a>
+  </div>
+</div>
+<!-- Drop Down Code -->
+<div class="new-div">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="services" class="control-label">Select Services:</label>
+        <select id="services" class="form-control" [(ngModel)]="selectedServiceId"
+          (change)="onServiceSelect(selectedServiceId)">
+          <option value="0" selected disabled="true">Please Select a Service</option>
+          <option *ngFor="let service of serviceArr" [value]="service.id">{{service.name}}</option>
+
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="reportscroll col-md-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>FileTypes</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let filetype of fileTypeArr">
+              <td>{{filetype.fileType}}</td>
+              <td>
+                <button class="btn btn-danger btn-md"><span class="glyphicon glyphicon-remove-sign" 
+                  (click)="removeFiletype(filetype)"></span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row pad-top">
+      <div class="col-md-12">
+        <label for="filetypes" class="control-label">Select FileTypes:</label>
+        <select id="file_type" class="form-control" [(ngModel)]="selectedFiletype" 
+        (change)="onFiletypeSelect()">
+          <option value="0" disabled="true">Please Select a Filetype</option>
+          <option  *ngFor="let filetype of filetypes" >{{filetype}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="form-group btn-center">
+    <button class="btn btn-primary" (click)="onSave()">Save</button>
+  </div>
+</div>

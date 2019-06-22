@@ -27,6 +27,7 @@ import {CanFiletypeExtnDeactivateGuard} from './admincontroller/filetypeextensio
 import { InputJSONComponent } from './input-json/input-json.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FiletypeextensionsComponent } from './admincontroller/filetypeextensions/filetypeextensions.component';
+import { ServicefiletypesComponent } from './admincontroller/servicefiletypes/servicefiletypes.component';
 
 /**
  * Routes are used to navigate from one page to another.
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
       { path: "servicefiles", component: ServicefilesComponent, canDeactivate: [CanServiceFilesDeactivateGuard] },
       { path: "extensionfiles", component: ExtenfilesComponent, canDeactivate: [CanDeactivateGuard] },
       { path: "report", component: ReportComponent },
-      { path: "filetypeextensions", component: FiletypeextensionsComponent,canDeactivate:[CanFiletypeExtnDeactivateGuard] }
+      { path: "filetypeextensions", component: FiletypeextensionsComponent,canDeactivate:[CanFiletypeExtnDeactivateGuard] },
+      {path: "servicefiletypes",component:ServicefiletypesComponent}
     ]
   },
   {
@@ -73,7 +75,8 @@ const appRoutes: Routes = [
     ExtenfilesComponent,
     InputJSONComponent,
     PageNotFoundComponent,
-    FiletypeextensionsComponent
+    FiletypeextensionsComponent,
+    ServicefiletypesComponent
   ],
   imports: [
     BrowserModule,
