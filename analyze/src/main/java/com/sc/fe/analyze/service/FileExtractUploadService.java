@@ -311,7 +311,7 @@ public class FileExtractUploadService extends BaseService {
      * @param projectDetails Details of the project
      */
     public void save(ProjectDetails projectDetails) {
-
+        
         if (!projectDetails.isAttachReplace()) {
             //Check that rNumber is given in the JSON request or not.
             if (StringUtils.isEmpty(projectDetails.getrNumber())) {
@@ -360,6 +360,19 @@ public class FileExtractUploadService extends BaseService {
 
     }
 
+     public void setIdValidation(ProjectDetails projectDetails) {
+        //If setId is not there,then delete the records from project_files or project table.                
+            String projectId=projectDetails.getProjectId();
+            String version=projectDetails.getVersion();
+            projectDetails.getFileDetails().stream().forEach(fd -> {
+                fd.setVersion(UUID.fromString(version));
+                ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
+                pFiles.setProjectId(projectId);
+                projectFilesService.delete(pFiles);            
+            });
+            projectService.delete(ReportUtility.convertToDBObject(projectDetails));        
+    }
+    
     public boolean validateServiceType(ProjectDetails projectDetails) {
         String[] splitServiceTypes = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitServiceTypes.length; i++) {
@@ -442,7 +455,7 @@ public class FileExtractUploadService extends BaseService {
      * @param projDtl Details of the project
      * @return Null if not found. Else return the match
      */
-    private ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
+    public ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
         ProjectDetails latestRecord = null;
         if (projDtl != null && projDtl.size() > 0) {
             latestRecord = projDtl.stream()

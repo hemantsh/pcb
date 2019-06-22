@@ -192,8 +192,8 @@ public class CompareUtility {
             FileDetails oldFD = oldProject.getFileDetails(fileName);
             
             //RESET fields that are not supposed to be compared.
-            newFD.setStatus(""); newFD.setFileDate(null);
-            oldFD.setStatus(""); oldFD.setFileDate(null);
+//            newFD.setStatus(""); newFD.setFileDate(null);
+//            oldFD.setStatus(""); oldFD.setFileDate(null);
 
             try {
                 //Now compare
