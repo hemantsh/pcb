@@ -19,7 +19,8 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 
 /**
- *
+ * Utility class that has methods to compare various objects that are used in this project
+ * along with generic object comparison.
  * @author Hemant
  */
 public class CompareUtility {
@@ -38,11 +39,12 @@ public class CompareUtility {
         set.add("createDate");
         set.add("newProject");
         set.add("attachReplace");
+        set.add("status");
         return set;
     }
 
     /**
-     * This method is compare the new Record from the old Record details
+     * This method is compare the new ProjectDetails with the old ProjectDetails
      *
      * @param newRecord the new Record of the ProjectDetails to set
      * @param oldRecord the old Record of the ProjectDetails to set
@@ -77,6 +79,13 @@ public class CompareUtility {
         return differences;
     }
     
+    /**
+     * Compare TurnTimeQuantity objects
+     * @param newRecord
+     * @param oldRecord
+     * @param field
+     * @return
+     */
     private static Map<String, String> compareTurnTimes(List<TurnTimeQuantity> newRecord, List<TurnTimeQuantity> oldRecord, String field) {
     	
     	Set<String> newSet, oldSet = null;
@@ -117,7 +126,7 @@ public class CompareUtility {
     }
 
     /**
-     * This method is compare the new Object from the old Object details.
+     * This generic method compares the new Object with the old Object details.
      *
      * @param newFD the new object details to set
      * @param oldFD the old object details to set
@@ -160,7 +169,7 @@ public class CompareUtility {
     }
 
     /**
-     * This method is compare the new project file details from the old project
+     * This method compares the new ProjectDetails with the old ProjectDetails
      * file details
      *
      * @param newProject the new project of the ProjectDetails to set
@@ -190,10 +199,6 @@ public class CompareUtility {
             //Get FileDetail from 2 sets by same filename    
             FileDetails newFD = newProject.getFileDetails(fileName);    
             FileDetails oldFD = oldProject.getFileDetails(fileName);
-            
-            //RESET fields that are not supposed to be compared.
-//            newFD.setStatus(""); newFD.setFileDate(null);
-//            oldFD.setStatus(""); oldFD.setFileDate(null);
 
             try {
                 //Now compare
@@ -208,9 +213,8 @@ public class CompareUtility {
     }
 
     /**
-     * This method is compare the new project file details from the old project
-     * file details
-     *
+     * This method compares the new FileDetails with the old FileDetails
+     * 
      * @param newFD the new FileDetails object details to set
      * @param oldFD the old FileDetails object details to set
      * @return the differences after comparing the new FileDetails object from
@@ -250,8 +254,7 @@ public class CompareUtility {
     }
 
     /**
-     * This method is compare the new project Map object from the old project
-     * Map object
+     * This method compares the Map<String,String> objects
      *
      * @param newMap the new Map object details to set
      * @param oldMap the old Map object details to set
@@ -271,8 +274,7 @@ public class CompareUtility {
         }
         //For each key, compare old and new
         combinedKeys.stream().forEach(key -> {
-            String oldValue = NA;
-            String newValue = NA;
+            String oldValue = NA, newValue = NA;
             if (oldMap != null && oldMap.get(key) != null) {
                 oldValue = oldMap.get(key);
             }
@@ -309,8 +311,7 @@ public class CompareUtility {
         }
         //For each key, compare old and new
         combinedKeys.stream().forEach(key -> {
-            Object oldValue = NA;
-            Object newValue = NA;
+            Object oldValue = NA, newValue = NA;
             if (oldMap != null && oldMap.get(key) != null) {
                 oldValue = oldMap.get(key);
             }
@@ -327,6 +328,7 @@ public class CompareUtility {
     }
     
     public static Set<String> formatedError( Map<String, String> errors) {
+    	//TODO: externalize/constant the string text
     	Set<String> formatedErrorSet = new HashSet<String>();
 		if (errors != null && errors.size() > 0) {
 
@@ -372,7 +374,7 @@ public class CompareUtility {
      * @return the boolean value
      */
     private static boolean isCollection(Field field) {
-        // TODO Auto-generated method stub
+        
         boolean retVal = false;
         if (Collection.class.isAssignableFrom(field.getType())) {
             return true;
@@ -388,18 +390,18 @@ public class CompareUtility {
     
     /**
      * Find missing items from reqTypes by checking items in availTypes
-     * @param reqTypes
+     * @param reqiredTypes
      * @param availTypes
      * @return
      */
-    public static List<String> findMissingItems(final List<String> reqTypes, final List<String> availTypes) {
+    public static List<String> findMissingItems(final List<String> reqiredTypes, final List<String> availTypes) {
     	//Collect all elements to be removed from requiredTypes. 
     	//These are the elements which are common with availableTypes
     	List<String> toRemove = new ArrayList<String>();
         
     	//Making copies of input params. We don't want to update/change parameters passed
     	List<String> requiredTypes = new ArrayList<String>();
-    	requiredTypes.addAll(reqTypes);
+    	requiredTypes.addAll(reqiredTypes);
     	
     	List<String> availableTypes = new ArrayList<String>();
     	availableTypes.addAll(availTypes);

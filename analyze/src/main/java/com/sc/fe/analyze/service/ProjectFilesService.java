@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.to.FileDetails;
@@ -65,7 +66,7 @@ public class ProjectFilesService {
      * @param project_files has values that needs to delete from the database.
      */
     public void delete(ProjectFiles project_files) {
-        projectFilesRepo.delete(project_files);
+    	projectFilesRepo.delete(project_files);
     }
 
     /**

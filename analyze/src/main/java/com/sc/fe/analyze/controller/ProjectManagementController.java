@@ -69,7 +69,8 @@ public class ProjectManagementController {
         temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
         temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
-        if(projectDetails.getSetId()==null){
+        
+        if( StringUtils.isEmpty(projectDetails.getSetId()) ){
             temp.setErrors(projectDetails.getErrors());
             temp.setDifferences(projectDetails.getDifferences());        
         }else{
@@ -104,7 +105,7 @@ public class ProjectManagementController {
         fileUploadService.compareProject(projectDetails);    
         ProjectDetails retDetails=validate(projectDetails);
         //If setId is not there,then delete the records from project_files or project table.
-        if(retDetails.getSetId()==null){   
+        if( StringUtils.isEmpty( retDetails.getSetId()) ){   
             fileUploadService.setIdValidation(projectDetails);
         }
         return retDetails;

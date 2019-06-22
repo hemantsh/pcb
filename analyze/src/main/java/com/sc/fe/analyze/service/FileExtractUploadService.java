@@ -2,7 +2,6 @@ package com.sc.fe.analyze.service;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,10 +27,8 @@ import com.sc.fe.analyze.to.Report;
 import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.ErrorCodes;
-import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.MappingUtil;
-import com.sc.fe.analyze.util.ODBProcessing;
 import com.sc.fe.analyze.util.ReportUtility;
 
 /**
@@ -42,9 +39,9 @@ import com.sc.fe.analyze.util.ReportUtility;
 public class FileExtractUploadService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
-    private FileStoreUtil util;
-
+    //private FileStoreUtil util;
     //private S3FileUtility util;
+    
     @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
@@ -56,7 +53,7 @@ public class FileExtractUploadService extends BaseService {
      */
     @Autowired
     public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
-        this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
+        //this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
         //this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
 
@@ -393,22 +390,21 @@ public class FileExtractUploadService extends BaseService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-        //TODO: Get the project from rNumber.
+        
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that       
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
             return projectDetails.getProjectId();
         }
-        //TODO:Get by RNumber.
+        //Get by RNumber.
         //For existing project ( customer forgot to pass projectID, we need to find it)        
         if (!projectDetails.isNewProject()) {
             //Get by rNumber 
             projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
         }
-        //Still empty or a new project, CALL FEMS API to get it
+        
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-            //TODO: when FEMS ready, we need to call API
-            //projectId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+            
             projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
         }
         if (projectDetails.isAttachReplace()) {
@@ -508,10 +504,8 @@ public class FileExtractUploadService extends BaseService {
     }
 
     public ProjectDetails returnProjectId(ProjectDetails projectDetails) {
-        //TODO: implememt
         //Get the projectDetails by projectId
         //call validateFiles( ProjectDetails projectDetails ) to get results
-        //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
         String version = getVersion(projectDetails);
@@ -566,6 +560,7 @@ public class FileExtractUploadService extends BaseService {
      * projectDetails.getProjectId()).toAbsolutePath().normalize();
      * FileUtil.deleteFolder(folder.toFile()); return report; }*
      */
+    
     /**
      * Performs all possible Gerber file processing.
      *
@@ -596,19 +591,19 @@ public class FileExtractUploadService extends BaseService {
         //To check that whether file type is ODB or not.
         File[] listOfFiles = folder.toFile().listFiles();
         List<FileDetails> fdList = new ArrayList<FileDetails>();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isDirectory()) {
-                if (listOfFiles[i].getName().toLowerCase().equals("odb")) {
-                    Path checkODBFolder = Paths.get(util.getUploadDir() + File.separator + projectId + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
-                    if (checkODBFolder.toFile().exists()) {
-                        fdList = ODBProcessing.processODB(checkODBFolder);
-                        //Print Result 
-                        //fdList.stream().forEach(fd->
-                        //System.out.println(fd.getName()));
-                    }
-                }
-            }
-        }
+//        for (int i = 0; i < listOfFiles.length; i++) {
+//            if (listOfFiles[i].isDirectory()) {
+//                if (listOfFiles[i].getName().toLowerCase().equals("odb")) {
+//                    Path checkODBFolder = Paths.get(util.getUploadDir() + File.separator + projectId + File.separator + listOfFiles[i].getName() + File.separator + "matrix" + File.separator + "matrix").toAbsolutePath().normalize();
+//                    if (checkODBFolder.toFile().exists()) {
+//                        fdList = ODBProcessing.processODB(checkODBFolder);
+//                        //Print Result 
+//                        //fdList.stream().forEach(fd->
+//                        //System.out.println(fd.getName()));
+//                    }
+//                }
+//            }
+//        }
         return fdList;
     }
 

@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModel;
 /**
  * @author Hemant
  */
-@ApiModel(value = "ExtensionFileType", description = "Table Structure of FileDetails")
+@ApiModel(value = "FileDetails", description = "Table Structure of FileDetails")
 @JsonInclude(Include.NON_EMPTY)
 public class FileDetails implements Serializable {
 
@@ -29,7 +29,7 @@ public class FileDetails implements Serializable {
     private Date createDate;
     private Date fileDate;
     private String size;
-    private String status;
+    private String status = "active";
 
     private String step;
     private String context;

@@ -15,7 +15,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 import io.swagger.annotations.ApiModel;
 
-@ApiModel(value = "Report", description = "Table Structure Report")
+@ApiModel(value = "Project", description = "Table Structure Report")
 @Table(value = "project")
 public class Project {
 

@@ -1,25 +1,25 @@
 package com.sc.fe.analyze.util;
 
-import com.datastax.driver.core.utils.UUIDs;
-import com.sc.fe.analyze.to.FileTypeExtensions;
-import com.sc.fe.analyze.data.entity.FiletypeExtensions;
-import java.util.Date;
-import java.util.UUID;
-
-import com.sc.fe.analyze.data.entity.Project;
-import com.sc.fe.analyze.data.entity.ProjectFiles;
-import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.ProjectDetails;
-import com.sc.fe.analyze.to.TurnTimeQuantity;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.datastax.driver.core.utils.UUIDs;
+import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.Project;
+import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.FileTypeExtensions;
+import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.to.TurnTimeQuantity;
+
 /**
- *
+ * 
  * @author Hemant
  */
 public class ReportUtility {
@@ -101,6 +101,8 @@ public class ReportUtility {
         dtl.setAttributes(projectFiles.getAttributes());
         dtl.setErrors(projectFiles.getErrors());
         dtl.setSelected(projectFiles.isSelected());
+        dtl.setFileDate(projectFiles.getFileDate());
+        
         return dtl;
     }
 
@@ -179,6 +181,7 @@ public class ReportUtility {
         dbDetail.setItar(projectDetails.getItar());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setNofly(projectDetails.isNofly());
+        
         return dbDetail;
     }
 
@@ -228,15 +231,7 @@ public class ReportUtility {
         return filesDbDetails;
     }
 
-    /*public static FileTypeExtensions convertToDBObject(FiletypeExtensions fe){
-    FiletypeExtensions fileExtn = new FiletypeExtensions();
-    fileExtn.setFile_type(fe.getFile_type());
-    if(!fe.getExtensions().isEmpty()){
-        Set<String> chk = fe.getExtensions();
-        fileExtn.setExtensions(convertToSet(chk));
-    }
-    return fileExtn;
-    }*/
+    
     //This method converts the String type to List of TurnTimeQuantity
     private static List<TurnTimeQuantity> convertToList(String qtyDetails) {
         List<TurnTimeQuantity> turnTime = new ArrayList<TurnTimeQuantity>();
