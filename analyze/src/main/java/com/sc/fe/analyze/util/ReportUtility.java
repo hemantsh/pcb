@@ -257,6 +257,9 @@ public class ReportUtility {
 
     public static String extnToString(Set<String> extensions) {
         String stringExtensions = "";
+        if(extensions == null){
+            return stringExtensions;
+        }
         for (String extn : extensions) {
             if (stringExtensions.isEmpty()) {
                 stringExtensions = extn;

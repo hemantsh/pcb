@@ -72,7 +72,7 @@ public class AdminController {
     private FiletypeExtensionsService filetypeExtensionService;
     @Autowired
     private ServiceFiletypesService serviceFiletypesService;
-    
+
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
     public ProjectDetails getProjectDetails(@PathParam("projectId") String projectId, @PathParam("version") String version) {
@@ -287,13 +287,18 @@ public class AdminController {
         return serviceFiletypesService.findAll();
     }
 
-    @PostMapping(path = "/servicefiletypes/create")
-    public void createServiceFiletypes(@RequestBody ServiceFiletypes serviceFileTypes) {
+    @GetMapping(path = "/servicefiletypes/id/{serviceid}")
+    public List<ServiceFiletypes> getServiceFiletypesById(@PathVariable("serviceid") int serviceId) {
+        return serviceFiletypesService.findByKeyServiceId(serviceId);
+    }
+
+    @PutMapping(path = "/servicefiletypes/create")
+    public void createServiceFiletypes(@RequestBody List<ServiceFiletypes> serviceFileTypes) {
         serviceFiletypesService.save(serviceFileTypes);
     }
 
     @PutMapping(path = "/servicefiletypes/delete")
-    public void deleteServiceFiletypes(@RequestBody ServiceFiletypes serviceFileTypes) {
+    public void deleteServiceFiletypes(@RequestBody List<ServiceFiletypes> serviceFileTypes) {
         serviceFiletypesService.delete(serviceFileTypes);
     }
 
