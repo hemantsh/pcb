@@ -40,6 +40,7 @@ public class CompareUtility {
         set.add("newProject");
         set.add("attachReplace");
         set.add("status");
+        set.add("setId");
         return set;
     }
 
