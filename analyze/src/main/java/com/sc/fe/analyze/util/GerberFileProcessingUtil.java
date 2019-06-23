@@ -207,7 +207,7 @@ public class GerberFileProcessingUtil {
      */
     public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
-        if (line == null && line.isEmpty()) {
+        if (StringUtils.isEmpty(line) ) {
             return attributes;
         }
         if (line.startsWith("G04")) {

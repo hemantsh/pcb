@@ -7,7 +7,7 @@ package com.sc.fe.analyze.data.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.UUID;
+
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -18,7 +18,9 @@ import org.springframework.data.cassandra.core.mapping.Table;
 @Table(value = "filetype_extensions")
 public class FiletypeExtensions implements Serializable {
 
-    @PrimaryKey
+	private static final long serialVersionUID = -2878322995481840187L;
+	
+	@PrimaryKey
     private FiletypeExtensionsPK key;
     private Set<String> extensions;
 

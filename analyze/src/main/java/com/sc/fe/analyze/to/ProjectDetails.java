@@ -12,8 +12,12 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+
 import java.util.HashMap;
 
+@ApiModel(value = "ProjectDetails", description = "Object model for ProjectDetails")
 @JsonInclude(Include.NON_EMPTY)
 public class ProjectDetails implements Serializable {
 

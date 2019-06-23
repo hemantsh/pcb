@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.fe.analyze.data.entity.Report;
 import com.sc.fe.analyze.data.repo.ReportRepo;
-import com.sc.fe.analyze.util.MappingUtil;
 
 /**
  *

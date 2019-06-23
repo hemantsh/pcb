@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/fm")
 @CrossOrigin(origins = "*")
-@Api(value = "ProjectManagementController", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "ProjectManagementController", produces = MediaType.APPLICATION_JSON_VALUE  )
 public class ProjectManagementController {
 
     @Autowired
@@ -43,7 +43,7 @@ public class ProjectManagementController {
     
     @GetMapping(path="/project/rnumber/{rnumber}")
     public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String rNumber) {
-    	//TODO: implement this    	
+    	    	
         List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
         ProjectDetails latestRecord = fileUploadService.getLatestRecord(projDtl);
     	//Only project information is required. Nullify rest info
@@ -51,8 +51,7 @@ public class ProjectManagementController {
     	return latestRecord;
     }
 
-    @PostMapping(path = "/test")
-    @ResponseBody
+    
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
 
         if (!StringUtils.isEmpty(projectDetails.getrNumber())) {
@@ -114,7 +113,7 @@ public class ProjectManagementController {
    
 
     @GetMapping("/projects")
-    public List<ProjectDetails> getAllProjects(ProjectDetails projectDetails) {
+    public List<ProjectDetails> getAllProjects() {
         return projectService.findAll();
     }
 
@@ -129,7 +128,7 @@ public class ProjectManagementController {
     }
 
     @GetMapping("/project/{projectId}/files")
-    public List<FileDetails> getLatestProject(@PathVariable("projectId") String projectId) {
+    public List<FileDetails> getLatestProjectFiles(@PathVariable("projectId") String projectId) {
         return projectService.getFileDetails(projectId);
     }
 

@@ -14,5 +14,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "CustomerInputs", description = "Table Structure of CustomerInputs")
 @JsonInclude(Include.NON_EMPTY)
 public class CustomerInputs implements Serializable {
+
+	private static final long serialVersionUID = 1L;
     //TODO: delete
 }

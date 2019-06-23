@@ -13,7 +13,9 @@ import java.io.Serializable;
  */
 public class TurnTimeQuantity implements Serializable{
 
-    public TurnTimeQuantity() {
+	private static final long serialVersionUID = 1123622830426408611L;
+
+	public TurnTimeQuantity() {
     }
     private String time;    
     private int quantity;
