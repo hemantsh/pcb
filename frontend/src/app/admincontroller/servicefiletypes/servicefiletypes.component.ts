@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
-
-
+import { CanServiceFileTypesComponentDeactivate } from './candeactivate.servicefiletypes.service';
+import { Observable } from 'rxjs';
+import { MESSAGE_CONST } from '../../error-messages';
 @Component({
   selector: 'app-servicefiletypes',
   templateUrl: './servicefiletypes.component.html',
   styleUrls: ['./servicefiletypes.component.css']
 })
-export class ServicefiletypesComponent implements OnInit {
+export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesComponentDeactivate {
   selectedServiceId = 0; //selectedExtensionId
   selectedFiletype = 0;
   fileTypeArr = [];
@@ -73,6 +74,7 @@ export class ServicefiletypesComponent implements OnInit {
       window.alert("Please select a service first.");
 
     } else {
+
       let flag = false;
       this.fileTypeArr.forEach(row => {
         if (row.fileType == this.selectedFiletype) {
@@ -80,6 +82,7 @@ export class ServicefiletypesComponent implements OnInit {
         }
       });
       if (flag == false) {
+        this.changesSaved = false;
         this.fileTypeArr.push(
           {
             key: {
@@ -100,6 +103,7 @@ export class ServicefiletypesComponent implements OnInit {
     this.fileService.createServiceFiletypes(this.fileTypeArr).subscribe(
       (response: Response) => {
         if (response.status == 200) {
+          this.changesSaved = true;
           this.successMsgDiv = 'show';
         } console.log(response);
       },
@@ -108,18 +112,36 @@ export class ServicefiletypesComponent implements OnInit {
 
     if (this.deleteFileTypeArr.length !== 0) {
       this.fileService.deleteServiceFiletypes(this.deleteFileTypeArr).subscribe(
-        (response: Response) => console.log(response),
+        (response: Response) => {
+          console.log(response)
+          if (response.status == 200) {
+            this.changesSaved = true;
+          }
+        },
         (error) => console.log(error)
       );
     }
   }
 
   removeFiletype(filetype) {
+    this.changesSaved = false;
     console.log(filetype);
     let index = this.fileTypeArr.indexOf(filetype);
     this.fileTypeArr.splice(index, 1);
     this.deleteFileTypeArr.push(filetype);
     console.log(this.deleteFileTypeArr);
+  }
+
+  /**
+   * This method shows warning before navigating to another page if changes are not saved.
+   */
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!(this.changesSaved)) {
+      return confirm(MESSAGE_CONST.AUTH_CHECK);
+    }
+    else {
+      return true;
+    }
   }
 
 }

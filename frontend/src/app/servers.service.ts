@@ -1,40 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { config } from './urlpathconfig';
+import { CONFIG } from './urlpathconfig';
 
 @Injectable()
 export class FileService {
     constructor(private http: Http) { }
-
-    //File Upload Service
-    fileUpload(UploadedForm) {
-        return this.http.post(config.urlPath + 'api/uploadAndValidate', UploadedForm);
-    }
-
-    //Services for Extensions Start
-
-    /**
-     * Service that call the backend api to get the list of Extensions from the database.
-     */
-    getExtensions() {
-        return this.http.get(config.urlPath + 'admin/extensions');
-    }
-
-    /**
-     * Service that call the backend api to save the new extension or update the existing extension into the database.
-     * @param extn contains exntension and extension id to update and save a new extension
-     */
-    updateExtensions(extn) {
-        return this.http.post(config.urlPath + 'admin/extensions/update', extn);
-    }
-
-    /**
-     * Service that call the backend api to remove one or array of extensions from the database.
-     * @param extntodelete takes array of extensions
-     */
-    deleteExtensions(extntodelete) {
-        return this.http.put(config.urlPath + 'admin/extensions/delete', extntodelete);
-    }
 
     //Services for Services Start
 
@@ -42,7 +12,7 @@ export class FileService {
      * Service that call the backend api to get the list of Services from the database.
      */
     getServices() {
-        return this.http.get(config.urlPath + 'admin/services');
+        return this.http.get(CONFIG.urlPath + 'admin/services');
     }
 
     /**
@@ -50,118 +20,14 @@ export class FileService {
      * @param service contains service and serviceId to update and save a new service 
      */
     updateServices(service) {
-        return this.http.post(config.urlPath + 'admin/services/update', service);
+        return this.http.post(CONFIG.urlPath + 'admin/services/update', service);
     }
     /**
      * Service that call the backend api to remove one or array of services from the database.
      * @param serviceTodelete takes array of services
      */
     deleteServices(serviceTodelete) {
-        return this.http.put(config.urlPath + 'admin/services/delete', serviceTodelete);
-    }
-
-    //Services for Filetypes 
-
-    /**
-     * Service that call the backend api to get the list of Filetypes from the database. 
-     */
-    getFiletypes() {
-        return this.http.get(config.urlPath + 'admin/filetypes');
-    }
-
-    /**
-     * Service that call the backend api to save the new filetype or update the existing filetype into the database.
-     * @param filetypes contains filetypeId and filetype to update and save a new filetype
-     */
-    updateFiletypes(filetypes) {
-        return this.http.post(config.urlPath + 'admin/filetypes/update', filetypes);
-    }
-    /**
-     * Service that call tha backend api to remove one or array of filetypes from the database.
-     * @param filetypesTodelete takes array of filetypes
-     */
-    deleteFiletypes(filetypesTodelete) {
-        return this.http.put(config.urlPath + 'admin/filetypes/delete', filetypesTodelete);
-    }
-
-    //Services for ServicesFiles
-
-    /**
-     * Service that call the backend api to get the list of servicefiles from the database.
-     */
-    getServiceFiles() {
-        return this.http.get(config.urlPath + 'admin/servicefiles');
-    }
-
-    /**
-     * Service that call the backend api to get the servicefiles which has the serviceId.
-     * @param id contains the serviceId 
-     */
-    getServiceFilesById(id) {
-        return this.http.get(config.urlPath + 'admin/servicefiles/retrive/' + id);
-    }
-
-    /**
-     * Service that call the backend api to save the servicefiles or update the servciefiles. 
-     * @param data contains array of servicefiles
-     */
-    saveServiceFiles(data: any[]) {
-        return this.http.post(config.urlPath + 'admin/servicefiles/createmulti', data);
-    }
-    /**
-     * Service that call the backend api to save or update a new servicefile.
-     * @param servicefiles contains servicefiles data
-     */
-    updateServiceFiles(servicefiles) {
-        return this.http.post(config.urlPath + 'admin/servicefiles/update', servicefiles);
-    }
-
-    /**
-     * Service that call the backend api to delete the servicefile.
-     * @param servicefilesDeleteData contains servicefiles that needs to be deleted  
-     */
-    deleteServiceFiles(servicefilesDeleteData) {
-        return this.http.put(config.urlPath + 'admin/servicefiles/delete', servicefilesDeleteData)
-    }
-
-    //Services for ExtensionFiles
-
-    /**
-     * Service that call the backend api to get the ExtnensionFiles from the database.
-     */
-    getExtnFiles() {
-        return this.http.get(config.urlPath + 'admin/extensionfiles');
-    }
-    /**
-     * Service that call the backend api to save or update the extensionfiles into the database.
-     * @param exFT contains extensionfiles data
-     */
-    updateExtnFiles(exFT) {
-        return this.http.post(config.urlPath + 'admin/extensionfiles/update', exFT);
-    }
-
-    /**
-     * Service that call the backend api to get the ExtensionFiles data by filetypeId from the database. 
-     * @param id contains filetypeId
-     */
-    getExtnFiletypesById(id) {
-        return this.http.get(config.urlPath + `admin/extensionfiles/retrive/${id}`);
-    }
-
-    /**
-     * Service that call the backend api to save or update the extensionfiles.
-     * @param data contains array of exntesionfiles
-     */
-    saveExtensionFile(data: any[]) {
-        return this.http.post(config.urlPath + 'admin/extensionfiles/createmulti', data);
-    }
-
-    /**
-     * Service that call the backend api to delete the extensionfiles that is passed.
-     * @param extnfilesDeleteData contains extensionfiles that needs to be deleted  
-     */
-    deleteExtnFiles(extnfilesDeleteData) {
-        return this.http.put(config.urlPath + 'admin/extensionfiles/delete', extnfilesDeleteData);
+        return this.http.put(CONFIG.urlPath + 'admin/services/delete', serviceTodelete);
     }
 
     //Services for Report
@@ -170,7 +36,7 @@ export class FileService {
      * Service that call the backend api to get the unique project id's
      */
     getUniqueId() {
-        return this.http.get(config.urlPath + 'fm/distinctProjectid');
+        return this.http.get(CONFIG.urlPath + 'fm/distinctProjectid');
     }
     /**
      * Service that call the backend api to get the ProjectReport by projectId and version.
@@ -178,7 +44,7 @@ export class FileService {
      * @param version contains uniqueVersion 
      */
     getReportByIdAndVersion(projectId, version) {
-        return this.http.get(config.urlPath + `fm/project/${projectId}/version/${version}`);
+        return this.http.get(CONFIG.urlPath + `fm/project/${projectId}/version/${version}`);
     }
 
     /**
@@ -186,7 +52,7 @@ export class FileService {
      * @param input takes JSON input
      */
     saveFileManagementReport(input) {
-        return this.http.post(config.urlPath + 'fm/project', input);
+        return this.http.post(CONFIG.urlPath + 'fm/project', input);
     }
 
     /**
@@ -194,29 +60,50 @@ export class FileService {
      * @param projectId contains the projectId
      */
     getDifferences(projectId) {
-        return this.http.get(config.urlPath + `fm/project/${projectId}/differences`);
+        return this.http.get(CONFIG.urlPath + `fm/project/${projectId}/differences`);
     }
+    //Services for FiletypeExtensions
 
+    /**
+     * Service that call the backend api to get the list of filetypeextensions from the database.
+     */
     getFiletypeExtensions() {
-        return this.http.get(config.urlPath + 'admin/filetypeextensions');
+        return this.http.get(CONFIG.urlPath + 'admin/filetypeextensions');
     }
-
+    /**
+     * Service that call the backend api to create or update filetypeextensions the database.
+     * @param newData contains a filetype and its list of extensions.
+     */
     createFiletypeExtensions(newData: any) {
-        return this.http.post(config.urlPath + 'admin/filetypeextensions', newData)
+        return this.http.post(CONFIG.urlPath + 'admin/filetypeextensions', newData)
     }
+    /**
+     * Service that call the backend api to delete filetypeextensions from the database having particular id and filetype.
+     * @param newData contains a filetype and its list of extensions.
+     */
     deleteFiletypeExtensions(newData: any) {
-        // console.log("data from services:",newData);
-        return this.http.delete(config.urlPath + `admin/filetypeextensions/id/${newData.id}/filetype/${newData.file_type}`);
+        return this.http.delete(CONFIG.urlPath + `admin/filetypeextensions/id/${newData.id}/filetype/${newData.file_type}`);
     }
-
+    // Services for ServiceFiletypes
+    /**
+     * Service that call the backend api to fetch servicefiletypes from the database which having particular id.
+     * @param id takes UUID of particular object.
+     */
     getServiceFiletypesById(id) {
-        return this.http.get(config.urlPath + `admin/servicefiletypes/id/${id}`);
+        return this.http.get(CONFIG.urlPath + `admin/servicefiletypes/id/${id}`);
     }
+    /**
+     * Service that call the backend api to create or update servicefiletypes to the database.
+     * @param data contains serviceId and mapped filetype.
+     */
     createServiceFiletypes(data) {
-        return this.http.put(config.urlPath + 'admin/servicefiletypes/create', data);
+        return this.http.put(CONFIG.urlPath + 'admin/servicefiletypes/create', data);
     }
-
+    /**
+     * Service that call the backend api to delete servicefiletypes from the database.
+     * @param data contains object of servicefiletypes having key and its filetype.
+     */
     deleteServiceFiletypes(data) {
-        return this.http.put(config.urlPath + 'admin/servicefiletypes/delete', data);
+        return this.http.put(CONFIG.urlPath + 'admin/servicefiletypes/delete', data);
     }
 }

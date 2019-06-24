@@ -8,7 +8,7 @@ import { Response } from '@angular/http';
 })
 export class ReportComponent implements OnInit {
   report: any;
-  differences: Array<String>;
+  differences;
   fileType = [];
 
   projectIds = [];
@@ -56,7 +56,8 @@ export class ReportComponent implements OnInit {
       );
     this.fileService.getDifferences(this.selectedProjectId).subscribe(
       (response: Response) => {
-        this.differences = response.json();
+        if(response)
+          this.differences = response.json();
         console.log("Differences is fetchin...", this.differences);
       },
       (error) => console.log(error)

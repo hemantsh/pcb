@@ -3,7 +3,7 @@ import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { CanServiceComponentDeactivate } from './candeactivate-service.service';
-
+import { MESSAGE_CONST } from '../../error-messages';
 
 @Component({
   selector: 'app-services',
@@ -100,7 +100,6 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
           (response: Response) => {
             console.log(response);
             this.changesSaved = true;
-            // this.reloadPage();
           },
           (error) => console.log(error)
         );
@@ -108,9 +107,9 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
         this.reloadPage();
       }
     }
-    // console.log(this.deletedServiceArray);
+
   }
-  reloadPage() { // click handler or similar
+  reloadPage() {
     this.zone.runOutsideAngular(() => {
       location.reload();
     });
@@ -120,11 +119,11 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
    */
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (!(this.changesSaved)) {
-      return confirm("Do you want to discard the changes?");
+      return confirm(MESSAGE_CONST.AUTH_CHECK);
     }
     else {
       return true;
     }
-  }
+  };
 
 }
