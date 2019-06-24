@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.entity;
 
 import java.io.Serializable;
@@ -13,14 +8,14 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @PrimaryKeyClass
 public class FiletypeExtensionsPK implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 	
-	@PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "id")
+    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "id")
     private UUID id;
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "file_type")
     private String file_type;

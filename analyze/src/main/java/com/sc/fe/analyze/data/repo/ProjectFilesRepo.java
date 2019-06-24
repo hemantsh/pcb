@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.repo;
 
 import java.util.List;
@@ -25,7 +20,7 @@ public interface ProjectFilesRepo extends CassandraRepository< ProjectFiles, Pro
      * Used to extract data by projectId
      *
      * @param projectId takes projectId
-     * @return
+     * @return the list of projectFiles
      */
     List<ProjectFiles> findByKeyProjectId(final String projectId);
 
@@ -34,7 +29,7 @@ public interface ProjectFilesRepo extends CassandraRepository< ProjectFiles, Pro
      *
      * @param projectId takes projectId
      * @param version takes version
-     * @return
+     * @return the list of ProjectFiles
      */
     List<ProjectFiles> findByKeyProjectIdAndKeyVersion(final String projectId, final UUID version);
 }

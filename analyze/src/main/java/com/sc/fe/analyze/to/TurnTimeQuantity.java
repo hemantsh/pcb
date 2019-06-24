@@ -1,30 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.to;
 
 import java.io.Serializable;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
-public class TurnTimeQuantity implements Serializable{
+public class TurnTimeQuantity implements Serializable {
 
-	private static final long serialVersionUID = 1123622830426408611L;
+    private static final long serialVersionUID = 1123622830426408611L;
 
-	public TurnTimeQuantity() {
+    public TurnTimeQuantity() {
     }
-    private String time;    
+    private String time;
     private int quantity;
 
     public TurnTimeQuantity(String time, int quantity) {
         this.time = time;
         this.quantity = quantity;
     }
-    
+
     public int getQuantity() {
         return quantity;
     }
@@ -40,13 +35,13 @@ public class TurnTimeQuantity implements Serializable{
     public void setTime(String time) {
         this.time = time;
     }
-    
+
     @Override
     public String toString() {
-        return time+":"+quantity; //To change body of generated methods, choose Tools | Templates.
+        return time + ":" + quantity; //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public String stringData() {
-    	return "Time:"+time+"-Quantity:"+quantity;
+        return "Time:" + time + "-Quantity:" + quantity;
     }
 }

@@ -1,5 +1,10 @@
 package com.sc.fe.analyze.util;
 
+/**
+ * ErrorCodes Class is used to set the Code Errors
+ *
+ * @author Hemant
+ */
 public enum ErrorCodes {
     V0000("Unknown fileType"),
     V0001("Drill file missing"),
@@ -21,7 +26,7 @@ public enum ErrorCodes {
     V0017("ODB or IPC2581 file missing"),
     V0018("Assembly TurnTime Quantity missing"),
     V0019("Fabrication TrunTime Quantity missing"),
-	V0020("Drawing file missing");
+    V0020("Drawing file missing");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;

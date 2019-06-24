@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.controller;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
@@ -53,7 +48,7 @@ public class ProjectManagementController {
 
     
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
-
+       
         if (!StringUtils.isEmpty(projectDetails.getrNumber())) {
             Report report = fileUploadService.validateFiles(projectDetails);
         }
@@ -87,7 +82,14 @@ public class ProjectManagementController {
                 projectDetails.getErrors().put("V0000", "rNumber is required");
                 return validate(projectDetails);
             }
-            fileUploadService.compareProject(fileUploadService.returnProjectId(projectDetails));
+            ProjectDetails retDtls=fileUploadService.returnProjectId(projectDetails);
+            //If projectId is null when attachReplace=true,it throw error - No data exists with the same rNumber in the database.
+            if(retDtls.getProjectId()==null){                
+                retDtls=validate(projectDetails);            
+                retDtls.setErrors(projectDetails.getErrors());
+                return retDtls;
+            }
+            fileUploadService.compareProject(retDtls);
             Set<String> diff = projectDetails.getDifferences();
 
             fileUploadService.save(projectDetails);

@@ -3,7 +3,6 @@ package com.sc.fe.analyze.util;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-//import com.sc.fe.analyze.to.FileTypeExtensions;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +12,7 @@ import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
 
 /**
+ * MappingUtil Class maps the database table and retrieve the information
  *
  * @author Hemant
  */
@@ -65,9 +65,9 @@ public class MappingUtil {
     }
 
     public static void extensionToFileMap(List<FiletypeExtensions> filetypeExtensions) {
-    	if(filetypeExtensions == null) {
-    		return;
-    	}
+        if (filetypeExtensions == null) {
+            return;
+        }
         filetypeExtensions.stream().forEach(row -> {
             if (row.getExtensions() != null && row.getExtensions().size() > 0) {
 
@@ -78,13 +78,6 @@ public class MappingUtil {
                     }
                     filetypeSet.add(row.getKey().getFiletype());
                     extensionTofiletypeMap.put(extn, filetypeSet);
-
-//                if (!extensionTofiletypeMap.containsKey(extn)) {
-//                    if (!filetypeSet.contains(row.getKey().getFiletype())) {
-//                        filetypeSet.add(row.getKey().getFiletype());
-//                    }
-//                    extensionTofiletypeMap.put(extn, filetypeSet);
-//                }
                 }
             }
         });

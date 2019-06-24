@@ -5,12 +5,20 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ *
+ * @author Hemant
+ */
 public interface IFileOperations {
 
-	public String storeFile(String projectId, MultipartFile file) throws IOException;
-	public void extractZipFiles(String projectId, String fileName);
-	public List<String> listFiles(String projectId);
-	public void zipFiles(String projectId, String fileName);
-	public void deleteFiles(String projectId);
-	
+    public String storeFile(String projectId, MultipartFile file) throws IOException;
+
+    public void extractZipFiles(String projectId, String fileName);
+
+    public List<String> listFiles(String projectId);
+
+    public void zipFiles(String projectId, String fileName);
+
+    public void deleteFiles(String projectId);
+
 }

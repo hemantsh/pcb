@@ -152,49 +152,49 @@ public class GerberFileProcessingUtil {
      * @return the filePurposeToNameMapping
      */
     public static Map<String, Set<String>> processFilesByExtension(List<FileDetails> fileDetails,
-            Map<String, Set<String> > extensionToFileTypeMapping) {
+            Map<String, Set<String>> extensionToFileTypeMapping) {
 
         Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
         //Key:fileType , Value = set of fileNames from zip that match to be of this fileType
 
         fileDetails.forEach(fileDetail -> {
-        	
+
             if (fileDetail.getType() == null) {
                 String fileName = fileDetail.getName();
                 String[] nameParts = fileName.split("\\.");
                 String extn = nameParts[nameParts.length - 1].toLowerCase();
 
                 Set<String> fileTypes = extensionToFileTypeMapping.get(extn);// All the types by the extension
-                
-                if(fileTypes != null) {
-	                fileTypes.stream().forEach( fileType -> {
-	                	
-	                	Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
-	                	if (currentMapping == null) {
-	                		currentMapping = new HashSet<String>();
-	                	}
-	                	currentMapping.add(fileName);
-	                	filePurposeToNameMapping.put(fileType, currentMapping);
-	                	//TODO: One extension can map to many fileTypes so we are adding 
-	                	//all types as comma separated. This will be useful later
-	                	String typ = fileDetail.getType();
-	                	if( StringUtils.isEmpty( typ) ) {
-	                		typ = "";
-	                	}else {
-	                		typ = typ +",";
-	                	}
-	                	typ = typ+fileType;
-	                	fileDetail.setType(typ);
-	                });
+
+                if (fileTypes != null) {
+                    fileTypes.stream().forEach(fileType -> {
+
+                        Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
+                        if (currentMapping == null) {
+                            currentMapping = new HashSet<String>();
+                        }
+                        currentMapping.add(fileName);
+                        filePurposeToNameMapping.put(fileType, currentMapping);
+                        //TODO: One extension can map to many fileTypes so we are adding 
+                        //all types as comma separated. This will be useful later
+                        String typ = fileDetail.getType();
+                        if (StringUtils.isEmpty(typ)) {
+                            typ = "";
+                        } else {
+                            typ = typ + ",";
+                        }
+                        typ = typ + fileType;
+                        fileDetail.setType(typ);
+                    });
                 }
-                
+
             }
         });
         return filePurposeToNameMapping;
     }
 
     public static Map<String, Set<String>> processFilesByExtension(AdvancedReport report,
-            Map<String, Set<String> > extensionToFileMapping) {
+            Map<String, Set<String>> extensionToFileMapping) {
 
         return processFilesByExtension(report.getFileDetails(), extensionToFileMapping);
     }
@@ -207,7 +207,7 @@ public class GerberFileProcessingUtil {
      */
     public static HashMap<String, String> processLine(String line) {
         HashMap<String, String> attributes = new HashMap<>();
-        if (StringUtils.isEmpty(line) ) {
+        if (StringUtils.isEmpty(line)) {
             return attributes;
         }
         if (line.startsWith("G04")) {
@@ -585,11 +585,11 @@ public class GerberFileProcessingUtil {
                         //System.out.println("File Found--Filename--"+fileName+"--RegularExpression--"+p);                        
                         fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*", ""));
                         fd.setContext(splitRSide[1]);
-                        
-                        if( StringUtils.isEmpty(fd.getType()) ) {
-                        	fd.setType(splitRSide[2]);
+
+                        if (StringUtils.isEmpty(fd.getType())) {
+                            fd.setType(splitRSide[2]);
                         }
-                        
+
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);
                         splitRSide[5] = splitRSide[5].replace("\\", "");

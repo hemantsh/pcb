@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.service;
 
 import java.util.ArrayList;
@@ -30,7 +25,7 @@ public class ProjectFilesService {
      * Displays all the records in the ProjectFiles tables and returns data of
      * fileDetails Type.
      *
-     * @return
+     * @return the list of FileDetails
      */
     public List<FileDetails> findAll() {
         List<ProjectFiles> allRecords = projectFilesRepo.findAll();

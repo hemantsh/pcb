@@ -1,12 +1,16 @@
 
 package com.sc.fe.analyze.to;
 
+import java.io.Serializable;
+
 /**
  *
- * @author pc
+ * @author Hemant
  */
-public class FileTypeExtensions {
+public class FileTypeExtensions implements Serializable{
 
+    private static final long serialVersionUID = -3742223075854910617L;
+    
     private String extensions;
     private String id;
     private String file_type;

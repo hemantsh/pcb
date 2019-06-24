@@ -3,6 +3,11 @@ package com.sc.fe.analyze.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * ErrorCodeMap Class is set the error with their error message.
+ *
+ * @author Hemant
+ */
 public class ErrorCodeMap {
 
     private static final Map<String, ErrorCodes> errorMap = init();

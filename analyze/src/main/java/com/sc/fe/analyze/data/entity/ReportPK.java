@@ -10,13 +10,14 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * 
+ * @author Hemant
+ */
 @ApiModel(value="Report Primary Key",description="Combined Primary Key Structure of Report")
 @PrimaryKeyClass 
 public class ReportPK implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5395574627764636399L;
 	
 	@PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name="project_id")

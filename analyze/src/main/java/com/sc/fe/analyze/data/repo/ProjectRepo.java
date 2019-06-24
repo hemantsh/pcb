@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.repo;
 
 import java.util.List;
@@ -24,7 +19,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
      * Extracts data by the projectId from the database.
      *
      * @param projectId takes projectId
-     * @return
+     * @return the List of Project
      */
     List<Project> findByKeyProjectId(final String projectId);
 
@@ -32,7 +27,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
      * Extracts data by customerId from database.
      *
      * @param customerId takes customerid
-     * @return
+     * @return the List of Project
      */
     List<Project> findByCustomerId(final String customerId);
 
@@ -40,7 +35,7 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
      * Extracts data by the CustomerEmail from database.
      *
      * @param customerEmail takes customerEmail
-     * @return
+     * @return the List of Project
      */
     List<Project> findByCustomerEmail(final String customerEmail);
 
@@ -48,10 +43,16 @@ public interface ProjectRepo extends CassandraRepository<Project, ProjectPK> {
      * Extracts data by zipfileName from database.
      *
      * @param zipFileName takes zipfileName
-     * @return
+     * @return the List of Project
      */
     List<Project> findByZipFileName(final String zipFileName);
-    
+
+    /**
+     * Extracts data by rNumber from database
+     *
+     * @param rNumber takes rNumber
+     * @return the List of Project
+     */
     List<Project> findByRNumber(final String rNumber);
 
 }

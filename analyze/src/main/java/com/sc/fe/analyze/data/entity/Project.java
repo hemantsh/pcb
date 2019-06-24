@@ -1,23 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.entity;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import io.swagger.annotations.ApiModel;
+import java.io.Serializable;
 
 @ApiModel(value = "Project", description = "Table Structure Report")
 @Table(value = "project")
-public class Project {
+public class Project implements Serializable {
+
+    private static final long serialVersionUID = -2878322995481840187L;
 
     @PrimaryKey
     private ProjectPK key;
@@ -69,175 +66,78 @@ public class Project {
     @Column(value = "nofly")
     private boolean nofly;
 
-    /**
-     * Gets the company name
-     *
-     * @return the company name
-     */
     public String getCompany() {
         return company;
     }
 
-    /**
-     * Sets the company name into the company instance variable.
-     *
-     * @param company Sets the company
-     */
     public void setCompany(String company) {
         this.company = company;
     }
 
-    /**
-     * Gets the partRevision
-     *
-     * @return the partRev
-     */
     public String getPartRev() {
         return partRev;
     }
 
-    /**
-     * Sets the partRev into the partRev instance variable.
-     *
-     * @param partRev Sets the partRev
-     */
     public void setPartRev(String partRev) {
         this.partRev = partRev;
     }
 
-    /**
-     * Gets the assemblySpec
-     *
-     * @return the assemblySec
-     */
     public String getAssemblySpec() {
         return assemblySpec;
     }
 
-    /**
-     * Sets the assemblySpec into the assemblySpec instance variable.
-     *
-     * @param assemblySpec Sets the assemblySpec
-     */
     public void setAssemblySpec(String assemblySpec) {
         this.assemblySpec = assemblySpec;
     }
 
-    /**
-     * Gets the partNumber
-     *
-     * @return the partNumber
-     */
     public String getPartNumber() {
         return partNumber;
     }
 
-    /**
-     * Sets the partNumber into the partNumber instance variable.
-     *
-     * @param partNumber Sets the partNumber
-     */
     public void setPartNumber(String partNumber) {
         this.partNumber = partNumber;
     }
 
-    /**
-     * Gets the rNumber
-     *
-     * @return the rNumber
-     */
     public String getrNumber() {
         return rNumber;
     }
 
-    /**
-     * Sets the rNumber into the rNumber instance variable.
-     *
-     * @param rNumber Sets the rNumber
-     */
     public void setrNumber(String rNumber) {
         this.rNumber = rNumber;
     }
 
-    /**
-     * Gets the assembly TurnTimeQuantity for Assembly ServiceType.
-     *
-     * @return the assemblyTurnTimeQuantity
-     */
     public String getAssemblyTurntimeQuantity() {
         return assemblyTurntimeQuantity;
     }
 
-    /**
-     * Sets the TurnTimeQuanity into the assemblyTurntimeQuanity instance
-     * variable.
-     *
-     * @param assemblyTurntimeQuantity Sets the turntimeQuantity
-     */
     public void setAssemblyTurntimeQuantity(String assemblyTurntimeQuantity) {
         this.assemblyTurntimeQuantity = assemblyTurntimeQuantity;
     }
 
-    /**
-     * Gets the fabrication TurnTimeQuantity for the Fabrication ServiceType.
-     *
-     * @return the turnTimeQuantity
-     */
     public String getFabricationTurntimeQuantity() {
         return fabricationTurntimeQuantity;
     }
 
-    /**
-     * Sets the fabrication TurnTimeQuanity into the fabricationTurntimeQuanity
-     * instance variable.
-     *
-     * @param fabricationTurntimeQuantity Sets the turntimeQuantity
-     */
     public void setFabricationTurntimeQuantity(String fabricationTurntimeQuantity) {
         this.fabricationTurntimeQuantity = fabricationTurntimeQuantity;
     }
 
-    /**
-     * Gets the setId value
-     *
-     * @return the setId value
-     */
     public String getSetId() {
         return setId;
     }
 
-    /**
-     * Sets the setId value
-     *
-     * @param setId Sets the setId
-     */
     public void setSetId(String setId) {
         this.setId = setId;
     }
 
-    /**
-     * Gets the nofly value.
-     *
-     * @return the nofly value.
-     */
     public boolean getNofly() {
         return nofly;
     }
 
-    /**
-     * Sets the nofly value.
-     *
-     * @param nofly Sets the nofly value.
-     */
     public void setNofly(boolean nofly) {
         this.nofly = nofly;
     }
 
-    /**
-     * Gets the Key, if null then Initializes the ProjectPrimaryKey.
-     *
-     * @return the key.
-     */
     public ProjectPK getKey() {
         if (key == null) {
             key = new ProjectPK();
@@ -245,299 +145,134 @@ public class Project {
         return key;
     }
 
-    /**
-     * Sets the Primary Key.
-     *
-     * @param key Sets the key.
-     */
     public void setKey(ProjectPK key) {
         this.key = key;
     }
 
-    /**
-     * Gets the ProjectId.
-     *
-     * @return the projectId.
-     */
     public String getProjectId() {
         return getKey().getProjectId();
     }
 
-    /**
-     * Sets the Composite PrimaryKey ProjectId.
-     *
-     * @param projectId Sets the projectId.
-     */
     public void setProjectId(String projectId) {
         this.getKey().setProjectId(projectId);
     }
 
-    /**
-     * Gets the Composite PrimaryKey version.
-     *
-     * @return the version.
-     */
     public UUID getVersion() {
         return getKey().getVersion();
     }
 
-    /**
-     * Sets the Composite PrimaryKey version.
-     *
-     * @param version Sets the version.
-     */
     public void setVersion(UUID version) {
         this.getKey().setVersion(version);
     }
 
-    /**
-     * Gets the CustomerName.
-     *
-     * @return the CustomerName.
-     */
     public String getCustomerName() {
         return customerName;
     }
 
-    /**
-     * Sets the CustomerName into the CustomerName variable.
-     *
-     * @param customerName sets the customerName.
-     */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
-    /**
-     * Gets the CustomerId.
-     *
-     * @return the CustomerId.
-     */
     public String getCustomerId() {
         return customerId;
     }
 
-    /**
-     * Sets the CustomerId into the customerId instance variable.
-     *
-     * @param customerId Sets the customerId.
-     */
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    /**
-     * Gets the CustomerEmail.
-     *
-     * @return the CustomerEmail.
-     */
     public String getCustomerEmail() {
         return customerEmail;
     }
 
-    /**
-     * Sets the CustomerEmail into the customerEmail instance variable.
-     *
-     * @param customerEmail Sets the customerEmail.
-     */
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
 
-    /**
-     * Gets the ServiceType
-     *
-     * @return the ServiceType.
-     */
     public String getServiceType() {
         return serviceType;
     }
 
-    /**
-     * Sets the serviceType into the serviceType instance variable.
-     *
-     * @param servicetype Sets the serviceType.
-     */
     public void setServiceType(String servicetype) {
         this.serviceType = servicetype;
     }
 
-    /**
-     * Gets the LayerCount.
-     *
-     * @return the layerCount
-     */
     public int getLayerCount() {
         return layerCount;
     }
 
-    /**
-     * Sets the LayerCount into the layerCount instance variable.
-     *
-     * @param layerCount Sets the layerCount.
-     */
     public void setLayerCount(int layerCount) {
         this.layerCount = layerCount;
     }
 
-    /**
-     * Gets the PCBClass.
-     *
-     * @return the PCBClass.
-     */
     public String getPcbClass() {
         return pcbClass;
     }
 
-    /**
-     * Sets the PCBClass into pcbClass variable.
-     *
-     * @param pcbClass Sets the pcbClass.
-     */
     public void setPcbClass(String pcbClass) {
         this.pcbClass = pcbClass;
     }
 
-    /**
-     * Gets the Itar.
-     *
-     * @return the Itar
-     */
     public boolean getItar() {
         return itar;
     }
 
-    /**
-     * Sets the Itar into the itar variable.
-     *
-     * @param itar Sets the itar.
-     */
     public void setItar(boolean itar) {
         this.itar = itar;
     }
 
-    /**
-     * Gets the DesignSpecification.
-     *
-     * @return the designSpecification
-     */
     public String getDesignSpecification() {
         return designSpecification;
     }
 
-    /**
-     * Sets the DesginSpecification into the designSpecification Variable.
-     *
-     * @param desingSpec Sets the designSpecification.
-     */
     public void setDesignSpecification(String desingSpec) {
         this.designSpecification = desingSpec;
     }
 
-    /**
-     * Gets the BoardType.
-     *
-     * @return the boardType.
-     */
     public String getBoardType() {
         return boardType;
     }
 
-    /**
-     * Sets the BoardType into the boardType variable.
-     *
-     * @param boardType Sets the BoardType.
-     */
     public void setBoardType(String boardType) {
         this.boardType = boardType;
     }
 
-    /**
-     * Gets the ZipFileName.
-     *
-     * @return the zipFileName.
-     */
     public String getZipfileName() {
         return zipFileName;
     }
 
-    /**
-     * Sets the ZipfileName into the zipFileName instance variable.
-     *
-     * @param zipfileName Sets the ZipFileName.
-     */
     public void setZipfileName(String zipfileName) {
         this.zipFileName = zipfileName;
     }
 
-    /**
-     * Gets the ZipFileSize.
-     *
-     * @return the zipFileSize.
-     */
     public String getZipfileSize() {
         return zipfileSize;
     }
 
-    /**
-     * Sets the ZipFileSize into the zipfileSize instance variable.
-     *
-     * @param zipfileSize Sets the zipFileSize.
-     */
     public void setZipfileSize(String zipfileSize) {
         this.zipfileSize = zipfileSize;
     }
 
-    /**
-     * Gets the CreateDate.
-     *
-     * @return the createDate
-     */
     public Date getCreateDate() {
         return createDate;
     }
 
-    /**
-     * Sets the CreateDate into the createDate variable.
-     *
-     * @param createDate Sets the createDate
-     */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    /**
-     * Gets the Modified Date.
-     *
-     * @return the modifiedDate
-     */
     public Date getModifiedDate() {
         return modifiedDate;
     }
 
-    /**
-     * Sets the Modified Date into the modifiedDate variable.
-     *
-     * @param modifiedDate Sets the modifiedDate
-     */
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
-    /**
-     * Gets the Errors.
-     *
-     * @return the errors
-     */
     public Map<String, String> getErrors() {
         return errors;
     }
 
-    /**
-     * Sets the Errors into the errors variable.
-     *
-     * @param error Sets the errors
-     */
     public void setErrors(Map<String, String> error) {
         this.errors = error;
     }

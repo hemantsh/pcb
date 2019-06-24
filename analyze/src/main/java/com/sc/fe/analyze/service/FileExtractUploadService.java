@@ -39,9 +39,7 @@ import com.sc.fe.analyze.util.ReportUtility;
 public class FileExtractUploadService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
-    //private FileStoreUtil util;
-    //private S3FileUtility util;
-    
+
     @Autowired
     ProjectFilesService projectFilesService;
     @Autowired
@@ -64,21 +62,16 @@ public class FileExtractUploadService extends BaseService {
      * @return the report
      */
     public Report validateFiles(ProjectDetails projectDetails) {
-//        List<FileDetails> fileDetails = projectDetails.getFileDetails();
-        //If no file details,  try to create it
-//        if (fileDetails == null || fileDetails.size() <= 0) {
-//            Set<String> allFiles = util.listFiles(projectDetails.getProjectId());
-//            allFiles.stream().forEach(name -> {
-//                FileDetails fd = new FileDetails();
-//                fd.setName(name);
-//                fileDetails.add(fd);
-//            });
-//        }
-
         // REPORT
         Report report = new Report();
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
+
+        //Check that if attachReplace=true in the JSON request but projectId is null then it give error
+        if (projectDetails.isAttachReplace() && (projectDetails.getProjectId() == null)) {
+            projectDetails.getErrors().put("V0000", "No data found for the rNumber");
+            return report;
+        }
 
         //Check that user give correct Service Type or not
         if (!projectDetails.isAttachReplace()) {
@@ -225,8 +218,7 @@ public class FileExtractUploadService extends BaseService {
                 }
             }
 
-            //Required files as per business rules            
-
+            //Required files as per business rules        
             if (MappingUtil.getServiceId(splitService[i]) != null) {
                 requiredFilesTypes.addAll(getServiceFiles(
                         MappingUtil.getServiceId(splitService[i]))
@@ -308,7 +300,6 @@ public class FileExtractUploadService extends BaseService {
      * @param projectDetails Details of the project
      */
     public void save(ProjectDetails projectDetails) {
-        
         if (!projectDetails.isAttachReplace()) {
             //Check that rNumber is given in the JSON request or not.
             if (StringUtils.isEmpty(projectDetails.getrNumber())) {
@@ -357,19 +348,19 @@ public class FileExtractUploadService extends BaseService {
 
     }
 
-     public void setIdValidation(ProjectDetails projectDetails) {
+    public void setIdValidation(ProjectDetails projectDetails) {
         //If setId is not there,then delete the records from project_files or project table.                
-            String projectId=projectDetails.getProjectId();
-            String version=projectDetails.getVersion();
-            projectDetails.getFileDetails().stream().forEach(fd -> {
-                fd.setVersion(UUID.fromString(version));
-                ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
-                pFiles.setProjectId(projectId);
-                projectFilesService.delete(pFiles);            
-            });
-            projectService.delete(ReportUtility.convertToDBObject(projectDetails));        
+        String projectId = projectDetails.getProjectId();
+        String version = projectDetails.getVersion();
+        projectDetails.getFileDetails().stream().forEach(fd -> {
+            fd.setVersion(UUID.fromString(version));
+            ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
+            pFiles.setProjectId(projectId);
+            projectFilesService.delete(pFiles);
+        });
+        projectService.delete(ReportUtility.convertToDBObject(projectDetails));
     }
-    
+
     public boolean validateServiceType(ProjectDetails projectDetails) {
         String[] splitServiceTypes = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitServiceTypes.length; i++) {
@@ -390,7 +381,7 @@ public class FileExtractUploadService extends BaseService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-        
+
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that       
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
@@ -401,12 +392,15 @@ public class FileExtractUploadService extends BaseService {
         if (!projectDetails.isNewProject()) {
             //Get by rNumber 
             projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
+            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
+                return null;
+            }
         }
-        
+
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-            
             projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
         }
+
         if (projectDetails.isAttachReplace()) {
             projectDetails.setVersion(projKeyMap.get("version"));
         }
@@ -518,8 +512,6 @@ public class FileExtractUploadService extends BaseService {
         return projectDetails;
     }
 
-    
-    
     /**
      * Performs all possible Gerber file processing.
      *
@@ -538,11 +530,10 @@ public class FileExtractUploadService extends BaseService {
                     GerberFileProcessingUtil.parseFileName(fd);
                 });
     }
-    
+
     //==================================================================================================//
     //============== Below methods are not used but will be required in future. DONOT Delete
     //==================================================================================================//
-
     /**
      * ODB processing. Mainly parse matrix file to get fileDetils
      *
@@ -569,7 +560,7 @@ public class FileExtractUploadService extends BaseService {
 //        }
         return fdList;
     }
-    
+
     /**
      * Extract and save the zip file. No validations.
      *
@@ -612,5 +603,4 @@ public class FileExtractUploadService extends BaseService {
      * projectDetails.getProjectId()).toAbsolutePath().normalize();
      * FileUtil.deleteFolder(folder.toFile()); return report; }*
      */
-
 }

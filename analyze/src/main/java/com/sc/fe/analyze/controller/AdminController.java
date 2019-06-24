@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.controller;
 
 import java.util.ArrayList;
@@ -26,13 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.FileServices;
-//import com.sc.fe.analyze.service.FileTypeService;
 import com.sc.fe.analyze.service.FiletypeExtensionsService;
-//import com.sc.fe.analyze.service.ServiceFilesServices;
 import com.sc.fe.analyze.service.ServiceFiletypesService;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -46,7 +38,6 @@ import io.swagger.annotations.ApiParam;
 @CrossOrigin(origins = "*")
 @Api(value = "AdministrationController", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController {
-
 
     @Autowired
     private FileServices fileService;
@@ -144,5 +135,5 @@ public class AdminController {
     public void deleteServiceFiletypes(@RequestBody List<ServiceFiletypes> serviceFileTypes) {
         serviceFiletypesService.delete(serviceFileTypes);
     }
-
+    
 }
