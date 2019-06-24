@@ -3,6 +3,10 @@ package com.sc.fe.analyze.rules;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Hemant
+ */
 public class BusinessFileTypes {
 
 	public static List<String> getAllBusinessFileTypes() {

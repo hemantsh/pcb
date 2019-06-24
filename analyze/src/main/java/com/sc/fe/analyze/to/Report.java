@@ -43,52 +43,30 @@ public class Report implements Serializable {
 
     private Set<ErrorCodes> errorCodes;
 
-    /**
-     * @return the summary
-     */
     public String getSummary() {
         return summary;
     }
 
-    /**
-     * @param summary - the summary to set
-     */
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
-    /**
-     * @return the validationStatus
-     */
     public String getValidationStatus() {
         return validationStatus;
     }
 
-    /**
-     * @param validationStatus - the validationStatus to set
-     */
     public void setValidationStatus(String validationStatus) {
         this.validationStatus = validationStatus;
     }
 
-    /**
-     * @return the errors
-     */
     public Set<String> getErrors() {
         return errors;
     }
 
-    /**
-     * @param errors - the errors to set
-     */
     public void setErrors(Set<String> errors) {
         this.errors = errors;
     }
 
-    /**
-     *
-     * @param error - the error to add in the errors instance variable
-     */
     public void addError(String error) {
         if (errors == null) {
             errors = new HashSet<String>();
@@ -96,40 +74,22 @@ public class Report implements Serializable {
         errors.add(error);
     }
 
-    /**
-     *
-     * @return the project Details of the project
-     */
     public ProjectDetails getProjectDetail() {
         return projectDetail;
     }
 
-    /**
-     *
-     * @param projectDetail the project Detail to set
-     */
     public void setProjectDetail(ProjectDetails projectDetail) {
         this.projectDetail = projectDetail;
     }
 
-    /**
-     * @return the errorCodes
-     */
     public Set<ErrorCodes> getErrorCodes() {
         return errorCodes;
     }
 
-    /**
-     * @param errorCodes the errorCodes to set
-     */
     public void setErrorCodes(Set<ErrorCodes> errorCodes) {
         this.errorCodes = errorCodes;
     }
 
-    /**
-     *
-     * @param code the error code to add
-     */
     public void addErrorCode(ErrorCodes code) {
         if (errorCodes == null) {
             errorCodes = new HashSet<ErrorCodes>();

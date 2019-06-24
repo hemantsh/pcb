@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.entity;
 
 import java.io.Serializable;
@@ -36,54 +31,26 @@ public class ProjectFilesPK implements Serializable {
 
     @ApiModelProperty("Second Primary Key")
 
-    /**
-     * Gets the projectId
-     */
     public String getProjectId() {
         return projectId;
     }
 
-    /**
-     * Sets the ProjectId into the projectId.
-     *
-     * @param projectId Sets the projectId
-     */
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
-    /**
-     * Gets the Version.
-     *
-     * @return the version
-     */
     public UUID getVersion() {
         return version;
     }
 
-    /**
-     * Sets the version into the variable version
-     *
-     * @param version sets the version
-     */
     public void setVersion(UUID version) {
         this.version = version;
     }
 
-    /**
-     * Gets the Name.
-     *
-     * @return the name.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the Name into the variable name.
-     *
-     * @param name Takes the name value and sets it
-     */
     public void setName(String name) {
         this.name = name;
     }

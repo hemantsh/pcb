@@ -19,7 +19,9 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 
 /**
- * 
+ * Utility Class converts the entity Classes attributes to to Classes attributes
+ * and vice-versa.
+ *
  * @author Hemant
  */
 public class ReportUtility {
@@ -102,7 +104,7 @@ public class ReportUtility {
         dtl.setErrors(projectFiles.getErrors());
         dtl.setSelected(projectFiles.isSelected());
         dtl.setFileDate(projectFiles.getFileDate());
-        
+
         return dtl;
     }
 
@@ -181,7 +183,7 @@ public class ReportUtility {
         dbDetail.setItar(projectDetails.getItar());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setNofly(projectDetails.isNofly());
-        
+
         return dbDetail;
     }
 
@@ -231,7 +233,6 @@ public class ReportUtility {
         return filesDbDetails;
     }
 
-    
     //This method converts the String type to List of TurnTimeQuantity
     private static List<TurnTimeQuantity> convertToList(String qtyDetails) {
         List<TurnTimeQuantity> turnTime = new ArrayList<TurnTimeQuantity>();
@@ -244,15 +245,13 @@ public class ReportUtility {
     }
 
     private static Set<String> convertToSet(String extensions) {
-
         Set<String> mySet = new HashSet<String>(Arrays.asList(extensions.split(",")));
-
         return mySet;
     }
 
-    public static String extnToString(Set<String> extensions) {
+    private static String extnToString(Set<String> extensions) {
         String stringExtensions = "";
-        if(extensions == null){
+        if (extensions == null) {
             return stringExtensions;
         }
         for (String extn : extensions) {

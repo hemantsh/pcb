@@ -1,20 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.data.entity;
 
+import java.io.Serializable;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 /**
  *
- * @author pc
+ * @author Hemant
  */
 @Table(value = "service_filetypes")
-public class ServiceFiletypes {
+public class ServiceFiletypes implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+     
     @PrimaryKey
     private ServiceFiletypesPK key;
     

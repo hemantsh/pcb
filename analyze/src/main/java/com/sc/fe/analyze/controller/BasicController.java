@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.BaseService;
 
+/**
+ * 
+ * @author Hemant
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "/api")
@@ -25,7 +29,6 @@ public class BasicController {
     public List<Services> getServices() {
         //List all services
         List<Services> services = null;
-
         return services;
     }
 

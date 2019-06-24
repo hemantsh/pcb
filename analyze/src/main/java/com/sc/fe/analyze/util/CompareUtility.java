@@ -19,14 +19,15 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 
 /**
- * Utility class that has methods to compare various objects that are used in this project
- * along with generic object comparison.
+ * Utility class that has methods to compare various objects that are used in
+ * this project along with generic object comparison.
+ *
  * @author Hemant
  */
 public class CompareUtility {
 
     private static final String NA = "NA";
-	private static final String DELIMITER = "~";
+    private static final String DELIMITER = "~";
     private static Set<String> DO_NOT_COMPARE = initDoNotCompare();
 
     //Field names that will not be compared
@@ -66,11 +67,10 @@ public class CompareUtility {
 
             //Compare the FileDetails of the file
             differences.putAll(compareFileDetails(newRecord, oldRecord));
-            
+
             //CompareTrunTimes
-            differences.putAll(compareTurnTimes (newRecord.getAssemblyTurnTimeQuantity(), oldRecord.getAssemblyTurnTimeQuantity(), "AssemblyTurnTimes") );
-            differences.putAll(compareTurnTimes (newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity(), "FabricationTurnTimes") );
-            
+            differences.putAll(compareTurnTimes(newRecord.getAssemblyTurnTimeQuantity(), oldRecord.getAssemblyTurnTimeQuantity(), "AssemblyTurnTimes"));
+            differences.putAll(compareTurnTimes(newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity(), "FabricationTurnTimes"));
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -79,51 +79,52 @@ public class CompareUtility {
         }
         return differences;
     }
-    
+
     /**
      * Compare TurnTimeQuantity objects
+     *
      * @param newRecord
      * @param oldRecord
      * @param field
      * @return
      */
     private static Map<String, String> compareTurnTimes(List<TurnTimeQuantity> newRecord, List<TurnTimeQuantity> oldRecord, String field) {
-    	
-    	Set<String> newSet, oldSet = null;
-    	if( newRecord == null) {
-    		newSet = new HashSet<String>();
-    	}else {
-    		newSet = newRecord.stream()
-        			.map(TurnTimeQuantity::stringData)
-        			.collect(Collectors.toSet());
-    	}
-    	
-    	if( oldRecord == null) {
-    		oldSet = new HashSet<String>();
-    	} else {
-    		oldSet = oldRecord.stream()
-        			.map(TurnTimeQuantity::stringData)
-        			.collect(Collectors.toSet());
-    	}
-    		
-    	Set<String> deletion = new HashSet<String>();
-    	deletion.addAll(oldSet);
-    	deletion.removeAll(newSet);
-    	
-    	Set<String> addition = new HashSet<String>();
-    	addition.addAll(newSet);
-    	addition.removeAll(oldSet);
-    	
-    	Map<String, String> differences = new HashMap<String, String>();
-    	if (deletion != null && deletion.size() > 0 ) {
-            differences.put(field+"(R)", "REMOVED" + DELIMITER + deletion);
+
+        Set<String> newSet, oldSet = null;
+        if (newRecord == null) {
+            newSet = new HashSet<String>();
+        } else {
+            newSet = newRecord.stream()
+                    .map(TurnTimeQuantity::stringData)
+                    .collect(Collectors.toSet());
         }
-        
-        if (addition != null &&  addition.size() > 0) {
-            differences.put(field+"(A)", addition + DELIMITER + "ADDED");
+
+        if (oldRecord == null) {
+            oldSet = new HashSet<String>();
+        } else {
+            oldSet = oldRecord.stream()
+                    .map(TurnTimeQuantity::stringData)
+                    .collect(Collectors.toSet());
         }
-        
-    	return differences;
+
+        Set<String> deletion = new HashSet<String>();
+        deletion.addAll(oldSet);
+        deletion.removeAll(newSet);
+
+        Set<String> addition = new HashSet<String>();
+        addition.addAll(newSet);
+        addition.removeAll(oldSet);
+
+        Map<String, String> differences = new HashMap<String, String>();
+        if (deletion != null && deletion.size() > 0) {
+            differences.put(field + "(R)", "REMOVED" + DELIMITER + deletion);
+        }
+
+        if (addition != null && addition.size() > 0) {
+            differences.put(field + "(A)", addition + DELIMITER + "ADDED");
+        }
+
+        return differences;
     }
 
     /**
@@ -198,7 +199,7 @@ public class CompareUtility {
         //Reading All fileNames 
         combinedKeys.stream().forEach(fileName -> {
             //Get FileDetail from 2 sets by same filename    
-            FileDetails newFD = newProject.getFileDetails(fileName);    
+            FileDetails newFD = newProject.getFileDetails(fileName);
             FileDetails oldFD = oldProject.getFileDetails(fileName);
 
             try {
@@ -215,7 +216,7 @@ public class CompareUtility {
 
     /**
      * This method compares the new FileDetails with the old FileDetails
-     * 
+     *
      * @param newFD the new FileDetails object details to set
      * @param oldFD the old FileDetails object details to set
      * @return the differences after comparing the new FileDetails object from
@@ -226,36 +227,36 @@ public class CompareUtility {
     public static Map<String, String> compare(FileDetails newFD, FileDetails oldFD) throws IllegalArgumentException, IllegalAccessException {
         Map<String, String> differences = new HashMap<String, String>();
         Map<String, String> returnMap = new HashMap<String, String>();
-        
-        if( newFD != null && oldFD != null ) {
-	        //First compare as simple object
-	        differences.putAll(compareObject(newFD, oldFD));
-	        //Now compare collection attributes for FileDetails 
-		    differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
-	    }
-        
+
+        if (newFD != null && oldFD != null) {
+            //First compare as simple object
+            differences.putAll(compareObject(newFD, oldFD));
+            //Now compare collection attributes for FileDetails 
+            differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
+        }
+
         if (newFD == null && oldFD != null) {
-        	returnMap.put(oldFD.getName().toUpperCase() , "File got Removed.");
-        	newFD = new FileDetails();
+            returnMap.put(oldFD.getName().toUpperCase(), "File got Removed.");
+            newFD = new FileDetails();
         }
         if (newFD != null && oldFD == null) {
-        	returnMap.put(newFD.getName().toUpperCase() , "File got Added.");
-        	oldFD = new FileDetails();
+            returnMap.put(newFD.getName().toUpperCase(), "File got Added.");
+            oldFD = new FileDetails();
         }
-        
+
         String fileName = StringUtils.isEmpty(newFD.getName()) ? oldFD.getName() : newFD.getName();
 
         differences.keySet().stream().forEach(key -> {
             returnMap.put(fileName.toUpperCase() + "." + key, differences.get(key));
         });
-        if (newFD != null ) {
-        	newFD.setErrors(differences);
+        if (newFD != null) {
+            newFD.setErrors(differences);
         }
         return returnMap;
     }
 
     /**
-     * This method compares the Map<String,String> objects
+     * This method compares the objects
      *
      * @param newMap the new Map object details to set
      * @param oldMap the old Map object details to set
@@ -327,45 +328,45 @@ public class CompareUtility {
 
         return differences;
     }
-    
-    public static Set<String> formatedError( Map<String, String> errors) {
-    	//TODO: externalize/constant the string text
-    	Set<String> formatedErrorSet = new HashSet<String>();
-		if (errors != null && errors.size() > 0) {
 
-			errors.keySet().stream().forEach(errorKey -> {
+    public static Set<String> formatedError(Map<String, String> errors) {
+        //TODO: externalize/constant the string text
+        Set<String> formatedErrorSet = new HashSet<String>();
+        if (errors != null && errors.size() > 0) {
 
-				String[] values = errors.get(errorKey).split(DELIMITER);
-				if (values.length == 2) {
-					StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
-					if (NA.equals(values[0])) {
+            errors.keySet().stream().forEach(errorKey -> {
 
-						message.append("Current set does not have value. ");
-					} else {
+                String[] values = errors.get(errorKey).split(DELIMITER);
+                if (values.length == 2) {
+                    StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
+                    if (NA.equals(values[0])) {
 
-						message.append("Current set value '" + values[0] + "'. ");
-					}
+                        message.append("Current set does not have value. ");
+                    } else {
 
-					if (NA.equals(values[1])) {
-						message.append("Last set did not have value. ");
-					} else {
-						if (values[1].equals("ADDED")) {
-							message.replace(0, message.length(), "");
-							message.append(errorKey + " '" + values[0] + "' " + values[1]);
-						} else {
-							message.append("Old set value '" + values[1] + "'.");
-						}
-					}
+                        message.append("Current set value '" + values[0] + "'. ");
+                    }
 
-					formatedErrorSet.add(message.toString());
-				} else {
-					formatedErrorSet.add(errorKey + " " + errors.get(errorKey));
-				}
+                    if (NA.equals(values[1])) {
+                        message.append("Last set did not have value. ");
+                    } else {
+                        if (values[1].equals("ADDED")) {
+                            message.replace(0, message.length(), "");
+                            message.append(errorKey + " '" + values[0] + "' " + values[1]);
+                        } else {
+                            message.append("Old set value '" + values[1] + "'.");
+                        }
+                    }
 
-			});
-		}
-    	
-    	return formatedErrorSet;
+                    formatedErrorSet.add(message.toString());
+                } else {
+                    formatedErrorSet.add(errorKey + " " + errors.get(errorKey));
+                }
+
+            });
+        }
+
+        return formatedErrorSet;
     }
 
     /**
@@ -375,7 +376,7 @@ public class CompareUtility {
      * @return the boolean value
      */
     private static boolean isCollection(Field field) {
-        
+
         boolean retVal = false;
         if (Collection.class.isAssignableFrom(field.getType())) {
             return true;
@@ -388,50 +389,51 @@ public class CompareUtility {
         }
         return retVal;
     }
-    
+
     /**
      * Find missing items from reqTypes by checking items in availTypes
-     * @param reqiredTypes
-     * @param availTypes
-     * @return
+     *
+     * @param reqiredTypes These types are required for the serviceType
+     * @param availTypes These types are available in the JSON request
+     * @return the list required types
      */
     public static List<String> findMissingItems(final List<String> reqiredTypes, final List<String> availTypes) {
-    	//Collect all elements to be removed from requiredTypes. 
-    	//These are the elements which are common with availableTypes
-    	List<String> toRemove = new ArrayList<String>();
-        
-    	//Making copies of input params. We don't want to update/change parameters passed
-    	List<String> requiredTypes = new ArrayList<String>();
-    	requiredTypes.addAll(reqiredTypes);
-    	
-    	List<String> availableTypes = new ArrayList<String>();
-    	availableTypes.addAll(availTypes);
-    	
-        availableTypes.stream().forEach( type -> {
-        	
-        	toRemove.addAll( requiredTypes.stream()
-				        	.filter( e -> toList(e).contains(type.toLowerCase()) )
-				        	.collect( Collectors.toList())
-		        	);
+        //Collect all elements to be removed from requiredTypes. 
+        //These are the elements which are common with availableTypes
+        List<String> toRemove = new ArrayList<String>();
+
+        //Making copies of input params. We don't want to update/change parameters passed
+        List<String> requiredTypes = new ArrayList<String>();
+        requiredTypes.addAll(reqiredTypes);
+
+        List<String> availableTypes = new ArrayList<String>();
+        availableTypes.addAll(availTypes);
+
+        availableTypes.stream().forEach(type -> {
+
+            toRemove.addAll(requiredTypes.stream()
+                    .filter(e -> toList(e).contains(type.toLowerCase()))
+                    .collect(Collectors.toList())
+            );
         });
-        
-        requiredTypes.removeAll( toRemove );
+
+        requiredTypes.removeAll(toRemove);
         return requiredTypes;
     }
 
-	private static List<String> toList(String e) {
-		if( StringUtils.isEmpty( e )) {
-			return new ArrayList<String>();
-		}
-		//Split by 'or'
-		List<String> temp = Arrays.asList( e.toLowerCase().split("or") );
-		if( temp.size() > 0) {
-			//remove white spaces
-			for( int i=0; i< temp.size(); i++) {
-				temp.set(i, temp.get(i).trim() );
-			}
-		}
-		return temp;
-	}
-    
+    private static List<String> toList(String e) {
+        if (StringUtils.isEmpty(e)) {
+            return new ArrayList<String>();
+        }
+        //Split by 'or'
+        List<String> temp = Arrays.asList(e.toLowerCase().split("or"));
+        if (temp.size() > 0) {
+            //remove white spaces
+            for (int i = 0; i < temp.size(); i++) {
+                temp.set(i, temp.get(i).trim());
+            }
+        }
+        return temp;
+    }
+
 }

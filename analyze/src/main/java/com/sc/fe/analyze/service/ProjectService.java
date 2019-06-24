@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sc.fe.analyze.service;
 
 import com.sc.fe.analyze.data.entity.DifferenceReport;
@@ -109,6 +104,7 @@ public class ProjectService {
     public List<ProjectDetails> findByrNumber(String rNumber) {
         return convertList(projectRepo.findByRNumber(rNumber));
     }
+
     /**
      * Finds the data by ProjectId.
      *
@@ -187,31 +183,33 @@ public class ProjectService {
         List<ProjectFiles> fileList = projectFilesRepo.findByKeyProjectIdAndKeyVersion(projectId, UUID.fromString(verison));
         List<FileDetails> fbList = new ArrayList<FileDetails>();
         fileList.stream().forEach(row -> {
-            fbList.add(ReportUtility.convertToObject(row));           
+            fbList.add(ReportUtility.convertToObject(row));
         });
         obj.setFileDetails(fbList);
         return obj;
     }
 
     /**
-     * Displays latest ProjectDetails which matches the projectId in the argument.
+     * Displays latest ProjectDetails which matches the projectId in the
+     * argument.
      *
-     * @param projectId takes ProjectId     
+     * @param projectId takes ProjectId
      * @return the latest projectDetails of projectId
      */
     public ProjectDetails getProject(String projectId) {
-        ProjectDetails project=null;         
-        List<ProjectDetails> projDtl = convertList(projectRepo.findByKeyProjectId(projectId));               
-        project=projDtl.stream()
-                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);                        
-         List<ProjectFiles> fileList = projectFilesRepo.findByKeyProjectIdAndKeyVersion(project.getProjectId(),UUID.fromString(project.getVersion()));         
-         List<FileDetails> fbList = new ArrayList<FileDetails>();        
-         fileList.stream().forEach(row->{
-             fbList.add(ReportUtility.convertToObject(row));         
-         });
+        ProjectDetails project = null;
+        List<ProjectDetails> projDtl = convertList(projectRepo.findByKeyProjectId(projectId));
+        project = projDtl.stream()
+                .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
+        List<ProjectFiles> fileList = projectFilesRepo.findByKeyProjectIdAndKeyVersion(project.getProjectId(), UUID.fromString(project.getVersion()));
+        List<FileDetails> fbList = new ArrayList<FileDetails>();
+        fileList.stream().forEach(row -> {
+            fbList.add(ReportUtility.convertToObject(row));
+        });
         project.setFileDetails(fbList);
-        return project;    
+        return project;
     }
+
     /**
      * This method takes the projectId and get all the differences
      *
@@ -225,22 +223,23 @@ public class ProjectService {
         }
         return null;
     }
+
     /**
-     * This method display the latest FileDetails which matches the projectId 
+     * This method display the latest FileDetails which matches the projectId
+     *
      * @param projectId Takes project Id
      * @return the latest list of FileDetails
      */
-    public List<FileDetails> getFileDetails(String projectId)
-    {              
-        List<ProjectDetails> projDtl = convertList(projectRepo.findByKeyProjectId(projectId));               
-        ProjectDetails project=projDtl.stream()
-                    .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);                        
-        List<ProjectFiles> fileList = projectFilesRepo.findByKeyProjectIdAndKeyVersion(project.getProjectId(),UUID.fromString(project.getVersion()));         
-        List<FileDetails> fbList = new ArrayList<FileDetails>();        
-        fileList.stream().forEach(row->{
-             fbList.add(ReportUtility.convertToObject(row));         
-         });         
-        project.setFileDetails(fbList);        
+    public List<FileDetails> getFileDetails(String projectId) {
+        List<ProjectDetails> projDtl = convertList(projectRepo.findByKeyProjectId(projectId));
+        ProjectDetails project = projDtl.stream()
+                .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
+        List<ProjectFiles> fileList = projectFilesRepo.findByKeyProjectIdAndKeyVersion(project.getProjectId(), UUID.fromString(project.getVersion()));
+        List<FileDetails> fbList = new ArrayList<FileDetails>();
+        fileList.stream().forEach(row -> {
+            fbList.add(ReportUtility.convertToObject(row));
+        });
+        project.setFileDetails(fbList);
         return fbList;
     }
 }

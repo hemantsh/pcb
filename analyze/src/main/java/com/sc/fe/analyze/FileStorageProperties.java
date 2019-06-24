@@ -2,9 +2,13 @@ package com.sc.fe.analyze;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ *
+ * @author Hemant
+ */
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
-    
+
     //These are coming from application.properties
     private String uploadDir;
     private String bucket;

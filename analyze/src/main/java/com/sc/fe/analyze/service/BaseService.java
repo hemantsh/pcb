@@ -26,14 +26,12 @@ import com.sc.fe.analyze.util.MappingUtil;
 @Service
 public class BaseService {
 
-
     @Autowired
     private FiletypeExtensionsRepo filetypeExtensionsRepo;
     @Autowired
     private ServiceFiletypesRepo serviceFiletypesRepo;
     @Autowired
     private ServicesRepo serviceRepo;
-
 
     /**
      * This method initialize the elements(extensionMap,fileTypeMap and
@@ -44,6 +42,11 @@ public class BaseService {
         MappingUtil.init(serviceRepo.findAll(), serviceFiletypesRepo.findAll(), filetypeExtensionsRepo.findAll());
     }
 
+    /**
+     * This method retrieves the File Extensions from database.
+     *
+     * @return the Map
+     */
     public Map<String, String> getFileTypeByExtension() {
 
         Map<String, String> retMap = new HashMap<String, String>();
@@ -53,17 +56,21 @@ public class BaseService {
             for (String extn : e.getExtensions()) {
                 retMap.put(extn, e.getKey().getFiletype());
             }
-            
+
         });
         System.out.println(retMap);
         return retMap;
     }
 
+    /**
+     * This method retrieves the file Extensions from database.
+     *
+     * @return the Map
+     */
     public static Map<String, Set<String>> getExtensionTofiletypeMap() {
-    	return MappingUtil.getExtensionTofiletypeMap();
+        return MappingUtil.getExtensionTofiletypeMap();
     }
-    
- 
+
     /**
      * This method retrieves the Services from database.
      *
@@ -81,26 +88,45 @@ public class BaseService {
         return retMap;
     }
 
-    
+    /**
+     * This method retrieves the Service files from database.
+     *
+     * @param serviceid Takes the serviceId
+     * @return the Map
+     */
     public List<String> getServiceFiles(int serviceid) {
         List<ServiceFiletypes> serviceFiletypes = serviceFiletypesRepo.findByKeyServiceid(serviceid);
         return serviceFiletypes.stream().map(ServiceFiletypes::getFileType).collect(Collectors.toList());
     }
 
+    /**
+     * This method retrieves the file types from database.
+     *
+     * @param extension Takes the extension
+     * @return the Map
+     */
     public List<String> getFilesType(String extension) {
         List<FiletypeExtensions> extensionFiletypes = filetypeExtensionsRepo.findByExtensions(extension);
         return extensionFiletypes.stream().map(FiletypeExtensions::getFileType).collect(Collectors.toList());
     }
 
-
+    /**
+     * Gets the ServiceFileTypesRepo
+     *
+     * @return the serviceFileTypesRepo
+     */
     public ServiceFiletypesRepo getServiceFiletypesRepo() {
         return serviceFiletypesRepo;
     }
 
+    /**
+     * Sets the ServiceFileTypesRepo
+     *
+     * @param serviceFiletypeRepo the serviceFileTypeRepo to set
+     */
     public void setServiceFiletypesRepo(ServiceFiletypesRepo serviceFiletypeRepo) {
         this.serviceFiletypesRepo = serviceFiletypeRepo;
     }
-
 
     /**
      * Gets the ServiceRepo

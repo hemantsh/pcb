@@ -8,10 +8,17 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import io.swagger.annotations.ApiModel;
+import java.io.Serializable;
 
+/**
+ * 
+ * @author Hemant
+ */
 @ApiModel(value = "Report", description = "Table Structure Report")
 @Table(value = "report")
-public class Report {
+public class Report implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @PrimaryKey
     private ReportPK key;
@@ -29,99 +36,46 @@ public class Report {
     private Set<String> projectFiles;
     private String status;
 
-    /**
-     * Gets the ProjectId
-     *
-     * @return the projectId
-     */
     public String getProjectId() {
         return getKey().getProjectId();
     }
 
-    /**
-     * Sets the ProjectId into the variable projectId.
-     *
-     * @param projectId takes projectId and sets it
-     */
     public void setProjectId(String projectId) {
         this.getKey().setProjectId(projectId);;
     }
 
-    /**
-     * Gets the version.
-     *
-     * @return the version
-     */
     public int getVersion() {
         return getKey().getVersion();
     }
 
-    /**
-     * Sets the version into the variable version.
-     *
-     * @param version takes version and sets it
-     */
     public void setVersion(int version) {
         this.getKey().setVersion(version);
     }
 
-    /**
-     * Gets CustomerId
-     *
-     * @return the customerId
-     */
     public String getCustomerId() {
         return customerId;
     }
 
-    /**
-     * Sets the CustomerId into the customerId variable.
-     *
-     * @param customerId takes customerId and sets it
-     */
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    /**
-     * Gets the serviceTypeId.
-     *
-     * @return the serviceTypeId
-     */
     public int getServiceTypeId() {
         return serviceTypeId;
     }
 
-    /**
-     * Sets the serviceTypeid into the variable serviceTypeId.
-     *
-     * @param serviceTypeId takes serviceTypeId and sets it
-     */
     public void setServiceTypeId(int serviceTypeId) {
         this.serviceTypeId = serviceTypeId;
     }
 
-    /**
-     * Gets the Summary.
-     *
-     * @return the summary of the report.
-     */
     public String getSummary() {
         return summary;
     }
 
-    /**
-     * Sets the Summary into the variable summary.
-     *
-     * @param summary sets the summary
-     */
     public void setSummary(String summary) {
         this.summary = summary;
     }
-    /**
-     * Gets the File
-     * @return the fileTypeToFileNameMapping
-     */
+
     public Map<Integer, String> getFileTypeToFileNameMapping() {
         return fileTypeToFileNameMapping;
     }
