@@ -32,10 +32,10 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
 
   updateData(data) {
     if (!data.edit) {
-      console.log(data.edit);
       this.fileService.createFiletypeExtensions(data)
         .subscribe(
           (response) => {
+            console.log(data);
             console.log("Your data is updated", response);
           },
           (error) => console.log(error)
@@ -65,17 +65,6 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
       }
     }
 
-  }
-
-
-  onSaveClick() {
-    // Right now we are just pushing the top value of the stack.
-    console.log(this.fileTypeExtensions[0]);
-    this.fileService.createFiletypeExtensions(this.fileTypeExtensions[0]).subscribe(
-      (response) => {
-        console.log(response);
-      }, (error) => console.log(error)
-    );
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
