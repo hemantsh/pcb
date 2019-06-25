@@ -53,7 +53,7 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
   }
   addFiletype() {
     this.changesSaved = false;
-    this.fileTypeExtensions.unshift({ id: null, extensions: null, file_type: null, file: true, edit: true });
+    this.fileTypeExtensions.unshift({ id: null, extensions: "", file_type: null, file: true, edit: true });
   }
   removeExtension(data) {
     if (data.file_type == null || data.extensions == null) {
