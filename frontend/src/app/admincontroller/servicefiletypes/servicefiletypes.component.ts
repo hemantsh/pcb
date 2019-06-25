@@ -21,6 +21,15 @@ export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesCom
   filetypes = [];
   changesSaved = true;
   successMsgDiv = 'hide';
+  help = {
+    title: 'Learn How to Map Filetypes to Services',
+    instructions: [
+      "First choose any service from services listed in the dropdown.",
+      "After that you can choose filetype from the filetypes listed in the dropdown.",
+      "If the filetype is already exists in the service, software will show an error otherwise you can see the selected filetype added to the selected services filetype list.",
+      "After that you have to click on <b>Save</b> to make changes parmanent otherwise changes won't affect in the database."
+    ]
+  }
   constructor(private fileService: FileService) { }
 
   ngOnInit() {

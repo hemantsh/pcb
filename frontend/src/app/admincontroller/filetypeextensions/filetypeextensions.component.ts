@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { CanFiletypeExtensionsComponentDeactivate } from './can-deactivate-filetype-extn.service';
 import { Observable } from 'rxjs';
@@ -13,7 +13,15 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
   successMsgDiv = 'hide';
   deleteObj;
   changesSaved = true;
-
+   help = {
+    title: 'Learn How to Map Extensions to Filetype',
+    instructions: [
+      'To edit extensions, choose any Filetype extensions from extensions listed.',
+      'Now click on edit button corresponding to extensions of the particular filetype.',
+      'Existing extensions gets converted into input box so that you can enter more extensions to map.',
+      'You can enter multiple extensions which is seperated by comma ( i.e. ",") <b>for example pdf,txt,gto....</b>'
+    ]
+  }
   constructor(private fileService: FileService) { }
 
   ngOnInit() {

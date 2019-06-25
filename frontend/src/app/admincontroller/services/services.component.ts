@@ -43,6 +43,8 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
   updateService(service) {
     if (service.edit || service.add) {
       console.log(service.edit);
+      service.name=service.name.toLowerCase();
+      console.log(service);
       this.fileService.updateServices(service)
         .subscribe(
           (response: Response) => {
