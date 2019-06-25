@@ -29,7 +29,8 @@
           <li>To edit extensions, choose any Filetype extensions from extensions listed.</li>
           <li>Now click on edit button corresponding to extensions of the particular filetype.</li>
           <li>Existing extensions gets converted into input box so that you can enter more extensions to map.</li>
-          <li>You can enter multiple extensions which is seperated by comma ( i.e. ",") <b>for example pdf,txt,gto....</b></li>
+          <li>You can enter multiple extensions which is seperated by comma ( i.e. ",") <b>for example
+              pdf,txt,gto....</b></li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -86,7 +87,7 @@
                       class="glyphicon glyphicon-edit"></span></button>
                   <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;"
                     (click)="data.edit = !data.edit; data.originalExtn = data.extensions; changesSaved=!changesSaved;"
-                    (click)="onSaveClick()"><span class="glyphicon glyphicon-check"
+                    (click)="updateData(data)"><span class="glyphicon glyphicon-check"
                       [ngStyle]="{'color':data.edit?'green':'green'}"></span></button>
                   <button *ngIf="data.edit" style="border:none; background-color: transparent; margin-left: 10px;"
                     (click)="data.edit = !data.edit; data.originalExtn = data.extensions; changesSaved=!changesSaved;"><span
@@ -109,17 +110,7 @@
             </tr>
           </tbody>
         </table>
-        <!-- <select id="file_type" class="form-control" [(ngModel)]="selectedFileType"
-            (change)="onFileTypeSelect(selectedFileType)">
-            <option value="0" selected disabled="true">Please Select a FileType</option>
-            <option *ngFor="let file of fileTypeExtensions" [value]="file.file_type">{{file.file_type}}</option>
-          </select> -->
-
       </div>
     </div>
   </div>
-  <!-- <div class="form-group button-top-margin btn-center">
-    <button type="button" class="btn btn-primary" (click)="onSaveClick()" data-toggle="modal"
-      data-target="#exampleModalCenter">Save</button>
-  </div> -->
 </div>
