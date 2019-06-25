@@ -9,37 +9,7 @@
     <a routerLink="../services"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add
       Services</a>&nbsp;&nbsp;&nbsp;
     <!-- Button Triggers the Help Modal -->
-    <button type="button" class="btn btn-info btn-md pull-right" data-toggle="modal" data-target="#helpModal"><span
-        class="glyphicon glyphicon-info-sign pulse"></span>&nbsp;Learn to Map</button>
-  </div>
-
-  <!-- Modal -->
-  <div id="helpModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="text-align: center;"><b>Learn How to Map Filetypes to Services</b></h4>
-        </div>
-        <div class="modal-body">
-          <h5 style="font-weight: bold; margin-bottom: 3%">Follow below directions for mapping</h5>
-          <ul>
-            <li>First choose any service from services listed in the dropdown.</li>
-            <li>After that you can choose filetype from the filetypes listed in the dropdown.</li>
-            <li>If the filetype is already exists in the service, software will show an error otherwise you can see the
-              selected filetype added to the selected services filetype list.</li>
-            <li>After that you have to click on <b>Save</b> to make changes parmanent otherwise changes won't affect in the
-              database.</li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
-    </div>
+    <app-help-modal [helpData]="help"></app-help-modal>
   </div>
 </div>
 <!-- Drop Down Code -->

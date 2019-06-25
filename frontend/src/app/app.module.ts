@@ -23,6 +23,7 @@ import { CanFiletypeExtnDeactivateGuard } from './admincontroller/filetypeextens
 import { CanServiceFiletypesDeactivateGuard } from './admincontroller/servicefiletypes/candeactivate.servicefiletypes.service';
 // <-------------------------- Wrong URL Handlers ------------------------------------------->
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HelpModalComponent } from './help-modal/help-modal.component';
 
 /**
  * Routes are used to navigate from one page to another.
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     ReportComponent,
     PageNotFoundComponent,
     FiletypeextensionsComponent,
-    ServicefiletypesComponent
+    ServicefiletypesComponent,
+    HelpModalComponent
   ],
   imports: [
     BrowserModule,
