@@ -111,15 +111,18 @@ export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesCom
     );
 
     if (this.deleteFileTypeArr.length !== 0) {
-      this.fileService.deleteServiceFiletypes(this.deleteFileTypeArr).subscribe(
-        (response: Response) => {
-          console.log(response)
-          if (response.status == 200) {
-            this.changesSaved = true;
-          }
-        },
-        (error) => console.log(error)
-      );
+      let cnfrm = confirm(MESSAGE_CONST.DELETE_AUTH_CHECK);
+      if (cnfrm == true) {
+        this.fileService.deleteServiceFiletypes(this.deleteFileTypeArr).subscribe(
+          (response: Response) => {
+            console.log(response)
+            if (response.status == 200) {
+              this.changesSaved = true;
+            }
+          },
+          (error) => console.log(error)
+        );
+      }
     }
   }
 
