@@ -1,15 +1,22 @@
 package com.sc.fe.analyze.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import com.amazonaws.util.StringUtils;
 import com.sc.fe.analyze.data.entity.FiletypeExtensions;
 import com.sc.fe.analyze.data.repo.FiletypeExtensionsRepo;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.util.ReportUtility;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -20,6 +27,8 @@ public class FiletypeExtensionsService {
 
     @Autowired
     private FiletypeExtensionsRepo filetypeExtensionsRepo;
+    @Autowired
+    private CachingService cacheService;
 
     /**
      * Displays all the records in the filetype_extensions tables and returns
@@ -55,6 +64,7 @@ public class FiletypeExtensionsService {
     public void save(FileTypeExtensions filetypeExtensions) {
         FiletypeExtensions fe = ReportUtility.convertToDBObject(filetypeExtensions);
         filetypeExtensionsRepo.save(fe);
+        cacheService.evictAllCacheValues("ExtnFileMap");
 
     }
 
@@ -69,6 +79,7 @@ public class FiletypeExtensionsService {
         filetypeObj.getKey().setId(UUID.fromString(id));
         filetypeObj.getKey().setFiletype(file_type);
         filetypeExtensionsRepo.delete(filetypeObj);
+        cacheService.evictAllCacheValues("ExtnFileMap");
     }
 
     /**
@@ -78,6 +89,7 @@ public class FiletypeExtensionsService {
      */
     public void deleteFiletype(FileTypeExtensions filetypeExtensions) {
         filetypeExtensionsRepo.delete(ReportUtility.convertToDBObject(filetypeExtensions));
+        cacheService.evictAllCacheValues("ExtnFileMap");
     }
 
     /**
@@ -89,5 +101,35 @@ public class FiletypeExtensionsService {
     public FiletypeExtensions getFileExtenions(String extension) {
         return filetypeExtensionsRepo.findByExtensions(extension).get(0);
     }
+    
+    /**
+     * Return a map of extension to fileType mapping.
+     * @return Map Key=extension, value = set of file types
+     */
+    @Cacheable( value="ExtnFileMap")
+    public Map<String, Set<String>> extensionToFileMap() {
+    	
+    	Map<String, Set<String>> extensionTofiletypeMap = new HashMap<String, Set<String>>();
+    	List<FileTypeExtensions> filetypeExtensions = findAll();
+    	
+        if (filetypeExtensions == null) {
+            return extensionTofiletypeMap;
+        }
+        filetypeExtensions.stream().forEach(row -> {
+            if ( StringUtils.hasValue( row.getExtensions() ) ) {
+            	String[] extns = row.getExtensions().split(",");
+                for (String extn : extns) {
+                    Set<String> filetypeSet = extensionTofiletypeMap.get(extn);
+                    if (filetypeSet == null) {
+                        filetypeSet = new HashSet<String>();
+                    }
+                    filetypeSet.add(row.getFile_type());
+                    extensionTofiletypeMap.put(extn, filetypeSet);
+                }
+            }
+        });
+        return extensionTofiletypeMap;
+    }
+    
 
 }

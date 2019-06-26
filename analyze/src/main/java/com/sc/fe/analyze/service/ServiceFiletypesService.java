@@ -1,10 +1,13 @@
 package com.sc.fe.analyze.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
 import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.repo.ServiceFiletypesRepo;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -15,6 +18,8 @@ public class ServiceFiletypesService {
 
     @Autowired
     private ServiceFiletypesRepo serviceFiletypeRepo;
+    @Autowired
+    private CachingService cacheService;
 
     /**
      * Displays all the records in the service_filetypes tables
@@ -31,6 +36,7 @@ public class ServiceFiletypesService {
      * @param serviceId Takes the serviceId
      * @return the list of ServiceFileTypes
      */
+    @Cacheable ( value = "ServiceFiles")
     public List<ServiceFiletypes> findByKeyServiceId(int serviceId) {
         return serviceFiletypeRepo.findByKeyServiceid(serviceId);
     }
@@ -43,6 +49,7 @@ public class ServiceFiletypesService {
      */
     public void save(List<ServiceFiletypes> serviceFileType) {
         serviceFiletypeRepo.saveAll(serviceFileType);
+        cacheService.evictAllCacheValues("ServiceFiles");
     }
 
     /**
@@ -52,5 +59,6 @@ public class ServiceFiletypesService {
      */
     public void delete(List<ServiceFiletypes> serviceFiletype) {
         serviceFiletypeRepo.deleteAll(serviceFiletype);
+        cacheService.evictAllCacheValues("ServiceFiles");
     }
 }

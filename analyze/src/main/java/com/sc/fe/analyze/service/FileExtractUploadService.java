@@ -28,7 +28,6 @@ import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.ErrorCodes;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
-import com.sc.fe.analyze.util.MappingUtil;
 import com.sc.fe.analyze.util.ReportUtility;
 
 /**
@@ -41,9 +40,10 @@ public class FileExtractUploadService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
 
     @Autowired
-    ProjectFilesService projectFilesService;
+    private ProjectFilesService projectFilesService;
     @Autowired
-    ProjectService projectService;
+    private ProjectService projectService;
+    
 
     /**
      *
@@ -218,11 +218,10 @@ public class FileExtractUploadService extends BaseService {
                 }
             }
 
+            int servId = getServiceId (splitService[i] );
             //Required files as per business rules        
-            if (MappingUtil.getServiceId(splitService[i]) != null) {
-                requiredFilesTypes.addAll(getServiceFiles(
-                        MappingUtil.getServiceId(splitService[i]))
-                );
+            if ( servId > 0 ) {
+                requiredFilesTypes.addAll(getServiceFiles(servId ) );
             }
         }
         //Set the null values of Assembly and Fabrication turnTime Quantity if it is empty
@@ -365,7 +364,7 @@ public class FileExtractUploadService extends BaseService {
         String[] splitServiceTypes = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitServiceTypes.length; i++) {
             String splitServiceType = splitServiceTypes[i].toLowerCase().trim();
-            if (MappingUtil.getServiceId(splitServiceType) == null) {
+            if (getServiceId(splitServiceType) == 0) {
                 projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
                 return true;
             }
@@ -520,7 +519,7 @@ public class FileExtractUploadService extends BaseService {
      */
     private void processGerber(List<FileDetails> fileDetails) {
 
-        GerberFileProcessingUtil.processFilesByExtension(fileDetails, getExtensionTofiletypeMap());
+        GerberFileProcessingUtil.processFilesByExtension(fileDetails, extensionToFileMap());
 
         //For each file that is gerber format
         fileDetails.stream()
