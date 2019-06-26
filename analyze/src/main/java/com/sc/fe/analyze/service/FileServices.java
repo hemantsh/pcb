@@ -3,6 +3,7 @@ package com.sc.fe.analyze.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +20,16 @@ public class FileServices {
 
     @Autowired
     private ServicesRepo serviceRepo;
+    
+    @Autowired
+    private CachingService cacheService;
 
     /**
      * This method find the services
      *
      * @return all the services which found in the database
      */
-//    @Cacheable(value = "Services")
+    @Cacheable(value = "Services")
     public List<Services> findAll() {
         return serviceRepo.findAll();
     }
@@ -36,7 +40,8 @@ public class FileServices {
      */
     public void save(Services services) {
         serviceRepo.save(services);
-//        cacheService.evictAllCacheValues("Services");
+        cacheService.evictAllCacheValues("Services");
+        cacheService.evictSingleCacheValue("Service", services.getId());
     }
 
     /**
@@ -46,7 +51,8 @@ public class FileServices {
      */
     public void deleteAll(List<Services> services) {
         serviceRepo.deleteAll(services);
-//        cacheService.evictAllCacheValues("Services");
+        cacheService.evictAllCacheValues("Services");
+        cacheService.evictAllCacheValues("Service");
     }
 
     /**
@@ -54,6 +60,7 @@ public class FileServices {
      * @param id the specific service to find from database by id
      * @return the services
      */
+    @Cacheable(value = "Service")
     public Services getServicesById(int id) {
         return serviceRepo.findById(id).get();
     }

@@ -25,6 +25,7 @@ import com.sc.fe.analyze.service.FiletypeExtensionsService;
 import com.sc.fe.analyze.service.ServiceFiletypesService;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -45,7 +46,7 @@ public class AdminController {
     private FiletypeExtensionsService filetypeExtensionService;
     @Autowired
     private ServiceFiletypesService serviceFiletypesService;
-
+    
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
     public ProjectDetails getProjectDetails(@PathParam("projectId") String projectId, @PathParam("version") String version) {
@@ -95,7 +96,6 @@ public class AdminController {
         fileService.deleteAll(service);
     }
 
-    // Filetype Extensions Services
     @GetMapping(path = "/filetypeextensions")
     public List<FileTypeExtensions> getFiletypeExtensions() {
         return filetypeExtensionService.findAll();

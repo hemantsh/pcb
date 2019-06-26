@@ -156,17 +156,20 @@ public class GerberFileProcessingUtil {
 
         Map<String, Set<String>> filePurposeToNameMapping = new HashMap<String, Set<String>>();
         //Key:fileType , Value = set of fileNames from zip that match to be of this fileType
-
+        Set<String> ignoreList = new HashSet<String>();
+        ignoreList.add("pdf");
+        ignoreList.add("txt");
+        
         fileDetails.forEach(fileDetail -> {
 
             if (fileDetail.getType() == null) {
                 String fileName = fileDetail.getName();
                 String[] nameParts = fileName.split("\\.");
                 String extn = nameParts[nameParts.length - 1].toLowerCase();
-
+                
                 Set<String> fileTypes = extensionToFileTypeMapping.get(extn);// All the types by the extension
 
-                if (fileTypes != null) {
+                if (fileTypes != null && ! ignoreList.contains( extn)) {
                     fileTypes.stream().forEach(fileType -> {
 
                         Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
@@ -517,7 +520,9 @@ public class GerberFileProcessingUtil {
      * @param fd It contains the fileDetails
      */
     public static void parseFileName(FileDetails fd) {
-        if (fd == null || "odb".equalsIgnoreCase(fd.getFormat())) {
+        if (fd == null 
+        		|| "odb".equalsIgnoreCase(fd.getFormat()) 
+        		|| fd.getName().toLowerCase().endsWith(".txt") ) {
             return;
         }
 

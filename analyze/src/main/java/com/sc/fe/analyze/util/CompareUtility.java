@@ -42,6 +42,7 @@ public class CompareUtility {
         set.add("attachReplace");
         set.add("status");
         set.add("setId");
+        set.add("context");
         return set;
     }
 
