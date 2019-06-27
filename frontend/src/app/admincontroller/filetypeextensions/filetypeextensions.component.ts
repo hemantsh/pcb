@@ -13,7 +13,7 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
   successMsgDiv = 'hide';
   deleteObj;
   changesSaved = true;
-   help = {
+  help = {
     title: 'Learn How to Map Extensions to Filetype',
     instructions: [
       'To edit extensions, choose any Filetype extensions from extensions listed.',
@@ -37,8 +37,11 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
       (error) => console.log(error)
     )
   }
-
+  changeToLowerCase(data) {
+    data.file_type = data.file_type.toLowerCase();
+  }
   updateData(data) {
+    data.extensions = data.extensions.toLowerCase();
     if (!data.edit) {
       this.fileService.createFiletypeExtensions(data)
         .subscribe(
@@ -53,7 +56,7 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
   }
   addFiletype() {
     this.changesSaved = false;
-    this.fileTypeExtensions.unshift({ id: null, extensions: null, file_type: null, file: true, edit: true });
+    this.fileTypeExtensions.unshift({ id: null, extensions: "", file_type: null, file: true, edit: true });
   }
   removeExtension(data) {
     if (data.file_type == null || data.extensions == null) {

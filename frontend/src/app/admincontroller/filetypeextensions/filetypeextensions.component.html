@@ -40,7 +40,7 @@
                     (click)="data.file = !data.file; data.originalFiletype = data.file_type;"><span
                       class="glyphicon glyphicon-edit"></span></button>
                   <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;"
-                    (click)="data.file = !data.file; data.originalFiletype = data.file_type;"><span
+                    (click)="data.file = !data.file; data.originalFiletype = data.file_type;" (click)="changeToLowerCase(data)"><span
                       class="glyphicon glyphicon-check" [ngStyle]="{'color':data.file?'green':'green'}"></span></button>
                   <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;"
                     (click)="data.file_type=data.originalFiletype; data.file= !data.file"><span

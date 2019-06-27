@@ -16,7 +16,7 @@ export class FileService {
     }
 
     /**
-     * Service that call the backend api to save the new extension or update the existing service into the database.
+     * Service that call the backend api to save the new service or update the existing service into the database.
      * @param service contains service and serviceId to update and save a new service 
      */
     updateServices(service) {
