@@ -17,22 +17,22 @@ import static org.junit.Assert.*;
  * @author pc
  */
 public class ErrorCodesTest {
-    
+
     public ErrorCodesTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -43,11 +43,10 @@ public class ErrorCodesTest {
     @Test
     public void testValues() {
         System.out.println("values");
-        ErrorCodes[] expResult = null;
+        ErrorCodes[] expResult = ErrorCodes.values();
         ErrorCodes[] result = ErrorCodes.values();
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -56,12 +55,16 @@ public class ErrorCodesTest {
     @Test
     public void testValueOf() {
         System.out.println("valueOf");
-        String name = "";
-        ErrorCodes expResult = null;
+        String name = "V0000";
+        ErrorCodes expResult = ErrorCodes.V0000;
         ErrorCodes result = ErrorCodes.valueOf(name);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        name = "V0001";
+        expResult = ErrorCodes.V0001;
+        result= ErrorCodes.valueOf(name);
+        assertEquals(expResult, result);
+
     }
 
     /**
@@ -70,12 +73,16 @@ public class ErrorCodesTest {
     @Test
     public void testGetErrorMessage() {
         System.out.println("getErrorMessage");
-        ErrorCodes instance = null;
-        String expResult = "";
+        
+        ErrorCodes instance = ErrorCodes.V0000;
+        String expResult = "Unknown fileType";
         String result = instance.getErrorMessage();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        instance = ErrorCodes.V0001;
+        expResult = "Drill file missing";
+        result = instance.getErrorMessage();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -84,11 +91,10 @@ public class ErrorCodesTest {
     @Test
     public void testSetErrorMessage() {
         System.out.println("setErrorMessage");
-        String errorMessage = "";
-        ErrorCodes instance = null;
+        String errorMessage = "This is a test message.";
+        ErrorCodes instance = ErrorCodes.V0000;
         instance.setErrorMessage(errorMessage);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
-    
+
 }
