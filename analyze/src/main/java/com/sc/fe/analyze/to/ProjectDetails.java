@@ -176,13 +176,14 @@ public class ProjectDetails implements Serializable {
 
     public FileDetails getFileDetails(String fileName) {
         FileDetails retVal = null;
-
-        List<FileDetails> shortList = fileDetails.stream()
-                .filter(fd -> fileName.equalsIgnoreCase(fd.getName()))
-                .collect(Collectors.toList());
-
-        if (shortList != null && shortList.size() > 0) {
-            retVal = shortList.get(0);
+        if( fileDetails != null ) {
+	        List<FileDetails> shortList = fileDetails.stream()
+	                .filter(fd -> fileName.equalsIgnoreCase(fd.getName()))
+	                .collect(Collectors.toList());
+	
+	        if (shortList != null && shortList.size() > 0) {
+	            retVal = shortList.get(0);
+	        }
         }
         return retVal;
     }

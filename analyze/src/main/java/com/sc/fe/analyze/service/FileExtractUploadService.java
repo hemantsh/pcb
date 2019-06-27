@@ -67,11 +67,11 @@ public class FileExtractUploadService extends BaseService {
         report.setProjectDetail(projectDetails);
         report.setSummary("****** File upload and basic validation by name and extension. *******");
 
-        //Check that if attachReplace=true in the JSON request but projectId is null then it give error
-        if (projectDetails.isAttachReplace() && (projectDetails.getProjectId() == null)) {
-            projectDetails.getErrors().put("V0000", "No data found for the rNumber");
-            return report;
-        }
+//        //Check that if attachReplace=true in the JSON request but projectId is null then it give error
+//        if (projectDetails.isAttachReplace() && (projectDetails.getProjectId() == null)) {
+//            projectDetails.getErrors().put("V0000", "No data found for the rNumber. Submit again with newProject= true");
+//            return report;
+//        }
 
         //Check that user give correct Service Type or not
         if (!projectDetails.isAttachReplace()) {
@@ -323,9 +323,14 @@ public class FileExtractUploadService extends BaseService {
         //If projectID/R# is not there, get it from FEMS API call. Stub the call for now
         //Check if new version is required or its an add/replace for existing version.
         String projectId = getProjectId(projectDetails);
-        //TODO:Check for null value of projectId.If null, give error just like LineNo-317.
         String version = getVersion(projectDetails);
-
+        
+        if( StringUtils.isEmpty(version) ) {
+        	projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
+        	return;
+        }
+        
+        
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
 
@@ -387,14 +392,16 @@ public class FileExtractUploadService extends BaseService {
             return projectDetails.getProjectId();
         }
         //Get by RNumber.
-        //For existing project ( customer forgot to pass projectID, we need to find it)        
-        if (!projectDetails.isNewProject()) {
-            //Get by rNumber 
-            projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
-            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-                return null;
-            }
-        }
+        projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
+        
+//        //For existing project ( customer forgot to pass projectID, we need to find it)        
+//        if (!projectDetails.isNewProject()) {
+//            //Get by rNumber 
+//            projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
+//            if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
+//                return null;
+//            }
+//        }
 
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
             projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
@@ -434,6 +441,9 @@ public class FileExtractUploadService extends BaseService {
      */
     public ProjectDetails getLatestRecord(String projectId) {
         ProjectDetails projectDetails = getLatestRecord(projectService.findByKeyProjectId(projectId));
+        if( projectDetails == null) {
+        	return new ProjectDetails();
+        }
         projectDetails.setFileDetails(projectFilesService.getProjectById(projectId));
         return projectDetails;
     }
@@ -445,7 +455,7 @@ public class FileExtractUploadService extends BaseService {
      * @return Null if not found. Else return the match
      */
     public ProjectDetails getLatestRecord(List<ProjectDetails> projDtl) {
-        ProjectDetails latestRecord = null;
+        ProjectDetails latestRecord = new ProjectDetails();
         if (projDtl != null && projDtl.size() > 0) {
             latestRecord = projDtl.stream()
                     .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);

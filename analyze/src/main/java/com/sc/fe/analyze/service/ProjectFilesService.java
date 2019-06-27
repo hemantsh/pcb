@@ -39,10 +39,14 @@ public class ProjectFilesService {
      * @return
      */
     private List<FileDetails> convertList(List<ProjectFiles> allRecords) {
+    	
         List<FileDetails> retList = new ArrayList<FileDetails>();
-        allRecords.stream().forEach(row -> {
-            retList.add(ReportUtility.convertToObject(row));
-        });
+        if(allRecords != null) {
+        	allRecords.stream().forEach(row -> {
+        
+	            retList.add(ReportUtility.convertToObject(row));
+	        });
+        }
         return retList;
     }
 
