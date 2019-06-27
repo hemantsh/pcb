@@ -1,6 +1,8 @@
 package com.sc.fe.analyze.controller;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.sc.fe.analyze.service.ProjectService;
 import com.sc.fe.analyze.to.FileDetails;
@@ -84,7 +86,7 @@ public class ProjectManagementController {
             }
             ProjectDetails retDtls=fileUploadService.returnProjectId(projectDetails);
             //If projectId is null when attachReplace=true,it throw error - No data exists with the same rNumber in the database.
-            if(retDtls.getProjectId()==null){                
+            if(retDtls.getProjectId()==null ){                
                 retDtls=validate(projectDetails);            
                 retDtls.setErrors(projectDetails.getErrors());
                 return retDtls;
@@ -93,6 +95,10 @@ public class ProjectManagementController {
             Set<String> diff = projectDetails.getDifferences();
 
             fileUploadService.save(projectDetails);
+            if (projectDetails.hasError()) {   
+            	projectDetails.setFileDetails(new ArrayList<FileDetails>(0));
+            	return projectDetails;
+            }
             projectDetails = fileUploadService.getLatestRecord(projectDetails.getProjectId());
             projectDetails.setAttachReplace(true);
             projectDetails.setDifferences(diff);   

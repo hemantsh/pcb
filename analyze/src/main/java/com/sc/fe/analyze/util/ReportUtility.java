@@ -18,6 +18,8 @@ import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
 
+import io.micrometer.core.instrument.util.StringUtils;
+
 /**
  * Utility Class converts the entity Classes attributes to to Classes attributes
  * and vice-versa.
@@ -160,7 +162,9 @@ public class ReportUtility {
         dbDetail.setErrors(projectDetails.getErrors());
         dbDetail.setPcbClass(projectDetails.getPcbClass());
         dbDetail.setProjectId(projectDetails.getProjectId());
-        dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
+        if( StringUtils.isNotEmpty(projectDetails.getVersion()) ) {
+        	dbDetail.setVersion(UUID.fromString(projectDetails.getVersion()));
+        }
         if (projectDetails.getAssemblyTurnTimeQuantity() != null) {
             String joined = projectDetails.getAssemblyTurnTimeQuantity().stream().map(Object::toString).collect(Collectors.joining(","));
             dbDetail.setAssemblyTurntimeQuantity(joined);
