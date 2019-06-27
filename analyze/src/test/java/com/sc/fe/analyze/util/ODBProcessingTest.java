@@ -7,6 +7,8 @@ package com.sc.fe.analyze.util;
 
 import com.sc.fe.analyze.to.FileDetails;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,12 +48,11 @@ public class ODBProcessingTest {
     @Test
     public void testProcessODB() {
         System.out.println("processODB");
-        Path file = null;
-        List<FileDetails> expResult = null;
+        Path file = Paths.get("D:\\newChanges.txt");
+        List<FileDetails> expResult = new ArrayList<FileDetails>();
         List<FileDetails> result = ODBProcessing.processODB(file);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }
