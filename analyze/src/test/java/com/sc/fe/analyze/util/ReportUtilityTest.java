@@ -11,6 +11,9 @@ import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,22 +26,22 @@ import static org.junit.Assert.*;
  * @author pc
  */
 public class ReportUtilityTest {
-    
+
     public ReportUtilityTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,12 +52,13 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToObject_Project() {
         System.out.println("convertToObject");
-        Project project = null;
-        ProjectDetails expResult = null;
+        Project project = new Project();
+        project.setCompany("Apple");
+        ProjectDetails expResult = new ProjectDetails();
+        expResult.setCompany("Apple");
         ProjectDetails result = ReportUtility.convertToObject(project);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        This method have to be reviewed because it is not giving success.
     }
 
     /**
@@ -63,12 +67,13 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToObject_ProjectFiles() {
         System.out.println("convertToObject");
-        ProjectFiles projectFiles = null;
-        FileDetails expResult = null;
+        ProjectFiles projectFiles = new ProjectFiles();
+        projectFiles.setFormat("gerber");
+        FileDetails expResult = new FileDetails();
+        expResult.setFormat("gerber");
         FileDetails result = ReportUtility.convertToObject(projectFiles);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -77,12 +82,22 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToObject_FiletypeExtensions() {
         System.out.println("convertToObject");
-        FiletypeExtensions filetypeExtn = null;
-        FileTypeExtensions expResult = null;
+        FiletypeExtensions filetypeExtn = new FiletypeExtensions();
+        filetypeExtn.getKey().setId(UUID.fromString("50554d6e-29bb-11e5-b345-feff819cdc9f"));
+        Set<String> extn = new HashSet<>();
+        extn.add("xls");
+        extn.add("pdf");
+        filetypeExtn.setExtensions(extn);
+        filetypeExtn.setFileType("drill");
+        FileTypeExtensions expResult = new FileTypeExtensions();
+        expResult.setFile_type("drill");
+        expResult.setExtensions("pdf,xls");
+        expResult.setId("50554d6e-29bb-11e5-b345-feff819cdc9f");
         FileTypeExtensions result = ReportUtility.convertToObject(filetypeExtn);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        /*        to be reviewed for output comparison.
+        .datastax.driver.core.utils.UUIDs - PID obtained through native call to getpid(): 
+         */
     }
 
     /**
@@ -91,12 +106,13 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToDBObject_FileTypeExtensions() {
         System.out.println("convertToDBObject");
-        FileTypeExtensions fe = null;
-        FiletypeExtensions expResult = null;
+        FileTypeExtensions fe = new FileTypeExtensions();
+        FiletypeExtensions expResult = new FiletypeExtensions();
         FiletypeExtensions result = ReportUtility.convertToDBObject(fe);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        /*
+            .datastax.driver.core.utils.UUIDs - PID obtained through native call to getpid(): 
+         */
     }
 
     /**
@@ -105,12 +121,11 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToDBObject_ProjectDetails() {
         System.out.println("convertToDBObject");
-        ProjectDetails projectDetails = null;
-        Project expResult = null;
+        ProjectDetails projectDetails = new ProjectDetails();
+        Project expResult = new Project();
         Project result = ReportUtility.convertToDBObject(projectDetails);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -119,12 +134,11 @@ public class ReportUtilityTest {
     @Test
     public void testConvertToDBObject_FileDetails() {
         System.out.println("convertToDBObject");
-        FileDetails fileDetails = null;
-        ProjectFiles expResult = null;
+        FileDetails fileDetails = new FileDetails();
+        ProjectFiles expResult = new ProjectFiles();
         ProjectFiles result = ReportUtility.convertToDBObject(fileDetails);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
-    
+
 }
