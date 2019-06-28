@@ -7,12 +7,14 @@ package com.sc.fe.analyze.util;
 
 import com.sc.fe.analyze.FileStorageProperties;
 import java.io.File;
+import java.io.FileInputStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -20,22 +22,22 @@ import org.springframework.web.multipart.MultipartFile;
  * @author pc
  */
 public class FileUtilTest {
-    
+
     public FileUtilTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -46,14 +48,14 @@ public class FileUtilTest {
     @Test
     public void testSaveUploadedZipFile() throws Exception {
         System.out.println("saveUploadedZipFile");
-        String projectId = "";
-        MultipartFile file = null;
-        FileStorageProperties fileStorageProperties = null;
+        String projectId = "testProject";
+        MultipartFile file = new MockMultipartFile("newChanges.txt", new FileInputStream(new File("D://newChanges.txt")));
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        fileStorageProperties.setBucket("myBucket");
         String expResult = "";
         String result = FileUtil.saveUploadedZipFile(projectId, file, fileStorageProperties);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -62,12 +64,12 @@ public class FileUtilTest {
     @Test
     public void testSaveAndExtractZip() throws Exception {
         System.out.println("saveAndExtractZip");
-        String projectId = "";
-        MultipartFile file = null;
-        FileStorageProperties fileStorageProperties = null;
+        String projectId = "testProject";
+        MultipartFile file = new MockMultipartFile("newChanges.txt", new FileInputStream(new File("D://newChanges.txt")));
+        FileStorageProperties fileStorageProperties =  new FileStorageProperties();
+        fileStorageProperties.setBucket("myBucket");
         FileUtil.saveAndExtractZip(projectId, file, fileStorageProperties);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -78,8 +80,7 @@ public class FileUtilTest {
         System.out.println("deleteFolder");
         File file = null;
         FileUtil.deleteFolder(file);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
-    
+
 }

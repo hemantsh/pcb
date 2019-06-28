@@ -6,6 +6,7 @@
 package com.sc.fe.analyze.util;
 
 import com.sc.fe.analyze.FileStorageProperties;
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,12 +47,13 @@ public class FileStoreUtilTest {
     @Test
     public void testGetInstance() {
         System.out.println("getInstance");
-        FileStorageProperties fileStorageProperties = null;
-        FileStoreUtil expResult = null;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        fileStorageProperties.setBucket("myUploadDir");
+        FileStoreUtil expResult = FileStoreUtil.getInstance(fileStorageProperties);
         FileStoreUtil result = FileStoreUtil.getInstance(fileStorageProperties);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(result.getUploadDir(), null);
+        
     }
 
     /**
@@ -60,12 +62,13 @@ public class FileStoreUtilTest {
     @Test
     public void testGetUploadDir() {
         System.out.println("getUploadDir");
-        FileStoreUtil instance = null;
-        String expResult = "";
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        fileStorageProperties.setUploadDir("myUploadDir");
+        FileStoreUtil instance = FileStoreUtil.getInstance(fileStorageProperties);
+        String expResult = "myUploadDir";
         String result = instance.getUploadDir();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -74,14 +77,14 @@ public class FileStoreUtilTest {
     @Test
     public void testStoreFile() throws Exception {
         System.out.println("storeFile");
-        String projectId = "";
+        
+        String projectId = "newProject";
         MultipartFile file = null;
         FileStoreUtil instance = null;
         String expResult = "";
         String result = instance.storeFile(projectId, file);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -90,12 +93,12 @@ public class FileStoreUtilTest {
     @Test
     public void testExtractFiles() {
         System.out.println("extractFiles");
-        String projectId = "";
-        String fileName = "";
-        FileStoreUtil instance = null;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        String projectId = "newProject";
+        String fileName = "myNewFile";
+        FileStoreUtil instance = FileStoreUtil.getInstance(fileStorageProperties);
         instance.extractFiles(projectId, fileName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//To be validated further.
     }
 
     /**
@@ -104,13 +107,14 @@ public class FileStoreUtilTest {
     @Test
     public void testListFiles() {
         System.out.println("listFiles");
-        String projectId = "";
-        FileStoreUtil instance = null;
-        Set<String> expResult = null;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        fileStorageProperties.setBucket("myNewBucket");
+        String projectId = "newProject";
+        FileStoreUtil instance = FileStoreUtil.getInstance(fileStorageProperties);
+        Set<String> expResult = new HashSet<>();
         Set<String> result = instance.listFiles(projectId);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -119,12 +123,12 @@ public class FileStoreUtilTest {
     @Test
     public void testGetFileStorageProperties() {
         System.out.println("getFileStorageProperties");
-        FileStoreUtil instance = null;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        FileStoreUtil instance = FileStoreUtil.getInstance(fileStorageProperties);
         FileStorageProperties expResult = null;
         FileStorageProperties result = instance.getFileStorageProperties();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//To be validated further.
     }
 
     /**
@@ -133,11 +137,11 @@ public class FileStoreUtilTest {
     @Test
     public void testSetFileStorageProperties() {
         System.out.println("setFileStorageProperties");
-        FileStorageProperties fileStorageProperties = null;
-        FileStoreUtil instance = null;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
+        fileStorageProperties.setAccessKey("123456789");
+        FileStoreUtil instance = FileStoreUtil.getInstance(fileStorageProperties);
         instance.setFileStorageProperties(fileStorageProperties);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }
