@@ -1,16 +1,10 @@
 package com.sc.fe.analyze.controller;
 
-import com.sc.fe.analyze.service.FileExtractUploadService;
-
 import java.util.ArrayList;
 import java.util.List;
-import com.sc.fe.analyze.service.ProjectService;
-import com.sc.fe.analyze.to.FileDetails;
-import com.sc.fe.analyze.to.ProjectDetails;
-import com.sc.fe.analyze.to.Report;
-import io.swagger.annotations.Api;
 import java.util.Map;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -22,6 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.sc.fe.analyze.service.FileExtractUploadService;
+import com.sc.fe.analyze.service.ProjectService;
+import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.ProjectDetails;
+
+import io.swagger.annotations.Api;
 
 /**
  *
@@ -52,7 +53,7 @@ public class ProjectManagementController {
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
        
         if (!StringUtils.isEmpty(projectDetails.getrNumber())) {
-            Report report = fileUploadService.validateFiles(projectDetails);
+            fileUploadService.validateFiles(projectDetails);
         }
         ProjectDetails temp = new ProjectDetails();
         temp.setProjectId(projectDetails.getProjectId());
@@ -74,47 +75,43 @@ public class ProjectManagementController {
         }
         return temp;
     }
+    
+    private boolean hasRequiredFields( ProjectDetails projectDetails ) {
+    	boolean retVal = true;
+    	if (StringUtils.isEmpty(projectDetails.getrNumber())) {
+    		retVal = false;
+    	}
+    	return retVal;
+    }
 
     @PostMapping(path = "/project")
     @ResponseBody
-    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {        
-        if (projectDetails.isAttachReplace() && !projectDetails.isNewProject()) {
-            String setId=projectDetails.getSetId();
-            if (StringUtils.isEmpty(projectDetails.getrNumber())) {
-                projectDetails.getErrors().put("V0000", "rNumber is required");
-                return validate(projectDetails);
-            }
-            ProjectDetails retDtls=fileUploadService.returnProjectId(projectDetails);
-            //If projectId is null when attachReplace=true,it throw error - No data exists with the same rNumber in the database.
-            if(retDtls.getProjectId()==null ){                
-                retDtls=validate(projectDetails);            
-                retDtls.setErrors(projectDetails.getErrors());
-                return retDtls;
-            }
-            fileUploadService.compareProject(retDtls);
-            Set<String> diff = projectDetails.getDifferences();
-
-            fileUploadService.save(projectDetails);
-            if (projectDetails.hasError()) {   
-            	projectDetails.setFileDetails(new ArrayList<FileDetails>(0));
-            	return projectDetails;
-            }
-            projectDetails = fileUploadService.getLatestRecord(projectDetails.getProjectId());
-            projectDetails.setAttachReplace(true);
-            projectDetails.setDifferences(diff);   
-            projectDetails.setSetId(setId);
-            return validate(projectDetails);            
-        }
-        fileUploadService.save(projectDetails);
-        if (projectDetails.hasError()) {           
-            return validate(projectDetails);
-        }        
-        fileUploadService.compareProject(projectDetails);    
-        ProjectDetails retDetails=validate(projectDetails);
-        //If setId is not there,then delete the records from project_files or project table.
-        if( StringUtils.isEmpty( retDetails.getSetId()) ){   
-            fileUploadService.setIdValidation(projectDetails);
-        }
+    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {   
+    	if( ! hasRequiredFields(projectDetails)) {
+    		projectDetails.getErrors().put("V0000", "rNumber is required");
+    		projectDetails.setFileDetails(new ArrayList<FileDetails>(0));
+    		return projectDetails;
+    	}
+    	ProjectDetails retDetails= null;
+    	
+    	ProjectDetails temp = fileUploadService.getProjectByRNumber(projectDetails.getrNumber());
+    	
+    	if( temp != null) {
+    		projectDetails.setProjectId(temp.getProjectId());
+    		projectDetails.setVersion( temp.getVersion());
+    	}
+    	
+    	boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
+    	if(validate) {
+    		fileUploadService.processGerber(projectDetails.getFileDetails());
+    		fileUploadService.compareProject(projectDetails);    
+    		retDetails = validate(projectDetails);
+    	}else {
+    		fileUploadService.save(projectDetails);
+    		retDetails = projectDetails;
+    		retDetails.setFileDetails(new ArrayList<FileDetails>(0));
+    	}
+    	
         return retDetails;
     }
 

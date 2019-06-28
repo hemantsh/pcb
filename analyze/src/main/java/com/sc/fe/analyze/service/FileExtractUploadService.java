@@ -134,8 +134,10 @@ public class FileExtractUploadService extends BaseService {
         //Set errors for missing files or for not selected files
         projectDetails.setErrors(errMap);
 
-        //Save        
-        projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        //Save  
+        if( !StringUtils.isEmpty(projectDetails.getProjectId()) && !StringUtils.isEmpty(projectDetails.getSetId()) ) {
+        	projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        }
 
         return report;
     }
@@ -184,7 +186,7 @@ public class FileExtractUploadService extends BaseService {
             if (projectDetails.isAttachReplace()) {
                 List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
                 prevprojDtl.setFileDetails(shortList);
-                retErrors.putAll(CompareUtility.compareFileDetails(prevprojDtl, projectDetails));
+                retErrors.putAll(CompareUtility.compareFileDetails( projectDetails, prevprojDtl));
                 return retErrors;
             }
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
@@ -325,9 +327,13 @@ public class FileExtractUploadService extends BaseService {
         String projectId = getProjectId(projectDetails);
         String version = getVersion(projectDetails);
         
+        
+      
         if( StringUtils.isEmpty(version) ) {
-        	projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
-        	return;
+        	//projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
+        	//return;
+        	version = UUIDs.timeBased().toString();
+        	System.out.println("*******INFO: Generating new Version .");
         }
         
         
@@ -340,15 +346,13 @@ public class FileExtractUploadService extends BaseService {
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
-            pFiles.setVersion(UUID.fromString(version));
+            pFiles.setVersion(UUID.fromString( projectDetails.getVersion() ));
             pFiles.setProjectId(projectId);
             projectFilesService.save(pFiles);
         });
 
-        if (!projectDetails.isAttachReplace()) {
-            //Save into project table               
-            projectService.save(ReportUtility.convertToDBObject(projectDetails));
-        }
+        //Save into project table               
+        projectService.save(ReportUtility.convertToDBObject(projectDetails));
 
     }
 
@@ -404,7 +408,8 @@ public class FileExtractUploadService extends BaseService {
 //        }
 
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-            projKeyMap.put("project_id", Long.toHexString(Double.doubleToLongBits(Math.random())));
+        	System.out.println("*******INFO: Generating projectID as no data found by RNumber.");
+            projKeyMap.put("project_id", UUIDs.timeBased().toString());
         }
 
         if (projectDetails.isAttachReplace()) {
@@ -430,6 +435,15 @@ public class FileExtractUploadService extends BaseService {
             }
         }
         return retMap;
+    }
+    
+    public ProjectDetails getProjectByRNumber( String rNumber ) {
+    	ProjectDetails project = null;
+    	if (!StringUtils.isEmpty(rNumber)) {
+            List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
+            project = getLatestRecord(projDtl);
+        }
+    	return project;
     }
 
     /**
@@ -472,7 +486,7 @@ public class FileExtractUploadService extends BaseService {
     private ProjectDetails getPreviousRecord(ProjectDetails projDtl) {
         ProjectDetails prevRecord = null;
 
-        List<ProjectDetails> allRecords = projectService.findByKeyProjectId(projDtl.getProjectId());
+        List<ProjectDetails> allRecords = projectService.findByrNumber(projDtl.getrNumber());//KeyProjectId(projDtl.getProjectId());
         if (allRecords != null) {
             if (projDtl.isAttachReplace() && allRecords.size() == 1) {
                 prevRecord = allRecords.stream()
@@ -506,20 +520,20 @@ public class FileExtractUploadService extends BaseService {
         return version;
     }
 
-    public ProjectDetails returnProjectId(ProjectDetails projectDetails) {
-        //Get the projectDetails by projectId
-        //call validateFiles( ProjectDetails projectDetails ) to get results
-        //Check if new version is required or its an add/replace for existing version.
-        String projectId = getProjectId(projectDetails);
-        String version = getVersion(projectDetails);
-
-        projectDetails.setProjectId(projectId);
-        projectDetails.setVersion(version);
-
-        //To process the gerber file,call the processGerber() method
-        processGerber(projectDetails.getFileDetails());
-        return projectDetails;
-    }
+//    public ProjectDetails returnProjectId(ProjectDetails projectDetails) {
+//        //Get the projectDetails by projectId
+//        //call validateFiles( ProjectDetails projectDetails ) to get results
+//        //Check if new version is required or its an add/replace for existing version.
+//        String projectId = getProjectId(projectDetails);
+//        String version = getVersion(projectDetails);
+//
+//        projectDetails.setProjectId(projectId);
+//        projectDetails.setVersion(version);
+//
+//        //To process the gerber file,call the processGerber() method
+//        processGerber(projectDetails.getFileDetails());
+//        return projectDetails;
+//    }
 
     /**
      * Performs all possible Gerber file processing.
@@ -527,7 +541,7 @@ public class FileExtractUploadService extends BaseService {
      * @param fileDetails - These given file details will be updated if we find
      * more details during processing
      */
-    private void processGerber(List<FileDetails> fileDetails) {
+    public void processGerber(List<FileDetails> fileDetails) {
 
         GerberFileProcessingUtil.processFilesByExtension(fileDetails, extensionToFileMap());
 

@@ -158,7 +158,6 @@ public class GerberFileProcessingUtil {
         //Key:fileType , Value = set of fileNames from zip that match to be of this fileType
         Set<String> ignoreList = new HashSet<String>();
         ignoreList.add("pdf");
-        ignoreList.add("txt");
         
         fileDetails.forEach(fileDetail -> {
 
@@ -521,8 +520,7 @@ public class GerberFileProcessingUtil {
      */
     public static void parseFileName(FileDetails fd) {
         if (fd == null 
-        		|| "odb".equalsIgnoreCase(fd.getFormat()) 
-        		|| fd.getName().toLowerCase().endsWith(".txt") ) {
+        		|| "odb".equalsIgnoreCase(fd.getFormat()) ) {
             return;
         }
 
