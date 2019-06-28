@@ -6,6 +6,7 @@
 package com.sc.fe.analyze.util;
 
 import com.sc.fe.analyze.to.FileDetails;
+import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,12 +52,16 @@ public class CompareUtilityTest {
     @Test
     public void testFullCompare() {
         System.out.println("fullCompare");
-        ProjectDetails newRecord = null;
-        ProjectDetails oldRecord = null;
+        ProjectDetails newRecord = new ProjectDetails();
+        newRecord.setCustomerId("abc1");
+        ProjectDetails oldRecord = new ProjectDetails();
+        oldRecord.setCustomerId("bcd2");
         Map<String, String> expResult = new HashMap<String, String>();
+        expResult.put("customerId", "abc1~bcd2");
         Map<String, String> result = CompareUtility.fullCompare(newRecord, oldRecord);
         assertEquals(expResult, result);
-        assertEquals(0, result.size());
+        assertEquals(1, result.size());
+        assertEquals(result.containsKey("customerId"), true);
 
     }
 
@@ -66,12 +71,16 @@ public class CompareUtilityTest {
     @Test
     public void testCompareObject() throws Exception {
         System.out.println("compareObject");
-        Object newFD = null;
-        Object oldFD = null;
+        FileTypeExtensions newFD = new FileTypeExtensions();
+        newFD.setFile_type("newFile");
+        FileTypeExtensions oldFD = new FileTypeExtensions();
+        oldFD.setFile_type("oldFile");
         Map<String, String> expResult = new HashMap<String, String>();
+        expResult.put("file_type", "newFile~oldFile");
         Map<String, String> result = CompareUtility.compareObject(newFD, oldFD);
-        assertEquals(expResult, result);
-        assertEquals(expResult.size(), 0);
+        assertEquals(result.containsKey("file_type"), true);
+        assertEquals(result.size(), 1);
+        assertEquals(result.get("file_type"), expResult.get("file_type"));
 
     }
 
@@ -82,11 +91,15 @@ public class CompareUtilityTest {
     public void testCompareFileDetails() {
         System.out.println("compareFileDetails");
         ProjectDetails newProject = new ProjectDetails();
+        newProject.setCompany("Google");
         ProjectDetails oldProject = new ProjectDetails();
+        oldProject.setCompany("Apple");
         Map<String, String> expResult = new HashMap<String, String>(0);
+//        expResult.put("company", "Google");
         Map<String, String> result = CompareUtility.compareFileDetails(newProject, oldProject);
         assertEquals(expResult, result);
         assertEquals(expResult.size(), 0);
+        assertEquals(result.containsKey("company"), false);
 
     }
 
@@ -97,7 +110,9 @@ public class CompareUtilityTest {
     public void testCompare() throws Exception {
         System.out.println("compare");
         FileDetails newFD = new FileDetails();
+        newFD.setFormat("gerber");
         FileDetails oldFD = new FileDetails();
+        oldFD.setFormat("gerber");
         Map<String, String> expResult = new HashMap<String, String>();
         Map<String, String> result = CompareUtility.compare(newFD, oldFD);
         assertEquals(expResult, result);
@@ -111,12 +126,16 @@ public class CompareUtilityTest {
     @Test
     public void testCompareMaps() {
         System.out.println("compareMaps");
-        Map<String, String> newMap = null;
-        Map<String, String> oldMap = null;
+        Map<String, String> newMap = new HashMap<>();
+        newMap.put("Cars", "BMW");
+        Map<String, String> oldMap = new HashMap<>();
+        oldMap.put("Cars", "Porsche");
         Map<String, String> expResult = new HashMap<String, String>(0);
+        expResult.put("Cars", "BMW~Porsche");
         Map<String, String> result = CompareUtility.compareMaps(newMap, oldMap);
         assertEquals(expResult, result);
-        assertEquals(0, result.size());
+        assertEquals(result.containsKey("Cars"), true);
+        assertEquals(1, result.size());
 
     }
 
@@ -126,12 +145,16 @@ public class CompareUtilityTest {
     @Test
     public void testCompareObjectMaps() {
         System.out.println("compareObjectMaps");
-        Map newMap = null;
-        Map oldMap = null;
+        Map newMap = new HashMap<>();
+        newMap.put("Key1", "newMap");
+        Map oldMap = new HashMap<>();
+        oldMap.put("Key1", "oldMap");
         Map<String, String> expResult = new HashMap<String, String>();
+        expResult.put("Key1", "newMap~oldMap");
         Map<String, String> result = CompareUtility.compareObjectMaps(newMap, oldMap);
+        assertEquals(result.containsKey("Key1"), true);
         assertEquals(expResult, result);
-        assertEquals(0, result.size());
+        assertEquals(1, result.size());
 
     }
 
@@ -142,7 +165,9 @@ public class CompareUtilityTest {
     public void testFormatedError() {
         System.out.println("formatedError");
         Map<String, String> errors = new HashMap<String, String>();
+        errors.put("Error1", "TestError");
         Set<String> expResult = new HashSet<String>();
+        expResult.add("Error1 TestError");
         Set<String> result = CompareUtility.formatedError(errors);
         assertEquals(expResult, result);
         assertEquals(expResult.size(), result.size());
@@ -156,7 +181,9 @@ public class CompareUtilityTest {
     public void testFindMissingItems() {
         System.out.println("findMissingItems");
         List<String> reqiredTypes = new ArrayList<String>();
+        reqiredTypes.add("type1");
         List<String> availTypes = new ArrayList<String>();
+        availTypes.add("type1");
         List<String> expResult = new ArrayList<String>();
         List<String> result = CompareUtility.findMissingItems(reqiredTypes, availTypes);
         assertEquals(expResult, result);
