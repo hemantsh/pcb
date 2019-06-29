@@ -559,6 +559,12 @@ public class GerberFileProcessingUtil {
         if (fileName == null) {
             return null;
         }
+        fileName = fileName.replaceAll("/", "@");
+        		
+        String[] tmp = fileName.split("@");
+        if(tmp.length > 0) {
+        	fileName = tmp[tmp.length-1];
+        }
         FileDetails fd = new FileDetails();
         try {
             br = new BufferedReader(new FileReader(filePath));
@@ -595,8 +601,15 @@ public class GerberFileProcessingUtil {
 
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);
-                        splitRSide[5] = splitRSide[5].replace("\\", "");
-                        fd.setLayerOrder(Integer.parseInt(splitRSide[5].replaceAll("[^0-9]*", "")));
+                        
+                        if( splitRSide.length > 5) {
+	                        splitRSide[5] = splitRSide[5].replace("\\", "").replaceAll("[^0-9]*", "");
+	                        
+	                        if(splitRSide[5].matches("-?\\d+(\\.\\d+)?")) {
+	                        	fd.setLayerOrder(Integer.parseInt(splitRSide[5].replaceAll("[^0-9]*", "")));
+	                        }
+                        }
+                        System.out.println("======File name: pattern match-"+fileName+":"+splitValue[0]);
                         break;
                     }
                 }
