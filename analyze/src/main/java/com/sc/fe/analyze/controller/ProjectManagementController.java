@@ -69,7 +69,8 @@ public class ProjectManagementController {
         
         if( StringUtils.isEmpty(projectDetails.getSetId()) ){
             temp.setErrors(projectDetails.getErrors());
-            temp.setDifferences(projectDetails.getDifferences());        
+            temp.setDifferences(projectDetails.getDifferences());   
+            temp.setFileChanges(projectDetails.getFileChanges());
         }else{
             temp.setVersion(projectDetails.getVersion());
         }

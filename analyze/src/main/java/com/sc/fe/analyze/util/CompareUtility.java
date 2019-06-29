@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
+import com.sc.fe.analyze.to.AttributeChange;
+import com.sc.fe.analyze.to.Change;
+import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
@@ -216,6 +219,75 @@ public class CompareUtility {
     }
 
     /**
+     * Prepare list of changes in FileChange list structure.
+     * @param differences
+     * @return
+     */
+    public static List<FileChange> createFileChangeList(Map<String, String> differences) {
+    	Map<String, FileChange> changeList = new HashMap<String, FileChange>();
+    	
+    	if(differences != null && differences.size() > 0) {
+    		
+    		differences.keySet().stream().forEach( key -> {
+    			String fileName = key;
+    			FileChange fChange = null;
+    			String attName = null;
+
+    			String[] tmp = key.split("<>");
+    			fileName = tmp[0];
+    			if(tmp.length == 2) {
+    				attName = tmp[1];
+    			}
+    			
+    			if( !StringUtils.isEmpty(attName) || !fileName.contains(".")) {
+    				//Update-Attributes
+    				if( !fileName.contains(".") ) {
+    					attName = new String(fileName);
+    					fileName = "ProjectDetails";		
+    				}
+    				fChange = changeList.get(fileName);
+    				if( fChange == null) {
+    					fChange = new FileChange();
+    				}
+    				fChange.setFileName(fileName);
+    				fChange.setAction(Change.UPDATED);
+    				fChange.addAttribute( getChangedAttribute( attName, differences.get(key)) );
+    			}else {
+    				//Add/Remove "File got Removed." "File got Added."
+    				fChange = changeList.get(fileName);
+    				if( fChange == null) {
+    					fChange = new FileChange();
+    				}
+    				fChange.setFileName(fileName);
+    				String val = differences.get(key);
+    				if( val.endsWith("Removed.")) {
+    					fChange.setAction(Change.MISSING);
+    				}else if( val.endsWith("Added.")) {
+    					fChange.setAction(Change.NEW);
+    				}
+
+    			}
+    			changeList.put(fileName, fChange);
+            });
+    	}
+    	return changeList.values().stream().collect(Collectors.toList());
+    }
+    
+    private static AttributeChange getChangedAttribute( String attName, String diffValue) {
+    	AttributeChange change =  new AttributeChange();
+		//Update-Attribute
+		change.setName( attName );
+		
+		if( diffValue.contains(DELIMITER)) {
+			String[] vals = diffValue.split(DELIMITER);
+			change.setNewValue( vals[0]);
+			change.setOldValue( vals[1]);
+		}
+		
+    	return change;
+    }
+    
+    /**
      * This method compares the new FileDetails with the old FileDetails
      *
      * @param newFD the new FileDetails object details to set
@@ -248,7 +320,7 @@ public class CompareUtility {
         String fileName = StringUtils.isEmpty(newFD.getName()) ? oldFD.getName() : newFD.getName();
 
         differences.keySet().stream().forEach(key -> {
-            returnMap.put(fileName.toUpperCase() + "." + key, differences.get(key));
+            returnMap.put(fileName.toUpperCase() + "<>" + key, differences.get(key));
         });
         if (newFD != null) {
             newFD.setErrors(differences);

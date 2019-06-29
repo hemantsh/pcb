@@ -55,6 +55,7 @@ public class ProjectDetails implements Serializable {
     private String emailAddress;
     private Map<String, String> errors; //Errors in (key:value) form
     private Set<String> differences;
+    List<FileChange> fileChanges;
 
     /**
      * Details about the files we found while processing
@@ -342,4 +343,18 @@ public class ProjectDetails implements Serializable {
     public void setSetId(String setId) {
         this.setId = setId;
     }
+
+	/**
+	 * @return the fileChanges
+	 */
+	public List<FileChange> getFileChanges() {
+		return fileChanges;
+	}
+
+	/**
+	 * @param fileChanges the fileChanges to set
+	 */
+	public void setFileChanges(List<FileChange> fileChanges) {
+		this.fileChanges = fileChanges;
+	}
 }

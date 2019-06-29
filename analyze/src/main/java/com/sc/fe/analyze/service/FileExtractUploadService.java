@@ -21,6 +21,7 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.entity.DifferenceReport;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
@@ -154,13 +155,18 @@ public class FileExtractUploadService extends BaseService {
         //Errors will be formated text. Add these to report.error field
         projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
 
+        List<FileChange> fileChanges = CompareUtility.createFileChangeList(compareMap);
+        
         //Save the comparison Details
         if (!projectDetails.getDifferences().isEmpty()) {
             DifferenceReport diffReport = new DifferenceReport();
             diffReport.setProjectId(projectDetails.getProjectId());
             diffReport.setVersion(UUID.fromString(prevProjVersion));
             diffReport.setDifferences(projectDetails.getDifferences());
+            projectDetails.setFileChanges(fileChanges);
             projectService.save(diffReport);
+            
+            projectDetails.setDifferences(null);
         }
     }
 
