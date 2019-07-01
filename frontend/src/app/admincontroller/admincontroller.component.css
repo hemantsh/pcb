@@ -1,0 +1,10 @@
+.navbar-toggle{
+    z-index: 1;
+    float: none;
+}
+.navbar-toggle .icon-bar{
+    background-color: black;
+}
+.nav {
+    margin-bottom: 20px;
+}

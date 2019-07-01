@@ -29,16 +29,11 @@ import { HelpModalComponent } from './help-modal/help-modal.component';
  * Routes are used to navigate from one page to another.
  */
 const appRoutes: Routes = [
-  {
-
-    path: '', component: AdmincontrollerComponent,
-    children: [
-      { path: "services", component: ServicesComponent, canDeactivate: [CanServiceDeactivateGuard] },
-      { path: "servicefiletypes", component: ServicefiletypesComponent, canDeactivate: [CanServiceFiletypesDeactivateGuard] },
-      { path: "filetypeextensions", component: FiletypeextensionsComponent, canDeactivate: [CanFiletypeExtnDeactivateGuard] },
-      { path: "report", component: ReportComponent },
-    ]
-  },
+  { path: '', component: ServicesComponent },
+  { path: "services", component: ServicesComponent, canDeactivate: [CanServiceDeactivateGuard] },
+  { path: "servicefiletypes", component: ServicefiletypesComponent, canDeactivate: [CanServiceFiletypesDeactivateGuard] },
+  { path: "filetypeextensions", component: FiletypeextensionsComponent, canDeactivate: [CanFiletypeExtnDeactivateGuard] },
+  { path: "report", component: ReportComponent },
   { path: 'page-not-found', component: PageNotFoundComponent },
   { path: '**', redirectTo: 'page-not-found' }
 ]
