@@ -12,3 +12,12 @@ input.ng-invalid.ng-touched{
   color: red;
   text-align: center;
 }
+.align-buttons-right{
+  display: inline-block;
+  text-align: right;
+}
+
+.form-control{
+  display: inline-block;
+  width:60%;
+}
