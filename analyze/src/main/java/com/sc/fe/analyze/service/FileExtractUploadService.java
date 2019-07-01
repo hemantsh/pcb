@@ -553,7 +553,6 @@ public class FileExtractUploadService extends BaseService {
 
         //For each file that is gerber format
         fileDetails.stream()
-                .filter(fd -> StringUtils.isEmpty(fd.getType()))
                 .forEach(fd -> {
                     //Apply rules by name pattern
                     GerberFileProcessingUtil.parseFileName(fd);

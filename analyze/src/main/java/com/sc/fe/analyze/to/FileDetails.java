@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -263,4 +265,17 @@ public class FileDetails implements Serializable {
     public void setSize(String size) {
         this.size = size;
     }
+    
+    public void addType(String type) {
+    	String typ = this.type;
+        if (StringUtils.isEmpty(typ)) {
+            typ = "";
+        } else {
+            typ = typ + ",";
+        }
+        typ = typ + type;
+        
+        this.type = typ;
+    }
+    
 }
