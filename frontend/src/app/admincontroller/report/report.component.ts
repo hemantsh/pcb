@@ -16,7 +16,23 @@ export class ReportComponent implements OnInit {
   selectedProjectId = 0;
   selectedReport = [];
   selectedVersionId = 0;
-
+  Options = [
+    {
+      id: 0,
+      value: 'RNumber'
+    },
+    {
+      id: 1,
+      value: 'CustomerId'
+    }, {
+      id: 2,
+      value: 'CustomerEmail'
+    }, {
+      id: 3,
+      value: 'ZipFileName'
+    }
+  ];
+  searchBy = 0;
   divStyle = 'hide';
   versionStyle = 'hide';
   btnDisable = true;
@@ -41,9 +57,9 @@ export class ReportComponent implements OnInit {
         (error) => console.log(error)
       );
   }
-/**
- * Shows the report of the selected projectId and selected versionId.
- */
+  /**
+   * Shows the report of the selected projectId and selected versionId.
+   */
   onShow() {
     this.fileService.getReportByIdAndVersion(this.selectedProjectId, this.selectedVersionId)
       .subscribe(
@@ -56,7 +72,7 @@ export class ReportComponent implements OnInit {
       );
     this.fileService.getDifferences(this.selectedProjectId).subscribe(
       (response: Response) => {
-        if(response)
+        if (response)
           this.differences = response.json();
         console.log("Differences is fetchin...", this.differences);
       },

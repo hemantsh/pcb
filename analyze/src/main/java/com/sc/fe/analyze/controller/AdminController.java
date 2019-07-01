@@ -22,6 +22,7 @@ import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.service.FileServices;
 import com.sc.fe.analyze.service.FiletypeExtensionsService;
+import com.sc.fe.analyze.service.ProjectService;
 import com.sc.fe.analyze.service.ServiceFiletypesService;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.to.ProjectDetails;
@@ -29,6 +30,8 @@ import com.sc.fe.analyze.to.ProjectDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -46,7 +49,9 @@ public class AdminController {
     private FiletypeExtensionsService filetypeExtensionService;
     @Autowired
     private ServiceFiletypesService serviceFiletypesService;
-    
+    @Autowired
+    ProjectService projectService;
+
     @GetMapping(path = "/project/{projectId}/version/{version}")
     @ResponseBody
     public ProjectDetails getProjectDetails(@PathParam("projectId") String projectId, @PathParam("version") String version) {
@@ -63,6 +68,32 @@ public class AdminController {
         //TODO user service/repo classes to get project data. repo.getAll()
         //Here we will not read project_files table
         return projectList;
+    }
+
+    @GetMapping("/distinctProjectid")
+    @ResponseBody
+    public Map<String, Set<String>> getDistinctProjectId() {
+        return projectService.getProjectVersionMap();
+    }
+
+    @GetMapping("/projects/rnumber/{rnumber}")
+    public List<ProjectDetails> getProjectByRnumber(@PathVariable("rnumber") String rNumber) {
+        return projectService.findByrNumber(rNumber);
+    }
+
+    @GetMapping("projects/customerId/{customerId}")
+    public List<ProjectDetails> getProjectByCustomerId(@PathVariable("customerId") String customerId) {
+        return projectService.findByCustomerId(customerId);
+    }
+
+    @GetMapping("projects/customerEmail/{customerEmail}")
+    public List<ProjectDetails> getProjectByCustomerEmail(@PathVariable("customerEmail") String customerEmail) {
+        return projectService.findByCustomerEmail(customerEmail);
+    }
+
+    @GetMapping("projects/zipfilename/{zipFileName}")
+    public List<ProjectDetails> getProjectByZipFileName(@PathVariable("zipFileName") String zipFileName) {
+        return projectService.findByZipFileName(zipFileName);
     }
 
     //Service Services
@@ -135,5 +166,5 @@ public class AdminController {
     public void deleteServiceFiletypes(@RequestBody List<ServiceFiletypes> serviceFileTypes) {
         serviceFiletypesService.delete(serviceFileTypes);
     }
-    
+
 }

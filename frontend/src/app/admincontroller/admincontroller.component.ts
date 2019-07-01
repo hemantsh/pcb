@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admincontroller.component.css']
 })
 export class AdmincontrollerComponent implements OnInit {
+  // buttonToogleMenu="navbar-toggle";
+  // divToggleMenu="collapsed navbar-collapse";
 
   constructor() { }
 
   ngOnInit() {
   }
+// hideToggleMenu(){
+//   this.buttonToogleMenu="navbar-toggle collapsed";
+//   this.divToggleMenu="collapsed navbar-collapse collapse";
+// }
+  
 
 }

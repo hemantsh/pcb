@@ -36,7 +36,7 @@ export class FileService {
      * Service that call the backend api to get the unique project id's
      */
     getUniqueId() {
-        return this.http.get(CONFIG.urlPath + 'fm/distinctProjectid');
+        return this.http.get(CONFIG.urlPath + 'admin/distinctProjectid');
     }
     /**
      * Service that call the backend api to get the ProjectReport by projectId and version.
@@ -47,6 +47,21 @@ export class FileService {
         return this.http.get(CONFIG.urlPath + `fm/project/${projectId}/version/${version}`);
     }
 
+    getReportByRnumber(rnumber) {
+        return this.http.get(CONFIG.urlPath + `admin/projects/rnumber/${rnumber}`);
+    }
+
+    getReportByCustomerId(customerId) {
+        return this.http.get(CONFIG.urlPath + `admin/projects/customerId/${customerId}`);
+    }
+
+    getReportByCustomerEmail(customerEmail) {
+        return this.http.get(CONFIG.urlPath + `admin/projects/customerEmail/${customerEmail}`);
+    }
+
+    getReportByZipFileName(zipfilename) {
+        return this.http.get(CONFIG.urlPath + `admin/projects/zipfilename/${zipfilename}`);
+    }
     /**
      * Service that call the backend api to save a new project record into the database.
      * @param input takes JSON input

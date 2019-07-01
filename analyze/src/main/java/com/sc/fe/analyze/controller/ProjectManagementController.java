@@ -142,10 +142,5 @@ public class ProjectManagementController {
     public Set<String> getDifferences(@PathVariable("projectId") String projectId) {
         return projectService.getDifferences(projectId);
     }
-
-    @GetMapping("/distinctProjectid")
-    @ResponseBody
-    public Map<String, Set<String>> getDistinctProjectId() {
-        return projectService.getProjectVersionMap();
-    }
+    
 }
