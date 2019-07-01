@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import { CanServiceComponentDeactivate } from './candeactivate-service.service';
 import { MESSAGE_CONST } from '../../error-messages';
-import { FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-services',
@@ -15,17 +15,13 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
   services = [];
   deletedServiceArray = [];
   changesSaved = true;
-  newserviceEle = new FormControl(null, [Validators.required, Validators.minLength(3)]);
+  
   constructor(private fileService: FileService, private zone: NgZone) { }
 
   ngOnInit() {
     this.retriveExtn();
   }
-  getErrorMessage() {
-    return this.newserviceEle.hasError('required') ? 'You must enter a service name' :
-      this.newserviceEle.hasError('minlength') ? 'required minimum length is 3' :
-        '';
-  }
+  
   /**
    * To reterive list of services
    */
@@ -46,7 +42,6 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
    * @param service takes service object
    */
   updateService(service) {
-    service.name = this.newserviceEle.value;
     service.name = service.name.toLowerCase();
     console.log(service);
     this.fileService.updateServices(service)
@@ -63,7 +58,6 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
    * Adds a textbox into the list for adding new service. 
    */
   addService() {
-    this.newserviceEle.patchValue(null);
     this.services.unshift({ id: this.services.length + 1, name: null, add: true });
   }
 
@@ -133,10 +127,5 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
     }
   };
 
-  editClick(service) {
-    // this.newserviceEle.patchValue(null);
-    if (service.edit)
-      this.newserviceEle.patchValue(service.name);
-  }
 
 }
