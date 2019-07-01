@@ -179,14 +179,8 @@ public class GerberFileProcessingUtil {
                         filePurposeToNameMapping.put(fileType, currentMapping);
                         //TODO: One extension can map to many fileTypes so we are adding 
                         //all types as comma separated. This will be useful later
-                        String typ = fileDetail.getType();
-                        if (StringUtils.isEmpty(typ)) {
-                            typ = "";
-                        } else {
-                            typ = typ + ",";
-                        }
-                        typ = typ + fileType;
-                        fileDetail.setType(typ);
+                        
+                        fileDetail.addType(fileType);
                     });
                 }
 
@@ -541,9 +535,8 @@ public class GerberFileProcessingUtil {
             if (StringUtils.isEmpty(fd.getSide())) {
                 fd.setSide(parsedFD.getSide());
             }
-            if (StringUtils.isEmpty(fd.getType())) {
-                fd.setType(parsedFD.getType());
-            }
+            
+            fd.addType( parsedFD.getType() );
         }
     }
 
@@ -595,9 +588,8 @@ public class GerberFileProcessingUtil {
                         fd.setLayerName(splitRSide[0].replaceAll("[^A-Za-z]*", ""));
                         fd.setContext(splitRSide[1]);
 
-                        if (StringUtils.isEmpty(fd.getType())) {
-                            fd.setType(splitRSide[2]);
-                        }
+ 
+                        fd.addType(splitRSide[2]);
 
                         fd.setPolarity(splitRSide[3]);
                         fd.setSide(splitRSide[4]);
