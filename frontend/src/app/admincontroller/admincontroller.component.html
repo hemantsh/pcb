@@ -1,29 +1,21 @@
-<button type="button" class="navbar-toggle " data-toggle="collapse" data-target="#myNavbar">
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-</button>
-<div class="collapsed navbar-collapse" id="myNavbar">
-  <ul class="nav nav-pills nav-stacked">
+<button (click)="openMenu(ref)" class="menuicon" ><span style="font-size:30px;cursor:pointer;" >&#9776;</span></button>
 
-    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse"
-      data-target="#myNavbar"><a routerLink="/services">Manage
+<div class="sidenav2" id="mySidenav" #ref>
+  <ul class="nav nav-pills nav-stacked">
+    <button class="menuicon closebtn" (click)="closeMenu()">&times;</button>
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()" ><a routerLink="/services">Manage
         Services</a></li>
 
-    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse"
-      data-target="#myNavbar"><a routerLink="/servicefiletypes">Manage
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()"><a routerLink="/servicefiletypes">Manage
         Service Filetypes</a>
     </li>
 
-    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse"
-      data-target="#myNavbar"><a routerLink="/filetypeextensions">Manage
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()"><a routerLink="/filetypeextensions">Manage
         FileType Extensions</a>
     </li>
 
-    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse"
-      data-target="#myNavbar"><a routerLink="/report">Show Report</a>
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()"><a routerLink="/report">Show Report</a>
     </li>
 
   </ul>
 </div>
-<!-- [ngClass]="[showToggleMenu]" -->
