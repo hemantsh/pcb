@@ -2,7 +2,20 @@
   <div class="row">
     <div class="col-md-12">
       <div class="form-group">
-        <div class="col-md-4">
+        <div class="col-md-12">
+
+          <label for="">Search By:</label>
+          <div class="row">
+          <div class="col-md-6 col-sm-6">
+          <select name="searchByoptions" id="searchByopt" [(ngModel)]="searchBy" class="form-control">
+            <option *ngFor="let option of Options" value="{{option.id}}" >{{option.value}}</option>
+          </select>
+          </div>
+          <div class="col-md-6 col-sm-6">
+          <input type="text" name="searchBy" class="form-control"/>
+        </div>
+        </div>
+          <span class="text-center" style="display: block;">OR</span>
           <label>Select projectId:</label>
           <span>
             <select id="projectId_select" class="form-control" [(ngModel)]="selectedProjectId"
@@ -12,7 +25,8 @@
             </select>
           </span>
         </div>
-        <div class="col-md-4">
+      </div>
+        <div class="col-md-12">
           <div [ngClass]="[divStyle]">
             <label for="">Select Version:</label>
             <span>
@@ -27,7 +41,7 @@
           </div>
         </div>
         <div class="col-md-4" style="text-align:left;">
-          <span style="display:block;"><br /> </span>
+          
           <button class="btn btn-primary" [disabled]="btnDisable" (click)="onShow()">SHOW</button>
         </div>
 
@@ -99,7 +113,7 @@
             </div>
             <h3>ZIP FILE CONTENT DETAILS</h3>
             <div class="reportscroll" [ngClass]="[versionStyle]">
-              <table class="table bold-change table-striped"> 
+              <table class="table bold-change table-striped">
                 <thead>
                   <tr>
                     <th>Selected</th>
