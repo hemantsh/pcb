@@ -17,7 +17,7 @@ input.ng-invalid.ng-touched{
   text-align: right;
 }
 
-.form-control{
+form{
   display: inline-block;
   width:60%;
 }
