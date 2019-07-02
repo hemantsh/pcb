@@ -9,10 +9,7 @@ import { Response } from '@angular/http';
 export class ReportComponent implements OnInit {
   report: any;
   differences;
-  fileType = [];
-
-  projectIds = [];
-  version = [];
+  projectIds = {};
   selectedProjectId = 0;
   selectedReport = [];
   selectedVersionId = 0;
@@ -32,12 +29,14 @@ export class ReportComponent implements OnInit {
       value: 'ZipFileName'
     }
   ];
-  searchBy = 0;
   divStyle = 'hide';
   versionStyle = 'hide';
   btnDisable = true;
   Object = Object;
-
+  searchBy = 0;
+  nameSearchBy = "RNumber";
+  searchInput = "";
+  projectsBySearch = [];
   constructor(private fileService: FileService) { }
 
   ngOnInit() {
@@ -138,5 +137,94 @@ export class ReportComponent implements OnInit {
   cancelEmail(data) {
     data.emailAddress = data.originalEmail;
     data.emailEdit = false;
+  }
+
+  changeSearchBy(event) {
+    this.nameSearchBy = event.target.options[event.target.selectedIndex].text;
+  }
+
+  fetchSearchByData() {
+    if (this.searchBy == 0) {
+      this.fileService.getReportByRnumber(this.searchInput).subscribe(
+        (response: Response) => {
+          this.projectsBySearch = response.json();
+          this.projectIds = {};
+          this.selectedProjectId = 0;
+          this.report = null;
+          this.divStyle = 'hide';
+          for (let id of this.projectsBySearch) {
+            if (this.projectIds[id.projectId] && this.projectIds[id.projectId].length > 0 && this.projectIds[id.projectId].indexOf(id.version) == -1) {
+              this.projectIds[id.projectId].push(id.version);
+            } else {
+              this.projectIds[id.projectId] = [id.version];
+            }
+
+          }
+          console.log(this.projectIds);
+        },
+        (error: Error) => console.log(error)
+      );
+
+    }
+    if (this.searchBy == 1) {
+      this.fileService.getReportByCustomerId(this.searchInput).subscribe(
+        (response: Response) => {
+          this.projectsBySearch = response.json();
+          this.projectIds = {};
+          this.selectedProjectId = 0;
+          this.report = null;
+          this.divStyle = 'hide';
+          for (let id of this.projectsBySearch) {
+            if (this.projectIds[id.projectId] && this.projectIds[id.projectId].length > 0 && this.projectIds[id.projectId].indexOf(id.version) == -1) {
+              this.projectIds[id.projectId].push(id.version);
+            } else {
+              this.projectIds[id.projectId] = [id.version];
+            }
+          }
+          console.log(this.projectIds);
+        },
+        (error: Error) => console.log(error)
+      );
+    }
+    if (this.searchBy == 2) {
+      this.fileService.getReportByCustomerEmail(this.searchInput).subscribe(
+        (response: Response) => {
+          this.projectsBySearch = response.json();
+          this.projectIds = {};
+          this.selectedProjectId = 0;
+          this.report = null;
+          this.divStyle = 'hide';
+          for (let id of this.projectsBySearch) {
+            if (this.projectIds[id.projectId] && this.projectIds[id.projectId].length > 0 && this.projectIds[id.projectId].indexOf(id.version) == -1) {
+              this.projectIds[id.projectId].push(id.version);
+            } else {
+              this.projectIds[id.projectId] = [id.version];
+            }
+          }
+          console.log(this.projectIds);
+        },
+        (error: Error) => console.log(error)
+      );
+    }
+    if (this.searchBy == 3) {
+      this.fileService.getReportByZipFileName(this.searchInput).subscribe(
+        (response: Response) => {
+          this.projectsBySearch = response.json();
+          this.projectIds = {};
+          this.selectedProjectId = 0;
+          this.report = null;
+          this.divStyle = 'hide';
+          for (let id of this.projectsBySearch) {
+            if (this.projectIds[id.projectId] && this.projectIds[id.projectId].length > 0 && this.projectIds[id.projectId].indexOf(id.version) == -1) {
+              this.projectIds[id.projectId].push(id.version);
+            } else {
+              this.projectIds[id.projectId] = [id.version];
+            }
+          }
+          console.log(this.projectIds);
+        },
+        (error: Error) => console.log(error)
+      );
+    }
   }
 }

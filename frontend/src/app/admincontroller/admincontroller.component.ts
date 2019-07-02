@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-admincontroller',
@@ -6,17 +6,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admincontroller.component.css']
 })
 export class AdmincontrollerComponent implements OnInit {
-  // buttonToogleMenu="navbar-toggle";
-  // divToggleMenu="collapsed navbar-collapse";
+  scrHeight: any;
+  scrWidth: any;
+  @ViewChild("ref") ref: ElementRef;
 
-  constructor() { }
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    this.scrHeight = window.innerHeight;
+    this.scrWidth = window.innerWidth;
+    // console.log(this.scrHeight, this.scrWidth);
+  }
+
+  constructor() { this.getScreenSize(); }
 
   ngOnInit() {
   }
-// hideToggleMenu(){
-//   this.buttonToogleMenu="navbar-toggle collapsed";
-//   this.divToggleMenu="collapsed navbar-collapse collapse";
-// }
-  
 
+  openMenu() {
+    this.ref.nativeElement.style.width = "250px";
+
+  }
+
+  closeMenu() {
+    if (this.scrWidth <= 767)
+      this.ref.nativeElement.style.width = "0";
+  }
 }
