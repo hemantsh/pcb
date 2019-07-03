@@ -1,11 +1,11 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-admincontroller',
   templateUrl: './admincontroller.component.html',
   styleUrls: ['./admincontroller.component.css']
 })
-export class AdmincontrollerComponent implements OnInit {
+export class AdmincontrollerComponent implements OnInit, AfterViewInit {
   scrHeight: any;
   scrWidth: any;
   @ViewChild("ref") ref: ElementRef;
@@ -14,14 +14,19 @@ export class AdmincontrollerComponent implements OnInit {
   getScreenSize(event?) {
     this.scrHeight = window.innerHeight;
     this.scrWidth = window.innerWidth;
-    // console.log(this.scrHeight, this.scrWidth);
+    console.log(this.scrHeight, this.scrWidth);
+    if (this.scrWidth >= 767) {
+      this.ref.nativeElement.style.width = "100%";
+    }
   }
 
-  constructor() { this.getScreenSize(); }
+  constructor() { }
 
   ngOnInit() {
   }
-
+  ngAfterViewInit() {
+    this.getScreenSize();
+  }
   openMenu() {
     this.ref.nativeElement.style.width = "250px";
 
