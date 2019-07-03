@@ -56,6 +56,7 @@ public class FileExtractUploadService extends BaseService {
         //this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
 
+    
     /**
      * Validates the project files and send a report.
      *
@@ -75,25 +76,19 @@ public class FileExtractUploadService extends BaseService {
 //        }
 
         //Check that user give correct Service Type or not
-        if (!projectDetails.isAttachReplace()) {
-            //TODO: For new project do we need to check all the other project attributes ?
-            //like - turnTimeQuantity,PCBClass,layers, etc.
+        //if (!projectDetails.isAttachReplace()) {
+        //TODO: For new project do we need to check all the other project attributes ?
+        //like - turnTimeQuantity,PCBClass,layers, etc.
 
-            //Check that rNumber is given in the JSON request or not.
-            if (StringUtils.isEmpty(projectDetails.getrNumber())) {
-                projectDetails.getErrors().put("V0000", "rNumber is required");
-                return report;
-            }
-            if (StringUtils.isEmpty(projectDetails.getServiceType())) {
-                projectDetails.getErrors().put("V0000", "Service Type is required");
-                return report;
-            } else {
-                //Splits the serviceType by ',' and check each serviceType that is valid or not.            
-                if (validateServiceType(projectDetails)) {
-                    return report;
-                }
-            }
+        //Check that rNumber is given in the JSON request or not.
+        if (StringUtils.isEmpty(projectDetails.getrNumber())) {
+            projectDetails.getErrors().put("V0000", "rNumber is required");
+            return report;
         }
+        if ( ! isServiceTypeValid (projectDetails) ) {
+            return report;
+        } 
+        //}
 
         //Check that user gives correct newProject and attachReplace values or not
         if (projectDetails.isNewProject() && projectDetails.isAttachReplace()) {
@@ -153,21 +148,17 @@ public class FileExtractUploadService extends BaseService {
         //Only store comparison of latest set. table key = ProjectId. 
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
-        projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
+        //projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
 
         List<FileChange> fileChanges = CompareUtility.createFileChangeList(compareMap);
+        projectDetails.setFileChanges(fileChanges);
         
-        //Save the comparison Details
-        if (!projectDetails.getDifferences().isEmpty()) {
-            DifferenceReport diffReport = new DifferenceReport();
-            diffReport.setProjectId(projectDetails.getProjectId());
-            diffReport.setVersion(UUID.fromString(prevProjVersion));
-            diffReport.setDifferences(projectDetails.getDifferences());
-            projectDetails.setFileChanges(fileChanges);
-            projectService.save(diffReport);
-            
-            projectDetails.setDifferences(null);
-        }
+//        //Save the comparison Details
+//        if (!projectDetails.getDifferences().isEmpty()) {
+//            DifferenceReport diffReport = new DifferenceReport();
+//            projectService.save(diffReport);
+//            projectDetails.setDifferences(null);
+//        }
     }
 
     /**
@@ -317,7 +308,7 @@ public class FileExtractUploadService extends BaseService {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return;
             } else {
-                if (validateServiceType(projectDetails)) {
+                if (! isServiceTypeValid(projectDetails)) {
                     return;
                 }
             }
@@ -375,16 +366,21 @@ public class FileExtractUploadService extends BaseService {
         projectService.delete(ReportUtility.convertToDBObject(projectDetails));
     }
 
-    public boolean validateServiceType(ProjectDetails projectDetails) {
+    public boolean isServiceTypeValid(ProjectDetails projectDetails) {
+    	
+    	if (StringUtils.isEmpty(projectDetails.getServiceType() )) {
+            projectDetails.getErrors().put("V0000", "Service Type is required");
+            return false;
+        }
         String[] splitServiceTypes = projectDetails.getServiceType().split(",");
         for (int i = 0; i < splitServiceTypes.length; i++) {
             String splitServiceType = splitServiceTypes[i].toLowerCase().trim();
             if (getServiceId(splitServiceType) == 0) {
                 projectDetails.getErrors().put("V0000", "Invalid Service Type - " + splitServiceTypes[i]);
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**

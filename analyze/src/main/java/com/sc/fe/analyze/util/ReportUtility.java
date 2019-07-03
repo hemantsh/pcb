@@ -90,9 +90,8 @@ public class ReportUtility {
         dtl.setFormat(projectFiles.getFormat());
         dtl.setCopperWeight(projectFiles.getCopperWeight());
         dtl.setType(projectFiles.getType());
-        dtl.setModifiedDate(projectFiles.getModifiedDate());
         dtl.setCreateDate(projectFiles.getCreateDate());
-        dtl.setSize(projectFiles.getSize());
+        dtl.setFileSize(projectFiles.getSize());
         dtl.setStatus(projectFiles.getStatus());
         dtl.setStep(projectFiles.getStep());
         dtl.setContext(projectFiles.getContext());
@@ -105,7 +104,6 @@ public class ReportUtility {
         dtl.setAttributes(projectFiles.getAttributes());
         dtl.setErrors(projectFiles.getErrors());
         dtl.setSelected(projectFiles.isSelected());
-        dtl.setFileDate(projectFiles.getFileDate());
 
         return dtl;
     }
@@ -203,12 +201,12 @@ public class ReportUtility {
         ProjectFiles filesDbDetails = new ProjectFiles();
         filesDbDetails.setVersion(fileDetails.getVersion());
         filesDbDetails.setName(fileDetails.getName());
-        filesDbDetails.setSize(fileDetails.getSize());
+        filesDbDetails.setSize(fileDetails.getFileSize());
         filesDbDetails.setType(fileDetails.getType());
-        if (fileDetails.getFileDate() == null) {
+        if (fileDetails.getModifiedDate() == null) {
             filesDbDetails.setFileDate(new Date());
         } else {
-            filesDbDetails.setFileDate(fileDetails.getFileDate());
+            filesDbDetails.setFileDate(fileDetails.getModifiedDate());
         }
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());

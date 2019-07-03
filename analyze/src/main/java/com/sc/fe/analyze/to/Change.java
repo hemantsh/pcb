@@ -8,5 +8,5 @@ public enum Change {
 //	Missing - File is not in new set
 //	Older - File older than previous set.
 
-	NEW, SAME, UPDATED, MISSING, OLDER
+	NEW, SAME, UPDATED, MISSING, OLDER, NOTINCLUDED
 }

@@ -30,7 +30,7 @@ public class FileDetails implements Serializable {
     private Date modifiedDate;
     private Date createDate;
     private Date fileDate;
-    private String size;
+    private String fileSize;
     private String status = "active";
 
     private String step;
@@ -109,6 +109,7 @@ public class FileDetails implements Serializable {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+        this.fileDate = modifiedDate;
     }
 
     public Map<String, String> getAttributes() {
@@ -258,12 +259,12 @@ public class FileDetails implements Serializable {
         this.errors = errors;
     }
 
-    public String getSize() {
-        return size;
+    public String getFileSize() {
+        return fileSize;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setFileSize(String size) {
+        this.fileSize = size;
     }
     
     public void addType(String type) {

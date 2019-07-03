@@ -46,6 +46,8 @@ public class CompareUtility {
         set.add("status");
         set.add("setId");
         set.add("context");
+        set.add("selected");
+        set.add("fileDate");
         return set;
     }
 
@@ -66,9 +68,7 @@ public class CompareUtility {
         }
         try {
             differences.putAll(compareObject(newRecord, oldRecord));
-            //Comparing the Validation errors with previous validation errors
-            //differences.putAll(compareMaps(newRecord.getErrors(), oldRecord.getErrors()));
-
+            
             //Compare the FileDetails of the file
             differences.putAll(compareFileDetails(newRecord, oldRecord));
 
@@ -260,11 +260,7 @@ public class CompareUtility {
     				}
     				fChange.setFileName(fileName);
     				String val = differences.get(key);
-    				if( val.endsWith("Removed.")) {
-    					fChange.setAction(Change.MISSING);
-    				}else if( val.endsWith("Added.")) {
-    					fChange.setAction(Change.NEW);
-    				}
+    				fChange.setAction(Change.valueOf(val));
 
     			}
     			changeList.put(fileName, fChange);
@@ -302,18 +298,31 @@ public class CompareUtility {
         Map<String, String> returnMap = new HashMap<String, String>();
 
         if (newFD != null && oldFD != null) {
+        	if( oldFD.isSelected() && !newFD.isSelected()) {
+        		returnMap.put(oldFD.getName().toUpperCase(), Change.NOTINCLUDED.name());
+        		return returnMap;
+        	}
+        	if( oldFD.getFileDate().after( newFD.getFileDate() ) ) {
+        		returnMap.put(oldFD.getName().toUpperCase(), Change.OLDER.name());
+        		return returnMap;
+        	}
+        	
             //First compare as simple object
             differences.putAll(compareObject(newFD, oldFD));
             //Now compare collection attributes for FileDetails 
             differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
+            
+            if( differences.size() <= 0) {
+            	returnMap.put(oldFD.getName().toUpperCase(), Change.SAME.name());
+            }
         }
 
         if (newFD == null && oldFD != null) {
-            returnMap.put(oldFD.getName().toUpperCase(), "File got Removed.");
+            returnMap.put(oldFD.getName().toUpperCase(), Change.MISSING.name());
             newFD = new FileDetails();
         }
         if (newFD != null && oldFD == null) {
-            returnMap.put(newFD.getName().toUpperCase(), "File got Added.");
+            returnMap.put(newFD.getName().toUpperCase(), Change.NEW.name());
             oldFD = new FileDetails();
         }
 
@@ -402,45 +411,7 @@ public class CompareUtility {
         return differences;
     }
 
-    public static Set<String> formatedError(Map<String, String> errors) {
-        //TODO: externalize/constant the string text
-        Set<String> formatedErrorSet = new HashSet<String>();
-        if (errors != null && errors.size() > 0) {
 
-            errors.keySet().stream().forEach(errorKey -> {
-
-                String[] values = errors.get(errorKey).split(DELIMITER);
-                if (values.length == 2) {
-                    StringBuffer message = new StringBuffer("Value '" + errorKey + "' changed. ");
-                    if (NA.equals(values[0])) {
-
-                        message.append("Current set does not have value. ");
-                    } else {
-
-                        message.append("Current set value '" + values[0] + "'. ");
-                    }
-
-                    if (NA.equals(values[1])) {
-                        message.append("Last set did not have value. ");
-                    } else {
-                        if (values[1].equals("ADDED")) {
-                            message.replace(0, message.length(), "");
-                            message.append(errorKey + " '" + values[0] + "' " + values[1]);
-                        } else {
-                            message.append("Old set value '" + values[1] + "'.");
-                        }
-                    }
-
-                    formatedErrorSet.add(message.toString());
-                } else {
-                    formatedErrorSet.add(errorKey + " " + errors.get(errorKey));
-                }
-
-            });
-        }
-
-        return formatedErrorSet;
-    }
 
     /**
      * Check if given field is a collection type of not

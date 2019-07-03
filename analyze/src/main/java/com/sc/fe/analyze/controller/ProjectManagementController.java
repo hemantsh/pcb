@@ -105,7 +105,11 @@ public class ProjectManagementController {
     	boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
     	if(validate) {
     		fileUploadService.processGerber(projectDetails.getFileDetails());
+    		//
+    		String tVer = new String(projectDetails.getVersion() == null ? "" : projectDetails.getVersion() );
+    		projectDetails.setVersion("");
     		fileUploadService.compareProject(projectDetails);    
+    		projectDetails.setVersion(tVer);
     		retDetails = validate(projectDetails);
     	}else {
     		fileUploadService.save(projectDetails);
