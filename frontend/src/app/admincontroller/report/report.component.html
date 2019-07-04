@@ -7,12 +7,14 @@
           <label for="">Search By:</label>
           <div class="row">
             <div class="col-md-6 col-sm-6">
-              <select name="searchByoptions" id="searchByopt" [(ngModel)]="searchBy" class="form-control" (change)="changeSearchBy($event)">
+              <select name="searchByoptions" id="searchByopt" [(ngModel)]="searchBy" class="form-control"
+                (change)="changeSearchBy($event)">
                 <option *ngFor="let option of Options" value="{{option.id}}">{{option.value}}</option>
               </select>
             </div>
             <div class="col-md-4 col-sm-4">
-              <input type="text" name="searchBy" class="form-control" placeholder="Enter {{nameSearchBy}}" [(ngModel)]="searchInput"/>
+              <input type="text" name="searchBy" class="form-control" placeholder="Enter {{nameSearchBy}}"
+                [(ngModel)]="searchInput" />
             </div>
             <div class="col-md-2 col-sm-2">
               <button class="btn btn-primary" (click)="fetchSearchByData()">Search</button>
@@ -48,130 +50,156 @@
       </div>
 
     </div>
-    <div class="row" *ngIf="report">
-      <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="spacer">
-          <h3>Creation Date of Project:</h3> <span>{{report.createDate}}</span>
-        </div>
-        <div>
-          <div class="spacer table-height">
-            <table class="table table-striped ">
-              <thead>
-                <tr>
-                  <th>ProjectId</th>
-                  <th>Version</th>
-                  <th>ZipFileName</th>
-                  <th>CustomerId</th>
-                  <th>CustomerEmail</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {{report.projectId}}
-                  </td>
-                  <td>
-                    <select id="version">
-                      <option value="0">{{report.version}}</option>
-                    </select>
-                  </td>
-                  <td>
-                    {{report.zipFileName}}
-                  </td>
-                  <td>
-                    <p *ngIf="!report?.customerIdEdit">
-                      {{report.customerId}} &nbsp;
-                      <button class="btn btn-default"
-                        (click)="report.customerIdEdit = !report.customerIdEdit; report.originalCustId = report.customerId"><span
-                          class="glyphicon glyphicon-edit"></span>
-                        Edit</button>
-                    </p>
+  </div>
+  <div class="row" *ngIf="report">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="spacer">
+        <h3>Creation Date of Project:</h3> <span>{{report.createDate}}</span>
+      </div>
+      <div>
+        <div class="spacer" style="overflow-y: auto;">
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th>ProjectId</th>
+                <th>Version</th>
+                <th>ZipFileName</th>
+                <th>CustomerId</th>
+                <th>CustomerEmail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {{report.projectId}}
+                </td>
+                <td>
+                  <select id="version">
+                    <option value="0">{{report.version}}</option>
+                  </select>
+                </td>
+                <td>
+                  {{report.zipFileName}}
+                </td>
+                <td>
+                  <p *ngIf="!report?.customerIdEdit">
+                    {{report.customerId}} &nbsp;
+                    <button class="btn btn-default"
+                      (click)="report.customerIdEdit = !report.customerIdEdit; report.originalCustId = report.customerId"><span
+                        class="glyphicon glyphicon-edit"></span>
+                      Edit</button>
+                  </p>
 
-                    <p *ngIf="report?.customerIdEdit">
-                      <input type="text" [(ngModel)]="report.customerId" class="form-control" />
-                      <button class="btn btn-primary" (click)="updateData(report);"
-                        [disabled]="!report.customerId">Update</button>
-                      <button class="btn btn-danger" (click)="cancelCustId(report)">Cancel</button>
-                    </p>
-                  </td>
-                  <td>
-                    <p *ngIf="!report?.emailEdit">
-                      {{report.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default"
-                        (click)="report.emailEdit=!report.emailEdit; report.originalEmail=report.emailAddress;"><span
-                          class="glyphicon glyphicon-edit"></span>
-                        &nbsp;Edit</button>
-                    </p>
+                  <p *ngIf="report?.customerIdEdit">
+                    <input type="text" [(ngModel)]="report.customerId" class="form-control" />
+                    <button class="btn btn-primary" (click)="updateData(report);"
+                      [disabled]="!report.customerId">Update</button>
+                    <button class="btn btn-danger" (click)="cancelCustId(report)">Cancel</button>
+                  </p>
+                </td>
+                <td>
+                  <p *ngIf="!report?.emailEdit">
+                    {{report.emailAddress}}&nbsp;&nbsp;<button title="Edit" class="btn btn-default"
+                      (click)="report.emailEdit=!report.emailEdit; report.originalEmail=report.emailAddress;"><span
+                        class="glyphicon glyphicon-edit"></span>
+                      &nbsp;Edit</button>
+                  </p>
 
-                    <p *ngIf="report?.emailEdit">
-                      <input type="text" [(ngModel)]="report.emailAddress" class="form-control" />
-                      <button class="btn btn-primary" (click)="updateData(report);"
-                        [disabled]="!report.emailAddress">Update</button>
-                      <button class="btn btn-danger" (click)="cancelEmail(report)">Cancel</button>
-                    </p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <h3>ZIP FILE CONTENT DETAILS</h3>
-          <div class="reportscroll" [ngClass]="[versionStyle]">
-            <table class="table bold-change table-striped">
-              <thead>
-                <tr>
-                  <th>Selected</th>
-                  <th>FileName</th>
-                  <th>FileType</th>
-                  <th>DataPolarity</th>
-                  <th>LayerOrder</th>
-                  <th>Format</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let inner of report?.fileDetails">
-                  <td>
-                    <label><input type="checkbox" [(ngModel)]="inner.selected"></label>
-                  </td>
-                  <td>
-                    <b *ngIf="inner.selected">{{inner.name}}</b> <span *ngIf="!inner.selected">{{inner.name}}</span>
-                  </td>
-                  <td>
-                    <b *ngIf="inner.selected">{{inner.type}}</b> <span *ngIf="!inner.selected">{{inner.type}}</span>
-                  </td>
-                  <td>
-                    <b *ngIf="inner.selected">{{inner.polarity}}</b> <span
-                      *ngIf="!inner.selected">{{inner.polarity}}</span>
-                  </td>
-                  <td>
-                    <b *ngIf="inner.selected">{{inner.layerOrder}}</b> <span
-                      *ngIf="!inner.selected">{{inner.layerOrder}}</span>
-                  </td>
-                  <td>
-                    <b *ngIf="inner.selected">{{inner.format}}</b> <span *ngIf="!inner.selected">{{inner.format}}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                  <p *ngIf="report?.emailEdit">
+                    <input type="text" [(ngModel)]="report.emailAddress" class="form-control" />
+                    <button class="btn btn-primary" (click)="updateData(report);"
+                      [disabled]="!report.emailAddress">Update</button>
+                    <button class="btn btn-danger" (click)="cancelEmail(report)">Cancel</button>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div *ngIf="report && report.errors" class="spacer">
-          <span class="heading">Errors</span>
-          <ul>
-            <li *ngFor="let obj of Object.keys(report?.errors)">
-              <b> {{obj}} :- </b>{{report?.errors[obj]}}
-            </li>
-          </ul>
+        <h3>ZIP FILE CONTENT DETAILS</h3>
+        <div class="reportscroll" [ngClass]="[versionStyle]">
+          <table class="table bold-change table-striped">
+            <thead>
+              <tr>
+                <th>Selected</th>
+                <th>FileName</th>
+                <th>FileType</th>
+                <th>DataPolarity</th>
+                <th>LayerOrder</th>
+                <th>Format</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inner of report?.fileDetails">
+                <td>
+                  <label><input type="checkbox" [(ngModel)]="inner.selected"></label>
+                </td>
+                <td>
+                  <b *ngIf="inner.selected">{{inner.name}}</b> <span *ngIf="!inner.selected">{{inner.name}}</span>
+                </td>
+                <td>
+                  <b *ngIf="inner.selected">{{inner.type}}</b> <span *ngIf="!inner.selected">{{inner.type}}</span>
+                </td>
+                <td>
+                  <b *ngIf="inner.selected">{{inner.polarity}}</b> <span
+                    *ngIf="!inner.selected">{{inner.polarity}}</span>
+                </td>
+                <td>
+                  <b *ngIf="inner.selected">{{inner.layerOrder}}</b> <span
+                    *ngIf="!inner.selected">{{inner.layerOrder}}</span>
+                </td>
+                <td>
+                  <b *ngIf="inner.selected">{{inner.format}}</b> <span *ngIf="!inner.selected">{{inner.format}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div *ngIf="differences" class="spacer">
-          <span class="heading">CompareResults &nbsp;&nbsp;&nbsp; <strong><i>(NOTE- Below comparison result is between
-                last two sets.)</i></strong></span>
-          <br /><br />
-          <ul>
-            <li *ngFor="let obj of differences">
-              {{obj}}
-            </li>
-          </ul>
-        </div>
+      </div>
+      <div *ngIf="report && report.errors" class="spacer">
+        <span class="heading">Errors</span>
+        <ul>
+          <li *ngFor="let obj of Object.keys(report?.errors)">
+            <b> {{obj}} :- </b>{{report?.errors[obj]}}
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="differences" class="spacer">
+        <span class="heading">CompareResults &nbsp;&nbsp;&nbsp; <strong><i>(NOTE- Below comparison result is between
+              last two sets.)</i></strong></span>
+        <br /><br />
+        <ul>
+          <li *ngFor="let obj of differences">
+            {{obj}}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
+  <br />
+  <!-- Test File Changes Table Structure. -->
+  <!-- <div class="spacer" style="overflow-y: auto;">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          <th>FileName</th>
+          <th>Action</th>
+          <th>Attributes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mydata of fileChanges">
+          <td>{{mydata.fileName}}</td>
+          <td>{{mydata.action}}</td>
+          <td *ngIf="mydata.attributes">
+            <ul *ngFor="let atri of mydata.attributes">
+              <li>
+                <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
 </div>

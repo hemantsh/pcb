@@ -29,7 +29,6 @@
 /* Slider Toggle Button CSS */
 .spacer{
     margin-top: 2% ;
-    overflow-y: scroll;
 }
 .table.bold-change tr td b {
     font-size: 13px;
