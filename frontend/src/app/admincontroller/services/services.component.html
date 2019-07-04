@@ -1,6 +1,6 @@
 <div>
-  <button type="button" class="btn btn-default btn-md" (click)="addService()"><span
-      class="glyphicon glyphicon-plus-sign">&nbsp;</span>Add Services</button>
+  <button type="button" class="btn btn-default btn-md" (click)="addService()"><i
+      class="glyphicon glyphicon-plus-sign">&nbsp;</i>Add Services</button>
 
   <table class="table">
     <thead>
@@ -11,17 +11,17 @@
     </thead>
     <tbody>
       <tr *ngFor="let service of services">
-        <td class="text-center">
+        <td>
 
 
           <div>
             <span *ngIf="!service.edit && !service.add">{{service.name}}</span>
             <form *ngIf="service.edit || service.add" #f="ngForm" novalidate>
-                <input  type="text" class="form-control" [(ngModel)]="service.name"
-                #serviceName="ngModel" required minlength="3"  name="serviceName"/>
+              <input type="text" class="form-control" [(ngModel)]="service.name" #serviceName="ngModel" required
+                minlength="3" name="serviceName" />
               <span class="help-block" *ngIf="!serviceName.valid"> Minimum required length is 3.</span>
             </form>
-            
+
 
             <div class="align-buttons-right">
               <button *ngIf="!service.edit && !service.add"
@@ -44,29 +44,10 @@
               <button *ngIf="service.add"
                 style="border:none; background-color: transparent; margin-left: 10px;color: green;"
                 (click)="service.add=!service.add; updateService(service);" [disabled]="!service.name"><span
-                class="glyphicon glyphicon-check"></span></button>
+                  class="glyphicon glyphicon-check"></span></button>
             </div>
           </div>
         </td>
-
-        <!-- <td *ngIf="service.edit || service.add"> <input type="text" class="form-control" name="addService" required
-            [formControl]="newserviceEle" />
-          <span class=help-block *ngIf="newserviceEle.invalid && newserviceEle.touched">{{getErrorMessage()}}</span>
-        </td> -->
-
-        <!-- For Service Edit  -->
-        <!-- <button *ngIf="!service.edit && !service.add" class="btn btn-primary"
-            (click)="service.edit=!service.edit; service.originalData = service.name; editClick(service)">Edit</button> -->
-
-        <!-- <button *ngIf="service.edit" class="btn btn-success"
-            (click)="service.edit=!service.edit; updateService(service);"
-            [disabled]="newserviceEle.invalid">Update</button> -->
-
-        <!-- <button *ngIf="service.edit" class="btn btn-danger" (click)="service.edit=!service.edit; ">Cancel</button> -->
-
-        <!-- For Service Add -->
-        <!-- <button *ngIf="service.add" class="btn btn-success" (click)="service.add=!service.add; updateService(service);"
-          [disabled]="newserviceEle.invalid">Save</button> -->
 
         <td class="text-center">
           <!-- Remove Button HTML -->
