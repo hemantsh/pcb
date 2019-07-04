@@ -1,6 +1,7 @@
-<button (click)="openMenu(ref)" class="menuicon" ><span style="font-size:30px;cursor:pointer;" >&#9776;</span></button>
+<button (click)="openMenu()" class="menuicon" ><span style="font-size:30px;cursor:pointer;" >&#9776;</span></button>
 
 <div class="sidenav2" id="mySidenav" #ref>
+  <h3 class="text-center menuicon" style="color: white;">Menu</h3>
   <ul class="nav nav-pills nav-stacked">
     <button class="menuicon closebtn" (click)="closeMenu()">&times;</button>
     <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()" ><a routerLink="/services">Manage

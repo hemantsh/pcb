@@ -14,7 +14,7 @@ export class AdmincontrollerComponent implements OnInit, AfterViewInit {
   getScreenSize(event?) {
     this.scrHeight = window.innerHeight;
     this.scrWidth = window.innerWidth;
-    console.log(this.scrHeight, this.scrWidth);
+    // console.log(this.scrHeight, this.scrWidth);
     if (this.scrWidth >= 767) {
       this.ref.nativeElement.style.width = "100%";
     }

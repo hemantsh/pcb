@@ -19,5 +19,16 @@ input.ng-invalid.ng-touched{
 
 form{
   display: inline-block;
-  width:60%;
+  width: 82%;
+}
+table tr td{
+  width: 32%;
+}
+/* table .form-control{
+  width: 82%;
+  display: inline-block;
+} */
+span{
+  width: 82%;
+  display: inline-block;
 }
