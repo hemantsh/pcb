@@ -143,8 +143,8 @@ public class ProjectManagementController {
     }
 
     @GetMapping("/project/{projectId}/differences")
-    public Set<String> getDifferences(@PathVariable("projectId") String projectId) {
-        return projectService.getDifferences(projectId);
+    public String getDifferences(@PathVariable("projectId") String projectId) {
+        return projectService.getDifferencesJson(projectId);
     }
     
 }

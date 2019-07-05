@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import com.datastax.driver.core.utils.UUIDs;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.entity.DifferenceReport;
+import com.sc.fe.analyze.data.entity.DifferenceReportJson;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
@@ -37,14 +38,13 @@ import com.sc.fe.analyze.util.ReportUtility;
  */
 @Service
 public class FileExtractUploadService extends BaseService {
-
+    
     private static final Logger logger = LoggerFactory.getLogger(FileExtractUploadService.class);
-
+    
     @Autowired
     private ProjectFilesService projectFilesService;
     @Autowired
     private ProjectService projectService;
-    
 
     /**
      *
@@ -56,7 +56,6 @@ public class FileExtractUploadService extends BaseService {
         //this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
 
-    
     /**
      * Validates the project files and send a report.
      *
@@ -74,20 +73,18 @@ public class FileExtractUploadService extends BaseService {
 //            projectDetails.getErrors().put("V0000", "No data found for the rNumber. Submit again with newProject= true");
 //            return report;
 //        }
-
         //Check that user give correct Service Type or not
         //if (!projectDetails.isAttachReplace()) {
         //TODO: For new project do we need to check all the other project attributes ?
         //like - turnTimeQuantity,PCBClass,layers, etc.
-
         //Check that rNumber is given in the JSON request or not.
         if (StringUtils.isEmpty(projectDetails.getrNumber())) {
             projectDetails.getErrors().put("V0000", "rNumber is required");
             return report;
         }
-        if ( ! isServiceTypeValid (projectDetails) ) {
+        if (!isServiceTypeValid(projectDetails)) {
             return report;
-        } 
+        }
         //}
 
         //Check that user gives correct newProject and attachReplace values or not
@@ -115,7 +112,7 @@ public class FileExtractUploadService extends BaseService {
             }
         }
         Map<String, String> errMap = new HashMap<String, String>();
-
+        
         if (report != null && report.getErrorCodes() != null) {
             report.getErrorCodes().stream().forEach(errCode -> {
                 if (ErrorCodes.V0000 != errCode) {
@@ -131,17 +128,18 @@ public class FileExtractUploadService extends BaseService {
         projectDetails.setErrors(errMap);
 
         //Save  
-        if( !StringUtils.isEmpty(projectDetails.getProjectId()) && !StringUtils.isEmpty(projectDetails.getSetId()) ) {
-        	projectService.save(ReportUtility.convertToDBObject(projectDetails));
+        if (!StringUtils.isEmpty(projectDetails.getProjectId()) && !StringUtils.isEmpty(projectDetails.getSetId())) {
+            projectService.save(ReportUtility.convertToDBObject(projectDetails));
         }
-
+        
         return report;
     }
-
+    
     public void compareProject(ProjectDetails projectDetails) {
         //compare the last ProjectDetails
         Map<String, String> compareMap = compareWithLastProjectData(projectDetails);
         String prevProjVersion = compareMap.get("version");
+        String prevProjId = projectDetails.getProjectId();
         compareMap.remove("version");
 
         //save the compare results in another table
@@ -149,10 +147,13 @@ public class FileExtractUploadService extends BaseService {
         //Also need to store the value of last version which was compared as non key column
         //Errors will be formated text. Add these to report.error field
         //projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
-
         List<FileChange> fileChanges = CompareUtility.createFileChangeList(compareMap);
         projectDetails.setFileChanges(fileChanges);
-        
+        DifferenceReportJson diffReport = new DifferenceReportJson();
+        diffReport.setProjectId(prevProjId);
+        diffReport.setVersion(UUID.fromString(prevProjVersion));
+        diffReport.setDifferences(compareMap.toString());
+        projectService.save(diffReport);
 //        //Save the comparison Details
 //        if (!projectDetails.getDifferences().isEmpty()) {
 //            DifferenceReport diffReport = new DifferenceReport();
@@ -170,7 +171,7 @@ public class FileExtractUploadService extends BaseService {
      * the last project record
      */
     private Map<String, String> compareWithLastProjectData(ProjectDetails projectDetails) {
-
+        
         Map<String, String> retErrors = new HashMap<String, String>();
 
         //Retrieve latest Record of similar project Id
@@ -179,17 +180,17 @@ public class FileExtractUploadService extends BaseService {
             //Retrieve attribute of ProjectDetails and FileDetails object of latest Record(from the database) and current Record.
             prevprojDtl = projectService.getProject(prevprojDtl.getProjectId(), prevprojDtl.getVersion());
             retErrors.put("version", prevprojDtl.getVersion());
-
+            
             if (projectDetails.isAttachReplace()) {
                 List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
                 prevprojDtl.setFileDetails(shortList);
-                retErrors.putAll(CompareUtility.compareFileDetails( projectDetails, prevprojDtl));
+                retErrors.putAll(CompareUtility.compareFileDetails(projectDetails, prevprojDtl));
                 return retErrors;
             }
             retErrors.putAll(CompareUtility.fullCompare(projectDetails, prevprojDtl));
         }
         return retErrors;
-
+        
     }
 
     /**
@@ -216,11 +217,11 @@ public class FileExtractUploadService extends BaseService {
                     projectDetails.getErrors().put("V0019", "Fabrication TurnTime Quantity missing");
                 }
             }
-
-            int servId = getServiceId (splitService[i] );
+            
+            int servId = getServiceId(splitService[i]);
             //Required files as per business rules        
-            if ( servId > 0 ) {
-                requiredFilesTypes.addAll(getServiceFiles(servId ) );
+            if (servId > 0) {
+                requiredFilesTypes.addAll(getServiceFiles(servId));
             }
         }
         //Set the null values of Assembly and Fabrication turnTime Quantity if it is empty
@@ -240,14 +241,14 @@ public class FileExtractUploadService extends BaseService {
                 .filter(fd -> fd.isSelected())
                 .map(FileDetails::getFormat)
                 .collect(Collectors.toSet());
-
+        
         availFileTypes.addAll(availFormats);
 
         //Find missing files types
         List<String> missing = CompareUtility.findMissingItems(requiredFilesTypes, availFileTypes);
         return missing;
     }
-
+    
     private List<String> getAvailableFileTypes(List<FileDetails> fileDetails, boolean filterSelected) {
         //Types provided by customer (Only selected ones)
         List<String> availFileTypes = fileDetails.stream()
@@ -255,7 +256,7 @@ public class FileExtractUploadService extends BaseService {
                 .filter(fd -> fd.isSelected() == filterSelected)
                 .map(FileDetails::getType)
                 .collect(Collectors.toList());
-
+        
         List<String> upd_availFileTypes = new ArrayList<String>();
         //fileType can have multi values sep by , Here we make each of then separate.
         availFileTypes.stream().forEach(type -> {
@@ -283,9 +284,9 @@ public class FileExtractUploadService extends BaseService {
                 .filter(fd -> !fd.isSelected())
                 .map(FileDetails::getFormat)
                 .collect(Collectors.toSet());
-
+        
         availFileTypes.addAll(availFormats);
-
+        
         availFileTypes.forEach(type -> {
             errCodes.add(ErrorCodeMap.getCodeForFileType(type));
         });
@@ -308,7 +309,7 @@ public class FileExtractUploadService extends BaseService {
                 projectDetails.getErrors().put("V0000", "Service Type is required");
                 return;
             } else {
-                if (! isServiceTypeValid(projectDetails)) {
+                if (!isServiceTypeValid(projectDetails)) {
                     return;
                 }
             }
@@ -324,15 +325,12 @@ public class FileExtractUploadService extends BaseService {
         String projectId = getProjectId(projectDetails);
         String version = getVersion(projectDetails);
         
-        
-      
-        if( StringUtils.isEmpty(version) ) {
-        	//projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
-        	//return;
-        	version = UUIDs.timeBased().toString();
-        	System.out.println("*******INFO: Generating new Version .");
+        if (StringUtils.isEmpty(version)) {
+            //projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
+            //return;
+            version = UUIDs.timeBased().toString();
+            System.out.println("*******INFO: Generating new Version .");
         }
-        
         
         projectDetails.setProjectId(projectId);
         projectDetails.setVersion(version);
@@ -343,16 +341,16 @@ public class FileExtractUploadService extends BaseService {
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
             ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
-            pFiles.setVersion(UUID.fromString( projectDetails.getVersion() ));
+            pFiles.setVersion(UUID.fromString(projectDetails.getVersion()));
             pFiles.setProjectId(projectId);
             projectFilesService.save(pFiles);
         });
 
         //Save into project table               
         projectService.save(ReportUtility.convertToDBObject(projectDetails));
-
+        
     }
-
+    
     public void setIdValidation(ProjectDetails projectDetails) {
         //If setId is not there,then delete the records from project_files or project table.                
         String projectId = projectDetails.getProjectId();
@@ -365,10 +363,10 @@ public class FileExtractUploadService extends BaseService {
         });
         projectService.delete(ReportUtility.convertToDBObject(projectDetails));
     }
-
+    
     public boolean isServiceTypeValid(ProjectDetails projectDetails) {
-    	
-    	if (StringUtils.isEmpty(projectDetails.getServiceType() )) {
+        
+        if (StringUtils.isEmpty(projectDetails.getServiceType())) {
             projectDetails.getErrors().put("V0000", "Service Type is required");
             return false;
         }
@@ -391,7 +389,7 @@ public class FileExtractUploadService extends BaseService {
      * @return the projectID of matching record
      */
     private String getProjectId(ProjectDetails projectDetails) {
-
+        
         Map<String, String> projKeyMap = new HashMap<String, String>();
         //If exists in parameter object, return that       
         if (!StringUtils.isEmpty(projectDetails.getProjectId())) {
@@ -399,7 +397,7 @@ public class FileExtractUploadService extends BaseService {
         }
         //Get by RNumber.
         projKeyMap = getProjectIdByRNumber(projectDetails.getrNumber());
-        
+
 //        //For existing project ( customer forgot to pass projectID, we need to find it)        
 //        if (!projectDetails.isNewProject()) {
 //            //Get by rNumber 
@@ -408,12 +406,11 @@ public class FileExtractUploadService extends BaseService {
 //                return null;
 //            }
 //        }
-
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-        	System.out.println("*******INFO: Generating projectID as no data found by RNumber.");
+            System.out.println("*******INFO: Generating projectID as no data found by RNumber.");
             projKeyMap.put("project_id", UUIDs.timeBased().toString());
         }
-
+        
         if (projectDetails.isAttachReplace()) {
             projectDetails.setVersion(projKeyMap.get("version"));
         }
@@ -439,13 +436,13 @@ public class FileExtractUploadService extends BaseService {
         return retMap;
     }
     
-    public ProjectDetails getProjectByRNumber( String rNumber ) {
-    	ProjectDetails project = null;
-    	if (!StringUtils.isEmpty(rNumber)) {
+    public ProjectDetails getProjectByRNumber(String rNumber) {
+        ProjectDetails project = null;
+        if (!StringUtils.isEmpty(rNumber)) {
             List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
             project = getLatestRecord(projDtl);
         }
-    	return project;
+        return project;
     }
 
     /**
@@ -457,8 +454,8 @@ public class FileExtractUploadService extends BaseService {
      */
     public ProjectDetails getLatestRecord(String projectId) {
         ProjectDetails projectDetails = getLatestRecord(projectService.findByKeyProjectId(projectId));
-        if( projectDetails == null) {
-        	return new ProjectDetails();
+        if (projectDetails == null) {
+            return new ProjectDetails();
         }
         projectDetails.setFileDetails(projectFilesService.getProjectById(projectId));
         return projectDetails;
@@ -487,7 +484,7 @@ public class FileExtractUploadService extends BaseService {
      */
     private ProjectDetails getPreviousRecord(ProjectDetails projDtl) {
         ProjectDetails prevRecord = null;
-
+        
         List<ProjectDetails> allRecords = projectService.findByrNumber(projDtl.getrNumber());//KeyProjectId(projDtl.getProjectId());
         if (allRecords != null) {
             if (projDtl.isAttachReplace() && allRecords.size() == 1) {
@@ -500,9 +497,9 @@ public class FileExtractUploadService extends BaseService {
             prevRecord = allRecords.stream()
                     .filter(p -> !p.getVersion().equals(projDtl.getVersion()))
                     .max((a1, a2) -> a1.getCreateDate().compareTo(a2.getCreateDate())).orElse(null);
-
+            
         }
-
+        
         return prevRecord;
     }
 
@@ -536,7 +533,6 @@ public class FileExtractUploadService extends BaseService {
 //        processGerber(projectDetails.getFileDetails());
 //        return projectDetails;
 //    }
-
     /**
      * Performs all possible Gerber file processing.
      *
@@ -544,7 +540,7 @@ public class FileExtractUploadService extends BaseService {
      * more details during processing
      */
     public void processGerber(List<FileDetails> fileDetails) {
-
+        
         GerberFileProcessingUtil.processFilesByExtension(fileDetails, extensionToFileMap());
 
         //For each file that is gerber format
