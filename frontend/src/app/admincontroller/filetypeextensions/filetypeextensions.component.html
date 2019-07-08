@@ -36,9 +36,6 @@
                 <input *ngIf="data.file" type="text" [(ngModel)]="data.file_type" class="form-control" required />
 
                 <div class="align-buttons-right">
-                  <button *ngIf="!data.file" style="border:none; background-color: transparent; margin-left: 10px;"
-                    (click)="data.file = !data.file; data.originalFiletype = data.file_type;"><span
-                      class="glyphicon glyphicon-edit"></span></button>
                   <button *ngIf="data.file" style="border:none; background-color: transparent; margin-left: 10px;"
                     (click)="data.file = !data.file; data.originalFiletype = data.file_type;" (click)="changeToLowerCase(data)"><span
                       class="glyphicon glyphicon-check" [ngStyle]="{'color':data.file?'green':'green'}"></span></button>
@@ -68,12 +65,6 @@
                       [ngStyle]="{'color':data.edit?'red':'red'}"></span></button>
                 </div>
               </td>
-              <!-- <td class="text-center">
-                  <button class="btn btn-primary btn-sm" (click)="data.edit = !data.edit; data.originalExtn = data.extensions; updateData(data)" [ngClass]="{'btn-success':data.edit}" [disabled]="!data.extensions">
-                    <span class="glyphicon glyphicon-edit"></span> {{data.edit?'update':'edit'}}
-                  </button>&nbsp;
-                  <button *ngIf="data.edit" class="btn btn-danger btn-md"><span class="glyphicon glyphicon-remove-sign" (click)="data.extensions=data.originalExtn; data.edit= !data.edit"></span></button>
-              </td> -->
 
               <td class="text-center">
                 <button class="btn btn-danger btn-md" (click)="removeExtension(data)"><span
