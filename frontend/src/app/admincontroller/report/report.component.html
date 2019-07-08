@@ -117,7 +117,7 @@
           </table>
         </div>
         <h3>ZIP FILE CONTENT DETAILS</h3>
-        <div class="reportscroll" [ngClass]="[versionStyle]">
+        <div class="reportscroll table-responsive" [ngClass]="[versionStyle]">
           <table class="table bold-change table-striped">
             <thead>
               <tr>
@@ -164,58 +164,47 @@
           </li>
         </ul>
       </div>
-      <div *ngIf="differences" class="spacer">
-        <span class="heading">CompareResults &nbsp;&nbsp;&nbsp; <strong><i>(NOTE- Below comparison result is between
-              last two sets.)</i></strong></span>
-        <br /><br />
-        <ul>
-          <li *ngFor="let obj of differences">
-            {{obj}}
-          </li>
-        </ul>
+      <div *ngIf="fileChanges && fileChanges.length > 0" class="spacer" style="overflow-y: auto;" >
+        <h3>File Changes</h3>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th>FileName</th>
+              <th>Action</th>
+              <th>Attributes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mydata of fileChanges">
+              <td>{{mydata.fileName}}</td>
+              <td>{{mydata.action}}</td>
+              <td *ngIf="mydata.attributes">
+                <!-- <ul *ngFor="let atri of mydata.attributes">
+                  <li>
+                    <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
+                  </li>
+                </ul> -->
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>NewValue</th>
+                      <th>OldValue</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let atri of mydata.attributes">
+                      <td>{{atri.name}}</td>
+                      <td>{{atri.newValue}}</td>
+                      <td>{{atri.oldValue}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
-  <br />
-  <!-- Test File Changes Table Structure. -->
-  <div class="spacer" style="overflow-y: auto;">
-    <table class="table table-responsive">
-      <thead>
-        <tr>
-          <th>FileName</th>
-          <th>Action</th>
-          <th>Attributes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let mydata of fileChanges">
-          <td>{{mydata.fileName}}</td>
-          <td>{{mydata.action}}</td>
-          <td *ngIf="mydata.attributes">
-            <!-- <ul *ngFor="let atri of mydata.attributes">
-              <li>
-                <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
-              </li>
-            </ul> -->
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>NewValue</th>
-                  <th>OldValue</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let atri of mydata.attributes">
-                  <td>{{atri.name}}</td>
-                  <td>{{atri.newValue}}</td>
-                  <td>{{atri.oldValue}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
