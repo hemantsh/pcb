@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.datastax.driver.core.utils.UUIDs;
+import com.google.gson.Gson;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.entity.DifferenceReport;
 import com.sc.fe.analyze.data.entity.DifferenceReportJson;
@@ -150,9 +151,10 @@ public class FileExtractUploadService extends BaseService {
         List<FileChange> fileChanges = CompareUtility.createFileChangeList(compareMap);
         projectDetails.setFileChanges(fileChanges);
         DifferenceReportJson diffReport = new DifferenceReportJson();
+        Gson gson = new Gson();
         diffReport.setProjectId(prevProjId);
         diffReport.setVersion(UUID.fromString(prevProjVersion));
-        diffReport.setDifferences(compareMap.toString());
+        diffReport.setDifferences(gson.toJson(fileChanges));
         projectService.save(diffReport);
 //        //Save the comparison Details
 //        if (!projectDetails.getDifferences().isEmpty()) {
