@@ -37,10 +37,50 @@ export class ReportComponent implements OnInit {
   nameSearchBy = "RNumber";
   searchInput = "";
   projectsBySearch = [];
+  fileChanges = [
+    {
+      "fileName": "MANTIS-TEST.TXT",
+      "action": "NEW"
+    },
+    {
+      "fileName": "MANTIS-BOM-FILE.XLS",
+      "action": "UPDATED",
+      "attributes": [
+        {
+          "name": "side",
+          "oldValue": "none",
+          "newValue": "REMOVED"
+        },
+        {
+          "name": "type",
+          "oldValue": "bom,assembly_drawing,bom",
+          "newValue": "bom,assembly_drawing"
+        },
+        {
+          "name": "polarity",
+          "oldValue": "none",
+          "newValue": "REMOVED"
+        },
+        {
+          "name": "format",
+          "oldValue": "gerber",
+          "newValue": "odb"
+        },
+        {
+          "name": "layerName",
+          "oldValue": "assembly",
+          "newValue": "REMOVED"
+        }
+      ]
+    }
+  ];
+  
   constructor(private fileService: FileService) { }
 
   ngOnInit() {
     this.retriveProjectId();
+    
+    console.log(this.fileChanges);
   }
 
   /**
@@ -69,14 +109,14 @@ export class ReportComponent implements OnInit {
         },
         (error) => console.log(error)
       );
-    this.fileService.getDifferences(this.selectedProjectId).subscribe(
+    /*this.fileService.getDifferences(this.selectedProjectId).subscribe(
       (response: Response) => {
         if (response)
           this.differences = response.json();
         console.log("Differences is fetchin...", this.differences);
       },
       (error) => console.log(error)
-    );
+    );*/
   }
 
   /**

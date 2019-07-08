@@ -1,6 +1,7 @@
 package com.sc.fe.analyze.service;
 
 import com.sc.fe.analyze.data.entity.DifferenceReport;
+import com.sc.fe.analyze.data.entity.DifferenceReportJson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.entity.ProjectPK;
+import com.sc.fe.analyze.data.repo.DifferenceReportJsonRepo;
 import com.sc.fe.analyze.data.repo.DifferenceReportRepo;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
@@ -36,6 +38,8 @@ public class ProjectService {
     private ProjectFilesRepo projectFilesRepo;
     @Autowired
     private DifferenceReportRepo diffReportRepo;
+    @Autowired
+    private DifferenceReportJsonRepo diffReportJsonRepo;
 
     /**
      * Displays all the data of Project Table and returns data of ProjectDetails
@@ -79,6 +83,17 @@ public class ProjectService {
      */
     public void save(DifferenceReport diffReport) {
         diffReportRepo.save(diffReport);
+
+    }
+
+    /**
+     * Saves DifferenceReportJson Data into the database.
+     *
+     * @param diffReport has differnceReportJson records that is stored into the
+     * database
+     */
+    public void save(DifferenceReportJson diffReport) {
+        diffReportJsonRepo.save(diffReport);
 
     }
 
@@ -221,6 +236,21 @@ public class ProjectService {
         if (diff.isPresent()) {
             return diff.get().getDifferences();
         }
+        return null;
+    }
+
+    /**
+     * This method takes the projectId and get all the differences
+     *
+     * @param projectId Takes the projectId
+     * @return the set of string
+     */
+    public String getDifferencesJson(String projectId) {
+        Optional<DifferenceReportJson> diff = diffReportJsonRepo.findById(projectId);
+        if (diff.isPresent()) {
+            return diff.get().getDifferences();
+        }
+
         return null;
     }
 

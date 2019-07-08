@@ -178,7 +178,7 @@
   </div>
   <br />
   <!-- Test File Changes Table Structure. -->
-  <!-- <div class="spacer" style="overflow-y: auto;">
+  <div class="spacer" style="overflow-y: auto;">
     <table class="table table-responsive">
       <thead>
         <tr>
@@ -192,14 +192,30 @@
           <td>{{mydata.fileName}}</td>
           <td>{{mydata.action}}</td>
           <td *ngIf="mydata.attributes">
-            <ul *ngFor="let atri of mydata.attributes">
+            <!-- <ul *ngFor="let atri of mydata.attributes">
               <li>
                 <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
               </li>
-            </ul>
+            </ul> -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>NewValue</th>
+                  <th>OldValue</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let atri of mydata.attributes">
+                  <td>{{atri.name}}</td>
+                  <td>{{atri.newValue}}</td>
+                  <td>{{atri.oldValue}}</td>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
     </table>
-  </div> -->
+  </div>
 </div>
