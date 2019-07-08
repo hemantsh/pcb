@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -163,6 +165,17 @@ public class ProjectDetails implements Serializable {
             fileDetails = new ArrayList<FileDetails>();
         }
         fileDetails.add(fileDetail);
+    }
+    
+    public void replaceFileDetail(FileDetails fileDetail) {
+    	if( fileDetail == null || StringUtils.isEmpty( fileDetail.getName()) ) {
+    		return;
+    	}
+    	FileDetails fd = getFileDetails( fileDetail.getName() );
+    	if( fd != null) {
+    		this.fileDetails.remove(fileDetail);	
+    	}
+    	this.fileDetails.add( fileDetail );
     }
 
     @JsonIgnore

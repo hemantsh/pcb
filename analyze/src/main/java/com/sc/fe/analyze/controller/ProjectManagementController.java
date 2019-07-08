@@ -104,6 +104,14 @@ public class ProjectManagementController {
     	
     	boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
     	if(validate) {
+    		if(projectDetails.isAttachReplace()) {
+    			temp = projectService.getProject( projectDetails.getProjectId(), projectDetails.getVersion());
+    			Set<String> fileNames = projectDetails.getFileNames();
+    			for (String name : fileNames) {
+					temp.replaceFileDetail( projectDetails.getFileDetails(name) );
+				}
+    			projectDetails.setFileDetails(temp.getFileDetails());
+    		}
     		fileUploadService.processGerber(projectDetails.getFileDetails());
     		//
     		String tVer = new String(projectDetails.getVersion() == null ? "" : projectDetails.getVersion() );

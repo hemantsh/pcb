@@ -150,18 +150,15 @@ public class FileExtractUploadService extends BaseService {
         //projectDetails.setDifferences(CompareUtility.formatedError(compareMap));
         List<FileChange> fileChanges = CompareUtility.createFileChangeList(compareMap);
         projectDetails.setFileChanges(fileChanges);
-        DifferenceReportJson diffReport = new DifferenceReportJson();
-        Gson gson = new Gson();
-        diffReport.setProjectId(prevProjId);
-        diffReport.setVersion(UUID.fromString(prevProjVersion));
-        diffReport.setDifferences(gson.toJson(fileChanges));
-        projectService.save(diffReport);
-//        //Save the comparison Details
-//        if (!projectDetails.getDifferences().isEmpty()) {
-//            DifferenceReport diffReport = new DifferenceReport();
-//            projectService.save(diffReport);
-//            projectDetails.setDifferences(null);
-//        }
+        if( fileChanges != null && !fileChanges.isEmpty()) {
+	        DifferenceReportJson diffReport = new DifferenceReportJson();
+	        Gson gson = new Gson();
+	        diffReport.setProjectId(prevProjId);
+	        diffReport.setVersion(UUID.fromString(prevProjVersion));
+	        diffReport.setDifferences(gson.toJson(fileChanges));
+	        projectService.save(diffReport);
+        }
+
     }
 
     /**
