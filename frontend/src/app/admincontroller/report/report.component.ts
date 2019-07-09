@@ -36,13 +36,13 @@ export class ReportComponent implements OnInit {
   nameSearchBy = "RNumber";
   searchInput = "";
   projectsBySearch = [];
-  fileChanges=[];
-  
+  fileChanges = [];
+  haveAttribute = false;
   constructor(private fileService: FileService) { }
 
   ngOnInit() {
     this.retriveProjectId();
-    
+
     console.log(this.fileChanges);
   }
 
@@ -76,6 +76,11 @@ export class ReportComponent implements OnInit {
       (response: Response) => {
         if (response)
           this.fileChanges = response.json();
+        for (let data of this.fileChanges) {
+          if (data.attributes) {
+            this.haveAttribute = true;
+          }
+        }
         console.log("Differences is fetchin...", this.fileChanges);
       },
       (error) => console.log(error)
