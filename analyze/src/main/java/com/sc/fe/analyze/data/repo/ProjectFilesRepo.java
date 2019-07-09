@@ -16,13 +16,6 @@ import com.sc.fe.analyze.data.entity.ProjectFilesPK;
 @Repository
 public interface ProjectFilesRepo extends CassandraRepository< ProjectFiles, ProjectFilesPK> {
 
-    /**
-     * Used to extract data by projectId
-     *
-     * @param projectId takes projectId
-     * @return the list of projectFiles
-     */
-    List<ProjectFiles> findByKeyProjectId(final String projectId);
 
     /**
      * Used to find data by combined primaryKey ProjectId and Version.

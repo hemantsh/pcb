@@ -445,22 +445,6 @@ public class FileExtractUploadService extends BaseService {
     }
 
     /**
-     * This method retrieves the whole record of that projectId from the
-     * database
-     *
-     * @param projectId the projectId of the record
-     * @return the projectDetails of matching projectId
-     */
-    public ProjectDetails getLatestRecord(String projectId) {
-        ProjectDetails projectDetails = getLatestRecord(projectService.findByKeyProjectId(projectId));
-        if (projectDetails == null) {
-            return new ProjectDetails();
-        }
-        projectDetails.setFileDetails(projectFilesService.getProjectById(projectId));
-        return projectDetails;
-    }
-
-    /**
      * Get the latest record from the list. Based on created date of the record.
      *
      * @param projDtl Details of the project
@@ -517,6 +501,7 @@ public class FileExtractUploadService extends BaseService {
         }
         return version;
     }
+     
 
 //    public ProjectDetails returnProjectId(ProjectDetails projectDetails) {
 //        //Get the projectDetails by projectId

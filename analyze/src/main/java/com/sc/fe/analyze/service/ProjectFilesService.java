@@ -2,6 +2,7 @@ package com.sc.fe.analyze.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,14 +69,15 @@ public class ProjectFilesService {
     	projectFilesRepo.delete(project_files);
     }
 
+    
     /**
-     * Gets the Unique ProjectId with multiple versions.
-     *
-     * @param projectId takes the projectId
-     * @return the list of fileDetails
+     * Get the project files for specific version
+     * @param projectId
+     * @param version
+     * @return
      */
-    public List<FileDetails> getProjectById(String projectId) {
-        return convertList(projectFilesRepo.findByKeyProjectId(projectId));
+    public List<FileDetails> getProjectFiles(String projectId, String version) {
+        return convertList(projectFilesRepo.findByKeyProjectIdAndKeyVersion (projectId, UUID.fromString(version)) );
     }
 
 }

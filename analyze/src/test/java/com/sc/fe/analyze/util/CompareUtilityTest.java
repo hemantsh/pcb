@@ -301,22 +301,7 @@ public class CompareUtilityTest {
 
     }
 
-    /**
-     * Test of formatedError method, of class CompareUtility.
-     */
-    @Test
-    public void testFormatedError() {
-        System.out.println("formatedError");
-
-        Map<String, String> errors = new HashMap<String, String>();
-        errors.put("format", "V0001");
-        errors.put("name", "myfile.txt");
-//        errors.put("")
-        Set<String> result = CompareUtility.formatedError(errors);
-
-        assertEquals(result.size(), 2);
-
-    }
+    
 
     /**
      * Test of findMissingItems method, of class CompareUtility.

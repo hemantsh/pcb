@@ -89,10 +89,16 @@ public class ProjectManagementController {
     @ResponseBody
     public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {   
     	if( ! hasRequiredFields(projectDetails)) {
-    		projectDetails.getErrors().put("V0000", "rNumber is required");
-    		projectDetails.setFileDetails(new ArrayList<FileDetails>(0));
-    		return projectDetails;
+    		ProjectDetails proj = new ProjectDetails();
+    		proj.getErrors().put("V0000", "rNumber is required");
+    		return proj;
     	}
+    	//Check for both newProject and attach/Replace values
+        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
+        	ProjectDetails proj = new ProjectDetails();
+        	proj.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
+            return proj;
+        }
     	ProjectDetails retDetails= null;
     	
     	ProjectDetails temp = fileUploadService.getProjectByRNumber(projectDetails.getrNumber());
