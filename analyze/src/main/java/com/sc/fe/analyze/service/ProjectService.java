@@ -24,6 +24,7 @@ import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.util.ReportUtility;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -190,6 +191,9 @@ public class ProjectService {
      */
     public ProjectDetails getProject(String projectId, String verison) {
         ProjectPK projectPK = new ProjectPK();
+        if(StringUtils.isEmpty(projectId) || StringUtils.isEmpty(verison)){
+            return new ProjectDetails();
+        }
         projectPK.setProjectId(projectId);
         projectPK.setVersion(UUID.fromString(verison));
         Optional<Project> findByID = projectRepo.findById(projectPK);
