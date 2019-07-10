@@ -187,6 +187,17 @@ public class ProjectDetails implements Serializable {
                 .map(FileDetails::getName)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
+    
+    @JsonIgnore
+    public Set<String> getAllSelectedFileNames() {
+        if (fileDetails == null) {
+            return null;
+        }
+        return fileDetails.stream()
+        		.filter( fd -> fd.isSelected())
+                .map(FileDetails::getName)
+                .collect(Collectors.toCollection(TreeSet::new));
+    }
 
     public FileDetails getFileDetails(String fileName) {
         FileDetails retVal = null;

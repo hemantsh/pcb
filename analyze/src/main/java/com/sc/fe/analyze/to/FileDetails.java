@@ -268,6 +268,9 @@ public class FileDetails implements Serializable {
     }
     
     public void addType(String type) {
+    	if( StringUtils.isEmpty(type) ) {
+    		return;
+    	}
     	String typ = this.type;
         if (StringUtils.isEmpty(typ)) {
             typ = "";

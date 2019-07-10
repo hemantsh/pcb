@@ -187,14 +187,14 @@ public class CompareUtility {
         //FileDetail objects are compared if they have same file name
         Map<String, String> differences = new HashMap<String, String>();
         Set<String> combinedKeys = new HashSet<String>();
-        Set<String> newFileNameSet = newProject.getAllFileNames();
-        Set<String> oldFileNameSet = oldProject.getAllFileNames();
+        Set<String> newFileNameSet = new HashSet<String>();
+        Set<String> oldFileNameSet = new HashSet<String>();
 
         if (newProject != null && newProject.getAllFileNames() != null) {
             newFileNameSet = newProject.getAllFileNames();
         }
-        if (oldProject != null && oldProject.getAllFileNames() != null) {
-            oldFileNameSet = oldProject.getAllFileNames();
+        if (oldProject != null && oldProject.getAllSelectedFileNames() != null) {
+            oldFileNameSet = oldProject.getAllSelectedFileNames();
         }
         //Collect all filenames in set for uniqueness
         combinedKeys.addAll(newFileNameSet);
@@ -318,11 +318,17 @@ public class CompareUtility {
         }
 
         if (newFD == null && oldFD != null) {
-            returnMap.put(oldFD.getName().toUpperCase(), Change.MISSING.name());
+        	if( !oldFD.isSelected() ) {
+        		return returnMap;
+        	}
+        	returnMap.put(oldFD.getName().toUpperCase(), Change.MISSING.name());
             newFD = new FileDetails();
         }
         if (newFD != null && oldFD == null) {
-            returnMap.put(newFD.getName().toUpperCase(), Change.NEW.name());
+        	if( !newFD.isSelected() ) {
+        		return returnMap;
+        	}
+        	returnMap.put(newFD.getName().toUpperCase(), Change.NEW.name());
             oldFD = new FileDetails();
         }
 

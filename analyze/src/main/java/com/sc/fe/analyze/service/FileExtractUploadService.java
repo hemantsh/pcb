@@ -181,7 +181,7 @@ public class FileExtractUploadService extends BaseService {
             retErrors.put("version", prevprojDtl.getVersion());
             
             if (projectDetails.isAttachReplace()) {
-                List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllFileNames().contains(fd.getName())).collect(Collectors.toList());
+                List<FileDetails> shortList = prevprojDtl.getFileDetails().stream().filter(fd -> projectDetails.getAllSelectedFileNames().contains(fd.getName())).collect(Collectors.toList());
                 prevprojDtl.setFileDetails(shortList);
                 retErrors.putAll(CompareUtility.compareFileDetails(projectDetails, prevprojDtl));
                 return retErrors;
