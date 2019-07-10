@@ -58,7 +58,7 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
    * Adds a textbox into the list for adding new service. 
    */
   addService() {
-    this.services.unshift({ id: this.services.length + 1, name: null, add: true });
+    this.services.unshift({ id: 0, name: null, add: true });
   }
 
   /**

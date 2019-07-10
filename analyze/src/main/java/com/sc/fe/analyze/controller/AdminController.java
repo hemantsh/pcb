@@ -103,12 +103,6 @@ public class AdminController {
         return fileService.findAll();
     }
 
-    @ApiOperation("Insert a new Services and store into Database.")
-    @PostMapping(path = "/services/create")
-    public void createService(@ApiParam("Takes JSON of Services Type as Input") @RequestBody Services services) {
-        fileService.save(services);
-    }
-
     @ApiOperation("Updates the existing Service stored into Database.")
     @PostMapping(path = "/services/update")
     public void updateService(@ApiParam("Takes JSON of Services as Input") @RequestBody Services services) {
