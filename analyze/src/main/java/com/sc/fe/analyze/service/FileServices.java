@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sc.fe.analyze.data.entity.Services;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -20,7 +22,7 @@ public class FileServices {
 
     @Autowired
     private ServicesRepo serviceRepo;
-    
+
     @Autowired
     private CachingService cacheService;
 
@@ -39,9 +41,22 @@ public class FileServices {
      * @param services the services to store in a database
      */
     public void save(Services services) {
+        if (services.getId() == 0) {
+            services.setId(getMaxServiceId().getId() + 1);
+        }
         serviceRepo.save(services);
         cacheService.evictAllCacheValues("Services");
         cacheService.evictSingleCacheValue("Service", services.getId());
+    }
+
+    public Services getMaxServiceId() {
+        List<Services> service = findAll();
+        Services max = new Services();
+        if (service.isEmpty()) {
+            return max;
+        }
+        max = Collections.max(service, Comparator.comparing(s -> s.getId()));
+        return max;
     }
 
     /**
