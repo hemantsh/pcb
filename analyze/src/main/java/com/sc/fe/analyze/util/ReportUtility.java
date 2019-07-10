@@ -104,6 +104,8 @@ public class ReportUtility {
         dtl.setAttributes(projectFiles.getAttributes());
         dtl.setErrors(projectFiles.getErrors());
         dtl.setSelected(projectFiles.isSelected());
+        dtl.setPath(projectFiles.getPath());
+        dtl.setFullName(projectFiles.getFullName());
 
         return dtl;
     }
@@ -232,6 +234,12 @@ public class ReportUtility {
         filesDbDetails.setModifiedDate(new Date());
         filesDbDetails.setErrors(fileDetails.getErrors());
         filesDbDetails.setSelected(fileDetails.isSelected());
+        if( ! StringUtils.isEmpty(fileDetails.getPath()) ) {
+        	filesDbDetails.setPath(fileDetails.getPath());
+        }
+        if( ! StringUtils.isEmpty(fileDetails.getFullName()) ) {
+        	filesDbDetails.setFullName(fileDetails.getFullName());
+        }
         return filesDbDetails;
     }
 

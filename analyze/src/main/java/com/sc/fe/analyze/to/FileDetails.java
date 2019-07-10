@@ -46,6 +46,8 @@ public class FileDetails implements Serializable {
     private boolean selected;
     private Map<String, String> attributes; //Attributes in key:value form
     private Map<String, String> errors;     //Errors in key:value form
+    private String fullName;
+    private String path;
 
     public String getStatus() {
         return status;
@@ -284,5 +286,33 @@ public class FileDetails implements Serializable {
         
         this.type = typ;
     }
+
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return fullName;
+	}
+
+	/**
+	 * @param fullName the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
     
 }

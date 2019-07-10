@@ -62,6 +62,10 @@ public class ProjectFiles implements Serializable {
     private boolean selected;
     @Column(value = "status")
     private String status;
+    
+    private String fullName;
+    private String path;
+    
 
     public String getStatus() {
         return status;
@@ -249,4 +253,32 @@ public class ProjectFiles implements Serializable {
     public Map<String, String> getErrors() {
         return errors;
     }
+
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return fullName;
+	}
+
+	/**
+	 * @param fullName the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
 }
