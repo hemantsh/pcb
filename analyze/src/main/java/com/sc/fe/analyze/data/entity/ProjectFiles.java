@@ -63,8 +63,8 @@ public class ProjectFiles implements Serializable {
     @Column(value = "status")
     private String status;
     
-    private String fullName;
-    private String path;
+//    private String fullName;
+//    private String path;
     
 
     public String getStatus() {
@@ -254,31 +254,31 @@ public class ProjectFiles implements Serializable {
         return errors;
     }
 
-	/**
-	 * @return the fullName
-	 */
-	public String getFullName() {
-		return fullName;
-	}
-
-	/**
-	 * @param fullName the fullName to set
-	 */
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	/**
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+//	/**
+//	 * @return the fullName
+//	 */
+//	public String getFullName() {
+//		return fullName;
+//	}
+//
+//	/**
+//	 * @param fullName the fullName to set
+//	 */
+//	public void setFullName(String fullName) {
+//		this.fullName = fullName;
+//	}
+//
+//	/**
+//	 * @return the path
+//	 */
+//	public String getPath() {
+//		return path;
+//	}
+//
+//	/**
+//	 * @param path the path to set
+//	 */
+//	public void setPath(String path) {
+//		this.path = path;
+//	}
 }
