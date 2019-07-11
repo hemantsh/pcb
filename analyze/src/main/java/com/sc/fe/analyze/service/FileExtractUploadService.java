@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 import com.datastax.driver.core.utils.UUIDs;
 import com.google.gson.Gson;
 import com.sc.fe.analyze.FileStorageProperties;
-import com.sc.fe.analyze.data.entity.DifferenceReport;
 import com.sc.fe.analyze.data.entity.DifferenceReportJson;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.to.FileChange;
@@ -328,7 +327,7 @@ public class FileExtractUploadService extends BaseService {
             //projectDetails.getErrors().put("V0000", "Data not validated/saved as nothing to Attach/Replace. Try submitting again with attachReplace = false");
             //return;
             version = UUIDs.timeBased().toString();
-            System.out.println("*******INFO: Generating new Version .");
+            logger.info("*******INFO: Generating new Version .");
         }
         
         projectDetails.setProjectId(projectId);
@@ -406,7 +405,7 @@ public class FileExtractUploadService extends BaseService {
 //            }
 //        }
         if (StringUtils.isEmpty(projKeyMap.get("project_id"))) {
-            System.out.println("*******INFO: Generating projectID as no data found by RNumber.");
+            logger.info("*******INFO: Generating projectID as no data found by RNumber.");
             projKeyMap.put("project_id", UUIDs.timeBased().toString());
         }
         

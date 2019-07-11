@@ -1,6 +1,5 @@
 package com.sc.fe.analyze.service;
 
-import com.sc.fe.analyze.data.entity.DifferenceReport;
 import com.sc.fe.analyze.data.entity.DifferenceReportJson;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import com.sc.fe.analyze.data.entity.Project;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
 import com.sc.fe.analyze.data.entity.ProjectPK;
 import com.sc.fe.analyze.data.repo.DifferenceReportJsonRepo;
-import com.sc.fe.analyze.data.repo.DifferenceReportRepo;
 import com.sc.fe.analyze.data.repo.ProjectFilesRepo;
 import com.sc.fe.analyze.data.repo.ProjectRepo;
 import com.sc.fe.analyze.to.FileDetails;
@@ -37,8 +35,6 @@ public class ProjectService {
     private ProjectRepo projectRepo;
     @Autowired
     private ProjectFilesRepo projectFilesRepo;
-    @Autowired
-    private DifferenceReportRepo diffReportRepo;
     @Autowired
     private DifferenceReportJsonRepo diffReportJsonRepo;
 
@@ -74,17 +70,6 @@ public class ProjectService {
      */
     public void save(Project project) {
         projectRepo.save(project);
-    }
-
-    /**
-     * Saves DifferenceReport Data into the database.
-     *
-     * @param diffReport has differnceReport records that is stored into the
-     * database
-     */
-    public void save(DifferenceReport diffReport) {
-        diffReportRepo.save(diffReport);
-
     }
 
     /**
@@ -227,20 +212,6 @@ public class ProjectService {
         });
         project.setFileDetails(fbList);
         return project;
-    }
-
-    /**
-     * This method takes the projectId and get all the differences
-     *
-     * @param projectId Takes the projectId
-     * @return the set of string
-     */
-    public Set<String> getDifferences(String projectId) {
-        Optional<DifferenceReport> diff = diffReportRepo.findById(projectId);
-        if (diff.isPresent()) {
-            return diff.get().getDifferences();
-        }
-        return null;
     }
 
     /**

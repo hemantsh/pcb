@@ -164,46 +164,48 @@
           </li>
         </ul>
       </div>
-      <div *ngIf="fileChanges && fileChanges.length > 0" class="spacer" style="overflow-y: auto;">
+      <div *ngIf="fileChanges && fileChanges.length > 0" class="spacer">
         <h3>File Changes</h3>
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th>FileName</th>
-              <th>Action</th>
-              <th *ngIf="haveAttribute">Attributes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mydata of fileChanges">
-              <td>{{mydata.fileName}}</td>
-              <td>{{mydata.action}}</td>
-              <td *ngIf="mydata.attributes">
-                <!-- <ul *ngFor="let atri of mydata.attributes">
-                  <li>
-                    <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
-                  </li>
-                </ul> -->
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>NewValue</th>
-                      <th>OldValue</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let atri of mydata.attributes">
-                      <td>{{atri.name}}</td>
-                      <td>{{atri.newValue}}</td>
-                      <td>{{atri.oldValue}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="spacer" style="overflow-y: auto;">
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>FileName</th>
+                <th>Action</th>
+                <th *ngIf="haveAttribute">Attributes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mydata of fileChanges">
+                <td>{{mydata.fileName}}</td>
+                <td>{{mydata.action}}</td>
+                <td *ngIf="mydata.attributes">
+                  <!-- <ul *ngFor="let atri of mydata.attributes">
+                    <li>
+                      <span *ngFor="let attr of atri | keyvalue"> <b>{{attr.key}}</b> :{{attr.value}} </span>
+                    </li>
+                  </ul> -->
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>NewValue</th>
+                        <th>OldValue</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let atri of mydata.attributes">
+                        <td>{{atri.name}}</td>
+                        <td>{{atri.newValue}}</td>
+                        <td>{{atri.oldValue}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.sc.fe.analyze.to.FileDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ODBProcessing Class is used to process the ODB Folder
@@ -18,7 +20,7 @@ import com.sc.fe.analyze.to.FileDetails;
  * @author Hemant
  */
 public class ODBProcessing {
-
+    private static final Logger logger = LoggerFactory.getLogger(ODBProcessing.class);
     /**
      * This method read and processes the ODB file.
      *
@@ -76,6 +78,7 @@ public class ODBProcessing {
             }
             br.close();
         } catch (IOException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return fileDetlList;
@@ -113,6 +116,7 @@ public class ODBProcessing {
                 brr.close();
             }
         } catch (IOException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return fileDetail;

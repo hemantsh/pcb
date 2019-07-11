@@ -100,6 +100,7 @@ public class S3FileUtility {
 
                     });
         } catch (IOException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         //Delete the local folder as we moved all files to S3

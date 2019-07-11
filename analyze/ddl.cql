@@ -39,7 +39,7 @@ CREATE KEYSPACE fileexchange
  	create_date timestamp,
  	modified_date timestamp,
  	errors map<text,text>,
- 	
+
  	PRIMARY KEY ( (project_id, version) )
  );
  
@@ -72,18 +72,21 @@ CREATE INDEX on project (zipfile_name);
  	create_date timestamp,
  	modified_date timestamp,
  	errors map<text,text>,
- 	
+ 	full_name text,
+        path text,
+
  	PRIMARY KEY ( (project_id, version), name )
  );
  
  CREATE INDEX on project_files (project_id);
  
-CREATE TABLE difference_report(
-        project_id text,
+CREATE TABLE difference_report_json(
+	projectId text,
         version timeuuid,
-        differences set<text>,
-        PRIMARY KEY(project_id)
+        differences text,
+        PRIMARY KEY ( projectId)
 );
+
 
  CREATE TABLE filetype_extensions (
 	id uuid,

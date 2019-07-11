@@ -138,6 +138,7 @@ public class GerberFileProcessingUtil {
                 });
 
             } catch (IOException e) {
+                logger.error(e.getMessage());
                 e.printStackTrace();
             }
 
@@ -494,19 +495,20 @@ public class GerberFileProcessingUtil {
             DetectTextResult result = rekognitionClient.detectText(request);
             List<TextDetection> textDetections = result.getTextDetections();
 
-            System.out.println("Detected lines and words for " + photo);
+            logger.info("Detected lines and words for " + photo);
             for (TextDetection text : textDetections) {
                 if ("LINE".equals(text.getType())) {
-                    System.out.println("Detected: " + text.getDetectedText());
-                    System.out.println("Confidence: " + text.getConfidence().toString());
-                    System.out.println("Id : " + text.getId());
-                    System.out.println("Parent Id: " + text.getParentId());
-                    System.out.println("Type: " + text.getType());
+                    logger.info("Detected: " + text.getDetectedText());
+                    logger.info("Confidence: " + text.getConfidence().toString());
+                    logger.info("Id : " + text.getId());
+                    logger.info("Parent Id: " + text.getParentId());
+                    logger.info("Type: " + text.getType());
                     System.out.println();
                 }
             }
 
         } catch (AmazonRekognitionException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
 
