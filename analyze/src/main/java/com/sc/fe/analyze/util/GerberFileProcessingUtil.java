@@ -17,6 +17,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -32,6 +34,7 @@ import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
+import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
 
@@ -41,6 +44,8 @@ import com.sc.fe.analyze.to.FileDetails;
  */
 public class GerberFileProcessingUtil {
 
+	private static final Logger logger = LoggerFactory.getLogger(GerberFileProcessingUtil.class);
+    
     /**
      * This method retrieves the file from the report once at a time and store
      * the layerInformation details of the file in the database.
@@ -601,13 +606,14 @@ public class GerberFileProcessingUtil {
 	                        	fd.setLayerOrder(Integer.parseInt(splitRSide[5].replaceAll("[^0-9]*", "")));
 	                        }
                         }
-                        System.out.println("======File name: pattern match-"+fileName+":"+splitValue[0]);
+                        logger.info("======File name: pattern match-"+fileName+":"+splitValue[0]);
                         break;
                     }
                 }
             }
             br.close();
         } catch (IOException ex) {
+        	logger.error(ex.getMessage());
             ex.printStackTrace();
         }
 
