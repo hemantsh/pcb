@@ -20,6 +20,8 @@ import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class that has methods to compare various objects that are used in
@@ -29,6 +31,7 @@ import com.sc.fe.analyze.to.TurnTimeQuantity;
  */
 public class CompareUtility {
 
+    private static final Logger logger = LoggerFactory.getLogger(CompareUtility.class);
     private static final String NA = "NA";
     private static final String DELIMITER = "~";
     private static Set<String> DO_NOT_COMPARE = initDoNotCompare();
@@ -68,7 +71,7 @@ public class CompareUtility {
         }
         try {
             differences.putAll(compareObject(newRecord, oldRecord));
-            
+
             //Compare the FileDetails of the file
             differences.putAll(compareFileDetails(newRecord, oldRecord));
 
@@ -77,8 +80,10 @@ public class CompareUtility {
             differences.putAll(compareTurnTimes(newRecord.getFabricationTurnTimeQuantity(), oldRecord.getFabricationTurnTimeQuantity(), "FabricationTurnTimes"));
 
         } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return differences;
@@ -211,6 +216,7 @@ public class CompareUtility {
                 differences.putAll(compare(newFD, oldFD));
 
             } catch (IllegalAccessException ex) {
+                logger.error(ex.getMessage());
                 ex.printStackTrace();
             }
         });
@@ -220,69 +226,70 @@ public class CompareUtility {
 
     /**
      * Prepare list of changes in FileChange list structure.
+     *
      * @param differences
      * @return
      */
     public static List<FileChange> createFileChangeList(Map<String, String> differences) {
-    	Map<String, FileChange> changeList = new HashMap<String, FileChange>();
-    	
-    	if(differences != null && differences.size() > 0) {
-    		
-    		differences.keySet().stream().forEach( key -> {
-    			String fileName = key;
-    			FileChange fChange = null;
-    			String attName = null;
+        Map<String, FileChange> changeList = new HashMap<String, FileChange>();
 
-    			String[] tmp = key.split("<>");
-    			fileName = tmp[0];
-    			if(tmp.length == 2) {
-    				attName = tmp[1];
-    			}
-    			
-    			if( !StringUtils.isEmpty(attName) || !fileName.contains(".")) {
-    				//Update-Attributes
-    				if( !fileName.contains(".") ) {
-    					attName = new String(fileName);
-    					fileName = "ProjectDetails";		
-    				}
-    				fChange = changeList.get(fileName);
-    				if( fChange == null) {
-    					fChange = new FileChange();
-    				}
-    				fChange.setFileName(fileName);
-    				fChange.setAction(Change.UPDATED);
-    				fChange.addAttribute( getChangedAttribute( attName, differences.get(key)) );
-    			}else {
-    				//Add/Remove "File got Removed." "File got Added."
-    				fChange = changeList.get(fileName);
-    				if( fChange == null) {
-    					fChange = new FileChange();
-    				}
-    				fChange.setFileName(fileName);
-    				String val = differences.get(key);
-    				fChange.setAction(Change.valueOf(val));
+        if (differences != null && differences.size() > 0) {
 
-    			}
-    			changeList.put(fileName, fChange);
+            differences.keySet().stream().forEach(key -> {
+                String fileName = key;
+                FileChange fChange = null;
+                String attName = null;
+
+                String[] tmp = key.split("<>");
+                fileName = tmp[0];
+                if (tmp.length == 2) {
+                    attName = tmp[1];
+                }
+
+                if (!StringUtils.isEmpty(attName) || !fileName.contains(".")) {
+                    //Update-Attributes
+                    if (!fileName.contains(".")) {
+                        attName = new String(fileName);
+                        fileName = "ProjectDetails";
+                    }
+                    fChange = changeList.get(fileName);
+                    if (fChange == null) {
+                        fChange = new FileChange();
+                    }
+                    fChange.setFileName(fileName);
+                    fChange.setAction(Change.UPDATED);
+                    fChange.addAttribute(getChangedAttribute(attName, differences.get(key)));
+                } else {
+                    //Add/Remove "File got Removed." "File got Added."
+                    fChange = changeList.get(fileName);
+                    if (fChange == null) {
+                        fChange = new FileChange();
+                    }
+                    fChange.setFileName(fileName);
+                    String val = differences.get(key);
+                    fChange.setAction(Change.valueOf(val));
+
+                }
+                changeList.put(fileName, fChange);
             });
-    	}
-    	return changeList.values().stream().collect(Collectors.toList());
+        }
+        return changeList.values().stream().collect(Collectors.toList());
     }
-    
-    private static AttributeChange getChangedAttribute( String attName, String diffValue) {
-    	AttributeChange change =  new AttributeChange();
-		//Update-Attribute
-		change.setName( attName );
-		
-		if( diffValue.contains(DELIMITER)) {
-			String[] vals = diffValue.split(DELIMITER);
-			change.setNewValue( vals[0]);
-			change.setOldValue( vals[1]);
-		}
-		
-    	return change;
+
+    private static AttributeChange getChangedAttribute(String attName, String diffValue) {
+        AttributeChange change = new AttributeChange();
+        //Update-Attribute
+        change.setName(attName);
+
+        if (diffValue.contains(DELIMITER)) {
+            String[] vals = diffValue.split(DELIMITER);
+            change.setNewValue(vals[0]);
+            change.setOldValue(vals[1]);
+        }
+
+        return change;
     }
-    
+
     /**
      * This method compares the new FileDetails with the old FileDetails
      *
@@ -298,37 +305,37 @@ public class CompareUtility {
         Map<String, String> returnMap = new HashMap<String, String>();
 
         if (newFD != null && oldFD != null) {
-        	if( oldFD.isSelected() && !newFD.isSelected()) {
-        		returnMap.put(oldFD.getName().toUpperCase(), Change.NOTINCLUDED.name());
-        		return returnMap;
-        	}
-        	if( oldFD.getFileDate().after( newFD.getFileDate() ) ) {
-        		returnMap.put(oldFD.getName().toUpperCase(), Change.OLDER.name());
-        		return returnMap;
-        	}
-        	
+            if (oldFD.isSelected() && !newFD.isSelected()) {
+                returnMap.put(oldFD.getName().toUpperCase(), Change.NOTINCLUDED.name());
+                return returnMap;
+            }
+            if (oldFD.getFileDate().after(newFD.getFileDate())) {
+                returnMap.put(oldFD.getName().toUpperCase(), Change.OLDER.name());
+                return returnMap;
+            }
+
             //First compare as simple object
             differences.putAll(compareObject(newFD, oldFD));
             //Now compare collection attributes for FileDetails 
             differences.putAll(compareMaps(newFD.getAttributes(), oldFD.getAttributes()));
-            
-            if( differences.size() <= 0) {
-            	returnMap.put(oldFD.getName().toUpperCase(), Change.SAME.name());
+
+            if (differences.size() <= 0) {
+                returnMap.put(oldFD.getName().toUpperCase(), Change.SAME.name());
             }
         }
 
         if (newFD == null && oldFD != null) {
-        	if( !oldFD.isSelected() ) {
-        		return returnMap;
-        	}
-        	returnMap.put(oldFD.getName().toUpperCase(), Change.MISSING.name());
+            if (!oldFD.isSelected()) {
+                return returnMap;
+            }
+            returnMap.put(oldFD.getName().toUpperCase(), Change.MISSING.name());
             newFD = new FileDetails();
         }
         if (newFD != null && oldFD == null) {
-        	if( !newFD.isSelected() ) {
-        		return returnMap;
-        	}
-        	returnMap.put(newFD.getName().toUpperCase(), Change.NEW.name());
+            if (!newFD.isSelected()) {
+                return returnMap;
+            }
+            returnMap.put(newFD.getName().toUpperCase(), Change.NEW.name());
             oldFD = new FileDetails();
         }
 
@@ -416,8 +423,6 @@ public class CompareUtility {
 
         return differences;
     }
-
-
 
     /**
      * Check if given field is a collection type of not

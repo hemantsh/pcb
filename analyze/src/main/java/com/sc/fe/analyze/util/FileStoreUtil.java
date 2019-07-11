@@ -84,6 +84,7 @@ public class FileStoreUtil {
             zipFile.extractAll(folder.toString());
 
         } catch (ZipException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
     }
