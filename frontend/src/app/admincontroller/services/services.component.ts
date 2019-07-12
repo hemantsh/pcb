@@ -95,7 +95,7 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
    */
   onSave() {
     if (this.deletedServiceArray.length !== 0) {
-      let confirm = window.confirm("Are you sure you want to delete services ?");
+      let confirm = window.confirm(MESSAGE_CONST.SERVICE_DELETE_AUTH_CHECK);
       if (confirm === true) {
         this.fileService.deleteServices(this.deletedServiceArray).subscribe(
           (response: Response) => {

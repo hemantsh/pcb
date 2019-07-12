@@ -64,7 +64,7 @@ export class FiletypeextensionsComponent implements OnInit, CanFiletypeExtension
       this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];
       this.changesSaved = true;
     } else {
-      let cnfrm = window.confirm("Are you sure you want to delete ?")
+      let cnfrm = window.confirm(MESSAGE_CONST.FILE_DELETE_AUTH_CHECK)
       let index = this.fileTypeExtensions.indexOf(data);
       if (cnfrm == true) {
         this.deleteObj = this.fileTypeExtensions.splice(index, 1)[0];

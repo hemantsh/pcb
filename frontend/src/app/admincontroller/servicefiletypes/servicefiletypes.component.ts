@@ -120,7 +120,7 @@ export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesCom
     );
 
     if (this.deleteFileTypeArr.length !== 0) {
-      let cnfrm = confirm(MESSAGE_CONST.DELETE_AUTH_CHECK);
+      let cnfrm = confirm(MESSAGE_CONST.EXTN_DELETE_AUTH_CHECK);
       if (cnfrm == true) {
         this.fileService.deleteServiceFiletypes(this.deleteFileTypeArr).subscribe(
           (response: Response) => {

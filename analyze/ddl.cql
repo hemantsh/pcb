@@ -102,3 +102,4 @@ CREATE TABLE service_filetypes (
         file_type text,
         PRIMARY KEY ( service_id ,file_type)
 );
+CREATE INDEX on service_filetypes (file_type);

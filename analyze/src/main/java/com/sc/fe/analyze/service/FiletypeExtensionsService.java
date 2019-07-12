@@ -85,7 +85,9 @@ public class FiletypeExtensionsService {
         filetypeExtensionsRepo.delete(filetypeObj);
 
         ServiceFiletypes serviceFiletype = serviceFiletypeRepo.findByKeyFiletype(file_type);
-        serviceFiletypeRepo.delete(serviceFiletype);
+        if (serviceFiletype != null) {
+            serviceFiletypeRepo.delete(serviceFiletype);
+        }
 
         cacheService.evictAllCacheValues("ExtnFileMap");
     }
