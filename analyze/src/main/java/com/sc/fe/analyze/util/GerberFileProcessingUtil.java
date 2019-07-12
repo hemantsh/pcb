@@ -34,7 +34,6 @@ import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.services.rekognition.model.TextDetection;
 import com.sc.fe.analyze.FileStorageProperties;
-import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.to.AdvancedReport;
 import com.sc.fe.analyze.to.FileDetails;
 

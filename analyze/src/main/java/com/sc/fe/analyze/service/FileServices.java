@@ -1,5 +1,7 @@
 package com.sc.fe.analyze.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +9,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.entity.Services;
+import com.sc.fe.analyze.data.repo.ServiceFiletypesRepo;
 import com.sc.fe.analyze.data.repo.ServicesRepo;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  *
@@ -22,6 +24,9 @@ public class FileServices {
 
     @Autowired
     private ServicesRepo serviceRepo;
+    
+    @Autowired
+    private ServiceFiletypesRepo serviceFileTypeRepo;
 
     @Autowired
     private CachingService cacheService;
@@ -65,9 +70,20 @@ public class FileServices {
      * @param services the services to remove from a database
      */
     public void deleteAll(List<Services> services) {
-        serviceRepo.deleteAll(services);
-        cacheService.evictAllCacheValues("Services");
-        cacheService.evictAllCacheValues("Service");
+        
+        if(services != null && services.size() > 0) {
+        	serviceRepo.deleteAll(services);
+        	
+        	services.stream().forEach( service -> {
+        		List<ServiceFiletypes> fTypes = serviceFileTypeRepo.findByKeyServiceid(service.getId());
+                serviceFileTypeRepo.deleteAll(fTypes);
+        	});
+            
+            cacheService.evictAllCacheValues("Services");
+            cacheService.evictAllCacheValues("Service");
+            
+        }
+        
     }
 
     /**

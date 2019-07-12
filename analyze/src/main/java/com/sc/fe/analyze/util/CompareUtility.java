@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.sc.fe.analyze.to.AttributeChange;
@@ -20,8 +22,6 @@ import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.TurnTimeQuantity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class that has methods to compare various objects that are used in
@@ -51,6 +51,8 @@ public class CompareUtility {
         set.add("context");
         set.add("selected");
         set.add("fileDate");
+        set.add("fullName");
+        set.add("path");
         return set;
     }
 
