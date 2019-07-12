@@ -14,4 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface ServiceFiletypesRepo extends CassandraRepository<ServiceFiletypes, ServiceFiletypesPK> {
 
     List<ServiceFiletypes> findByKeyServiceid(final int serviceid);
+
+    ServiceFiletypes findByKeyFiletype(final String filetype);
 }

@@ -18,7 +18,7 @@ public class FiletypeExtensionsPK implements Serializable {
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "id")
     private UUID id;
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "file_type")
-    private String file_type;
+    private String filetype;
 
     public UUID getId() {
         return id;
@@ -29,11 +29,11 @@ public class FiletypeExtensionsPK implements Serializable {
     }
 
     public String getFiletype() {
-        return file_type;
+        return filetype;
     }
 
     public void setFiletype(String filetype) {
-        this.file_type = filetype.toLowerCase();
+        this.filetype = filetype.toLowerCase();
     }
 
 }
