@@ -15,13 +15,13 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
   services = [];
   deletedServiceArray = [];
   changesSaved = true;
-  
+  showAlert = false;
   constructor(private fileService: FileService, private zone: NgZone) { }
 
   ngOnInit() {
     this.retriveExtn();
   }
-  
+
   /**
    * To reterive list of services
    */
@@ -101,6 +101,10 @@ export class ServicesComponent implements OnInit, CanServiceComponentDeactivate 
           (response: Response) => {
             console.log(response);
             this.changesSaved = true;
+            this.showAlert = true;
+            setTimeout(() => {
+              this.showAlert = false;
+            }, 4000);
           },
           (error) => console.log(error)
         );

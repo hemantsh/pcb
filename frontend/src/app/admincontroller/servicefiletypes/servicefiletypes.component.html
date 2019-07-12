@@ -1,7 +1,6 @@
-<!-- Status Code -->
-<div class="alert alert-success alert-dismissible fade in" [ngClass]="[successMsgDiv]" id="success">
-  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  Data has been saved <strong>Successfully!</strong>
+<!-- Alert Status -->
+<div *ngIf="showAlert" class="alert alert-success fade in" role="alert">
+  Data have been saved <strong>Sucessfully!</strong>
 </div>
 <!-- Table Code -->
 <div class="static">
