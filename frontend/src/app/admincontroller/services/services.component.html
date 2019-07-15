@@ -1,7 +1,10 @@
 <div>
   <button type="button" class="btn btn-default btn-md" (click)="addService()"><i
       class="glyphicon glyphicon-plus-sign">&nbsp;</i>Add Services</button>
-
+  <!-- Alert Status -->
+  <div *ngIf="showAlert" class="alert alert-success fade in" role="alert">
+    Data have been saved <strong>Sucessfully!</strong>
+  </div>
   <table class="table">
     <thead>
       <tr>

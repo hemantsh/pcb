@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FileService } from 'src/app/servers.service';
 import { Response } from '@angular/http';
 import { CanServiceFileTypesComponentDeactivate } from './candeactivate.servicefiletypes.service';
@@ -20,7 +20,7 @@ export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesCom
   filetypesList = [];
   filetypes = [];
   changesSaved = true;
-  successMsgDiv = 'hide';
+  showAlert=false;
   help = {
     title: 'Learn How to Map Filetypes to Services',
     instructions: [
@@ -113,14 +113,17 @@ export class ServicefiletypesComponent implements OnInit, CanServiceFileTypesCom
       (response: Response) => {
         if (response.status == 200) {
           this.changesSaved = true;
-          this.successMsgDiv = 'show';
+          this.showAlert=true;
+          setTimeout(()=>{
+            this.showAlert=false;
+          },4000);
         } console.log(response);
       },
       (error) => console.log(error)
     );
 
     if (this.deleteFileTypeArr.length !== 0) {
-      let cnfrm = confirm(MESSAGE_CONST.DELETE_AUTH_CHECK);
+      let cnfrm = confirm(MESSAGE_CONST.EXTN_DELETE_AUTH_CHECK);
       if (cnfrm == true) {
         this.fileService.deleteServiceFiletypes(this.deleteFileTypeArr).subscribe(
           (response: Response) => {

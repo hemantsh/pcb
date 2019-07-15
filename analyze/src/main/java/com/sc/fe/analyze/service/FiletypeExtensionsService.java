@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.amazonaws.util.StringUtils;
 import com.sc.fe.analyze.data.entity.FiletypeExtensions;
+import com.sc.fe.analyze.data.entity.ServiceFiletypes;
 import com.sc.fe.analyze.data.repo.FiletypeExtensionsRepo;
+import com.sc.fe.analyze.data.repo.ServiceFiletypesRepo;
 import com.sc.fe.analyze.to.FileTypeExtensions;
 import com.sc.fe.analyze.util.ReportUtility;
 
@@ -27,6 +29,8 @@ public class FiletypeExtensionsService {
 
     @Autowired
     private FiletypeExtensionsRepo filetypeExtensionsRepo;
+    @Autowired
+    private ServiceFiletypesRepo serviceFiletypeRepo;
     @Autowired
     private CachingService cacheService;
 
@@ -79,6 +83,12 @@ public class FiletypeExtensionsService {
         filetypeObj.getKey().setId(UUID.fromString(id));
         filetypeObj.getKey().setFiletype(file_type);
         filetypeExtensionsRepo.delete(filetypeObj);
+
+        ServiceFiletypes serviceFiletype = serviceFiletypeRepo.findByKeyFiletype(file_type);
+        if (serviceFiletype != null) {
+            serviceFiletypeRepo.delete(serviceFiletype);
+        }
+
         cacheService.evictAllCacheValues("ExtnFileMap");
     }
 
@@ -88,7 +98,10 @@ public class FiletypeExtensionsService {
      * @param filetypeExtensions
      */
     public void deleteFiletype(FileTypeExtensions filetypeExtensions) {
-        filetypeExtensionsRepo.delete(ReportUtility.convertToDBObject(filetypeExtensions));
+
+        FiletypeExtensions filetypeExtn = ReportUtility.convertToDBObject(filetypeExtensions);
+        filetypeExtensionsRepo.delete(filetypeExtn);
+
         cacheService.evictAllCacheValues("ExtnFileMap");
     }
 
@@ -101,23 +114,24 @@ public class FiletypeExtensionsService {
     public FiletypeExtensions getFileExtenions(String extension) {
         return filetypeExtensionsRepo.findByExtensions(extension).get(0);
     }
-    
+
     /**
      * Return a map of extension to fileType mapping.
+     *
      * @return Map Key=extension, value = set of file types
      */
-    @Cacheable( value="ExtnFileMap")
+    @Cacheable(value = "ExtnFileMap")
     public Map<String, Set<String>> extensionToFileMap() {
-    	
-    	Map<String, Set<String>> extensionTofiletypeMap = new HashMap<String, Set<String>>();
-    	List<FileTypeExtensions> filetypeExtensions = findAll();
-    	
+
+        Map<String, Set<String>> extensionTofiletypeMap = new HashMap<String, Set<String>>();
+        List<FileTypeExtensions> filetypeExtensions = findAll();
+
         if (filetypeExtensions == null) {
             return extensionTofiletypeMap;
         }
         filetypeExtensions.stream().forEach(row -> {
-            if ( StringUtils.hasValue( row.getExtensions() ) ) {
-            	String[] extns = row.getExtensions().split(",");
+            if (StringUtils.hasValue(row.getExtensions())) {
+                String[] extns = row.getExtensions().split(",");
                 for (String extn : extns) {
                     Set<String> filetypeSet = extensionTofiletypeMap.get(extn);
                     if (filetypeSet == null) {
@@ -130,6 +144,5 @@ public class FiletypeExtensionsService {
         });
         return extensionTofiletypeMap;
     }
-    
 
 }
