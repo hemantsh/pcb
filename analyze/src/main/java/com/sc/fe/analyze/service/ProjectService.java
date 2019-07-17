@@ -82,7 +82,25 @@ public class ProjectService {
         diffReportJsonRepo.save(diffReport);
 
     }
+    
+     /**
+     * Deletes data from the Project Table into the database.
+     *
+     * @param projectId takes the value of projectId
+     * @param version takes the value of version
+     */
+    public void deleteByIdandVersion(String projectId,String version) {
+        ProjectDetails projectDetails=getProject(projectId,version);
+        projectDetails.getFileDetails().stream().forEach(fd -> {
+            fd.setVersion(UUID.fromString(version));
+            ProjectFiles pFiles = ReportUtility.convertToDBObject(fd);
+            pFiles.setProjectId(projectId);
+            projectFilesRepo.delete(pFiles);
+        });        
+        delete(ReportUtility.convertToDBObject(projectDetails));
+    }
 
+    
     /**
      * Deletes data from the Project Table into the database.
      *
