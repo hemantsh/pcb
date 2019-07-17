@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.service.ProjectService;
+import com.sc.fe.analyze.to.Differences;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 
@@ -31,27 +32,25 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping(path = "/fm")
 @CrossOrigin(origins = "*")
-@Api(value = "ProjectManagementController", produces = MediaType.APPLICATION_JSON_VALUE  )
+@Api(value = "ProjectManagementController", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProjectManagementController {
 
     @Autowired
-    ProjectService projectService;    
+    ProjectService projectService;
     @Autowired
     private FileExtractUploadService fileUploadService;
-    
-    @GetMapping(path="/project/rnumber/{rnumber}")
-    public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String rNumber) {
-    	    	
+
+    @GetMapping(path = "/project/rnumber/{rnumber}")
+    public ProjectDetails getProjectWithRNumber(@PathVariable("rnumber") String rNumber) {
+
         List<ProjectDetails> projDtl = projectService.findByrNumber(rNumber);
         ProjectDetails latestRecord = fileUploadService.getLatestRecord(projDtl);
-    	//Only project information is required. Nullify rest info
-    	latestRecord.setErrors(null);
-    	return latestRecord;
+        //Only project information is required. Nullify rest info
+        latestRecord.setErrors(null);
+        return latestRecord;
     }
 
-    
     public ProjectDetails validate(@RequestBody ProjectDetails projectDetails) {
-       
         if (!StringUtils.isEmpty(projectDetails.getrNumber())) {
             fileUploadService.validateFiles(projectDetails);
         }
@@ -66,75 +65,76 @@ public class ProjectManagementController {
         temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
         temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
-        
-        if( StringUtils.isEmpty(projectDetails.getSetId()) ){
+
+        if (StringUtils.isEmpty(projectDetails.getSetId())) {
             temp.setErrors(projectDetails.getErrors());
-            temp.setDifferences(projectDetails.getDifferences());   
-            temp.setFileChanges(projectDetails.getFileChanges());
-        }else{
+            //Set the differences with projectChanges and fileChanges when setId is null            
+            Differences diff = fileUploadService.setDifferencesValidation(projectDetails);
+            if (diff.getFileChanges().size() > 0 || !(diff.getProjectChanges() == null)) {
+                temp.setDifferences(diff);
+            }
+        } else {
             temp.setVersion(projectDetails.getVersion());
         }
         return temp;
     }
-    
-    private boolean hasRequiredFields( ProjectDetails projectDetails ) {
-    	boolean retVal = true;
-    	if (StringUtils.isEmpty(projectDetails.getrNumber())) {
-    		retVal = false;
-    	}
-    	return retVal;
+
+    private boolean hasRequiredFields(ProjectDetails projectDetails) {
+        boolean retVal = true;
+        if (StringUtils.isEmpty(projectDetails.getrNumber())) {
+            retVal = false;
+        }
+        return retVal;
     }
 
     @PostMapping(path = "/project")
     @ResponseBody
-    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {   
-    	if( ! hasRequiredFields(projectDetails)) {
-    		ProjectDetails proj = new ProjectDetails();
-    		proj.getErrors().put("V0000", "rNumber is required");
-    		return proj;
-    	}
-    	//Check for both newProject and attach/Replace values
-        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
-        	ProjectDetails proj = new ProjectDetails();
-        	proj.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
+    public ProjectDetails validateAndSave(@RequestBody ProjectDetails projectDetails) {
+        if (!hasRequiredFields(projectDetails)) {
+            ProjectDetails proj = new ProjectDetails();
+            proj.getErrors().put("V0000", "rNumber is required");
             return proj;
         }
-    	ProjectDetails retDetails= null;
-    	
-    	ProjectDetails temp = fileUploadService.getProjectByRNumber(projectDetails.getrNumber());
-    	
-    	if( temp != null) {
-    		projectDetails.setProjectId(temp.getProjectId());
-    		projectDetails.setVersion( temp.getVersion());
-    	}
-    	
-    	boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
-    	if(validate) {
-    		if(projectDetails.isAttachReplace()) {
-    			temp = projectService.getProject( projectDetails.getProjectId(), projectDetails.getVersion());
-    			Set<String> fileNames = projectDetails.getFileNames();
-    			for (String name : fileNames) {
-					temp.replaceFileDetail( projectDetails.getFileDetails(name) );
-				}
-    			projectDetails.setFileDetails(temp.getFileDetails());
-    		}
-    		fileUploadService.processGerber(projectDetails.getFileDetails());
-    		//
-    		String tVer = new String(projectDetails.getVersion() == null ? "" : projectDetails.getVersion() );
-    		projectDetails.setVersion("");
-    		fileUploadService.compareProject(projectDetails);    
-    		projectDetails.setVersion(tVer);
-    		retDetails = validate(projectDetails);
-    	}else {
-    		fileUploadService.save(projectDetails);
-    		retDetails = projectDetails;
-    		retDetails.setFileDetails(new ArrayList<FileDetails>(0));
-    	}
-    	
+        //Check for both newProject and attach/Replace values
+        if ((projectDetails.isNewProject() && projectDetails.isAttachReplace())) {
+            ProjectDetails proj = new ProjectDetails();
+            proj.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
+            return proj;
+        }
+        ProjectDetails retDetails = null;
+
+        ProjectDetails temp = fileUploadService.getProjectByRNumber(projectDetails.getrNumber());
+
+        if (temp != null) {
+            projectDetails.setProjectId(temp.getProjectId());
+            projectDetails.setVersion(temp.getVersion());
+        }
+
+        boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
+        if (validate) {
+            if (projectDetails.isAttachReplace()) {
+                temp = projectService.getProject(projectDetails.getProjectId(), projectDetails.getVersion());
+                Set<String> fileNames = projectDetails.getFileNames();
+                for (String name : fileNames) {
+                    temp.replaceFileDetail(projectDetails.getFileDetails(name));
+                }
+                projectDetails.setFileDetails(temp.getFileDetails());
+            }
+            fileUploadService.processGerber(projectDetails.getFileDetails());
+            //
+            String tVer = new String(projectDetails.getVersion() == null ? "" : projectDetails.getVersion());
+            projectDetails.setVersion("");
+            fileUploadService.compareProject(projectDetails);
+            projectDetails.setVersion(tVer);
+            retDetails = validate(projectDetails);
+        } else {
+            fileUploadService.save(projectDetails);
+            retDetails = projectDetails;
+            retDetails.setFileDetails(new ArrayList<FileDetails>(0));
+        }
+
         return retDetails;
     }
-
-   
 
     @GetMapping("/projects")
     public List<ProjectDetails> getAllProjects() {
@@ -160,10 +160,10 @@ public class ProjectManagementController {
     public String getDifferences(@PathVariable("projectId") String projectId) {
         return projectService.getDifferencesJson(projectId);
     }
-    
+
     @DeleteMapping("project/{projectId}/version/{version}")
-    public void deleteById(@PathVariable("projectId") String projectId,@PathVariable("version") String version){
+    public void deleteById(@PathVariable("projectId") String projectId, @PathVariable("version") String version) {
         projectService.deleteByIdandVersion(projectId, version);
     }
-    
+
 }
