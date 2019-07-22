@@ -5,14 +5,16 @@
  */
 package com.sc.fe.analyze.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /**
  *
  * @author pc
  */
-public class Differences {
+public class Differences {    
     private List<FileChange> fileChanges;
+    @JsonIgnore
     private List<AttributeChange> projectChanges;
 
     public List<FileChange> getFileChanges() {

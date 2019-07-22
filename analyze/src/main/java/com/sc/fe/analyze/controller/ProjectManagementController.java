@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
+import com.sc.fe.analyze.service.ProcessFileService;
 import com.sc.fe.analyze.service.ProjectService;
 import com.sc.fe.analyze.to.Differences;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 
 import io.swagger.annotations.Api;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -161,9 +164,15 @@ public class ProjectManagementController {
         return projectService.getDifferencesJson(projectId);
     }
 
-    @DeleteMapping("project/{projectId}/version/{version}")
+    @DeleteMapping("/project/{projectId}/version/{version}")
     public void deleteById(@PathVariable("projectId") String projectId, @PathVariable("version") String version) {
         projectService.deleteByIdandVersion(projectId, version);
     }
 
+    @GetMapping("/rNumber/{rNumber}/setId/{setId}/filename/{filename}")
+    public FileDetails getFile(@PathVariable("rNumber") String rNumber, @PathVariable("setId") String setId, @PathVariable("filename") String filename) {
+        Path folder = Paths.get("E:\\pcb\\sample\\8000-4890\\R10\\set1");
+        FileDetails result = ProcessFileService.fileValidation(folder, rNumber, setId, filename);
+        return result;
+    }
 }
