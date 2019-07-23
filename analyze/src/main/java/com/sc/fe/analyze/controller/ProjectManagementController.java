@@ -171,8 +171,9 @@ public class ProjectManagementController {
 
     @GetMapping("/rNumber/{rNumber}/setId/{setId}/filename/{filename}")
     public FileDetails getFile(@PathVariable("rNumber") String rNumber, @PathVariable("setId") String setId, @PathVariable("filename") String filename) {
-        Path folder = Paths.get("E:\\pcb\\sample\\8000-4890\\R10\\set1");
-        FileDetails result = ProcessFileService.fileValidation(folder, rNumber, setId, filename);
+        String path="E:\\pcb\\sample\\8000-4890\\"+rNumber+"\\"+setId;
+        Path folder = Paths.get(path);        
+        FileDetails result = ProcessFileService.fileValidation(folder, filename);
         return result;
     }
 }
