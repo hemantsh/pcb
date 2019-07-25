@@ -442,7 +442,7 @@ public class GerberFileProcessingUtil {
             // End of old key and start of new attribute
             String key = "";
             String value = "";
-            String[] splitValues = null;
+            String[] splitValues = new String[]{"",""};
 
             if (line.contains("=")) {
                 splitValues = line.split("=");

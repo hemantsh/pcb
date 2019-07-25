@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -56,7 +55,7 @@ public class ProjectDetails implements Serializable {
     private String customerName;
     private String emailAddress;
     private Map<String, String> errors; //Errors in (key:value) form
-    private Set<String> differences;
+    private Differences differences;
     List<FileChange> fileChanges;
 
     /**
@@ -166,16 +165,16 @@ public class ProjectDetails implements Serializable {
         }
         fileDetails.add(fileDetail);
     }
-    
+
     public void replaceFileDetail(FileDetails fileDetail) {
-    	if( fileDetail == null || StringUtils.isEmpty( fileDetail.getName()) ) {
-    		return;
-    	}
-    	FileDetails fd = getFileDetails( fileDetail.getName() );
-    	if( fd != null) {
-    		this.fileDetails.remove(fileDetail);	
-    	}
-    	this.fileDetails.add( fileDetail );
+        if (fileDetail == null || StringUtils.isEmpty(fileDetail.getName())) {
+            return;
+        }
+        FileDetails fd = getFileDetails(fileDetail.getName());
+        if (fd != null) {
+            this.fileDetails.remove(fileDetail);
+        }
+        this.fileDetails.add(fileDetail);
     }
 
     @JsonIgnore
@@ -187,28 +186,28 @@ public class ProjectDetails implements Serializable {
                 .map(FileDetails::getName)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
-    
+
     @JsonIgnore
     public Set<String> getAllSelectedFileNames() {
         if (fileDetails == null) {
             return null;
         }
         return fileDetails.stream()
-        		.filter( fd -> fd.isSelected())
+                .filter(fd -> fd.isSelected())
                 .map(FileDetails::getName)
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
     public FileDetails getFileDetails(String fileName) {
         FileDetails retVal = null;
-        if( fileDetails != null ) {
-	        List<FileDetails> shortList = fileDetails.stream()
-	                .filter(fd -> fileName.equalsIgnoreCase(fd.getName()))
-	                .collect(Collectors.toList());
-	
-	        if (shortList != null && shortList.size() > 0) {
-	            retVal = shortList.get(0);
-	        }
+        if (fileDetails != null) {
+            List<FileDetails> shortList = fileDetails.stream()
+                    .filter(fd -> fileName.equalsIgnoreCase(fd.getName()))
+                    .collect(Collectors.toList());
+
+            if (shortList != null && shortList.size() > 0) {
+                retVal = shortList.get(0);
+            }
         }
         return retVal;
     }
@@ -344,12 +343,12 @@ public class ProjectDetails implements Serializable {
         this.newProject = newProject;
     }
 
-    public Set<String> getDifferences() {
+    public Differences getDifferences() {
         return differences;
     }
 
-    public void setDifferences(Set<String> compareResults) {
-        this.differences = compareResults;
+    public void setDifferences(Differences differences) {
+        this.differences = differences;
     }
 
     public boolean isNofly() {
@@ -368,17 +367,18 @@ public class ProjectDetails implements Serializable {
         this.setId = setId;
     }
 
-	/**
-	 * @return the fileChanges
-	 */
-	public List<FileChange> getFileChanges() {
-		return fileChanges;
-	}
+    /**
+     * @return the fileChanges
+     */
+    public List<FileChange> getFileChanges() {
+        return fileChanges;
+    }
 
-	/**
-	 * @param fileChanges the fileChanges to set
-	 */
-	public void setFileChanges(List<FileChange> fileChanges) {
-		this.fileChanges = fileChanges;
-	}
+    /**
+     * @param fileChanges the fileChanges to set
+     */
+    public void setFileChanges(List<FileChange> fileChanges) {
+        this.fileChanges = fileChanges;
+    }
+
 }
