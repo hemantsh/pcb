@@ -31,18 +31,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Test {
-
+public class Test {    
     public static void detectDocumentsGcs(String gcsSourcePath, String gcsDestinationPath) throws Exception {
         try {
-            //ImageAnnotatorClient client = ImageAnnotatorClient.create();            
+            ImageAnnotatorClient client = ImageAnnotatorClient.create();
             List<AsyncAnnotateFileRequest> requests = new ArrayList<>();
 
             // Set the GCS source path for the remote file.
             GcsSource gcsSource = GcsSource.newBuilder()
                     .setUri(gcsSourcePath)
                     .build();
-            
+
             // Create the configuration with the specified MIME (Multipurpose Internet Mail Extensions)
             // types
             InputConfig inputConfig = InputConfig.newBuilder()
@@ -72,25 +71,26 @@ public class Test {
                     .setOutputConfig(outputConfig)
                     .build();
 
-            requests.add(request);            
-            
+            requests.add(request);
+            System.out.println("Request- "+requests);
+
             // Perform the OCR request
-//            OperationFuture<AsyncBatchAnnotateFilesResponse, OperationMetadata> response
-//                     =client.asyncBatchAnnotateFilesAsync(requests);                     
+            OperationFuture<AsyncBatchAnnotateFilesResponse, OperationMetadata> response
+                    = client.asyncBatchAnnotateFilesAsync(requests);
             System.out.println("Waiting for the operation to finish.");
 
             // Wait for the request to finish. (The result is not used, since the API saves the result to
             // the specified location on GCS.)            
-//             List<AsyncAnnotateFileResponse> result = response.get(180, TimeUnit.SECONDS)
-//                    .getResponsesList();
+            List<AsyncAnnotateFileResponse> result = response.get(180, TimeUnit.SECONDS)
+                    .getResponsesList();
             // Once the request has completed and the output has been
             // written to GCS, we can list all the output files.
             Storage storage = StorageOptions.getDefaultInstance().getService();
 
             // Get the destination location from the gcsDestinationPath
             Pattern pattern = Pattern.compile("gs://([^/]+)/(.+)");
-            Matcher matcher = pattern.matcher(gcsDestinationPath);            
-            
+            Matcher matcher = pattern.matcher(gcsDestinationPath);
+
             if (matcher.find()) {
                 String bucketName = matcher.group(1);
                 String prefix = matcher.group(2);
@@ -120,7 +120,7 @@ public class Test {
                 String jsonContents = new String(firstOutputFile.getContent());
                 Builder builder = AnnotateFileResponse.newBuilder();
                 JsonFormat.parser().merge(jsonContents, builder);
-
+                    
                 // Build the AnnotateFileResponse object
                 AnnotateFileResponse annotateFileResponse = builder.build();
 
@@ -138,7 +138,7 @@ public class Test {
         } catch (Exception e) {
             System.out.println("Error OCCUR!!");
             e.printStackTrace();
-        }        
+        }
     }
 
     static void authExplicit(String jsonPath) throws IOException {
@@ -146,9 +146,8 @@ public class Test {
         // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-
-        System.out.println("Buckets:");
+        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();        
+        System.out.println("Buckets:");                
         Page<Bucket> buckets = storage.list();
         for (Bucket bucket : buckets.iterateAll()) {
             System.out.println(bucket.toString());
@@ -159,9 +158,9 @@ public class Test {
 
         String jsonPath = "C:\\Users\\pc\\Documents\\OCRTest-fed0ecbc3c4c.json";
         authExplicit(jsonPath);
-        String sourcePath = "https://console.cloud.google.com/storage/browser/gerberfiles/FileManagementFlow.pdf";
-        //String sourcePath="https://www.googleapis.com/storage/v1/b/gerberfiles/o/FileManagementFlow.pdf";        
-        String destinationPath = "https://console.cloud.google.com/storage/browser/gerberfiles";
+        String sourcePath = "gs://gerberfiles/API Documentation - File Exchange - Confluence.pdf";
+        String destinationPath = "gs://gerberfiles/";
         detectDocumentsGcs(sourcePath, destinationPath);
+        
     }
 }
