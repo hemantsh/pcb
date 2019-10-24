@@ -88,7 +88,6 @@ public class FileUtil {
 
         } catch (ZipException e) {
             logger.error("Failed to unzip the file. " + e.getMessage(), e);
-            //e.printStackTrace();
         }
     }
 

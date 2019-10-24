@@ -1,9 +1,12 @@
 package com.sc.fe.analyze.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.annotation.MultipartConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,13 +17,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sc.fe.analyze.service.FileExtractUploadService;
 import com.sc.fe.analyze.service.ProjectService;
+import com.sc.fe.analyze.to.AttachementDetails;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
+import com.sc.fe.analyze.util.ErrorCodes;
 
 import io.swagger.annotations.Api;
 
@@ -38,6 +45,21 @@ public class ProjectManagementController {
     ProjectService projectService;    
     @Autowired
     private FileExtractUploadService fileUploadService;
+    
+    
+    @PostMapping(path="/fileUpload")
+    public AttachementDetails processAttachement( @RequestParam("file") MultipartFile zipFile) {
+    	AttachementDetails attDetail = new AttachementDetails();
+    	
+    	try {
+    		attDetail = fileUploadService.saveAndProcessAttachement(zipFile, attDetail);
+		} catch (Exception e) {
+			e.printStackTrace();
+			attDetail.addErrorMessage("Unable to upload and save file.");
+		}
+    	
+    	return attDetail;
+    }
     
     @GetMapping(path="/project/rnumber/{rnumber}")
     public ProjectDetails getProjectWithRNumber( @PathVariable("rnumber") String rNumber) {
@@ -65,10 +87,10 @@ public class ProjectManagementController {
         temp.setNewProject(projectDetails.isNewProject());
         temp.setrNumber(projectDetails.getrNumber());
         temp.setAssemblyTurnTimeQuantity(projectDetails.getAssemblyTurnTimeQuantity());
-        temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity());
+        temp.setFabricationTurnTimeQuantity(projectDetails.getFabricationTurnTimeQuantity()); 
         
         if( StringUtils.isEmpty(projectDetails.getSetId()) ){
-            temp.setErrors(projectDetails.getErrors());
+        	temp.setErrors(projectDetails.getErrors());
             temp.setDifferences(projectDetails.getDifferences());   
             temp.setFileChanges(projectDetails.getFileChanges());
         }else{
@@ -108,6 +130,7 @@ public class ProjectManagementController {
     		projectDetails.setVersion( temp.getVersion());
     	}
     	
+    	
     	boolean validate = StringUtils.isEmpty(projectDetails.getSetId());
     	if(validate) {
     		if(projectDetails.isAttachReplace()) {
@@ -118,7 +141,9 @@ public class ProjectManagementController {
 				}
     			projectDetails.setFileDetails(temp.getFileDetails());
     		}
-    		fileUploadService.processGerber(projectDetails.getFileDetails());
+    		//Note: below call is disabled as fileTypes are identified while processing zip file
+    		//in fileUpload API
+    		//fileUploadService.processGerber(projectDetails.getFileDetails());
     		//
     		String tVer = new String(projectDetails.getVersion() == null ? "" : projectDetails.getVersion() );
     		projectDetails.setVersion("");
@@ -130,6 +155,7 @@ public class ProjectManagementController {
     		retDetails = projectDetails;
     		retDetails.setFileDetails(new ArrayList<FileDetails>(0));
     	}
+    	
     	
         return retDetails;
     }

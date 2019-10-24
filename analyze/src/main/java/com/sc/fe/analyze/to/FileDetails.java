@@ -274,7 +274,7 @@ public class FileDetails implements Serializable {
     		return;
     	}
     	String typ = this.type;
-        if (StringUtils.isEmpty(typ)) {
+        if (StringUtils.isEmpty(typ) || "File".equalsIgnoreCase(typ) || "document".equalsIgnoreCase(typ) || "".equalsIgnoreCase(typ.trim()) ) {
             typ = "";
         }else {
         	if( typ.contains( type)) {

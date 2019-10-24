@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -83,6 +84,89 @@ public class GerberFileProcessingUtil {
         });
         return fileDetails;
     }
+    
+    public static String findGerberType( String filePath ) {
+    	BufferedReader reader = null;
+    	try {
+			
+    		int i=0;
+			reader = new BufferedReader(new FileReader(filePath));
+			String line = reader.readLine();
+			while (line != null && i < 50) {
+			
+				String exp = "%TA,%TD,%TF,%TO";		
+				Set<String> expressions= new HashSet<String>(Arrays.asList(exp.split(",")));
+				
+				for (Iterator<String> iterator = expressions.iterator(); iterator.hasNext();) {
+					if( line.toUpperCase().contains(iterator.next().toString().toUpperCase() )) {
+						reader.close();
+						return "gerber x2";
+					}
+				}
+				String exp2 = "%FSLA,%MOIN,%ADD,%LPD,G75,G54,D02,D03,G36,G04";		
+				Set<String> expressions2 = new HashSet<String>(Arrays.asList(exp2.split(",")));
+				
+				for (Iterator<String> iterator = expressions2.iterator(); iterator.hasNext();) {
+					if( line.toUpperCase().contains(iterator.next().toString().toUpperCase() )) {
+						reader.close();
+						return "gerber";
+					}
+				}
+				line = reader.readLine();
+				i++;
+			}
+			
+		} catch (Exception e) {
+            logger.error(e.getMessage());
+        }finally {
+        	try {
+        		if(reader != null) {
+        			reader.close();
+        		}
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
+		}
+    	return "File";
+    }
+    
+    public static String parseDrill( String filePath ) {
+    	BufferedReader reader = null;
+    	try {
+			
+    		int i=0;
+			reader = new BufferedReader(new FileReader(filePath));
+			String line = reader.readLine();
+			while (line != null && i < 20) {
+			
+				String exp = "M48,M72,G90,INCH,FMAT,G90";		
+				Set<String> expressions= new HashSet<String>(Arrays.asList(exp.split(",")));
+				
+				for (Iterator<String> iterator = expressions.iterator(); iterator.hasNext();) {
+					if( line.toUpperCase().contains(iterator.next().toString().toUpperCase() )) {
+						reader.close();
+						return AttachementProcessingUtil.FILE_TYPE_DRILL;
+					}
+				}
+				
+				line = reader.readLine();
+				i++;
+			}
+			
+		} catch (Exception e) {
+            logger.error(e.getMessage());
+        }finally {
+        	try {
+        		if(reader != null) {
+        			reader.close();
+        		}
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+			}
+		}
+    	return "File";
+    }
+    
 
     /**
      * This method process the file and store the file information in
@@ -164,31 +248,35 @@ public class GerberFileProcessingUtil {
         Set<String> ignoreList = new HashSet<String>();
         ignoreList.add("pdf");
         
+        if(fileDetails == null ) {
+        	return filePurposeToNameMapping;
+        }
         fileDetails.forEach(fileDetail -> {
 
             if (fileDetail.getType() == null) {
                 String fileName = fileDetail.getName();
-                String[] nameParts = fileName.split("\\.");
-                String extn = nameParts[nameParts.length - 1].toLowerCase();
-                
-                Set<String> fileTypes = extensionToFileTypeMapping.get(extn);// All the types by the extension
-
-                if (fileTypes != null && ! ignoreList.contains( extn)) {
-                    fileTypes.stream().forEach(fileType -> {
-
-                        Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
-                        if (currentMapping == null) {
-                            currentMapping = new HashSet<String>();
-                        }
-                        currentMapping.add(fileName);
-                        filePurposeToNameMapping.put(fileType, currentMapping);
-                        //TODO: One extension can map to many fileTypes so we are adding 
-                        //all types as comma separated. This will be useful later
-                        
-                        fileDetail.addType(fileType);
-                    });
+                if( ! StringUtils.isEmpty(fileName)) {
+	                String[] nameParts = fileName.split("\\.");
+	                String extn = nameParts[nameParts.length - 1].toLowerCase();
+	                
+	                Set<String> fileTypes = extensionToFileTypeMapping.get(extn);// All the types by the extension
+	
+	                if (fileTypes != null && ! ignoreList.contains( extn)) {
+	                    fileTypes.stream().forEach(fileType -> {
+	
+	                        Set<String> currentMapping = filePurposeToNameMapping.get(fileType);
+	                        if (currentMapping == null) {
+	                            currentMapping = new HashSet<String>();
+	                        }
+	                        currentMapping.add(fileName);
+	                        filePurposeToNameMapping.put(fileType, currentMapping);
+	                        //TODO: One extension can map to many fileTypes so we are adding 
+	                        //all types as comma separated. This will be useful later
+	                        
+	                        fileDetail.addType(fileType);
+	                    });
+	                }
                 }
-
             }
         });
         return filePurposeToNameMapping;
@@ -215,14 +303,18 @@ public class GerberFileProcessingUtil {
             attributes.putAll(processG04(line));
         } else if (line.startsWith("%TO")) {
             attributes.putAll(processTFTATO(line, "%TO"));
+            attributes.put("GERBER_X2", "");
         } else if (line.startsWith("%TF")) {
             attributes.putAll(processTFTATO(line, "%TF"));
+            attributes.put("GERBER_X2", "");
         } else if (line.startsWith("%TA")) {
             attributes.putAll(processTFTATO(line, "%TA"));
+            attributes.put("GERBER_X2", "");
         } else if (line.startsWith("%FSLA")) {
             attributes.putAll(processFSLA(line));
         } else if (line.startsWith("%TD")) {
             attributes.putAll(processTD(line));
+            attributes.put("GERBER_X2", "");
         } else if (line.startsWith("%MO")) {
             attributes.putAll(processMOLPLM(line, "MO"));
         } else if (line.startsWith("%LP")) {

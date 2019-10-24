@@ -85,6 +85,7 @@ public class ReportUtility {
     public static FileDetails convertToObject(ProjectFiles projectFiles) {
         FileDetails dtl = new FileDetails();
         dtl.setFileDate(projectFiles.getFileDate());
+        dtl.setModifiedDate(projectFiles.getFileDate());
         dtl.setName(projectFiles.getName());
         dtl.setVersion(projectFiles.getVersion());
         dtl.setFormat(projectFiles.getFormat());

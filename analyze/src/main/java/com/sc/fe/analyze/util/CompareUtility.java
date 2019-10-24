@@ -315,6 +315,10 @@ public class CompareUtility {
                 returnMap.put(oldFD.getName().toUpperCase(), Change.OLDER.name());
                 return returnMap;
             }
+            if (oldFD.getFileDate().before(newFD.getFileDate())) {
+                returnMap.put(oldFD.getName().toUpperCase(), Change.UPDATED.name());
+                return returnMap;
+            }
 
             //First compare as simple object
             differences.putAll(compareObject(newFD, oldFD));

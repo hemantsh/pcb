@@ -2,6 +2,7 @@ package com.sc.fe.analyze.service;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -16,19 +18,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.datastax.driver.core.utils.UUIDs;
 import com.google.gson.Gson;
 import com.sc.fe.analyze.FileStorageProperties;
 import com.sc.fe.analyze.data.entity.DifferenceReportJson;
 import com.sc.fe.analyze.data.entity.ProjectFiles;
+import com.sc.fe.analyze.to.AttachementDetails;
 import com.sc.fe.analyze.to.FileChange;
 import com.sc.fe.analyze.to.FileDetails;
 import com.sc.fe.analyze.to.ProjectDetails;
 import com.sc.fe.analyze.to.Report;
+import com.sc.fe.analyze.util.AttachementProcessingUtil;
 import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.ErrorCodes;
+import com.sc.fe.analyze.util.FileStoreUtil;
 import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.ReportUtility;
 
@@ -45,6 +51,8 @@ public class FileExtractUploadService extends BaseService {
     private ProjectFilesService projectFilesService;
     @Autowired
     private ProjectService projectService;
+    
+    private FileStoreUtil fileUtil;
 
     /**
      *
@@ -52,10 +60,25 @@ public class FileExtractUploadService extends BaseService {
      */
     @Autowired
     public FileExtractUploadService(FileStorageProperties fileStorageProperties) {
-        //this.util = FileStoreUtil.getInstance(fileStorageProperties); //For local file
+        this.fileUtil = FileStoreUtil.getInstance(fileStorageProperties); //For local file
         //this.util = S3FileUtility.getInstance(fileStorageProperties); 	
     }
 
+    public AttachementDetails saveAndProcessAttachement( MultipartFile zipFile, AttachementDetails attDetail ) throws Exception {
+    	
+    	int rand_int1 = Math.abs(ThreadLocalRandom.current().nextInt());
+    	
+    	String rNumber = String.valueOf(rand_int1);
+    	fileUtil.storeFile(rNumber, zipFile);
+    	fileUtil.extractFiles(rNumber, zipFile.getOriginalFilename());
+    	
+    	Path folder = Paths.get(fileUtil.getUploadDir() + File.separator + rNumber + File.separator).toAbsolutePath().normalize();
+    	
+    	return AttachementProcessingUtil.getAttachementDetails(folder, zipFile.getOriginalFilename() , extensionToFileMap() );
+    }
+    
+    
+    
     /**
      * Validates the project files and send a report.
      *
@@ -92,6 +115,15 @@ public class FileExtractUploadService extends BaseService {
             projectDetails.getErrors().put("V0016", "Invalid Value of newProject and AttachReplace(Both values cannot be true).");
             return report;
         }
+        //Check if project already exist for same zip file
+        if( projectDetails.isNewProject() ) {
+    		List<ProjectDetails> existingProj = projectService.findByZipFileName(projectDetails.getZipFileName());
+    		if( existingProj != null && existingProj.size() > 0) {
+    			//projectDetails.getErrors().put("V0021",ErrorCodes.V0021.getErrorMessage());
+    			report.addErrorCode(ErrorCodes.V0021);
+    		}
+    	}
+        
 
         //GoldenCheck
         List<String> missingTypes = validateGoldenCheckRules(projectDetails);
@@ -563,6 +595,20 @@ public class FileExtractUploadService extends BaseService {
 //        }
         return fdList;
     }
+
+	/**
+	 * @return the fileUtil
+	 */
+	public FileStoreUtil getFileUtil() {
+		return fileUtil;
+	}
+
+	/**
+	 * @param fileUtil the fileUtil to set
+	 */
+	public void setFileUtil(FileStoreUtil fileUtil) {
+		this.fileUtil = fileUtil;
+	}
 
     /**
      * Extract and save the zip file. No validations.

@@ -7,7 +7,7 @@ package com.sc.fe.analyze.util;
  */
 public enum ErrorCodes {
     V0000("Unknown fileType"),
-    V0001("Drill file missing"),
+    V0001("No Excellon Drill Data Found"),
     V0002("Signal file missing"),
     V0003("power_ground file missing"),
     V0004("solder_mask file missing"),
@@ -26,7 +26,8 @@ public enum ErrorCodes {
     V0017("ODB or IPC2581 file missing"),
     V0018("Assembly TurnTime Quantity missing"),
     V0019("Fabrication TrunTime Quantity missing"),
-    V0020("Drawing file missing");
+    V0020("Drawing file missing"),
+	V0021("Project with same zip file name already exist in system.");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;
