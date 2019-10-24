@@ -3,7 +3,6 @@ package com.sc.fe.analyze.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -185,6 +185,11 @@ public class ProjectManagementController {
     @GetMapping("/project/{projectId}/differences")
     public String getDifferences(@PathVariable("projectId") String projectId) {
         return projectService.getDifferencesJson(projectId);
+    }
+    
+    @DeleteMapping("project/{projectId}/version/{version}")
+    public void deleteById(@PathVariable("projectId") String projectId,@PathVariable("version") String version){
+        projectService.deleteByIdandVersion(projectId, version);
     }
     
 }
