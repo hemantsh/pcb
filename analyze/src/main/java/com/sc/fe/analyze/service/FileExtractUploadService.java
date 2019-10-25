@@ -366,7 +366,7 @@ public class FileExtractUploadService extends BaseService {
         projectDetails.setVersion(version);
 
         //To process the gerber file,call the processGerber() method
-        processGerber(projectDetails.getFileDetails());
+        //processGerber(projectDetails.getFileDetails());
 
         //Save projectFiles
         projectDetails.getFileDetails().stream().forEach(fd -> {
@@ -554,17 +554,17 @@ public class FileExtractUploadService extends BaseService {
      * @param fileDetails - These given file details will be updated if we find
      * more details during processing
      */
-    public void processGerber(List<FileDetails> fileDetails) {
-        
-        GerberFileProcessingUtil.processFilesByExtension(fileDetails, extensionToFileMap());
-
-        //For each file that is gerber format
-        fileDetails.stream()
-                .forEach(fd -> {
-                    //Apply rules by name pattern
-                    GerberFileProcessingUtil.parseFileName(fd);
-                });
-    }
+//    public void processGerber(List<FileDetails> fileDetails) {
+//        
+//        GerberFileProcessingUtil.processFilesByExtension(fileDetails, extensionToFileMap());
+//
+//        //For each file that is gerber format
+//        fileDetails.stream()
+//                .forEach(fd -> {
+//                    //Apply rules by name pattern
+//                    GerberFileProcessingUtil.parseFileName(fd);
+//                });
+//    }
 
     //==================================================================================================//
     //============== Below methods are not used but will be required in future. DONOT Delete
