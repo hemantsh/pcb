@@ -253,7 +253,10 @@ public class GerberFileProcessingUtil {
         }
         fileDetails.forEach(fileDetail -> {
 
-            if (fileDetail.getType() == null) {
+        	String type = fileDetail.getType();
+			if( type == null || "File".equalsIgnoreCase(type) || "document".equalsIgnoreCase(type) 
+					|| "".equalsIgnoreCase(type.trim()) || "gerber".equalsIgnoreCase(type) ) {
+				
                 String fileName = fileDetail.getName();
                 if( ! StringUtils.isEmpty(fileName)) {
 	                String[] nameParts = fileName.split("\\.");

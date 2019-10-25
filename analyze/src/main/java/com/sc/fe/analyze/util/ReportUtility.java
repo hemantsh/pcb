@@ -206,10 +206,10 @@ public class ReportUtility {
         filesDbDetails.setName(fileDetails.getName());
         filesDbDetails.setSize(fileDetails.getFileSize());
         filesDbDetails.setType(fileDetails.getType());
-        if (fileDetails.getModifiedDate() == null) {
+        if (fileDetails.getFileDate() == null) {
             filesDbDetails.setFileDate(new Date());
         } else {
-            filesDbDetails.setFileDate(fileDetails.getModifiedDate());
+            filesDbDetails.setFileDate(fileDetails.getFileDate());
         }
         filesDbDetails.setFormat(fileDetails.getFormat());
         filesDbDetails.setStep(fileDetails.getStep());

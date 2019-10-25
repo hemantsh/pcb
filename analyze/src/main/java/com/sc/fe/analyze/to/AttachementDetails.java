@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sc.fe.analyze.to.Directory.FileDetail;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(value = "AttachementDetails", description = "Structure of AttachementDetails")
@@ -176,10 +177,14 @@ public class AttachementDetails implements Serializable {
 				if(files != null) {
 					files.stream().forEach( file -> {
 						String type = file.getType();
-						if( type == null || "File".equalsIgnoreCase(type) || "document".equalsIgnoreCase(type) || "".equalsIgnoreCase(type.trim())) {
+						if( type == null || "File".equalsIgnoreCase(type) || "document".equalsIgnoreCase(type) 
+								|| "".equalsIgnoreCase(type.trim()) || "gerber".equalsIgnoreCase(type) ) {
 							String key = dir.getName() + File.separator + file.getName();
 							if( ruleMap.containsKey(key)) {
 								file.setType(ruleMap.get(key));
+								if( StringUtils.isBlank(file.getType()) ) {
+									file.setType("File");
+								}
 							}
 						}
 					});

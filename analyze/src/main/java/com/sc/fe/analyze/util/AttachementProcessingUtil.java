@@ -314,9 +314,19 @@ public class AttachementProcessingUtil {
 	                .forEach(fd -> {
 	                    //Apply rules by name pattern
 	                    GerberFileProcessingUtil.parseFileName(fd);
-	                    if( ! ignoreTypes.contains(fd.getType())) {
-	                    	ruleMap.put(fd.getName(), fd.getType());
+	                    String typ = fd.getType();
+	                    if( StringUtils.isNotBlank(typ) ) {
+	                    	for (String igt : ignoreTypes) {
+	                    		typ = typ.replace(igt, "");
+							}
 	                    }
+	                    if(typ.endsWith(",")) {
+	                    	typ = typ.substring(0, typ.length()-1);
+	                    }
+	                    if(typ.startsWith(",")) {
+	                    	typ = typ.substring(1);
+	                    }
+	                    ruleMap.put(fd.getName(), typ);
 	                });
 	        
 	        attDetail.setRemainingType(ruleMap);
