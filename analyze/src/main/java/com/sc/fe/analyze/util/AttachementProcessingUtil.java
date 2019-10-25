@@ -319,14 +319,15 @@ public class AttachementProcessingUtil {
 	                    	for (String igt : ignoreTypes) {
 	                    		typ = typ.replace(igt, "");
 							}
+	                    
+		                    if(typ.endsWith(",")) {
+		                    	typ = typ.substring(0, typ.length()-1);
+		                    }
+		                    if(typ.startsWith(",")) {
+		                    	typ = typ.substring(1);
+		                    }
+		                    ruleMap.put(fd.getName(), typ);
 	                    }
-	                    if(typ.endsWith(",")) {
-	                    	typ = typ.substring(0, typ.length()-1);
-	                    }
-	                    if(typ.startsWith(",")) {
-	                    	typ = typ.substring(1);
-	                    }
-	                    ruleMap.put(fd.getName(), typ);
 	                });
 	        
 	        attDetail.setRemainingType(ruleMap);
