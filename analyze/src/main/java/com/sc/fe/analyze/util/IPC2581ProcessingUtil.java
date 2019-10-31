@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class IPC2581ProcessingUtil {
 
+	public static final String PROPER_IPC = "PROPER_IPC";
 	public static final String REVISION = "REVISION";
 
 	public static Map<String, String> processFile(String filePath ) {
@@ -21,7 +22,7 @@ public class IPC2581ProcessingUtil {
 				
 				String temp = line.toUpperCase();
 				if( temp.contains("IPC") && temp.contains("2581")) {
-				
+					propMap.put(PROPER_IPC, "Y");
 					if(temp.contains(REVISION)) {
 						//xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="A" xmlns="http://webstds.ipc.org/2581"
 						String part = line.substring(temp.indexOf(REVISION));

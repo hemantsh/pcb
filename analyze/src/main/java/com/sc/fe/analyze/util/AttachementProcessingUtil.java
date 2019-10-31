@@ -256,27 +256,30 @@ public class AttachementProcessingUtil {
 	
 						if (FILE_TYPE_IPC.equalsIgnoreCase(fd.getType())) {
 							
-							if( StringUtil.isNullOrEmpty(dir.getType()) ) {
-								dir.setType(FILE_TYPE_IPC);
-							}
-							
 							if( len <= 64) {
 								Map<String, String> attributes = IPC2581ProcessingUtil.processFile( f.getAbsolutePath());
-								if( attributes.containsKey(IPC2581ProcessingUtil.REVISION)) {
-									String rev = attributes.get(IPC2581ProcessingUtil.REVISION);
-									if("B".equalsIgnoreCase(rev)) {
-										attDetail.addInfoMessage(IPC2581_DATA_FOUND);
-										dir.setType(FILE_TYPE_IPC_B);
-										fd.setType(FILE_TYPE_IPC_B);
-										updateCount(countMap, IPC_COUNT);
-									}else {
-										attDetail.addErrorMessage(UNSUPORTED_IPC2581);
+								
+								if( attributes.containsKey(IPC2581ProcessingUtil.PROPER_IPC) ) {
+									
+									if( attributes.containsKey(IPC2581ProcessingUtil.REVISION)) {
+										String rev = attributes.get(IPC2581ProcessingUtil.REVISION);
+										if("B".equalsIgnoreCase(rev)) {
+											attDetail.addInfoMessage(IPC2581_DATA_FOUND);
+											dir.setType(FILE_TYPE_IPC_B);
+											fd.setType(FILE_TYPE_IPC_B);
+											updateCount(countMap, IPC_COUNT);
+										}else {
+											attDetail.addErrorMessage(UNSUPORTED_IPC2581);
+										}
+									}
+									
+									if( StringUtil.isNullOrEmpty(dir.getType()) ) {
+										dir.setType(FILE_TYPE_IPC);
 									}
 								}else {
-									attDetail.addErrorMessage(UNSUPORTED_IPC2581);
+									fd.setType("File");
 								}
 							}
-							
 						}
 	
 						if (FILE_TYPE_NETLIST.equalsIgnoreCase(fd.getType())) {
