@@ -27,7 +27,7 @@ public enum ErrorCodes {
     V0018("Assembly TurnTime Quantity missing"),
     V0019("Fabrication TrunTime Quantity missing"),
     V0020("Drawing file missing"),
-	V0021("Project with same zip file name already exist in system.");
+	V0021("Project with same part number and revision already exist in system.");
 
     private ErrorCodes(String errorMessage) {
         this.errorMessage = errorMessage;

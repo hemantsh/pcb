@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -117,10 +118,18 @@ public class FileExtractUploadService extends BaseService {
         }
         //Check if project already exist for same zip file
         if( projectDetails.isNewProject() ) {
-    		List<ProjectDetails> existingProj = projectService.findByZipFileName(projectDetails.getZipFileName());
+    		List<ProjectDetails> existingProj = projectService.findByCustomerId(projectDetails.getCustomerId());
     		if( existingProj != null && existingProj.size() > 0) {
     			//projectDetails.getErrors().put("V0021",ErrorCodes.V0021.getErrorMessage());
-    			report.addErrorCode(ErrorCodes.V0021);
+    			String partRev = projectDetails.getPartNumber() + projectDetails.getPartRev();
+    			Iterator<ProjectDetails> projItr = existingProj.iterator();
+    			while(projItr.hasNext()) {
+    				ProjectDetails dtl = projItr.next();
+    				if( partRev.equalsIgnoreCase(dtl.getPartNumber()+dtl.getPartRev()) ) {
+    					report.addErrorCode(ErrorCodes.V0021);
+    					break;
+    				}
+    			}
     		}
     	}
         

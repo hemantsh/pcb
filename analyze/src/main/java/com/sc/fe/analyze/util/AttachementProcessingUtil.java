@@ -215,6 +215,22 @@ public class AttachementProcessingUtil {
 						if (fileName.equalsIgnoreCase(ODB) ) {
 							odbDirSet.add(currDirectory);
 							dir.setType(ODB);
+							//
+							String matrixPath = file + File.separator + "matrix" + File.separator + "matrix";
+							List<FileDetails> odbFileDetails = ODBProcessing.processODB(Paths.get(matrixPath));
+							
+							if(odbFileDetails != null) {
+								Iterator<FileDetails> itr = odbFileDetails.iterator();
+								while ( itr.hasNext() ) {
+									FileDetails dtls = itr.next();
+									com.sc.fe.analyze.to.Directory.FileDetail dirFile = dir.getFileDetailInstance();
+									dirFile.setDirName(currDirectory);
+									dirFile.setName(dtls.getName());
+									dirFile.setType(dtls.getType());
+									dir.addFileDetail(dirFile);
+								}
+							}
+							
 							attDetail.addDirectory(dir);
 							attDetail.addInfoMessage(ODB_DATA_FOUND);
 							isODB = true;
