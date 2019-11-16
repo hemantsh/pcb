@@ -36,7 +36,6 @@ import com.sc.fe.analyze.util.CompareUtility;
 import com.sc.fe.analyze.util.ErrorCodeMap;
 import com.sc.fe.analyze.util.ErrorCodes;
 import com.sc.fe.analyze.util.FileStoreUtil;
-import com.sc.fe.analyze.util.GerberFileProcessingUtil;
 import com.sc.fe.analyze.util.ReportUtility;
 
 /**

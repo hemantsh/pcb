@@ -201,7 +201,6 @@ public class AttachementProcessingUtil {
 				if( file.toFile().isDirectory() ) {
 					
 					path = file.toString().replace(folder.toString(), "");
-					//logger.info( "Files in directory " + path);
 					currDirectory = path;
 					Directory dir = null;
 					if( dirMap.get(currDirectory) == null) {
@@ -212,11 +211,14 @@ public class AttachementProcessingUtil {
 						dirMap.put(currDirectory, dir);
 						dir.setName(currDirectory);
 						
-						if (fileName.equalsIgnoreCase(ODB) ) {
+						String matrixPath = file + File.separator + "matrix" + File.separator + "matrix";
+						
+						File f = new File(matrixPath);
+
+						if ( f.exists() ) { // ODB check
 							odbDirSet.add(currDirectory);
 							dir.setType(ODB);
 							//
-							String matrixPath = file + File.separator + "matrix" + File.separator + "matrix";
 							List<FileDetails> odbFileDetails = ODBProcessing.processODB(Paths.get(matrixPath));
 							
 							if(odbFileDetails != null) {

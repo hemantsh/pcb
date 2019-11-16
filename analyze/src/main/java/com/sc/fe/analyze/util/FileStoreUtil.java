@@ -82,28 +82,34 @@ public class FileStoreUtil {
         try {
 
         	File f = folder.resolve(fileName).normalize().toFile();
-            ZipFile zipFile = new ZipFile(f);
-            zipFile.extractAll(folder.toString()+ File.separator + f.getName().replace("."+StringUtils.getFilenameExtension(f.getName()), ""));
-            
-            Stream<Path> paths = Files.walk(Paths.get(folder.toString()));
-
-            String extnList = ".zip,.gzip,.gz";
-    		
-    		Set<String> zipExtn= new HashSet<String>(Arrays.asList(extnList.split(",")));
-              		
-			paths.forEach(file -> {
-			
-				String name = file.getFileName().toString();
-				String extn = StringUtils.getFilenameExtension( file.getFileName().toString() );
-                
-				if(zipExtn.contains("."+extn) && !fileName.equalsIgnoreCase(name)) {
-					
-					extract(file);
-				}
+        	if(fileName.endsWith(".tgz")) {
+        		TAR.decompress(f.getAbsolutePath(), new File(folder.toString()+ File.separator + f.getName().replace("."+StringUtils.getFilenameExtension(f.getName()), "")) );
+        	}else {
+        	
+	            ZipFile zipFile = new ZipFile(f);
+	            
+	            zipFile.extractAll(folder.toString()+ File.separator + f.getName().replace("."+StringUtils.getFilenameExtension(f.getName()), ""));
+	            
+	            Stream<Path> paths = Files.walk(Paths.get(folder.toString()));
+	
+	            String extnList = ".zip,.gzip,.gz";
+	    		
+	    		Set<String> zipExtn= new HashSet<String>(Arrays.asList(extnList.split(",")));
+	              		
+				paths.forEach(file -> {
 				
-			});
-			
-			paths.close();
+					String name = file.getFileName().toString();
+					String extn = StringUtils.getFilenameExtension( file.getFileName().toString() );
+	                
+					if(zipExtn.contains("."+extn) && !fileName.equalsIgnoreCase(name)) {
+						
+						extract(file);
+					}
+					
+				});
+				
+				paths.close();
+        	}
 			
         } catch (Exception e) {
             logger.error(e.getMessage());
